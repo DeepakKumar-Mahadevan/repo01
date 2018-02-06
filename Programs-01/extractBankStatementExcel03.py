@@ -24,8 +24,9 @@ def convertIsoDate(date_str):
                         iso_date = 'Invalid Date format'
     return(iso_date)
 
+op_mode = input("Enter output mode:\n")
 outfile = r'E:\Chicago_E_Drive\Deepak DOCs\Study\Python\Programs-01\out_message.txt'
-f = open(outfile,'w')
+f = open(outfile,op_mode)
 
 f.write(100*'=')
 path = "C:/Users/MRSD/Downloads/"
