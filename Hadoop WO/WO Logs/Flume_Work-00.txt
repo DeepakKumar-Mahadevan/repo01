@@ -1,0 +1,339 @@
+[hduser@Inceptez ~]$ cd /usr/local/flume/lib
+[hduser@Inceptez lib]$ mv guava-10.0.1.jar protobuf-java-2.4.1.jar ~/flume_bkp/
+
+[hduser@Inceptez ~]$ cat device1/log.txt 
+Hello Deepak
+How are you ?
+This is a test log file
+
+16/06/19 11:09:11 INFO hdfs.BucketWriter: Creating hdfs://localhost:54310/flume/tail_output//FlumeData.1466314750888.tmp
+16/06/19 11:09:13 INFO hdfs.BucketWriter: Renaming hdfs://localhost:54310/flume/tail_output/FlumeData.1466314750888.tmp to hdfs://localhost:54310/flume/tail_output/FlumeData.1466314750888
+16/06/19 11:09:14 INFO hdfs.BucketWriter: Creating hdfs://localhost:54310/flume/tail_output//FlumeData.1466314750889.tmp
+16/06/19 11:09:14 INFO hdfs.BucketWriter: Renaming hdfs://localhost:54310/flume/tail_output/FlumeData.1466314750889.tmp to hdfs://localhost:54310/flume/tail_output/FlumeData.1466314750889
+16/06/19 11:09:14 INFO hdfs.BucketWriter: Creating hdfs://localhost:54310/flume/tail_output//FlumeData.1466314750890.tmp
+16/06/19 11:19:14 INFO hdfs.BucketWriter: Renaming hdfs://localhost:54310/flume/tail_output/FlumeData.1466314750890.tmp to hdfs://localhost:54310/flume/tail_output/FlumeData.1466314750890
+^C16/06/19 11:21:16 INFO source.ExecSource: Command [tail -F /home/hduser/device1/log.txt] exited with 130
+16/06/19 11:21:16 INFO lifecycle.LifecycleSupervisor: Stopping lifecycle supervisor 10
+16/06/19 11:21:16 INFO node.PollingPropertiesFileConfigurationProvider: Configuration provider stopping
+16/06/19 11:21:16 INFO instrumentation.MonitoredCounterGroup: Component type: CHANNEL, name: c1 stopped
+16/06/19 11:21:16 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: CHANNEL, name: c1. channel.start.time == 1466314746866
+16/06/19 11:21:16 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: CHANNEL, name: c1. channel.stop.time == 1466315476135
+16/06/19 11:21:16 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: CHANNEL, name: c1. channel.capacity == 1000
+16/06/19 11:21:16 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: CHANNEL, name: c1. channel.current.size == 0
+16/06/19 11:21:16 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: CHANNEL, name: c1. channel.event.put.attempt == 3
+16/06/19 11:21:16 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: CHANNEL, name: c1. channel.event.put.success == 3
+16/06/19 11:21:16 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: CHANNEL, name: c1. channel.event.take.attempt == 97
+16/06/19 11:21:16 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: CHANNEL, name: c1. channel.event.take.success == 3
+16/06/19 11:21:16 INFO hdfs.HDFSEventSink: Closing hdfs://localhost:54310/flume/tail_output//FlumeData
+16/06/19 11:21:16 INFO hdfs.BucketWriter: HDFSWriter is already closed: hdfs://localhost:54310/flume/tail_output//FlumeData.1466314750890.tmp
+16/06/19 11:21:16 INFO instrumentation.MonitoredCounterGroup: Component type: SINK, name: k1 stopped
+16/06/19 11:21:16 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: SINK, name: k1. sink.start.time == 1466314746872
+16/06/19 11:21:16 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: SINK, name: k1. sink.stop.time == 1466315476150
+16/06/19 11:21:16 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: SINK, name: k1. sink.batch.complete == 0
+16/06/19 11:21:16 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: SINK, name: k1. sink.batch.empty == 93
+16/06/19 11:21:16 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: SINK, name: k1. sink.batch.underflow == 1
+16/06/19 11:21:16 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: SINK, name: k1. sink.connection.closed.count == 3
+16/06/19 11:21:16 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: SINK, name: k1. sink.connection.creation.count == 3
+16/06/19 11:21:16 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: SINK, name: k1. sink.connection.failed.count == 0
+16/06/19 11:21:16 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: SINK, name: k1. sink.event.drain.attempt == 3
+16/06/19 11:21:16 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: SINK, name: k1. sink.event.drain.sucess == 3
+16/06/19 11:21:16 INFO source.ExecSource: Stopping exec source with command:tail -F /home/hduser/device1/log.txt
+16/06/19 11:21:16 INFO instrumentation.MonitoredCounterGroup: Component type: SOURCE, name: r1 stopped
+16/06/19 11:21:16 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: SOURCE, name: r1. source.start.time == 1466314746875
+16/06/19 11:21:16 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: SOURCE, name: r1. source.stop.time == 1466315476154
+16/06/19 11:21:16 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: SOURCE, name: r1. src.append-batch.accepted == 0
+16/06/19 11:21:16 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: SOURCE, name: r1. src.append-batch.received == 0
+16/06/19 11:21:16 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: SOURCE, name: r1. src.append.accepted == 0
+16/06/19 11:21:16 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: SOURCE, name: r1. src.append.received == 0
+16/06/19 11:21:16 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: SOURCE, name: r1. src.events.accepted == 3
+16/06/19 11:21:16 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: SOURCE, name: r1. src.events.received == 3
+16/06/19 11:21:16 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: SOURCE, name: r1. src.open-connection.count == 0
+
+[hduser@Inceptez ~]$ hadoop fs -cat /flume/tail_output/FlumeData.1466314750890.tmp
+16/06/19 11:14:26 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+This is a test log file
+[hduser@Inceptez ~]$ hadoop fs -cat /flume/tail_output/FlumeData.*
+16/06/19 11:16:11 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Hello Deepak
+How are you ?
+This is a test log file
+[hduser@Inceptez ~]$ hadoop fs -ls /flume/tail_output/FlumeData.*
+16/06/19 11:20:55 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+-rw-r--r--   1 hduser supergroup         13 2016-06-19 11:09 /flume/tail_output/FlumeData.1466314750888
+-rw-r--r--   1 hduser supergroup         14 2016-06-19 11:09 /flume/tail_output/FlumeData.1466314750889
+-rw-r--r--   1 hduser supergroup         24 2016-06-19 11:19 /flume/tail_output/FlumeData.1466314750890
+====================================================================================================
+This is line number 04
+This is line number 05
+This is line number 06
+This is line number 07
+This is line number 08
+This is line number 09
+This is line number 10
+This is line number 11
+This is line number 12
+This is line number 13
+This is line number 14
+This is line number 15
+This is line number 16
+This is line number 17
+This is line number 18
+This is line number 19
+This is line number 20
+This is line number 21
+This is line number 22
+This is line number 23
+This is line number 24
+This is line number 25
+
+^C16/06/19 11:50:40 INFO source.ExecSource: Command [tail -F /home/hduser/device1/log.txt] exited with 130
+16/06/19 11:50:40 INFO lifecycle.LifecycleSupervisor: Stopping lifecycle supervisor 10
+16/06/19 11:50:40 INFO instrumentation.MonitoredCounterGroup: Component type: CHANNEL, name: c1 stopped
+16/06/19 11:50:40 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: CHANNEL, name: c1. channel.start.time == 1466316182713
+16/06/19 11:50:40 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: CHANNEL, name: c1. channel.stop.time == 1466317240607
+16/06/19 11:50:40 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: CHANNEL, name: c1. channel.capacity == 1000
+16/06/19 11:50:40 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: CHANNEL, name: c1. channel.current.size == 0
+16/06/19 11:50:40 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: CHANNEL, name: c1. channel.event.put.attempt == 15
+16/06/19 11:50:40 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: CHANNEL, name: c1. channel.event.put.success == 15
+16/06/19 11:50:40 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: CHANNEL, name: c1. channel.event.take.attempt == 154
+16/06/19 11:50:40 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: CHANNEL, name: c1. channel.event.take.success == 15
+16/06/19 11:50:40 INFO hdfs.HDFSEventSink: Closing hdfs://localhost:54310/flume/tail_output//FlumeData
+16/06/19 11:50:40 INFO hdfs.BucketWriter: HDFSWriter is already closed: hdfs://localhost:54310/flume/tail_output//FlumeData.1466316186745.tmp
+16/06/19 11:50:40 INFO instrumentation.MonitoredCounterGroup: Component type: SINK, name: k1 stopped
+16/06/19 11:50:40 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: SINK, name: k1. sink.start.time == 1466316182717
+16/06/19 11:50:40 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: SINK, name: k1. sink.stop.time == 1466317240622
+16/06/19 11:50:40 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: SINK, name: k1. sink.batch.complete == 0
+16/06/19 11:50:40 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: SINK, name: k1. sink.batch.empty == 134
+16/06/19 11:50:40 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: SINK, name: k1. sink.batch.underflow == 5
+16/06/19 11:50:40 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: SINK, name: k1. sink.connection.closed.count == 8
+16/06/19 11:50:40 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: SINK, name: k1. sink.connection.creation.count == 8
+16/06/19 11:50:40 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: SINK, name: k1. sink.connection.failed.count == 0
+16/06/19 11:50:40 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: SINK, name: k1. sink.event.drain.attempt == 15
+16/06/19 11:50:40 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: SINK, name: k1. sink.event.drain.sucess == 15
+16/06/19 11:50:40 INFO source.ExecSource: Stopping exec source with command:tail -F /home/hduser/device1/log.txt
+16/06/19 11:50:40 INFO instrumentation.MonitoredCounterGroup: Component type: SOURCE, name: r1 stopped
+16/06/19 11:50:40 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: SOURCE, name: r1. source.start.time == 1466316182721
+16/06/19 11:50:40 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: SOURCE, name: r1. source.stop.time == 1466317240634
+16/06/19 11:50:40 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: SOURCE, name: r1. src.append-batch.accepted == 0
+16/06/19 11:50:40 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: SOURCE, name: r1. src.append-batch.received == 0
+16/06/19 11:50:40 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: SOURCE, name: r1. src.append.accepted == 0
+16/06/19 11:50:40 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: SOURCE, name: r1. src.append.received == 0
+16/06/19 11:50:40 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: SOURCE, name: r1. src.events.accepted == 15
+16/06/19 11:50:40 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: SOURCE, name: r1. src.events.received == 15
+16/06/19 11:50:40 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: SOURCE, name: r1. src.open-connection.count == 0
+16/06/19 11:50:40 INFO node.PollingPropertiesFileConfigurationProvider: Configuration provider stopping
+
+[hduser@Inceptez device1]$ hadoop fs -ls /flume/tail_output/FlumeData.*
+16/06/19 11:35:27 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+-rw-r--r--   1 hduser supergroup         13 2016-06-19 11:09 /flume/tail_output/FlumeData.1466314750888
+-rw-r--r--   1 hduser supergroup         14 2016-06-19 11:09 /flume/tail_output/FlumeData.1466314750889
+-rw-r--r--   1 hduser supergroup         24 2016-06-19 11:19 /flume/tail_output/FlumeData.1466314750890
+-rw-r--r--   1 hduser supergroup         46 2016-06-19 11:33 /flume/tail_output/FlumeData.1466316186738
+-rw-r--r--   1 hduser supergroup         46 2016-06-19 11:33 /flume/tail_output/FlumeData.1466316186739
+-rw-r--r--   1 hduser supergroup         46 2016-06-19 11:33 /flume/tail_output/FlumeData.1466316186740
+-rw-r--r--   1 hduser supergroup         46 2016-06-19 11:33 /flume/tail_output/FlumeData.1466316186741
+-rw-r--r--   1 hduser supergroup         46 2016-06-19 11:34 /flume/tail_output/FlumeData.1466316186742
+[hduser@Inceptez device1]$ vi log.txt
+[hduser@Inceptez device1]$ hadoop fs -cat /flume/tail_output/FlumeData.1466316*
+16/06/19 11:36:58 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+This is line number 16
+This is line number 17
+This is line number 18
+This is line number 19
+This is line number 20
+This is line number 21
+This is line number 22
+This is line number 23
+This is line number 24
+This is line number 25
+[hduser@Inceptez device1]$ echo "This is line number 26" >> log.txt 
+[hduser@Inceptez device1]$ echo "This is line number 27" >> log.txt 
+[hduser@Inceptez device1]$ echo "This is line number 28" >> log.txt 
+[hduser@Inceptez device1]$ echo "This is line number 29" >> log.txt 
+[hduser@Inceptez device1]$ echo "This is line number 30" >> log.txt 
+[hduser@Inceptez device1]$ date
+Sun Jun 19 11:41:14 IST 2016
+[hduser@Inceptez device1]$ hadoop fs -cat /flume/tail_output/FlumeData.*
+16/06/19 11:41:31 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Hello Deepak
+How are you ?
+This is a test log file
+This is line number 16
+This is line number 17
+This is line number 18
+This is line number 19
+This is line number 20
+This is line number 21
+This is line number 22
+This is line number 23
+This is line number 24
+This is line number 25
+This is line number 26
+This is line number 27
+This is line number 28
+This is line number 29
+This is line number 30
+[hduser@Inceptez device1]$ hadoop fs -ls /flume/tail_output/FlumeData.*
+16/06/19 11:42:08 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+-rw-r--r--   1 hduser supergroup         13 2016-06-19 11:09 /flume/tail_output/FlumeData.1466314750888
+-rw-r--r--   1 hduser supergroup         14 2016-06-19 11:09 /flume/tail_output/FlumeData.1466314750889
+-rw-r--r--   1 hduser supergroup         24 2016-06-19 11:19 /flume/tail_output/FlumeData.1466314750890
+-rw-r--r--   1 hduser supergroup         46 2016-06-19 11:33 /flume/tail_output/FlumeData.1466316186738
+-rw-r--r--   1 hduser supergroup         46 2016-06-19 11:33 /flume/tail_output/FlumeData.1466316186739
+-rw-r--r--   1 hduser supergroup         46 2016-06-19 11:33 /flume/tail_output/FlumeData.1466316186740
+-rw-r--r--   1 hduser supergroup         46 2016-06-19 11:33 /flume/tail_output/FlumeData.1466316186741
+-rw-r--r--   1 hduser supergroup         46 2016-06-19 11:34 /flume/tail_output/FlumeData.1466316186742
+-rw-r--r--   1 hduser supergroup         46 2016-06-19 11:40 /flume/tail_output/FlumeData.1466316186743
+-rw-r--r--   1 hduser supergroup         46 2016-06-19 11:41 /flume/tail_output/FlumeData.1466316186744
+-rw-r--r--   1 hduser supergroup         23 2016-06-19 11:42 /flume/tail_output/FlumeData.1466316186745
+====================================================================================================
+[hduser@Inceptez ~]$ curl telnet://localhost:44444
+
+OK
+Hello Deepak
+OK
+what can I do for you ?
+OK
+This is a test flume session for terminal to HDFS
+OK
+Is the data getting fed to HDFS?
+OK
+Yes
+OK
+Great !!!
+OK
+Bye! Have a nice day.
+OK
+--------------------------
+[hduser@Inceptez conf]$ hadoop fs -ls /flume/hdfs_output/FlumeData.*
+16/06/19 11:55:01 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+-rw-r--r--   1 hduser supergroup          1 2016-06-19 11:53 /flume/hdfs_output/FlumeData.1466317436928.tmp
+[hduser@Inceptez conf]$ hadoop fs -cat /flume/hdfs_output/FlumeData.*
+16/06/19 11:55:19 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+
+Hello Deepak
+what can I do for you ?
+[hduser@Inceptez conf]$ hadoop fs -cat /flume/hdfs_output/FlumeData.*
+16/06/19 11:56:11 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+
+Hello Deepak
+what can I do for you ?
+This is a test flume session for terminal to HDFS
+[hduser@Inceptez conf]$ hadoop fs -cat /flume/hdfs_output/FlumeData.*
+16/06/19 11:57:30 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+
+Hello Deepak
+what can I do for you ?
+This is a test flume session for terminal to HDFS
+Is the data getting fed to HDFS?
+[hduser@Inceptez conf]$ hadoop fs -cat /flume/hdfs_output/FlumeData.*
+16/06/19 11:57:39 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+
+Hello Deepak
+what can I do for you ?
+This is a test flume session for terminal to HDFS
+Is the data getting fed to HDFS?
+Yes
+[hduser@Inceptez conf]$ hadoop fs -cat /flume/hdfs_output/FlumeData.*
+16/06/19 11:58:00 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+
+Hello Deepak
+what can I do for you ?
+This is a test flume session for terminal to HDFS
+Is the data getting fed to HDFS?
+Yes
+[hduser@Inceptez conf]$ hadoop fs -cat /flume/hdfs_output/FlumeData.*
+16/06/19 11:58:05 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+
+Hello Deepak
+what can I do for you ?
+This is a test flume session for terminal to HDFS
+Is the data getting fed to HDFS?
+Yes
+Great !!!
+[hduser@Inceptez conf]$ hadoop fs -cat /flume/hdfs_output/FlumeData.*
+16/06/19 11:59:08 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+
+Hello Deepak
+what can I do for you ?
+This is a test flume session for terminal to HDFS
+Is the data getting fed to HDFS?
+Yes
+Great !!!
+Bye! Have a nice day.
+----
+^C16/06/19 12:00:41 INFO lifecycle.LifecycleSupervisor: Stopping lifecycle supervisor 10
+16/06/19 12:00:41 INFO node.PollingPropertiesFileConfigurationProvider: Configuration provider stopping
+16/06/19 12:00:41 INFO source.NetcatSource: Source stopping
+16/06/19 12:00:41 INFO instrumentation.MonitoredCounterGroup: Component type: CHANNEL, name: c1 stopped
+16/06/19 12:00:41 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: CHANNEL, name: c1. channel.start.time == 1466317414889
+16/06/19 12:00:41 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: CHANNEL, name: c1. channel.stop.time == 1466317841643
+16/06/19 12:00:41 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: CHANNEL, name: c1. channel.capacity == 1000
+16/06/19 12:00:41 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: CHANNEL, name: c1. channel.current.size == 0
+16/06/19 12:00:41 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: CHANNEL, name: c1. channel.event.put.attempt == 8
+16/06/19 12:00:41 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: CHANNEL, name: c1. channel.event.put.success == 8
+16/06/19 12:00:41 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: CHANNEL, name: c1. channel.event.take.attempt == 75
+16/06/19 12:00:41 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: CHANNEL, name: c1. channel.event.take.success == 8
+16/06/19 12:00:41 INFO hdfs.HDFSEventSink: Closing hdfs://localhost:54310/flume/hdfs_output//FlumeData
+16/06/19 12:00:41 INFO hdfs.BucketWriter: Renaming hdfs://localhost:54310/flume/hdfs_output/FlumeData.1466317436928.tmp to hdfs://localhost:54310/flume/hdfs_output/FlumeData.1466317436928
+16/06/19 12:00:41 INFO instrumentation.MonitoredCounterGroup: Component type: SINK, name: k1 stopped
+16/06/19 12:00:41 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: SINK, name: k1. sink.start.time == 1466317414895
+16/06/19 12:00:41 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: SINK, name: k1. sink.stop.time == 1466317841732
+16/06/19 12:00:41 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: SINK, name: k1. sink.batch.complete == 0
+16/06/19 12:00:41 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: SINK, name: k1. sink.batch.empty == 59
+16/06/19 12:00:41 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: SINK, name: k1. sink.batch.underflow == 8
+16/06/19 12:00:41 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: SINK, name: k1. sink.connection.closed.count == 1
+16/06/19 12:00:41 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: SINK, name: k1. sink.connection.creation.count == 1
+16/06/19 12:00:41 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: SINK, name: k1. sink.connection.failed.count == 0
+16/06/19 12:00:41 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: SINK, name: k1. sink.event.drain.attempt == 8
+16/06/19 12:00:41 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: SINK, name: k1. sink.event.drain.sucess == 8
+====================================================================================================
+16/06/19 12:02:56 INFO node.PollingPropertiesFileConfigurationProvider: Configuration provider starting
+16/06/19 12:02:56 INFO node.PollingPropertiesFileConfigurationProvider: Reloading configuration file:/usr/local/flume/conf/netcat_flume.conf
+16/06/19 12:02:56 INFO conf.FlumeConfiguration: Added sinks: k1 Agent: a1
+16/06/19 12:02:56 INFO conf.FlumeConfiguration: Processing:k1
+16/06/19 12:02:56 INFO conf.FlumeConfiguration: Processing:k1
+16/06/19 12:02:56 INFO conf.FlumeConfiguration: Post-validation flume configuration contains configuration for agents: [a1]
+16/06/19 12:02:56 INFO node.AbstractConfigurationProvider: Creating channels
+16/06/19 12:02:56 INFO channel.DefaultChannelFactory: Creating instance of channel c1 type memory
+16/06/19 12:02:56 INFO node.AbstractConfigurationProvider: Created channel c1
+16/06/19 12:02:56 INFO source.DefaultSourceFactory: Creating instance of source r1, type netcat
+16/06/19 12:02:56 INFO sink.DefaultSinkFactory: Creating instance of sink: k1, type: logger
+16/06/19 12:02:56 INFO node.AbstractConfigurationProvider: Channel c1 connected to [r1, k1]
+16/06/19 12:02:56 INFO node.Application: Starting new configuration:{ sourceRunners:{r1=EventDrivenSourceRunner: { source:org.apache.flume.source.NetcatSource{name:r1,state:IDLE} }} sinkRunners:{k1=SinkRunner: { policy:org.apache.flume.sink.DefaultSinkProcessor@4b623f3e counterGroup:{ name:null counters:{} } }} channels:{c1=org.apache.flume.channel.MemoryChannel{name: c1}} }
+16/06/19 12:02:56 INFO node.Application: Starting Channel c1
+16/06/19 12:02:56 INFO instrumentation.MonitoredCounterGroup: Monitoried counter group for type: CHANNEL, name: c1, registered successfully.
+16/06/19 12:02:56 INFO instrumentation.MonitoredCounterGroup: Component type: CHANNEL, name: c1 started
+16/06/19 12:02:56 INFO node.Application: Starting Sink k1
+16/06/19 12:02:56 INFO node.Application: Starting Source r1
+16/06/19 12:02:56 INFO source.NetcatSource: Source starting
+16/06/19 12:02:56 INFO source.NetcatSource: Created serverSocket:sun.nio.ch.ServerSocketChannelImpl[/127.0.0.1:44444]
+16/06/19 12:03:18 INFO sink.LoggerSink: Event: { headers:{host=127.0.0.1} body: 48 69 20 44 65 65 70 61 6B                      Hi Deepak }
+16/06/19 12:06:52 INFO sink.LoggerSink: Event: { headers:{host=127.0.0.1} body: 54 68 69 73 20 69 73 20 61 20 74 65 73 74 20 66 This is a test f }
+16/06/19 12:07:01 INFO sink.LoggerSink: Event: { headers:{host=127.0.0.1} body: 6F 6B 2C 20 62 79 65                            ok, bye }
+16/06/19 12:07:07 INFO sink.LoggerSink: Event: { headers:{host=127.0.0.1} body: 68 61 76 65 20 61 20 6E 69 63 65 20 64 61 79 2E have a nice day. }
+-----
+[hduser@Inceptez ~]$ curl telnet://localhost:44444
+Hi Deepak
+OK
+This is a test flume session for terminal to terminal
+OK
+ok, bye
+OK
+have a nice day.
+OK
+-----
+^C16/06/19 12:08:50 INFO lifecycle.LifecycleSupervisor: Stopping lifecycle supervisor 10
+16/06/19 12:08:50 INFO node.PollingPropertiesFileConfigurationProvider: Configuration provider stopping
+16/06/19 12:08:50 INFO source.NetcatSource: Source stopping
+16/06/19 12:08:50 INFO instrumentation.MonitoredCounterGroup: Component type: CHANNEL, name: c1 stopped
+16/06/19 12:08:50 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: CHANNEL, name: c1. channel.start.time == 1466317976567
+16/06/19 12:08:50 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: CHANNEL, name: c1. channel.stop.time == 1466318330698
+16/06/19 12:08:50 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: CHANNEL, name: c1. channel.capacity == 1000
+16/06/19 12:08:50 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: CHANNEL, name: c1. channel.current.size == 0
+16/06/19 12:08:50 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: CHANNEL, name: c1. channel.event.put.attempt == 4
+16/06/19 12:08:50 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: CHANNEL, name: c1. channel.event.put.success == 4
+16/06/19 12:08:50 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: CHANNEL, name: c1. channel.event.take.attempt == 54
+16/06/19 12:08:50 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: CHANNEL, name: c1. channel.event.take.success == 4
+
+====================================================================================================

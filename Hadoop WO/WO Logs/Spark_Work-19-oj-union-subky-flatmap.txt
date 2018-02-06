@@ -1,0 +1,236 @@
+scala> val ce = sc.textFile("file:/home/hduser/mydata01/CanEmp10.csv")
+ce: org.apache.spark.rdd.RDD[String] = MapPartitionsRDD[1] at textFile at <console>:21
+
+scala> val o = sc.textFile("file:/home/hduser/mydata01/org.csv")
+o: org.apache.spark.rdd.RDD[String] = MapPartitionsRDD[3] at textFile at <console>:21
+
+scala> val ce_kv1 = ce.filter(_.charAt(0) != 'i')
+ce_kv1: org.apache.spark.rdd.RDD[String] = MapPartitionsRDD[6] at filter at <console>:23
+
+scala> val ce_kv = ce_kv1.map(x => (x.split(",")(8), x.split(",")(1) + "|" + x.split(",")(3) + "|" + x.split(",")(6)))
+ce_kv: org.apache.spark.rdd.RDD[(String, String)] = MapPartitionsRDD[7] at map at <console>:25
+
+scala> val o_kv = o.map(x => (x.split(",")(0),x.split(",")(1)))
+o_kv: org.apache.spark.rdd.RDD[(String, String)] = MapPartitionsRDD[8] at map at <console>:23
+
+scala> val loj = ce_kv.leftOuterJoin(o_kv)
+loj: org.apache.spark.rdd.RDD[(String, (String, Option[String]))] = MapPartitionsRDD[11] at leftOuterJoin at <console>:31
+
+scala> loj.foreach(println)
+(438969.41,(Griffith Perkins| Road"|Canada,None))
+(21,(Lester Moses|Midlands|(864) 341-9449,Some(Sibelius)))
+(11380.73,(Isaac Mack| 7414 Dapibus Ave"|Canada,None))
+(20,(Isaiah Gates|Verdun|(412) 872-6188,Some(Cakewalk)))
+(244760.14,(Louis Sharp| 4042 Facilisis Av."|Canada,None))
+(12,(Akeem Fuentes|Stonewall|(262) 175-7888,Some(Google)))
+(13,(Samson Ramirez|Isle-aux-Coudres|(172) 805-2137,Some(Yahoo)))
+(13,(Odysseus Frost|Whitehorse|(733) 578-2890,Some(Yahoo)))
+(13,(Quinlan Mathews|Barrhead|(132) 488-2432,Some(Yahoo)))
+(11,(Barrett Herrera|Daly|(232) 932-3742,Some(Macromedia)))
+
+scala> val roj = ce_kv.rightOuterJoin(o_kv)
+roj: org.apache.spark.rdd.RDD[(String, (Option[String], String))] = MapPartitionsRDD[14] at rightOuterJoin at <console>:31
+
+scala> roj.foreach(println)
+(14,(None,Lycos))
+(21,(Some(Lester Moses|Midlands|(864) 341-9449),Sibelius))
+(20,(Some(Isaiah Gates|Verdun|(412) 872-6188),Cakewalk))
+(19,(None,Lavasoft))
+(15,(None,IBM))
+(18,(None,Amazon))
+(16,(None,SAP))
+(22,(None,Oracle))
+(17,(None,Adobe))
+(12,(Some(Akeem Fuentes|Stonewall|(262) 175-7888),Google))
+(13,(Some(Samson Ramirez|Isle-aux-Coudres|(172) 805-2137),Yahoo))
+(13,(Some(Odysseus Frost|Whitehorse|(733) 578-2890),Yahoo))
+(13,(Some(Quinlan Mathews|Barrhead|(132) 488-2432),Yahoo))
+(11,(Some(Barrett Herrera|Daly|(232) 932-3742),Macromedia))
+(10,(None,Microsoft))
+(23,(None,Apple Systems))
+
+scala> val foj = ce_kv.fullOuterJoin(o_kv)
+foj: org.apache.spark.rdd.RDD[(String, (Option[String], Option[String]))] = MapPartitionsRDD[17] at fullOuterJoin at <console>:31
+
+scala> foj.foreach(println)
+(14,(None,Some(Lycos)))
+(438969.41,(Some(Griffith Perkins| Road"|Canada),None))
+(21,(Some(Lester Moses|Midlands|(864) 341-9449),Some(Sibelius)))
+(11380.73,(Some(Isaac Mack| 7414 Dapibus Ave"|Canada),None))
+(20,(Some(Isaiah Gates|Verdun|(412) 872-6188),Some(Cakewalk)))
+(19,(None,Some(Lavasoft)))
+(15,(None,Some(IBM)))
+(18,(None,Some(Amazon)))
+(244760.14,(Some(Louis Sharp| 4042 Facilisis Av."|Canada),None))
+(16,(None,Some(SAP)))
+(22,(None,Some(Oracle)))
+(17,(None,Some(Adobe)))
+(12,(Some(Akeem Fuentes|Stonewall|(262) 175-7888),Some(Google)))
+(13,(Some(Samson Ramirez|Isle-aux-Coudres|(172) 805-2137),Some(Yahoo)))
+(13,(Some(Odysseus Frost|Whitehorse|(733) 578-2890),Some(Yahoo)))
+(13,(Some(Quinlan Mathews|Barrhead|(132) 488-2432),Some(Yahoo)))
+(11,(Some(Barrett Herrera|Daly|(232) 932-3742),Some(Macromedia)))
+(10,(None,Some(Microsoft)))
+(23,(None,Some(Apple Systems)))
+===================================================================================================
+scala> val mn = sc.textFile("file:/home/hduser/mydata01/main.csv")
+mn: org.apache.spark.rdd.RDD[String] = MapPartitionsRDD[19] at textFile at <console>:21
+
+scala> val sb = sc.textFile("file:/home/hduser/mydata01/sub.csv")
+sb: org.apache.spark.rdd.RDD[String] = MapPartitionsRDD[21] at textFile at <console>:21
+
+scala> val un = mn.union(sb)
+un: org.apache.spark.rdd.RDD[String] = UnionRDD[22] at union at <console>:25
+
+scala> un.foreach(println)
+16/09/23 22:33:15 INFO rdd.HadoopRDD: Input split: file:/home/hduser/mydata01/main.csv:0+79
+01,One
+02,Two
+03,Three
+04,Four
+05,Five
+06,Six
+07,Seven
+08,Eight
+09,Nine
+10,Ten
+16/09/23 22:33:15 INFO executor.Executor: Finished task 0.0 in stage 13.0 (TID 13). 2044 bytes result sent to driver
+16/09/23 22:33:15 INFO scheduler.TaskSetManager: Starting task 1.0 in stage 13.0 (TID 14, localhost, partition 1,PROCESS_LOCAL, 2245 bytes)
+16/09/23 22:33:15 INFO executor.Executor: Running task 1.0 in stage 13.0 (TID 14)
+16/09/23 22:33:15 INFO scheduler.TaskSetManager: Finished task 0.0 in stage 13.0 (TID 13) in 90 ms on localhost (1/2)
+16/09/23 22:33:15 INFO rdd.HadoopRDD: Input split: file:/home/hduser/mydata01/sub.csv:0+68
+02,Two
+03,Three
+05,Five
+07,Seven
+11,Eleven
+13,Thirteen
+17,Seventeen
+===================================================================================================
+scala> val mn = sc.textFile("file:/home/hduser/mydata01/main.csv").map(_.split(","))
+scala> mn.first
+res8: Array[String] = Array(01, One)
+
+scala> val mn = sc.textFile("file:/home/hduser/mydata01/main.csv").map(x => (x.split(",")(0).toInt, x.split(",")(1)))
+mn: org.apache.spark.rdd.RDD[(Int, String)] = MapPartitionsRDD[28] at map at <console>:21
+
+scala> val sb = sc.textFile("file:/home/hduser/mydata01/sub.csv").map(x => (x.split(",")(0).toInt, x.split(",")(1)))
+sb: org.apache.spark.rdd.RDD[(Int, String)] = MapPartitionsRDD[34] at map at <console>:21
+
+scala> val un = mn.union(sb)
+un: org.apache.spark.rdd.RDD[(Int, String)] = UnionRDD[35] at union at <console>:25
+
+scala> un.foreach(println)
+16/09/23 22:41:34 INFO rdd.HadoopRDD: Input split: file:/home/hduser/mydata01/main.csv:0+79
+(1,One)
+(2,Two)
+(3,Three)
+(4,Four)
+(5,Five)
+(6,Six)
+(7,Seven)
+(8,Eight)
+(9,Nine)
+(10,Ten)
+16/09/23 22:41:34 INFO executor.Executor: Finished task 0.0 in stage 18.0 (TID 19). 2044 bytes result sent to driver
+16/09/23 22:41:34 INFO scheduler.TaskSetManager: Starting task 1.0 in stage 18.0 (TID 20, localhost, partition 1,PROCESS_LOCAL, 2245 bytes)
+16/09/23 22:41:34 INFO executor.Executor: Running task 1.0 in stage 18.0 (TID 20)
+16/09/23 22:41:34 INFO scheduler.TaskSetManager: Finished task 0.0 in stage 18.0 (TID 19) in 45 ms on localhost (1/2)
+16/09/23 22:41:34 INFO rdd.HadoopRDD: Input split: file:/home/hduser/mydata01/sub.csv:0+68
+(2,Two)
+(3,Three)
+(5,Five)
+(7,Seven)
+(11,Eleven)
+(13,Thirteen)
+(17,Seventeen)
+
+scala> val un2 = sc.union(mn,sb)
+un2: org.apache.spark.rdd.RDD[(Int, String)] = UnionRDD[36] at union at <console>:25
+
+scala> un2.foreach(println)
+16/09/23 22:42:08 INFO rdd.HadoopRDD: Input split: file:/home/hduser/mydata01/main.csv:0+79
+(1,One)
+(2,Two)
+(3,Three)
+(4,Four)
+(5,Five)
+(6,Six)
+(7,Seven)
+(8,Eight)
+(9,Nine)
+(10,Ten)
+16/09/23 22:42:08 INFO executor.Executor: Finished task 0.0 in stage 19.0 (TID 21). 2044 bytes result sent to driver
+16/09/23 22:42:08 INFO scheduler.TaskSetManager: Starting task 1.0 in stage 19.0 (TID 22, localhost, partition 1,PROCESS_LOCAL, 2245 bytes)
+16/09/23 22:42:08 INFO executor.Executor: Running task 1.0 in stage 19.0 (TID 22)
+16/09/23 22:42:08 INFO scheduler.TaskSetManager: Finished task 0.0 in stage 19.0 (TID 21) in 54 ms on localhost (1/2)
+16/09/23 22:42:08 INFO rdd.HadoopRDD: Input split: file:/home/hduser/mydata01/sub.csv:0+68
+(2,Two)
+(3,Three)
+(5,Five)
+(7,Seven)
+(11,Eleven)
+(13,Thirteen)
+(17,Seventeen)
+
+scala> val unA = mn.unionAll(sb)
+<console>:25: error: value unionAll is not a member of org.apache.spark.rdd.RDD[(Int, String)]
+         val unA = mn.unionAll(sb)
+===================================================================================================
+scala> val sk = mn.subtractByKey(sb)
+sk: org.apache.spark.rdd.RDD[(Int, String)] = SubtractedRDD[37] at subtractByKey at <console>:25
+
+scala> sk.foreach(println)
+(1,One)
+(4,Four)
+(6,Six)
+(8,Eight)
+(9,Nine)
+(10,Ten)
+
+===================================================================================================
+scala> val mn = sc.textFile("file:/home/hduser/mydata01/main.csv").map(_.split(","))
+16/09/23 22:51:41 INFO storage.MemoryStore: Block broadcast_31 stored as values in memory (estimated size 228.9 KB, free 2.0 MB)
+16/09/23 22:51:41 INFO storage.MemoryStore: Block broadcast_31_piece0 stored as bytes in memory (estimated size 19.6 KB, free 2.1 MB)
+16/09/23 22:51:41 INFO storage.BlockManagerInfo: Added broadcast_31_piece0 in memory on localhost:46948 (size: 19.6 KB, free: 517.2 MB)
+16/09/23 22:51:41 INFO spark.SparkContext: Created broadcast 31 from textFile at <console>:21
+mn: org.apache.spark.rdd.RDD[Array[String]] = MapPartitionsRDD[40] at map at <console>:21
+
+scala> val sb = sc.textFile("file:/home/hduser/mydata01/sub.csv").map(_.split(","))
+16/09/23 22:51:54 INFO storage.MemoryStore: Block broadcast_32 stored as values in memory (estimated size 228.9 KB, free 2.3 MB)
+16/09/23 22:51:54 INFO storage.MemoryStore: Block broadcast_32_piece0 stored as bytes in memory (estimated size 19.6 KB, free 2.3 MB)
+16/09/23 22:51:54 INFO storage.BlockManagerInfo: Added broadcast_32_piece0 in memory on localhost:46948 (size: 19.6 KB, free: 517.2 MB)
+16/09/23 22:51:54 INFO spark.SparkContext: Created broadcast 32 from textFile at <console>:21
+sb: org.apache.spark.rdd.RDD[Array[String]] = MapPartitionsRDD[43] at map at <console>:21
+
+scala> val sk = mn.subtractByKey(sb)
+<console>:25: error: value subtractByKey is not a member of org.apache.spark.rdd.RDD[Array[String]]
+         val sk = mn.subtractByKey(sb)
+                     ^
+
+>>> split only creates an Array of string
+===================================================================================================
+scala> val mn = sc.textFile("file:/home/hduser/mydata01/main.csv").flatMap(x => x.split(","))
+scala> mn.foreach(println)
+16/09/23 23:09:14 INFO rdd.HadoopRDD: Input split: file:/home/hduser/mydata01/main.csv:0+79
+01
+One
+02
+Two
+03
+Three
+04
+Four
+05
+Five
+06
+Six
+07
+Seven
+08
+Eight
+09
+Nine
+10
+Ten
+===================================================================================================

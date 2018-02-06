@@ -1,0 +1,358 @@
+scala> val rdd1 = Array(1,2,3,4,5)
+rdd1: Array[Int] = Array(1, 2, 3, 4, 5)
+
+scala> val rdd1_sq = rdd1.map(x => x*x)
+rdd1_sq: Array[Int] = Array(1, 4, 9, 16, 25)
+
+scala> val rdd1_even = rdd1.map(x => x/2==0)
+rdd1_even: Array[Boolean] = Array(true, false, false, false, false)
+
+scala> val rdd1_even = rdd1.map(x => x%2==0)
+rdd1_even: Array[Boolean] = Array(false, true, false, true, false)
+
+scala> rdd1_even.foreach(println)
+false
+true
+false
+true
+false
+
+scala> val rdd1_even = rdd1.filter(x => x%2==0)
+rdd1_even: Array[Int] = Array(2, 4)
+===========================================================================
+scala> val ipfile = sc.textFile("data_01/Sedan_Cars.csv")
+16/08/28 18:37:54 INFO storage.MemoryStore: Block broadcast_1 stored as values in memory (estimated size 228.9 KB, free 334.9 KB)
+16/08/28 18:37:54 INFO storage.MemoryStore: Block broadcast_1_piece0 stored as bytes in memory (estimated size 19.6 KB, free 354.4 KB)
+16/08/28 18:37:54 INFO storage.BlockManagerInfo: Added broadcast_1_piece0 in memory on localhost:40128 (size: 19.6 KB, free: 517.4 MB)
+16/08/28 18:37:54 INFO spark.SparkContext: Created broadcast 1 from textFile at <console>:21
+ipfile: org.apache.spark.rdd.RDD[String] = MapPartitionsRDD[3] at textFile at <console>:21
+
+scala> ipfile.first
+16/08/28 18:38:04 INFO mapred.FileInputFormat: Total input paths to process : 1
+16/08/28 18:38:04 INFO spark.SparkContext: Starting job: first at <console>:24
+16/08/28 18:38:04 INFO scheduler.DAGScheduler: Got job 0 (first at <console>:24) with 1 output partitions
+16/08/28 18:38:04 INFO scheduler.DAGScheduler: Final stage: ResultStage 0 (first at <console>:24)
+16/08/28 18:38:04 INFO scheduler.DAGScheduler: Parents of final stage: List()
+16/08/28 18:38:04 INFO scheduler.DAGScheduler: Missing parents: List()
+16/08/28 18:38:04 INFO scheduler.DAGScheduler: Submitting ResultStage 0 (MapPartitionsRDD[3] at textFile at <console>:21), which has no missing parents
+16/08/28 18:38:05 INFO storage.MemoryStore: Block broadcast_2 stored as values in memory (estimated size 3.1 KB, free 357.5 KB)
+16/08/28 18:38:05 INFO storage.MemoryStore: Block broadcast_2_piece0 stored as bytes in memory (estimated size 1827.0 B, free 359.3 KB)
+16/08/28 18:38:05 INFO storage.BlockManagerInfo: Added broadcast_2_piece0 in memory on localhost:40128 (size: 1827.0 B, free: 517.4 MB)
+16/08/28 18:38:05 INFO spark.SparkContext: Created broadcast 2 from broadcast at DAGScheduler.scala:1006
+16/08/28 18:38:05 INFO scheduler.DAGScheduler: Submitting 1 missing tasks from ResultStage 0 (MapPartitionsRDD[3] at textFile at <console>:21)
+16/08/28 18:38:05 INFO scheduler.TaskSchedulerImpl: Adding task set 0.0 with 1 tasks
+16/08/28 18:38:05 INFO scheduler.TaskSetManager: Starting task 0.0 in stage 0.0 (TID 0, localhost, partition 0,ANY, 2159 bytes)
+16/08/28 18:38:05 INFO executor.Executor: Running task 0.0 in stage 0.0 (TID 0)
+16/08/28 18:38:05 INFO rdd.HadoopRDD: Input split: hdfs://localhost:54310/user/hduser/data_01/Sedan_Cars.csv:0+14994
+16/08/28 18:38:05 INFO Configuration.deprecation: mapred.tip.id is deprecated. Instead, use mapreduce.task.id
+16/08/28 18:38:05 INFO Configuration.deprecation: mapred.task.id is deprecated. Instead, use mapreduce.task.attempt.id
+16/08/28 18:38:05 INFO Configuration.deprecation: mapred.task.is.map is deprecated. Instead, use mapreduce.task.ismap
+16/08/28 18:38:05 INFO Configuration.deprecation: mapred.task.partition is deprecated. Instead, use mapreduce.task.partition
+16/08/28 18:38:05 INFO Configuration.deprecation: mapred.job.id is deprecated. Instead, use mapreduce.job.id
+16/08/28 18:38:06 INFO executor.Executor: Finished task 0.0 in stage 0.0 (TID 0). 2100 bytes result sent to driver
+16/08/28 18:38:06 INFO scheduler.DAGScheduler: ResultStage 0 (first at <console>:24) finished in 1.417 s
+16/08/28 18:38:06 INFO scheduler.TaskSetManager: Finished task 0.0 in stage 0.0 (TID 0) in 1296 ms on localhost (1/1)
+16/08/28 18:38:06 INFO scheduler.TaskSchedulerImpl: Removed TaskSet 0.0, whose tasks have all completed, from pool
+16/08/28 18:38:06 INFO scheduler.DAGScheduler: Job 0 finished: first at <console>:24, took 1.779527 s
+res3: String = Acura,RSX Type S 2dr,Sedan,Asia,Front,23820,21761,2,4
+
+scala> ipfile.take(10).foreach(println)
+16/08/28 18:39:17 INFO spark.SparkContext: Starting job: take at <console>:24
+16/08/28 18:39:17 INFO scheduler.DAGScheduler: Got job 1 (take at <console>:24) with 1 output partitions
+16/08/28 18:39:17 INFO scheduler.DAGScheduler: Final stage: ResultStage 1 (take at <console>:24)
+16/08/28 18:39:17 INFO scheduler.DAGScheduler: Parents of final stage: List()
+16/08/28 18:39:17 INFO scheduler.DAGScheduler: Missing parents: List()
+16/08/28 18:39:17 INFO scheduler.DAGScheduler: Submitting ResultStage 1 (MapPartitionsRDD[3] at textFile at <console>:21), which has no missing parents
+16/08/28 18:39:17 INFO storage.MemoryStore: Block broadcast_3 stored as values in memory (estimated size 3.1 KB, free 362.4 KB)
+16/08/28 18:39:17 INFO storage.MemoryStore: Block broadcast_3_piece0 stored as bytes in memory (estimated size 1830.0 B, free 364.2 KB)
+16/08/28 18:39:17 INFO storage.BlockManagerInfo: Added broadcast_3_piece0 in memory on localhost:40128 (size: 1830.0 B, free: 517.4 MB)
+16/08/28 18:39:17 INFO spark.SparkContext: Created broadcast 3 from broadcast at DAGScheduler.scala:1006
+16/08/28 18:39:17 INFO scheduler.DAGScheduler: Submitting 1 missing tasks from ResultStage 1 (MapPartitionsRDD[3] at textFile at <console>:21)
+16/08/28 18:39:17 INFO scheduler.TaskSchedulerImpl: Adding task set 1.0 with 1 tasks
+16/08/28 18:39:17 INFO scheduler.TaskSetManager: Starting task 0.0 in stage 1.0 (TID 1, localhost, partition 0,ANY, 2159 bytes)
+16/08/28 18:39:17 INFO executor.Executor: Running task 0.0 in stage 1.0 (TID 1)
+16/08/28 18:39:17 INFO rdd.HadoopRDD: Input split: hdfs://localhost:54310/user/hduser/data_01/Sedan_Cars.csv:0+14994
+16/08/28 18:39:17 INFO executor.Executor: Finished task 0.0 in stage 1.0 (TID 1). 2631 bytes result sent to driver
+16/08/28 18:39:17 INFO scheduler.DAGScheduler: ResultStage 1 (take at <console>:24) finished in 0.030 s
+16/08/28 18:39:17 INFO scheduler.DAGScheduler: Job 1 finished: take at <console>:24, took 0.042898 s
+Acura,RSX Type S 2dr,Sedan,Asia,Front,23820,21761,2,4
+Acura,TSX 4dr,Sedan,Asia,Front,26990,24647,2.4,4
+Acura,TL 4dr,Sedan,Asia,Front,33195,30299,3.2,6
+Acura,3.5 RL 4dr,Sedan,Asia,Front,43755,39014,3.5,6
+Acura,3.5 RL w/Navigation 4dr,Sedan,Asia,Front,46100,41100,3.5,6
+Audi,A4 1.8T 4dr,Sedan,Europe,Front,25940,23508,1.8,4
+Audi,A41.8T convertible 2dr,Sedan,Europe,Front,35940,32506,1.8,4
+Audi,A4 3.0 4dr,Sedan,Europe,Front,31840,28846,3,6
+Audi,A4 3.0 Quattro 4dr manual,Sedan,Europe,All,33430,30366,3,6
+Audi,A4 3.0 Quattro 4dr auto,Sedan,Europe,All,34480,31388,3,6
+
+===========================================================================
+
+scala> val asian_cars = ipfile.split(",")
+<console>:23: error: value split is not a member of org.apache.spark.rdd.RDD[String]
+         val asian_cars = ipfile.split(",")
+
+scala> val cars = ipfile.map(x => x.split(","))
+cars: org.apache.spark.rdd.RDD[Array[String]] = MapPartitionsRDD[4] at map at <console>:23
+
+scala> cars.take(2)
+16/08/28 18:50:17 INFO spark.SparkContext: Starting job: take at <console>:26
+16/08/28 18:50:17 INFO scheduler.DAGScheduler: Got job 2 (take at <console>:26) with 1 output partitions
+16/08/28 18:50:17 INFO scheduler.DAGScheduler: Final stage: ResultStage 2 (take at <console>:26)
+16/08/28 18:50:17 INFO scheduler.DAGScheduler: Parents of final stage: List()
+16/08/28 18:50:17 INFO scheduler.DAGScheduler: Missing parents: List()
+16/08/28 18:50:17 INFO scheduler.DAGScheduler: Submitting ResultStage 2 (MapPartitionsRDD[4] at map at <console>:23), which has no missing parents
+16/08/28 18:50:17 INFO storage.MemoryStore: Block broadcast_4 stored as values in memory (estimated size 3.2 KB, free 357.7 KB)
+16/08/28 18:50:17 INFO storage.MemoryStore: Block broadcast_4_piece0 stored as bytes in memory (estimated size 1926.0 B, free 359.5 KB)
+16/08/28 18:50:17 INFO storage.BlockManagerInfo: Added broadcast_4_piece0 in memory on localhost:40128 (size: 1926.0 B, free: 517.4 MB)
+16/08/28 18:50:17 INFO spark.SparkContext: Created broadcast 4 from broadcast at DAGScheduler.scala:1006
+16/08/28 18:50:17 INFO scheduler.DAGScheduler: Submitting 1 missing tasks from ResultStage 2 (MapPartitionsRDD[4] at map at <console>:23)
+16/08/28 18:50:17 INFO scheduler.TaskSchedulerImpl: Adding task set 2.0 with 1 tasks
+16/08/28 18:50:17 INFO scheduler.TaskSetManager: Starting task 0.0 in stage 2.0 (TID 2, localhost, partition 0,ANY, 2159 bytes)
+16/08/28 18:50:17 INFO executor.Executor: Running task 0.0 in stage 2.0 (TID 2)
+16/08/28 18:50:17 INFO rdd.HadoopRDD: Input split: hdfs://localhost:54310/user/hduser/data_01/Sedan_Cars.csv:0+14994
+16/08/28 18:50:18 INFO executor.Executor: Finished task 0.0 in stage 2.0 (TID 2). 2234 bytes result sent to driver
+16/08/28 18:50:18 INFO scheduler.DAGScheduler: ResultStage 2 (take at <console>:26) finished in 0.078 s
+16/08/28 18:50:18 INFO scheduler.DAGScheduler: Job 2 finished: take at <console>:26, took 0.117676 s
+res5: Array[Array[String]] = Array(Array(Acura, RSX Type S 2dr, Sedan, Asia, Front, 23820, 21761, 2, 4), Array(Acura, TSX 4dr, Sedan, Asia, Front, 26990, 24647, 2.4, 4))
+
+scala> val cars_make_type = cars.take(10).map(x => x(0),x(2))
+<console>:25: error: too many arguments for method map: (f: Array[String] => B)(implicit bf: scala.collection.generic.CanBuildFrom[Array[Array[String]],B,That])That
+         val cars_make_type = cars.take(10).map(x => x(0),x(2))
+                                               ^
+
+scala> case class cars_filter (make:String, type:String, msrp:int)
+<console>:1: error: identifier expected but 'type' found.
+       case class cars_filter (make:String, type:String, msrp:int)
+                                            ^
+
+scala> case class cars_filter (make:String, typ:String, msrp:int)
+<console>:13: error: not found: type int
+         case class cars_filter (make:String, typ:String, msrp:int)
+                                                               ^
+
+scala> case class cars_filter (make:String, typ:String, msrp:Int)
+defined class cars_filter
+
+scala> val cars_make_type = cars.map(x => cars_filter(x(0),x(2),x(5).toInt))
+16/08/28 19:09:26 INFO storage.BlockManagerInfo: Removed broadcast_4_piece0 on localhost:40128 in memory (size: 1926.0 B, free: 517.4 MB)
+16/08/28 19:09:26 INFO spark.ContextCleaner: Cleaned accumulator 3
+cars_make_type: org.apache.spark.rdd.RDD[cars_filter] = MapPartitionsRDD[5] at map at <console>:27
+
+scala> cars_make_type.take(3)
+16/08/28 19:10:34 INFO spark.SparkContext: Starting job: take at <console>:30
+16/08/28 19:10:34 INFO scheduler.DAGScheduler: Got job 3 (take at <console>:30) with 1 output partitions
+16/08/28 19:10:34 INFO scheduler.DAGScheduler: Final stage: ResultStage 3 (take at <console>:30)
+16/08/28 19:10:34 INFO scheduler.DAGScheduler: Parents of final stage: List()
+16/08/28 19:10:34 INFO scheduler.DAGScheduler: Missing parents: List()
+16/08/28 19:10:34 INFO scheduler.DAGScheduler: Submitting ResultStage 3 (MapPartitionsRDD[5] at map at <console>:27), which has no missing parents
+16/08/28 19:10:34 INFO storage.MemoryStore: Block broadcast_5 stored as values in memory (estimated size 3.5 KB, free 357.9 KB)
+16/08/28 19:10:34 INFO storage.MemoryStore: Block broadcast_5_piece0 stored as bytes in memory (estimated size 2031.0 B, free 359.9 KB)
+16/08/28 19:10:34 INFO storage.BlockManagerInfo: Added broadcast_5_piece0 in memory on localhost:40128 (size: 2031.0 B, free: 517.4 MB)
+16/08/28 19:10:34 INFO spark.SparkContext: Created broadcast 5 from broadcast at DAGScheduler.scala:1006
+16/08/28 19:10:34 INFO scheduler.DAGScheduler: Submitting 1 missing tasks from ResultStage 3 (MapPartitionsRDD[5] at map at <console>:27)
+16/08/28 19:10:34 INFO scheduler.TaskSchedulerImpl: Adding task set 3.0 with 1 tasks
+16/08/28 19:10:34 INFO scheduler.TaskSetManager: Starting task 0.0 in stage 3.0 (TID 3, localhost, partition 0,ANY, 2159 bytes)
+16/08/28 19:10:34 INFO executor.Executor: Running task 0.0 in stage 3.0 (TID 3)
+16/08/28 19:10:34 INFO rdd.HadoopRDD: Input split: hdfs://localhost:54310/user/hduser/data_01/Sedan_Cars.csv:0+14994
+16/08/28 19:10:34 INFO executor.Executor: Finished task 0.0 in stage 3.0 (TID 3). 2542 bytes result sent to driver
+16/08/28 19:10:34 INFO scheduler.DAGScheduler: ResultStage 3 (take at <console>:30) finished in 0.159 s
+16/08/28 19:10:34 INFO scheduler.DAGScheduler: Job 3 finished: take at <console>:30, took 0.207412 s
+16/08/28 19:10:34 INFO scheduler.TaskSetManager: Finished task 0.0 in stage 3.0 (TID 3) in 161 ms on localhost (1/1)
+16/08/28 19:10:34 INFO scheduler.TaskSchedulerImpl: Removed TaskSet 3.0, whose tasks have all completed, from pool
+res6: Array[cars_filter] = Array(cars_filter(Acura,Sedan,23820), cars_filter(Acura,Sedan,26990), cars_filter(Acura,Sedan,33195))
+===========================================================================
+scala> case class cars_filter (make:String, typ:String, orig:String, msrp:Int)
+defined class cars_filter
+
+scala> val cars_make_type = cars.map(x => cars_filter(x(0),x(2),x(3),x(5).toInt))
+cars_make_type: org.apache.spark.rdd.RDD[cars_filter] = MapPartitionsRDD[6] at map at <console>:27
+
+scala> val asian_cars = cars_make_type.filter( x => x == 'Asia')
+<console>:1: error: unclosed character literal
+       val asian_cars = cars_make_type.filter( x => x == 'Asia')
+                                                              ^
+
+scala> val asian_cars = cars_make_type.filter( x => x == "Asia")
+<console>:29: warning: comparing values of types cars_filter and String using `==' will always yield false
+         val asian_cars = cars_make_type.filter( x => x == "Asia")
+                                                        ^
+asian_cars: org.apache.spark.rdd.RDD[cars_filter] = MapPartitionsRDD[7] at filter at <console>:29
+
+scala> val asian_cars = cars_make_type.filter( x => x(2) == "Asia")
+<console>:29: error: cars_filter does not take parameters
+         val asian_cars = cars_make_type.filter( x => x(2) == "Asia")
+                                                       ^
+
+scala> val asian_cars = cars_make_type.filter( x => x.split(2) == "Asia")
+<console>:29: error: value split is not a member of cars_filter
+         val asian_cars = cars_make_type.filter( x => x.split(2) == "Asia")
+                                                        ^
+
+scala> val asian_cars = cars_make_type.filter( x => x.split(",")(2) == "Asia")
+<console>:29: error: value split is not a member of cars_filter
+         val asian_cars = cars_make_type.filter( x => x.split(",")(2) == "Asia")
+                                                        ^
+
+scala> val asian_cars = cars_make_type.filter( x => x.cars_filter(2) == "Asia")
+<console>:29: error: value cars_filter is not a member of cars_filter
+         val asian_cars = cars_make_type.filter( x => x.cars_filter(2) == "Asia")
+
+scala> cars_make_type.first
+16/08/28 19:26:27 INFO spark.SparkContext: Starting job: first at <console>:30
+16/08/28 19:26:27 INFO scheduler.DAGScheduler: Got job 4 (first at <console>:30) with 1 output partitions
+16/08/28 19:26:27 INFO scheduler.DAGScheduler: Final stage: ResultStage 4 (first at <console>:30)
+16/08/28 19:26:27 INFO scheduler.DAGScheduler: Parents of final stage: List()
+16/08/28 19:26:27 INFO scheduler.DAGScheduler: Missing parents: List()
+16/08/28 19:26:27 INFO scheduler.DAGScheduler: Submitting ResultStage 4 (MapPartitionsRDD[6] at map at <console>:27), which has no missing parents
+16/08/28 19:26:27 INFO storage.MemoryStore: Block broadcast_6 stored as values in memory (estimated size 3.5 KB, free 363.4 KB)
+16/08/28 19:26:27 INFO storage.MemoryStore: Block broadcast_6_piece0 stored as bytes in memory (estimated size 2039.0 B, free 365.4 KB)
+16/08/28 19:26:27 INFO storage.BlockManagerInfo: Added broadcast_6_piece0 in memory on localhost:40128 (size: 2039.0 B, free: 517.4 MB)
+16/08/28 19:26:27 INFO spark.SparkContext: Created broadcast 6 from broadcast at DAGScheduler.scala:1006
+16/08/28 19:26:27 INFO scheduler.DAGScheduler: Submitting 1 missing tasks from ResultStage 4 (MapPartitionsRDD[6] at map at <console>:27)
+16/08/28 19:26:27 INFO scheduler.TaskSchedulerImpl: Adding task set 4.0 with 1 tasks
+16/08/28 19:26:27 INFO scheduler.TaskSetManager: Starting task 0.0 in stage 4.0 (TID 4, localhost, partition 0,ANY, 2159 bytes)
+16/08/28 19:26:27 INFO executor.Executor: Running task 0.0 in stage 4.0 (TID 4)
+16/08/28 19:26:27 INFO rdd.HadoopRDD: Input split: hdfs://localhost:54310/user/hduser/data_01/Sedan_Cars.csv:0+14994
+16/08/28 19:26:27 INFO executor.Executor: Finished task 0.0 in stage 4.0 (TID 4). 2499 bytes result sent to driver
+16/08/28 19:26:27 INFO scheduler.DAGScheduler: ResultStage 4 (first at <console>:30) finished in 0.076 s
+16/08/28 19:26:27 INFO scheduler.DAGScheduler: Job 4 finished: first at <console>:30, took 0.114306 s
+res7: cars_filter = cars_filter(Acura,Sedan,Asia,23820)
+
+scala> cars_make_type.count
+16/08/28 19:32:55 INFO spark.SparkContext: Starting job: count at <console>:30
+16/08/28 19:32:55 INFO scheduler.DAGScheduler: Got job 5 (count at <console>:30) with 1 output partitions
+16/08/28 19:32:55 INFO scheduler.DAGScheduler: Final stage: ResultStage 5 (count at <console>:30)
+16/08/28 19:32:55 INFO scheduler.DAGScheduler: Parents of final stage: List()
+16/08/28 19:32:55 INFO scheduler.DAGScheduler: Missing parents: List()
+16/08/28 19:32:55 INFO scheduler.DAGScheduler: Submitting ResultStage 5 (MapPartitionsRDD[6] at map at <console>:27), which has no missing parents
+16/08/28 19:32:55 INFO storage.MemoryStore: Block broadcast_7 stored as values in memory (estimated size 3.3 KB, free 368.7 KB)
+16/08/28 19:32:55 INFO storage.MemoryStore: Block broadcast_7_piece0 stored as bytes in memory (estimated size 1981.0 B, free 370.6 KB)
+16/08/28 19:32:55 INFO storage.BlockManagerInfo: Added broadcast_7_piece0 in memory on localhost:40128 (size: 1981.0 B, free: 517.4 MB)
+16/08/28 19:32:55 INFO spark.SparkContext: Created broadcast 7 from broadcast at DAGScheduler.scala:1006
+16/08/28 19:32:55 INFO scheduler.DAGScheduler: Submitting 1 missing tasks from ResultStage 5 (MapPartitionsRDD[6] at map at <console>:27)
+16/08/28 19:32:55 INFO scheduler.TaskSchedulerImpl: Adding task set 5.0 with 1 tasks
+16/08/28 19:32:55 INFO scheduler.TaskSetManager: Starting task 0.0 in stage 5.0 (TID 5, localhost, partition 0,ANY, 2159 bytes)
+16/08/28 19:32:55 INFO executor.Executor: Running task 0.0 in stage 5.0 (TID 5)
+16/08/28 19:32:55 INFO rdd.HadoopRDD: Input split: hdfs://localhost:54310/user/hduser/data_01/Sedan_Cars.csv:0+14994
+16/08/28 19:32:55 INFO executor.Executor: Finished task 0.0 in stage 5.0 (TID 5). 2082 bytes result sent to driver
+16/08/28 19:32:55 INFO scheduler.DAGScheduler: ResultStage 5 (count at <console>:30) finished in 0.187 s
+16/08/28 19:32:55 INFO scheduler.DAGScheduler: Job 5 finished: count at <console>:30, took 0.251717 s
+res8: Long = 262
+===========================================================================
+scala> val ipfile = sc.textFile("data_01/Sedan_Cars.csv")
+16/08/28 22:47:29 INFO storage.MemoryStore: Block broadcast_0 stored as values in memory (estimated size 86.5 KB, free 86.5 KB)
+16/08/28 22:47:29 INFO storage.MemoryStore: Block broadcast_0_piece0 stored as bytes in memory (estimated size 19.6 KB, free 106.0 KB)
+16/08/28 22:47:29 INFO storage.BlockManagerInfo: Added broadcast_0_piece0 in memory on localhost:35458 (size: 19.6 KB, free: 517.4 MB)
+16/08/28 22:47:30 INFO spark.SparkContext: Created broadcast 0 from textFile at <console>:27
+ipfile: org.apache.spark.rdd.RDD[String] = MapPartitionsRDD[1] at textFile at <console>:27
+
+scala> val cars = ipfile.map(x => x.split(","))
+cars: org.apache.spark.rdd.RDD[Array[String]] = MapPartitionsRDD[2] at map at <console>:29
+
+scala> case class cars_filter (make:String, typ:String, orig:String, msrp:Int)
+defined class cars_filter
+
+scala> val cars_make_type = cars.map(x => cars_filter(x(0),x(2),x(3),x(5).toInt))
+cars_make_type: org.apache.spark.rdd.RDD[cars_filter] = MapPartitionsRDD[3] at map at <console>:33
+
+scala> val asian_cars = cars_make_type.filter(x => x.orig == "Asia")
+asian_cars: org.apache.spark.rdd.RDD[cars_filter] = MapPartitionsRDD[4] at filter at <console>:35
+
+scala> asian_cars.take(3)
+16/08/28 22:52:09 INFO mapred.FileInputFormat: Total input paths to process : 1
+16/08/28 22:52:09 INFO spark.SparkContext: Starting job: take at <console>:38
+16/08/28 22:52:10 INFO scheduler.DAGScheduler: Got job 0 (take at <console>:38) with 1 output partitions
+16/08/28 22:52:10 INFO scheduler.DAGScheduler: Final stage: ResultStage 0 (take at <console>:38)
+16/08/28 22:52:10 INFO scheduler.DAGScheduler: Parents of final stage: List()
+16/08/28 22:52:10 INFO scheduler.DAGScheduler: Missing parents: List()
+16/08/28 22:52:10 INFO scheduler.DAGScheduler: Submitting ResultStage 0 (MapPartitionsRDD[4] at filter at <console>:35), which has no missing parents
+16/08/28 22:52:10 INFO storage.MemoryStore: Block broadcast_1 stored as values in memory (estimated size 3.7 KB, free 109.7 KB)
+16/08/28 22:52:10 INFO storage.MemoryStore: Block broadcast_1_piece0 stored as bytes in memory (estimated size 2.0 KB, free 111.8 KB)
+16/08/28 22:52:10 INFO storage.BlockManagerInfo: Added broadcast_1_piece0 in memory on localhost:35458 (size: 2.0 KB, free: 517.4 MB)
+16/08/28 22:52:10 INFO spark.SparkContext: Created broadcast 1 from broadcast at DAGScheduler.scala:1006
+16/08/28 22:52:10 INFO scheduler.DAGScheduler: Submitting 1 missing tasks from ResultStage 0 (MapPartitionsRDD[4] at filter at <console>:35)
+16/08/28 22:52:10 INFO scheduler.TaskSchedulerImpl: Adding task set 0.0 with 1 tasks
+16/08/28 22:52:10 INFO scheduler.TaskSetManager: Starting task 0.0 in stage 0.0 (TID 0, localhost, partition 0,ANY, 2159 bytes)
+16/08/28 22:52:10 INFO executor.Executor: Running task 0.0 in stage 0.0 (TID 0)
+16/08/28 22:52:10 INFO rdd.HadoopRDD: Input split: hdfs://localhost:54310/user/hduser/data_01/Sedan_Cars.csv:0+14994
+16/08/28 22:52:10 INFO Configuration.deprecation: mapred.tip.id is deprecated. Instead, use mapreduce.task.id
+16/08/28 22:52:10 INFO Configuration.deprecation: mapred.task.id is deprecated. Instead, use mapreduce.task.attempt.id
+16/08/28 22:52:10 INFO Configuration.deprecation: mapred.task.is.map is deprecated. Instead, use mapreduce.task.ismap
+16/08/28 22:52:10 INFO Configuration.deprecation: mapred.task.partition is deprecated. Instead, use mapreduce.task.partition
+16/08/28 22:52:10 INFO Configuration.deprecation: mapred.job.id is deprecated. Instead, use mapreduce.job.id
+16/08/28 22:52:10 INFO executor.Executor: Finished task 0.0 in stage 0.0 (TID 0). 2575 bytes result sent to driver
+16/08/28 22:52:10 INFO scheduler.DAGScheduler: ResultStage 0 (take at <console>:38) finished in 0.462 s
+16/08/28 22:52:10 INFO scheduler.TaskSetManager: Finished task 0.0 in stage 0.0 (TID 0) in 443 ms on localhost (1/1)
+16/08/28 22:52:10 INFO scheduler.TaskSchedulerImpl: Removed TaskSet 0.0, whose tasks have all completed, from pool
+16/08/28 22:52:10 INFO scheduler.DAGScheduler: Job 0 finished: take at <console>:38, took 0.640109 s
+res0: Array[cars_filter] = Array(cars_filter(Acura,Sedan,Asia,23820), cars_filter(Acura,Sedan,Asia,26990), cars_filter(Acura,Sedan,Asia,33195))
+
+scala> asian_cars.count
+16/08/28 22:53:30 INFO spark.SparkContext: Starting job: count at <console>:38
+16/08/28 22:53:30 INFO scheduler.DAGScheduler: Got job 1 (count at <console>:38) with 1 output partitions
+16/08/28 22:53:30 INFO scheduler.DAGScheduler: Final stage: ResultStage 1 (count at <console>:38)
+16/08/28 22:53:30 INFO scheduler.DAGScheduler: Parents of final stage: List()
+16/08/28 22:53:30 INFO scheduler.DAGScheduler: Missing parents: List()
+16/08/28 22:53:30 INFO scheduler.DAGScheduler: Submitting ResultStage 1 (MapPartitionsRDD[4] at filter at <console>:35), which has no missing parents
+16/08/28 22:53:30 INFO storage.MemoryStore: Block broadcast_2 stored as values in memory (estimated size 3.6 KB, free 115.4 KB)
+16/08/28 22:53:30 INFO storage.MemoryStore: Block broadcast_2_piece0 stored as bytes in memory (estimated size 2034.0 B, free 117.3 KB)
+16/08/28 22:53:30 INFO storage.BlockManagerInfo: Added broadcast_2_piece0 in memory on localhost:35458 (size: 2034.0 B, free: 517.4 MB)
+16/08/28 22:53:30 INFO spark.SparkContext: Created broadcast 2 from broadcast at DAGScheduler.scala:1006
+16/08/28 22:53:30 INFO scheduler.DAGScheduler: Submitting 1 missing tasks from ResultStage 1 (MapPartitionsRDD[4] at filter at <console>:35)
+16/08/28 22:53:30 INFO scheduler.TaskSchedulerImpl: Adding task set 1.0 with 1 tasks
+16/08/28 22:53:30 INFO scheduler.TaskSetManager: Starting task 0.0 in stage 1.0 (TID 1, localhost, partition 0,ANY, 2159 bytes)
+16/08/28 22:53:30 INFO executor.Executor: Running task 0.0 in stage 1.0 (TID 1)
+16/08/28 22:53:30 INFO rdd.HadoopRDD: Input split: hdfs://localhost:54310/user/hduser/data_01/Sedan_Cars.csv:0+14994
+16/08/28 22:53:30 INFO executor.Executor: Finished task 0.0 in stage 1.0 (TID 1). 2082 bytes result sent to driver
+16/08/28 22:53:30 INFO scheduler.DAGScheduler: ResultStage 1 (count at <console>:38) finished in 0.046 s
+16/08/28 22:53:30 INFO scheduler.DAGScheduler: Job 1 finished: count at <console>:38, took 0.058059 s
+res1: Long = 94
+
+===========================================================================
+scala> val costly_cars = cars_make_type.filter(x => x.msrp >= 50000)
+costly_cars: org.apache.spark.rdd.RDD[cars_filter] = MapPartitionsRDD[5] at filter at <console>:35
+
+scala> costly_cars.take(3)
+16/08/28 22:56:01 INFO spark.SparkContext: Starting job: take at <console>:38
+16/08/28 22:56:01 INFO scheduler.DAGScheduler: Got job 2 (take at <console>:38) with 1 output partitions
+16/08/28 22:56:01 INFO scheduler.DAGScheduler: Final stage: ResultStage 2 (take at <console>:38)
+16/08/28 22:56:01 INFO scheduler.DAGScheduler: Parents of final stage: List()
+16/08/28 22:56:01 INFO scheduler.DAGScheduler: Missing parents: List()
+16/08/28 22:56:01 INFO scheduler.DAGScheduler: Submitting ResultStage 2 (MapPartitionsRDD[5] at filter at <console>:35), which has no missing parents
+16/08/28 22:56:01 INFO storage.MemoryStore: Block broadcast_3 stored as values in memory (estimated size 3.7 KB, free 121.1 KB)
+16/08/28 22:56:01 INFO storage.MemoryStore: Block broadcast_3_piece0 stored as bytes in memory (estimated size 2.0 KB, free 123.1 KB)
+16/08/28 22:56:01 INFO storage.BlockManagerInfo: Added broadcast_3_piece0 in memory on localhost:35458 (size: 2.0 KB, free: 517.4 MB)
+16/08/28 22:56:01 INFO spark.SparkContext: Created broadcast 3 from broadcast at DAGScheduler.scala:1006
+16/08/28 22:56:01 INFO scheduler.DAGScheduler: Submitting 1 missing tasks from ResultStage 2 (MapPartitionsRDD[5] at filter at <console>:35)
+16/08/28 22:56:01 INFO scheduler.TaskSchedulerImpl: Adding task set 2.0 with 1 tasks
+16/08/28 22:56:01 INFO scheduler.TaskSetManager: Starting task 0.0 in stage 2.0 (TID 2, localhost, partition 0,ANY, 2159 bytes)
+16/08/28 22:56:01 INFO executor.Executor: Running task 0.0 in stage 2.0 (TID 2)
+16/08/28 22:56:01 INFO rdd.HadoopRDD: Input split: hdfs://localhost:54310/user/hduser/data_01/Sedan_Cars.csv:0+14994
+16/08/28 22:56:01 INFO executor.Executor: Finished task 0.0 in stage 2.0 (TID 2). 2576 bytes result sent to driver
+16/08/28 22:56:01 INFO scheduler.DAGScheduler: ResultStage 2 (take at <console>:38) finished in 0.030 s
+16/08/28 22:56:01 INFO scheduler.DAGScheduler: Job 2 finished: take at <console>:38, took 0.041278 s
+res2: Array[cars_filter] = Array(cars_filter(Audi,Sedan,Europe,69190), cars_filter(BMW,Sedan,Europe,54995), cars_filter(BMW,Sedan,Europe,69195))
+
+scala> costly_cars.count
+16/08/28 22:56:33 INFO spark.SparkContext: Starting job: count at <console>:38
+16/08/28 22:56:33 INFO scheduler.DAGScheduler: Got job 3 (count at <console>:38) with 1 output partitions
+16/08/28 22:56:33 INFO scheduler.DAGScheduler: Final stage: ResultStage 3 (count at <console>:38)
+16/08/28 22:56:33 INFO scheduler.DAGScheduler: Parents of final stage: List()
+16/08/28 22:56:33 INFO scheduler.DAGScheduler: Missing parents: List()
+16/08/28 22:56:33 INFO scheduler.DAGScheduler: Submitting ResultStage 3 (MapPartitionsRDD[5] at filter at <console>:35), which has no missing parents
+16/08/28 22:56:33 INFO storage.MemoryStore: Block broadcast_4 stored as values in memory (estimated size 3.6 KB, free 126.7 KB)
+16/08/28 22:56:33 INFO storage.MemoryStore: Block broadcast_4_piece0 stored as bytes in memory (estimated size 2033.0 B, free 128.7 KB)
+16/08/28 22:56:33 INFO storage.BlockManagerInfo: Added broadcast_4_piece0 in memory on localhost:35458 (size: 2033.0 B, free: 517.4 MB)
+16/08/28 22:56:33 INFO spark.SparkContext: Created broadcast 4 from broadcast at DAGScheduler.scala:1006
+16/08/28 22:56:33 INFO scheduler.DAGScheduler: Submitting 1 missing tasks from ResultStage 3 (MapPartitionsRDD[5] at filter at <console>:35)
+16/08/28 22:56:33 INFO scheduler.TaskSchedulerImpl: Adding task set 3.0 with 1 tasks
+16/08/28 22:56:33 INFO scheduler.TaskSetManager: Starting task 0.0 in stage 3.0 (TID 3, localhost, partition 0,ANY, 2159 bytes)
+16/08/28 22:56:33 INFO executor.Executor: Running task 0.0 in stage 3.0 (TID 3)
+16/08/28 22:56:33 INFO rdd.HadoopRDD: Input split: hdfs://localhost:54310/user/hduser/data_01/Sedan_Cars.csv:0+14994
+16/08/28 22:56:33 INFO executor.Executor: Finished task 0.0 in stage 3.0 (TID 3). 2082 bytes result sent to driver
+16/08/28 22:56:33 INFO scheduler.DAGScheduler: ResultStage 3 (count at <console>:38) finished in 0.046 s
+16/08/28 22:56:33 INFO scheduler.DAGScheduler: Job 3 finished: count at <console>:38, took 0.073761 s
+res3: Long = 21
+
+===========================================================================

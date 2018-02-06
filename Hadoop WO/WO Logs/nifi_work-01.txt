@@ -1,0 +1,91 @@
+GetFile (Local)
+--------------
+Input Directory
+/home/hduser/nifi_ip_dir_01
+
+File Filter
+deepak.*
+
+PutFile (Local)
+--------------
+Directory
+/home/hduser/nifi_op_dir_01
+
+
+[hduser@Inceptez ~]$ ls -l -R nifi*
+nifi_ip_dir_01:
+total 12
+-rw-rw-r-- 1 hduser hduser 14 Aug 12 22:28 deepak_file2.txt
+-rw-rw-r-- 1 hduser hduser 13 Aug 12 22:28 deepak_file.txt
+-rw-rw-r-- 1 hduser hduser 19 Aug 12 22:27 test_file.txt
+
+nifi_op_dir_01:
+total 0
+[hduser@Inceptez ~]$ ls -l -R nifi*
+nifi_ip_dir_01:
+total 12
+-rw-rw-r-- 1 hduser hduser 14 Aug 12 22:28 deepak_file2.txt
+-rw-rw-r-- 1 hduser hduser 13 Aug 12 22:28 deepak_file.txt
+-rw-rw-r-- 1 hduser hduser 19 Aug 12 22:27 test_file.txt
+
+nifi_op_dir_01:
+total 8
+-rw-rw-r-- 1 hduser hduser 14 Aug 12 22:44 deepak_file2.txt
+-rw-rw-r-- 1 hduser hduser 13 Aug 12 22:44 deepak_file.txt
+
+[hduser@Inceptez ~]$ cd nifi_ip_dir_01/
+[hduser@Inceptez nifi_ip_dir_01]$ ls
+deepak_file2.txt  deepak_file.txt  test_file.txt
+[hduser@Inceptez nifi_ip_dir_01]$ vi deepak_file3.txt
+[hduser@Inceptez nifi_ip_dir_01]$ cd
+[hduser@Inceptez ~]$ ls -l -R nifi*
+nifi_ip_dir_01:
+total 16
+-rw-rw-r-- 1 hduser hduser 14 Aug 12 22:28 deepak_file2.txt
+-rw-rw-r-- 1 hduser hduser 13 Aug 12 22:46 deepak_file3.txt
+-rw-rw-r-- 1 hduser hduser 13 Aug 12 22:28 deepak_file.txt
+-rw-rw-r-- 1 hduser hduser 19 Aug 12 22:27 test_file.txt
+
+nifi_op_dir_01:
+total 8
+-rw-rw-r-- 1 hduser hduser 14 Aug 12 22:44 deepak_file2.txt
+-rw-rw-r-- 1 hduser hduser 13 Aug 12 22:44 deepak_file.txt
+
+[hduser@Inceptez ~]$ ls -l -R nifi*
+nifi_ip_dir_01:
+total 16
+-rw-rw-r-- 1 hduser hduser 14 Aug 12 22:28 deepak_file2.txt
+-rw-rw-r-- 1 hduser hduser 13 Aug 12 22:46 deepak_file3.txt
+-rw-rw-r-- 1 hduser hduser 13 Aug 12 22:28 deepak_file.txt
+-rw-rw-r-- 1 hduser hduser 19 Aug 12 22:27 test_file.txt
+
+nifi_op_dir_01:
+total 12
+-rw-rw-r-- 1 hduser hduser 14 Aug 12 22:44 deepak_file2.txt
+-rw-rw-r-- 1 hduser hduser 13 Aug 12 22:47 deepak_file3.txt
+-rw-rw-r-- 1 hduser hduser 13 Aug 12 22:44 deepak_file.txt
+====================================================================================================
+PutHDFS
+-------
+Hadoop Configuration Resources
+/usr/local/hadoop/etc/hadoop/core-site.xml, /usr/local/hadoop/etc/hadoop/hdfs-site.xml
+
+Directory
+nifi_hdfs_op
+
+[hduser@Inceptez ~]$ hdfs dfs -mkdir nifi_hdfs_op 
+[hduser@Inceptez ~]$ hdfs dfs -ls -R nifi_hdfs_op
+
+[hduser@Inceptez ~]$ locate core-site.xml
+/home/hduser/Installation/OOZIE/oozie/conf/hadoop-conf/core-site.xml
+/usr/local/hadoop/etc/hadoop/core-site.xml
+/usr/local/hadoop/share/hadoop/common/templates/core-site.xml
+[hduser@Inceptez ~]$ locate hdfs-site.xml
+/usr/local/hadoop/etc/hadoop/hdfs-site.xml
+/usr/local/hadoop/share/hadoop/hdfs/templates/hdfs-site.xml
+
+[hduser@Inceptez ~]$ hdfs dfs -ls -R nifi_hdfs_op
+-rw-r--r--   1 hduser supergroup         13 2016-08-12 23:10 nifi_hdfs_op/deepak_file.txt
+-rw-r--r--   1 hduser supergroup         14 2016-08-12 23:10 nifi_hdfs_op/deepak_file2.txt
+-rw-r--r--   1 hduser supergroup         13 2016-08-12 23:10 nifi_hdfs_op/deepak_file3.txt
+====================================================================================================

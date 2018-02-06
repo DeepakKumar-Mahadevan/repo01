@@ -1,0 +1,140 @@
+scala> val sfpdDF = spark.read.json("file:///home/hduser/Desktop/Work/Sample_Data/SFPD_Incidents.json")
+<console>:29: error: not found: value spark
+         val sfpdDF = spark.read.json("file:///home/hduser/Desktop/Work/Sample_Data/SFPD_Incidents.json")
+                      ^
+
+>>> sqlc was already created
+
+scala> val sfpdDF = sqlc.read.json("file:///home/hduser/Desktop/Work/Sample_Data/SFPD_Incidents.json")
+16/09/14 22:14:23 INFO json.JSONRelation: Listing file:/home/hduser/Desktop/Work/Sample_Data/SFPD_Incidents.json on driver
+16/09/14 22:14:23 INFO storage.MemoryStore: Block broadcast_39 stored as values in memory (estimated size 229.2 KB, free 477.7 KB)
+16/09/14 22:14:23 INFO storage.MemoryStore: Block broadcast_39_piece0 stored as bytes in memory (estimated size 19.7 KB, free 497.3 KB)
+16/09/14 22:14:23 INFO storage.BlockManagerInfo: Added broadcast_39_piece0 in memory on localhost:47854 (size: 19.7 KB, free: 517.4 MB)
+16/09/14 22:14:23 INFO spark.SparkContext: Created broadcast 39 from json at <console>:29
+16/09/14 22:14:23 INFO mapred.FileInputFormat: Total input paths to process : 1
+16/09/14 22:14:23 INFO spark.SparkContext: Starting job: json at <console>:29
+16/09/14 22:14:23 INFO scheduler.DAGScheduler: Got job 15 (json at <console>:29) with 1 output partitions
+16/09/14 22:14:23 INFO scheduler.DAGScheduler: Final stage: ResultStage 32 (json at <console>:29)
+16/09/14 22:14:23 INFO scheduler.DAGScheduler: Parents of final stage: List()
+16/09/14 22:14:23 INFO scheduler.DAGScheduler: Missing parents: List()
+16/09/14 22:14:23 INFO scheduler.DAGScheduler: Submitting ResultStage 32 (MapPartitionsRDD[137] at json at <console>:29), which has no missing parents
+16/09/14 22:14:23 INFO storage.MemoryStore: Block broadcast_40 stored as values in memory (estimated size 4.3 KB, free 501.7 KB)
+16/09/14 22:14:23 INFO storage.MemoryStore: Block broadcast_40_piece0 stored as bytes in memory (estimated size 2.4 KB, free 504.1 KB)
+16/09/14 22:14:23 INFO storage.BlockManagerInfo: Added broadcast_40_piece0 in memory on localhost:47854 (size: 2.4 KB, free: 517.4 MB)
+16/09/14 22:14:23 INFO spark.SparkContext: Created broadcast 40 from broadcast at DAGScheduler.scala:1006
+16/09/14 22:14:23 INFO scheduler.DAGScheduler: Submitting 1 missing tasks from ResultStage 32 (MapPartitionsRDD[137] at json at <console>:29)
+16/09/14 22:14:23 INFO scheduler.TaskSchedulerImpl: Adding task set 32.0 with 1 tasks
+16/09/14 22:14:23 INFO scheduler.TaskSetManager: Starting task 0.0 in stage 32.0 (TID 2225, localhost, partition 0,PROCESS_LOCAL, 2414 bytes)
+16/09/14 22:14:23 INFO executor.Executor: Running task 0.0 in stage 32.0 (TID 2225)
+16/09/14 22:14:23 INFO rdd.HadoopRDD: Input split: file:/home/hduser/Desktop/Work/Sample_Data/SFPD_Incidents.json:0+511992
+16/09/14 22:14:23 INFO executor.Executor: Finished task 0.0 in stage 32.0 (TID 2225). 2779 bytes result sent to driver
+16/09/14 22:14:23 INFO scheduler.DAGScheduler: ResultStage 32 (json at <console>:29) finished in 0.341 s
+16/09/14 22:14:23 INFO scheduler.DAGScheduler: Job 15 finished: json at <console>:29, took 0.360259 s
+16/09/14 22:14:23 INFO scheduler.TaskSetManager: Finished task 0.0 in stage 32.0 (TID 2225) in 342 ms on localhost (1/1)
+16/09/14 22:14:23 INFO scheduler.TaskSchedulerImpl: Removed TaskSet 32.0, whose tasks have all completed, from pool
+sfpdDF: org.apache.spark.sql.DataFrame = [_corrupt_record: string]
+====================================================================================================
+scala> val sfpdDF = sqlc.read.json("file:///home/hduser/Desktop/Work/Sample_Data/SFPD_Incidents2.json")
+sfpdDF: org.apache.spark.sql.DataFrame = [_corrupt_record: string]
+scala> sfpdDF.show(1)
++---------------+
+|_corrupt_record|
++---------------+
+|              {|
++---------------+
+only showing top 1 row
+
+{
+   {"id" : "1201", "name" : "satish", "age" : "25"}
+   {"id" : "1202", "name" : "krishna", "age" : "28"}
+   {"id" : "1203", "name" : "amith", "age" : "39"}
+   {"id" : "1204", "name" : "javed", "age" : "23"}
+   {"id" : "1205", "name" : "prudvi", "age" : "23"}
+}
+scala> val empDF = sqlc.read.json("file:///home/hduser/Desktop/Work/Sample_Data/employee.json")
+empDF: org.apache.spark.sql.DataFrame = [_corrupt_record: string, age: string, id: string, name: string]
+scala> empDF.show(1)
++---------------+----+----+----+
+|_corrupt_record| age|  id|name|
++---------------+----+----+----+
+|              {|null|null|null|
++---------------+----+----+----+
+only showing top 1 row
+
+{ "people": [
+    {"id" : "1201", "name" : "satish", "age" : "25"},
+    {"id" : "1202", "name" : "krishna", "age" : "28"},
+    {"id" : "1203", "name" : "amith", "age" : "39"},
+    {"id" : "1204", "name" : "javed", "age" : "23"},
+    {"id" : "1205", "name" : "prudvi", "age" : "23"}
+  ]
+}
+scala> val empDF = sqlc.read.json("file:///home/hduser/Desktop/Work/Sample_Data/employee2.json")
+empDF: org.apache.spark.sql.DataFrame = [_corrupt_record: string, age: string, id: string, name: string]
+scala> empDF.show(1)
++---------------+----+----+----+
+|_corrupt_record| age|  id|name|
++---------------+----+----+----+
+|  { "people": [|null|null|null|
++---------------+----+----+----+
+only showing top 1 row
+
+{"name":"Yin", "address":{"city":"Columbus","state":"Ohio"}}
+{"name":"Michael", "address":{"city":null, "state":"California"}}
+scala> val empDF = sqlc.read.json("file:///home/hduser/Desktop/Work/Sample_Data/employee3.json")
+empDF: org.apache.spark.sql.DataFrame = [address: struct<city:string,state:string>, name: string]
+scala> empDF.show()
++-----------------+-------+
+|          address|   name|
++-----------------+-------+
+|  [Columbus,Ohio]|    Yin|
+|[null,California]|Michael|
++-----------------+-------+
+
+{"id" : "1201", "name" : "satish", "age" : "25"}
+{"id" : "1202", "name" : "krishna", "age" : "28"}
+{"id" : "1203", "name" : "amith", "age" : "39"}
+{"id" : "1204", "name" : "javed", "age" : "23"}
+{"id" : "1205", "name" : "prudvi", "age" : "23"}
+scala> val empDF = sqlc.read.json("file:///home/hduser/Desktop/Work/Sample_Data/employee4.json")
+empDF: org.apache.spark.sql.DataFrame = [age: string, id: string, name: string]
+scala> empDF.show()
++---+----+-------+
+|age|  id|   name|
++---+----+-------+
+| 25|1201| satish|
+| 28|1202|krishna|
+| 39|1203|  amith|
+| 23|1204|  javed|
+| 23|1205| prudvi|
++---+----+-------+
+====================================================================================================
+
+scala> empDF.cache()
+res23: empDF.type = [age: string, id: string, name: string]
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+>>> Will not show up in the UI until an action is taken on the DF
+The storage tab would only show your RDD if you've persisted it either using cache() or persist() methods. Note that the cache() & persist() methods are lazy functions which means you need to take an action on RDD (such as collect() or take()) before your RDD is persisted/cached. Also note that you can name your RDD's using the RDD.setName() method. This will make them more recognizable in the Storage tabl. 
+Here's an example:
+myrdd = sc.parallelize(range(0,100)) myrdd.setName("test") myrdd.cache() myrdd.collect()
+If you take the steps above, you should see "test" RDD in the storage tab.
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+scala> empDF.setName("Employee DataFrame")
+<console>:32: error: value setName is not a member of org.apache.spark.sql.DataFrame
+              empDF.setName("Employee DataFrame")
+                    ^
+
+scala> empDF.show()
+
+>>> Will now show up in the UI
+
+scala> empDF.unpersist()
+16/09/14 22:57:07 INFO rdd.MapPartitionsRDD: Removing RDD 192 from persistence list
+res26: empDF.type = [age: string, id: string, name: string]
+
+scala> 16/09/14 22:57:07 INFO storage.BlockManager: Removing RDD 192
+
+>>> Will not show up in the UI, as it has been unpersisted
+====================================================================================================

@@ -1,0 +1,357 @@
+scala> val sqc = new org.apache.spark.sql.SQLContext(sc)
+sqc: org.apache.spark.sql.SQLContext = org.apache.spark.sql.SQLContext@7a443eef
+
+scala> import sqc.implicits._
+import sqc.implicits._
+
+scala> import org.apache.spark.sql._
+import org.apache.spark.sql._
+
+scala> val a = sc.textFile ("file:///home/hduser/Desktop/Work/Sample_Data/eBay_auctions.csv")
+16/09/13 21:40:28 INFO storage.MemoryStore: Block broadcast_0 stored as values in memory (estimated size 86.5 KB, free 86.5 KB)
+16/09/13 21:40:28 INFO storage.MemoryStore: Block broadcast_0_piece0 stored as bytes in memory (estimated size 19.6 KB, free 106.0 KB)
+16/09/13 21:40:28 INFO storage.BlockManagerInfo: Added broadcast_0_piece0 in memory on localhost:54365 (size: 19.6 KB, free: 517.4 MB)
+16/09/13 21:40:29 INFO spark.SparkContext: Created broadcast 0 from textFile at <console>:29
+a: org.apache.spark.rdd.RDD[String] = MapPartitionsRDD[1] at textFile at <console>:29
+
+scala> a.count
+res0: Long = 251
+
+scala> a.partitions.size
+res1: Int = 1
+
+scala> case class Auction(auctionid: String, bid: Float, bidtime: Float, bidder: String, bidderrate: Integer, openbid: Float, price: Float, item: String, daystolive: Integer)
+defined class Auction
+
+scala> val b = a.map(_.split(","))
+b: org.apache.spark.rdd.RDD[Array[String]] = MapPartitionsRDD[2] at map at <console>:31
+
+scala> b.first
+res2: Array[String] = Array(auctionid, bid, bidtime, bidder, bidderrate, openbid, price)
+
+scala> val c = b.map(_.(0) != "auctionid")
+<console>:1: error: identifier expected but '(' found.
+       val c = b.map(_.(0) != "auctionid")
+                       ^
+
+scala> val c = b.map(_._(0) != "auctionid")
+<console>:1: error: identifier expected but '_' found.
+       val c = b.map(_._(0) != "auctionid")
+                       ^
+<console>:1: error: ')' expected but '(' found.
+       val c = b.map(_._(0) != "auctionid")
+                        ^
+<console>:1: error: ';' expected but ')' found.
+       val c = b.map(_._(0) != "auctionid")
+                                          ^
+
+scala> val c = b.map(_.x(0) != "auctionid")
+<console>:33: error: value x is not a member of Array[String]
+         val c = b.map(_.x(0) != "auctionid")
+                         ^
+
+scala> val c = b.map(_(0) != "auctionid")
+c: org.apache.spark.rdd.RDD[Boolean] = MapPartitionsRDD[3] at map at <console>:33
+
+scala> c.first
+res3: Boolean = false
+
+scala> val c = b.filter(_(0) != "auctionid")
+c: org.apache.spark.rdd.RDD[Array[String]] = MapPartitionsRDD[4] at filter at <console>:33
+
+scala> c.take(3)
+res7: Array[Array[String]] = Array(Array(1638893549, 175, 2.230949, schadenfreud, 0, 99, 177.5), Array(1638893549, 100, 2.600116, chuik, 0, 99, 177.5), Array(1638893549, 120, 2.60081, kiwisstuff, 2, 99, 177.5))
+
+>>> Both didn't work
+map(Auction(p(0),p(1).toFloat,p(2).toFloat,p(3),p(4).toInt,p(5).toFloat,p(6).toFloat,p(7),p(8).toInt))
+map(Auction(_(0),_(1).toFloat,_(2).toFloat,_(3),_(4).toInt,_(5).toFloat,_(6).toFloat,_(7),_(8).toInt))
+
+scala> val ebay = c.map(Auction(_(0),_(1).toFloat,_(2).toFloat,_(3),_(4).toInt,_(5).toFloat,_(6).toFloat,_(7),_(8).toInt))
+<console>:37: error: missing parameter type for expanded function ((x$1) => x$1(0))
+         val ebay = c.map(Auction(_(0),_(1).toFloat,_(2).toFloat,_(3),_(4).toInt,_(5).toFloat,_(6).toFloat,_(7),_(8).toInt))
+                                  ^
+
+scala> val ebay = c.map(Auction(p(0),p(1).toFloat,p(2).toFloat,p(3),p(4).toInt,p(5).toFloat,p(6).toFloat,p(7),p(8).toInt))
+<console>:37: error: not found: value p
+         val ebay = c.map(Auction(p(0),p(1).toFloat,p(2).toFloat,p(3),p(4).toInt,p(5).toFloat,p(6).toFloat,p(7),p(8).toInt))
+                                  ^
+
+scala> val ebay = c.map(_ => Auction(_(0),_(1).toFloat,_(2).toFloat,_(3),_(4).toInt,_(5).toFloat,_(6).toFloat,_(7),_(8).toInt))
+<console>:37: error: missing parameter type for expanded function ((x$2) => x$2(0))
+         val ebay = c.map(_ => Auction(_(0),_(1).toFloat,_(2).toFloat,_(3),_(4).toInt,_(5).toFloat,_(6).toFloat,_(7),_(8).toInt))
+                                       ^
+
+scala> val ebay = c.map(p => Auction(p(0),p(1).toFloat,p(2).toFloat,p(3),p(4).toInt,p(5).toFloat,p(6).toFloat,p(7),p(8).toInt))
+ebay: org.apache.spark.rdd.RDD[Auction] = MapPartitionsRDD[5] at map at <console>:37
+
+scala> ebay.first
+16/09/13 22:04:51 ERROR executor.Executor: Exception in task 0.0 in stage 6.0 (TID 6)
+java.lang.ArrayIndexOutOfBoundsException: 7
+
+scala> case class Auction(auctionid: String, bid: Float, bidtime: Float, bidder: String, bidderrate: Integer, openbid: Float, price: Float)
+defined class Auction
+
+scala> val ebay = c.map(p => Auction(p(0),p(1).toFloat,p(2).toFloat,p(3),p(4).toInt,p(5).toFloat,p(6).toFloat))
+ebay: org.apache.spark.rdd.RDD[Auction] = MapPartitionsRDD[6] at map at <console>:37
+
+scala> ebay.first
+res11: Auction = Auction(1638893549,175.0,2.230949,schadenfreud,0,99.0,177.5)
+
+scala> ebay.partitions.size
+res12: Int = 1
+====================================================================================================
+scala> val auctionDF = ebay.toDF()
+auctionDF: org.apache.spark.sql.DataFrame = [auctionid: string, bid: float, bidtime: float, bidder: string, bidderrate: int, openbid: float, price: float]
+
+scala> auctionDF.take(10)
+res13: Array[org.apache.spark.sql.Row] = Array([1638893549,175.0,2.230949,schadenfreud,0,99.0,177.5], [1638893549,100.0,2.600116,chuik,0,99.0,177.5], [1638893549,120.0,2.60081,kiwisstuff,2,99.0,177.5], [1638893549,150.0,2.601076,kiwisstuff,2,99.0,177.5], [1638893549,177.5,2.909826,eli.flint@flightsafety.co,4,99.0,177.5], [1639453840,1.0,0.355856,bfalconb,2,1.0,355.0], [1639453840,1.25,0.484757,sbord,1,1.0,355.0], [1639453840,1.5,0.492639,bfalconb,2,1.0,355.0], [1639453840,25.0,0.49463,sbord,1,1.0,355.0], [1639453840,2.0,0.511169,bfalconb,2,1.0,355.0])
+
+scala> auctionDF.partitions.size
+<console>:42: error: value partitions is not a member of org.apache.spark.sql.DataFrame
+              auctionDF.partitions.size
+
+scala> auctionDF.count
+res15: Long = 250
+
+scala> auctionDF.show
++----------+-----+--------+--------------------+----------+-------+-----+
+| auctionid|  bid| bidtime|              bidder|bidderrate|openbid|price|
++----------+-----+--------+--------------------+----------+-------+-----+
+|1638893549|175.0|2.230949|        schadenfreud|         0|   99.0|177.5|
+|1638893549|100.0|2.600116|               chuik|         0|   99.0|177.5|
+|1638893549|120.0| 2.60081|          kiwisstuff|         2|   99.0|177.5|
+|1638893549|150.0|2.601076|          kiwisstuff|         2|   99.0|177.5|
+|1638893549|177.5|2.909826|eli.flint@flights...|         4|   99.0|177.5|
+|1639453840|  1.0|0.355856|            bfalconb|         2|    1.0|355.0|
+|1639453840| 1.25|0.484757|               sbord|         1|    1.0|355.0|
+|1639453840|  1.5|0.492639|            bfalconb|         2|    1.0|355.0|
+|1639453840| 25.0| 0.49463|               sbord|         1|    1.0|355.0|
+|1639453840|  2.0|0.511169|            bfalconb|         2|    1.0|355.0|
+|1639453840|  5.0|0.511308|            bfalconb|         2|    1.0|355.0|
+|1639453840| 10.0|0.511458|            bfalconb|         2|    1.0|355.0|
+|1639453840| 20.0|0.511644|            bfalconb|         2|    1.0|355.0|
+|1639453840| 50.0|0.511759|            bfalconb|         2|    1.0|355.0|
+|1639453840| 30.0|0.772928|          veuvenoire|         1|    1.0|355.0|
+|1639453840| 50.0| 1.39353|       norcal_datsun|        15|    1.0|355.0|
+|1639453840|100.0|1.393623|       norcal_datsun|        15|    1.0|355.0|
+|1639453840| 75.0|1.516979|             kat2911|         0|    1.0|355.0|
+|1639453840|100.0|1.517442|             kat2911|         0|    1.0|355.0|
+|1639453840|103.5|1.517685|             kat2911|         0|    1.0|355.0|
++----------+-----+--------+--------------------+----------+-------+-----+
+only showing top 20 rows
+
+scala> auctionDF.first
+res17: org.apache.spark.sql.Row = [1638893549,175.0,2.230949,schadenfreud,0,99.0,177.5]
+
+scala> auctionDF.first(3)
+<console>:42: error: too many arguments for method first: ()org.apache.spark.sql.Row
+              auctionDF.first(3)
+                             ^
+
+scala> auctionDF.show(5)
++----------+-----+--------+--------------------+----------+-------+-----+
+| auctionid|  bid| bidtime|              bidder|bidderrate|openbid|price|
++----------+-----+--------+--------------------+----------+-------+-----+
+|1638893549|175.0|2.230949|        schadenfreud|         0|   99.0|177.5|
+|1638893549|100.0|2.600116|               chuik|         0|   99.0|177.5|
+|1638893549|120.0| 2.60081|          kiwisstuff|         2|   99.0|177.5|
+|1638893549|150.0|2.601076|          kiwisstuff|         2|   99.0|177.5|
+|1638893549|177.5|2.909826|eli.flint@flights...|         4|   99.0|177.5|
++----------+-----+--------+--------------------+----------+-------+-----+
+only showing top 5 rows
+
+scala> c.show(3)
+<console>:36: error: value show is not a member of org.apache.spark.rdd.RDD[Array[String]]
+              c.show(3)
+                ^
+
+scala> ebay.show(3)
+<console>:40: error: value show is not a member of org.apache.spark.rdd.RDD[Auction]
+              ebay.show(3)
+                   ^
+scala> auctionDF.printSchema
+root
+ |-- auctionid: string (nullable = true)
+ |-- bid: float (nullable = false)
+ |-- bidtime: float (nullable = false)
+ |-- bidder: string (nullable = true)
+ |-- bidderrate: integer (nullable = true)
+ |-- openbid: float (nullable = false)
+ |-- price: float (nullable = false)
+====================================================================================================
+scala> auctionDF.select("bidder","price").show(5)
++--------------------+-----+
+|              bidder|price|
++--------------------+-----+
+|        schadenfreud|177.5|
+|               chuik|177.5|
+|          kiwisstuff|177.5|
+|          kiwisstuff|177.5|
+|eli.flint@flights...|177.5|
++--------------------+-----+
+only showing top 5 rows
+
+scala> auctionDF.select("auctionid").distinct.count
+res26: Long = 18
+
+scala> auctionDF.groupBy("auctionid","bidder").count.show
++----------+--------------------+-----+
+| auctionid|              bidder|count|
++----------+--------------------+-----+
+|1643544538|            yung-wen|    6|
+|1645883276|            beelprez|    1|
+|1645883276|             rotepat|    4|
+|1639453840|       norcal_datsun|    2|
+|1643075711|            k.l.pine|    1|
+|1641142160|     princess-ginger|    3|
+|1643544538|robcmjr@bellsouth...|    7|
+|1646353713|          pereluzi00|    9|
+|1639453840|             kat2911|   13|
+|1643075711|  gm492@columbia.edu|    2|
+|1643544538|              thom54|    2|
+|1645914432|             leakang|    1|
+|1647870862|          rplfunding|    5|
+|1639453840|            bfalconb|    7|
+|1647149304|           chi-town7|    1|
+|1649131866|  richbaby10@aol.com|    1|
+|1638893549|               chuik|    1|
+|1645914432|         gracedivine|    1|
+|1643885624|          bigdaddy67|    4|
+|1643075711|            lass1004|    1|
++----------+--------------------+-----+
+only showing top 20 rows
+
+scala> auctionDF.groupBy("auctionid","bidder").count.agg(min("count"),avg("count"),max("count")).show
++----------+------------------+----------+
+|min(count)|        avg(count)|max(count)|
++----------+------------------+----------+
+|         1|2.6041666666666665|        13|
++----------+------------------+----------+
+
+scala> val highbids = auctionDF.filter("price > 1000")
+highbids: org.apache.spark.sql.DataFrame = [auctionid: string, bid: float, bidtime: float, bidder: string, bidderrate: int, openbid: float, price: float]
+
+scala> highbids.show
++----------+------+--------+------------------+----------+-------+------+
+| auctionid|   bid| bidtime|            bidder|bidderrate|openbid| price|
++----------+------+--------+------------------+----------+-------+------+
+|1643075711| 350.0|0.176481|        alexwestla|         2|  200.0|1225.0|
+|1643075711| 500.0|0.250718|      restdynamics|         0|  200.0|1225.0|
+|1643075711| 450.0|0.280509|        alexwestla|         2|  200.0|1225.0|
+|1643075711| 500.0|0.280602|        alexwestla|         2|  200.0|1225.0|
+|1643075711| 550.0|0.280764|        alexwestla|         2|  200.0|1225.0|
+|1643075711| 700.0|0.554294|          lass1004|         3|  200.0|1225.0|
+|1643075711| 700.0|0.996563|         shoecrazy|        31|  200.0|1225.0|
+|1643075711| 750.0|0.996956|         shoecrazy|        31|  200.0|1225.0|
+|1643075711| 720.0| 1.08022|          k.l.pine|         0|  200.0|1225.0|
+|1643075711| 800.0|1.232986|           jdaddle|         3|  200.0|1225.0|
+|1643075711| 790.0|1.252813|      restdynamics|         0|  200.0|1225.0|
+|1643075711| 810.0|1.252998|      restdynamics|         0|  200.0|1225.0|
+|1643075711|1000.0|2.715764|           jaha803|         0|  200.0|1225.0|
+|1643075711|1100.0|2.995428|gm492@columbia.edu|         0|  200.0|1225.0|
+|1643075711|1225.0|2.999745|           6969.ca|        25|  200.0|1225.0|
+|1643075711|1200.0|2.999942|gm492@columbia.edu|         0|  200.0|1225.0|
+|1646353713|1210.0| 0.52772|        pereluzi00|         0| 1200.0|1735.0|
+|1646353713|1500.0|0.937824|        barginbook|         5| 1200.0|1735.0|
+|1646353713|1260.0|2.358542|        pereluzi00|         0| 1200.0|1735.0|
+|1646353713|1310.0|2.358669|        pereluzi00|         0| 1200.0|1735.0|
++----------+------+--------+------------------+----------+-------+------+
+only showing top 20 rows
+====================================================================================================
+scala> auctionDF.registerTempTable("auctionTbl")
+
+scala> val query_op = sqc.sql("select auctionid, bidder, count(bid) from auctionTbl group by auctionid, bidder")
+query_op: org.apache.spark.sql.DataFrame = [auctionid: string, bidder: string, _c2: bigint]
+
+scala> query_op.show(10)
++----------+--------------------+---+
+| auctionid|              bidder|_c2|
++----------+--------------------+---+
+|1643544538|            yung-wen|  6|
+|1645883276|            beelprez|  1|
+|1645883276|             rotepat|  4|
+|1639453840|       norcal_datsun|  2|
+|1643075711|            k.l.pine|  1|
+|1641142160|     princess-ginger|  3|
+|1643544538|robcmjr@bellsouth...|  7|
+|1646353713|          pereluzi00|  9|
+|1639453840|             kat2911| 13|
+|1643075711|  gm492@columbia.edu|  2|
++----------+--------------------+---+
+only showing top 10 rows
+
+scala> val query_op = sqc.sql("select auctionid, max(price) from auctionTbl group by auctionid").show
++----------+------+
+| auctionid|   _c1|
++----------+------+
+|1649131866|304.98|
+|1648782304| 405.0|
+|1643903372|  26.0|
+|1646353713|1735.0|
+|1648233039| 176.5|
+|1647870862|1250.0|
+|1645883276| 610.0|
+|1638893549| 177.5|
+|1642243766| 355.0|
+|1641142160|200.01|
+|1643544538| 405.0|
+|1643903116| 40.87|
+|1639453840| 355.0|
+|1645914432| 511.0|
+|1643075711|1225.0|
+|1643885624| 326.0|
+|1647149304|752.56|
+|1649726994|2500.0|
++----------+------+
+
+query_op: Unit = ()
+
+scala> query_op.partitions.size
+<console>:32: error: value partitions is not a member of Unit
+              query_op.partitions.size
+                       ^
+
+scala> query_op.printSchema()
+<console>:32: error: value printSchema is not a member of Unit
+              query_op.printSchema()
+                       ^
+
+scala> val query_op = sqc.sql("select auctionid, max(price) from auctionTbl group by auctionid")
+query_op: org.apache.spark.sql.DataFrame = [auctionid: string, _c1: float]
+
+scala> query_op.printSchema
+root
+ |-- auctionid: string (nullable = true)
+ |-- _c1: float (nullable = true)
+
+
+scala> query_op.printSchema()
+root
+ |-- auctionid: string (nullable = true)
+ |-- _c1: float (nullable = true)
+ 
+scala> query_op.show
++----------+------+
+| auctionid|   _c1|
++----------+------+
+|1649131866|304.98|
+|1648782304| 405.0|
+|1643903372|  26.0|
+|1646353713|1735.0|
+|1648233039| 176.5|
+|1647870862|1250.0|
+|1645883276| 610.0|
+|1638893549| 177.5|
+|1642243766| 355.0|
+|1641142160|200.01|
+|1643544538| 405.0|
+|1643903116| 40.87|
+|1639453840| 355.0|
+|1645914432| 511.0|
+|1643075711|1225.0|
+|1643885624| 326.0|
+|1647149304|752.56|
+|1649726994|2500.0|
++----------+------+
+====================================================================================================
+====================================================================================================

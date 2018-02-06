@@ -1,0 +1,12 @@
+username: root
+pwd: hadoop
+
+Ambari:
+-------
+admin
+admin
+
+Hue:
+----
+username: hue
+password: 1111

@@ -1,0 +1,555 @@
+[hduser@Inceptez ~]$ spark-shell
+16/09/19 22:12:01 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+16/09/19 22:12:01 INFO spark.SecurityManager: Changing view acls to: hduser
+16/09/19 22:12:01 INFO spark.SecurityManager: Changing modify acls to: hduser
+16/09/19 22:12:01 INFO spark.SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users with view permissions: Set(hduser); users with modify permissions: Set(hduser)
+16/09/19 22:12:01 INFO spark.HttpServer: Starting HTTP Server
+16/09/19 22:12:01 INFO server.Server: jetty-8.y.z-SNAPSHOT
+16/09/19 22:12:01 INFO server.AbstractConnector: Started SocketConnector@0.0.0.0:48409
+16/09/19 22:12:01 INFO util.Utils: Successfully started service 'HTTP class server' on port 48409.
+Welcome to
+      ____              __
+     / __/__  ___ _____/ /__
+    _\ \/ _ \/ _ `/ __/  '_/
+   /___/ .__/\_,_/_/ /_/\_\   version 1.6.0
+      /_/
+
+Using Scala version 2.10.5 (OpenJDK 64-Bit Server VM, Java 1.7.0_111)
+Type in expressions to have them evaluated.
+Type :help for more information.
+16/09/19 22:12:07 WARN util.Utils: Your hostname, Inceptez resolves to a loopback address: 127.0.0.1; using 192.168.107.134 instead (on interface eth0)
+16/09/19 22:12:07 WARN util.Utils: Set SPARK_LOCAL_IP if you need to bind to another address
+16/09/19 22:12:07 INFO spark.SparkContext: Running Spark version 1.6.0
+16/09/19 22:12:07 INFO spark.SecurityManager: Changing view acls to: hduser
+16/09/19 22:12:07 INFO spark.SecurityManager: Changing modify acls to: hduser
+16/09/19 22:12:07 INFO spark.SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users with view permissions: Set(hduser); users with modify permissions: Set(hduser)
+16/09/19 22:12:08 INFO util.Utils: Successfully started service 'sparkDriver' on port 43535.
+16/09/19 22:12:08 INFO slf4j.Slf4jLogger: Slf4jLogger started
+16/09/19 22:12:08 INFO Remoting: Starting remoting
+16/09/19 22:12:08 INFO Remoting: Remoting started; listening on addresses :[akka.tcp://sparkDriverActorSystem@192.168.107.134:55641]
+16/09/19 22:12:08 INFO util.Utils: Successfully started service 'sparkDriverActorSystem' on port 55641.
+16/09/19 22:12:08 INFO spark.SparkEnv: Registering MapOutputTracker
+16/09/19 22:12:08 INFO spark.SparkEnv: Registering BlockManagerMaster
+16/09/19 22:12:08 INFO storage.DiskBlockManager: Created local directory at /tmp/blockmgr-c91674c4-ea83-4f6d-a1f7-9ea73a55f879
+16/09/19 22:12:08 INFO storage.MemoryStore: MemoryStore started with capacity 511.5 MB
+16/09/19 22:12:08 INFO spark.SparkEnv: Registering OutputCommitCoordinator
+16/09/19 22:12:11 INFO server.Server: jetty-8.y.z-SNAPSHOT
+16/09/19 22:12:11 INFO server.AbstractConnector: Started SelectChannelConnector@0.0.0.0:4040
+16/09/19 22:12:11 INFO util.Utils: Successfully started service 'SparkUI' on port 4040.
+16/09/19 22:12:11 INFO ui.SparkUI: Started SparkUI at http://192.168.107.134:4040
+16/09/19 22:12:11 INFO executor.Executor: Starting executor ID driver on host localhost
+16/09/19 22:12:11 INFO executor.Executor: Using REPL class URI: http://192.168.107.134:48409
+16/09/19 22:12:11 INFO util.Utils: Successfully started service 'org.apache.spark.network.netty.NettyBlockTransferService' on port 50932.
+16/09/19 22:12:11 INFO netty.NettyBlockTransferService: Server created on 50932
+16/09/19 22:12:11 INFO storage.BlockManagerMaster: Trying to register BlockManager
+16/09/19 22:12:11 INFO storage.BlockManagerMasterEndpoint: Registering block manager localhost:50932 with 511.5 MB RAM, BlockManagerId(driver, localhost, 50932)
+16/09/19 22:12:11 INFO storage.BlockManagerMaster: Registered BlockManager
+16/09/19 22:12:11 INFO repl.SparkILoop: Created spark context..
+Spark context available as sc.
+16/09/19 22:12:12 INFO hive.HiveContext: Initializing execution hive, version 1.2.1
+16/09/19 22:12:12 INFO client.ClientWrapper: Inspected Hadoop version: 2.6.0
+16/09/19 22:12:12 INFO client.ClientWrapper: Loaded org.apache.hadoop.hive.shims.Hadoop23Shims for Hadoop version 2.6.0
+16/09/19 22:12:12 WARN conf.HiveConf: HiveConf of name hive.server2.thrift.http.min.worker.threads does not exist
+16/09/19 22:12:12 WARN conf.HiveConf: HiveConf of name hive.mapjoin.optimized.keys does not exist
+16/09/19 22:12:12 WARN conf.HiveConf: HiveConf of name hive.mapjoin.lazy.hashtable does not exist
+16/09/19 22:12:12 WARN conf.HiveConf: HiveConf of name hive.server2.thrift.http.max.worker.threads does not exist
+16/09/19 22:12:12 WARN conf.HiveConf: HiveConf of name hive.server2.logging.operation.verbose does not exist
+16/09/19 22:12:12 WARN conf.HiveConf: HiveConf of name hive.optimize.multigroupby.common.distincts does not exist
+16/09/19 22:12:12 INFO metastore.HiveMetaStore: 0: Opening raw store with implemenation class:org.apache.hadoop.hive.metastore.ObjectStore
+16/09/19 22:12:12 INFO metastore.ObjectStore: ObjectStore, initialize called
+16/09/19 22:12:13 INFO DataNucleus.Persistence: Property datanucleus.cache.level2 unknown - will be ignored
+16/09/19 22:12:13 INFO DataNucleus.Persistence: Property hive.metastore.integral.jdo.pushdown unknown - will be ignored
+16/09/19 22:12:13 WARN DataNucleus.Connection: BoneCP specified but not present in CLASSPATH (or one of dependencies)
+16/09/19 22:12:13 WARN DataNucleus.Connection: BoneCP specified but not present in CLASSPATH (or one of dependencies)
+16/09/19 22:12:16 WARN conf.HiveConf: HiveConf of name hive.server2.thrift.http.min.worker.threads does not exist
+16/09/19 22:12:16 WARN conf.HiveConf: HiveConf of name hive.mapjoin.optimized.keys does not exist
+16/09/19 22:12:16 WARN conf.HiveConf: HiveConf of name hive.mapjoin.lazy.hashtable does not exist
+16/09/19 22:12:16 WARN conf.HiveConf: HiveConf of name hive.server2.thrift.http.max.worker.threads does not exist
+16/09/19 22:12:16 WARN conf.HiveConf: HiveConf of name hive.server2.logging.operation.verbose does not exist
+16/09/19 22:12:16 WARN conf.HiveConf: HiveConf of name hive.optimize.multigroupby.common.distincts does not exist
+16/09/19 22:12:16 INFO metastore.ObjectStore: Setting MetaStore object pin classes with hive.metastore.cache.pinobjtypes="Table,StorageDescriptor,SerDeInfo,Partition,Database,Type,FieldSchema,Order"
+16/09/19 22:12:17 INFO DataNucleus.Datastore: The class "org.apache.hadoop.hive.metastore.model.MFieldSchema" is tagged as "embedded-only" so does not have its own datastore table.
+16/09/19 22:12:17 INFO DataNucleus.Datastore: The class "org.apache.hadoop.hive.metastore.model.MOrder" is tagged as "embedded-only" so does not have its own datastore table.
+16/09/19 22:12:19 INFO DataNucleus.Datastore: The class "org.apache.hadoop.hive.metastore.model.MFieldSchema" is tagged as "embedded-only" so does not have its own datastore table.
+16/09/19 22:12:19 INFO DataNucleus.Datastore: The class "org.apache.hadoop.hive.metastore.model.MOrder" is tagged as "embedded-only" so does not have its own datastore table.
+16/09/19 22:12:19 INFO metastore.MetaStoreDirectSql: Using direct SQL, underlying DB is DERBY
+16/09/19 22:12:19 INFO metastore.ObjectStore: Initialized ObjectStore
+16/09/19 22:12:20 WARN metastore.ObjectStore: Version information not found in metastore. hive.metastore.schema.verification is not enabled so recording the schema version 1.2.0
+16/09/19 22:12:20 WARN metastore.ObjectStore: Failed to get database default, returning NoSuchObjectException
+16/09/19 22:12:22 INFO metastore.HiveMetaStore: Added admin role in metastore
+16/09/19 22:12:22 INFO metastore.HiveMetaStore: Added public role in metastore
+16/09/19 22:12:22 INFO metastore.HiveMetaStore: No user is added in admin role, since config is empty
+16/09/19 22:12:22 INFO metastore.HiveMetaStore: 0: get_all_databases
+16/09/19 22:12:22 INFO HiveMetaStore.audit: ugi=hduser  ip=unknown-ip-addr      cmd=get_all_databases
+16/09/19 22:12:22 INFO metastore.HiveMetaStore: 0: get_functions: db=default pat=*
+16/09/19 22:12:22 INFO HiveMetaStore.audit: ugi=hduser  ip=unknown-ip-addr      cmd=get_functions: db=default pat=*
+16/09/19 22:12:22 INFO DataNucleus.Datastore: The class "org.apache.hadoop.hive.metastore.model.MResourceUri" is tagged as "embedded-only" so does not have its own datastore table.
+16/09/19 22:12:23 INFO session.SessionState: Created local directory: /tmp/0927d92f-9665-4115-bffd-79a3e8d0a973_resources
+16/09/19 22:12:23 INFO session.SessionState: Created HDFS directory: /tmp/hive/hduser/0927d92f-9665-4115-bffd-79a3e8d0a973
+16/09/19 22:12:23 INFO session.SessionState: Created local directory: /tmp/hivelog/0927d92f-9665-4115-bffd-79a3e8d0a973
+16/09/19 22:12:23 INFO session.SessionState: Created HDFS directory: /tmp/hive/hduser/0927d92f-9665-4115-bffd-79a3e8d0a973/_tmp_space.db
+16/09/19 22:12:23 WARN conf.HiveConf: HiveConf of name hive.server2.thrift.http.min.worker.threads does not exist
+16/09/19 22:12:23 WARN conf.HiveConf: HiveConf of name hive.mapjoin.optimized.keys does not exist
+16/09/19 22:12:23 WARN conf.HiveConf: HiveConf of name hive.mapjoin.lazy.hashtable does not exist
+16/09/19 22:12:23 WARN conf.HiveConf: HiveConf of name hive.server2.thrift.http.max.worker.threads does not exist
+16/09/19 22:12:23 WARN conf.HiveConf: HiveConf of name hive.server2.logging.operation.verbose does not exist
+16/09/19 22:12:23 WARN conf.HiveConf: HiveConf of name hive.optimize.multigroupby.common.distincts does not exist
+16/09/19 22:12:23 INFO hive.HiveContext: default warehouse location is /user/hive/warehouse
+16/09/19 22:12:23 INFO hive.HiveContext: Initializing HiveMetastoreConnection version 1.2.1 using Spark classes.
+16/09/19 22:12:23 INFO client.ClientWrapper: Inspected Hadoop version: 2.6.0
+16/09/19 22:12:23 INFO client.ClientWrapper: Loaded org.apache.hadoop.hive.shims.Hadoop23Shims for Hadoop version 2.6.0
+16/09/19 22:12:24 WARN conf.HiveConf: HiveConf of name hive.server2.thrift.http.min.worker.threads does not exist
+16/09/19 22:12:24 WARN conf.HiveConf: HiveConf of name hive.mapjoin.optimized.keys does not exist
+16/09/19 22:12:24 WARN conf.HiveConf: HiveConf of name hive.mapjoin.lazy.hashtable does not exist
+16/09/19 22:12:24 WARN conf.HiveConf: HiveConf of name hive.server2.thrift.http.max.worker.threads does not exist
+16/09/19 22:12:24 WARN conf.HiveConf: HiveConf of name hive.server2.logging.operation.verbose does not exist
+16/09/19 22:12:24 WARN conf.HiveConf: HiveConf of name hive.optimize.multigroupby.common.distincts does not exist
+16/09/19 22:12:24 INFO hive.metastore: Trying to connect to metastore with URI thrift://localhost:9083
+16/09/19 22:12:25 INFO hive.metastore: Connected to metastore.
+16/09/19 22:12:25 INFO session.SessionState: Created local directory: /tmp/7f84b14b-cca7-4c83-ac3e-f63fd73188ce_resources
+16/09/19 22:12:25 INFO session.SessionState: Created HDFS directory: /tmp/hive/hduser/7f84b14b-cca7-4c83-ac3e-f63fd73188ce
+16/09/19 22:12:25 INFO session.SessionState: Created local directory: /tmp/hivelog/7f84b14b-cca7-4c83-ac3e-f63fd73188ce
+16/09/19 22:12:25 INFO session.SessionState: Created HDFS directory: /tmp/hive/hduser/7f84b14b-cca7-4c83-ac3e-f63fd73188ce/_tmp_space.db
+16/09/19 22:12:25 INFO repl.SparkILoop: Created sql context (with Hive support)..
+SQL context available as sqlContext.
+====================================================================================================
+scala> import org.apache.spark.sql._
+import org.apache.spark.sql._
+
+scala> val sqlc = new org.apache.spark.sql.SQLContext(sc)
+sqlc: org.apache.spark.sql.SQLContext = org.apache.spark.sql.SQLContext@5f5f49e6
+
+scala> val sqlhc = new org.apache.spark.sql.hive.HiveContext(sc)
+16/09/19 22:18:43 INFO hive.HiveContext: Initializing execution hive, version 1.2.1
+16/09/19 22:18:43 INFO client.ClientWrapper: Inspected Hadoop version: 2.6.0
+16/09/19 22:18:43 INFO client.ClientWrapper: Loaded org.apache.hadoop.hive.shims.Hadoop23Shims for Hadoop version 2.6.0
+16/09/19 22:18:43 WARN conf.HiveConf: HiveConf of name hive.server2.thrift.http.min.worker.threads does not exist
+16/09/19 22:18:43 WARN conf.HiveConf: HiveConf of name hive.mapjoin.optimized.keys does not exist
+16/09/19 22:18:43 WARN conf.HiveConf: HiveConf of name hive.mapjoin.lazy.hashtable does not exist
+16/09/19 22:18:43 WARN conf.HiveConf: HiveConf of name hive.server2.thrift.http.max.worker.threads does not exist
+16/09/19 22:18:43 WARN conf.HiveConf: HiveConf of name hive.server2.logging.operation.verbose does not exist
+16/09/19 22:18:43 WARN conf.HiveConf: HiveConf of name hive.optimize.multigroupby.common.distincts does not exist
+16/09/19 22:18:43 INFO hive.metastore: Mestastore configuration hive.metastore.warehouse.dir changed from file:/tmp/spark-f0a9cbf7-96fd-47be-8492-0bc90d2e7321/metastore to file:/tmp/spark-efbcdd1e-215c-4b67-ac81-c0383a550327/metastore
+16/09/19 22:18:43 INFO hive.metastore: Mestastore configuration javax.jdo.option.ConnectionURL changed from jdbc:derby:;databaseName=/tmp/spark-f0a9cbf7-96fd-47be-8492-0bc90d2e7321/metastore;create=true to jdbc:derby:;databaseName=/tmp/spark-efbcdd1e-215c-4b67-ac81-c0383a550327/metastore;create=true
+16/09/19 22:18:43 INFO metastore.HiveMetaStore: 0: Shutting down the object store...
+16/09/19 22:18:43 INFO HiveMetaStore.audit: ugi=hduser  ip=unknown-ip-addr      cmd=Shutting down the object store...
+16/09/19 22:18:43 INFO metastore.HiveMetaStore: 0: Metastore shutdown complete.
+16/09/19 22:18:43 INFO HiveMetaStore.audit: ugi=hduser  ip=unknown-ip-addr      cmd=Metastore shutdown complete.
+16/09/19 22:18:43 INFO metastore.HiveMetaStore: 0: Opening raw store with implemenation class:org.apache.hadoop.hive.metastore.ObjectStore
+16/09/19 22:18:43 INFO metastore.ObjectStore: ObjectStore, initialize called
+16/09/19 22:18:43 INFO DataNucleus.Persistence: Property datanucleus.cache.level2 unknown - will be ignored
+16/09/19 22:18:43 INFO DataNucleus.Persistence: Property hive.metastore.integral.jdo.pushdown unknown - will be ignored
+16/09/19 22:18:43 WARN DataNucleus.Connection: BoneCP specified but not present in CLASSPATH (or one of dependencies)
+16/09/19 22:18:43 WARN DataNucleus.Connection: BoneCP specified but not present in CLASSPATH (or one of dependencies)
+16/09/19 22:18:44 WARN conf.HiveConf: HiveConf of name hive.server2.thrift.http.min.worker.threads does not exist
+16/09/19 22:18:44 WARN conf.HiveConf: HiveConf of name hive.mapjoin.optimized.keys does not exist
+16/09/19 22:18:44 WARN conf.HiveConf: HiveConf of name hive.mapjoin.lazy.hashtable does not exist
+16/09/19 22:18:44 WARN conf.HiveConf: HiveConf of name hive.server2.thrift.http.max.worker.threads does not exist
+16/09/19 22:18:44 WARN conf.HiveConf: HiveConf of name hive.server2.logging.operation.verbose does not exist
+16/09/19 22:18:44 WARN conf.HiveConf: HiveConf of name hive.optimize.multigroupby.common.distincts does not exist
+16/09/19 22:18:44 INFO metastore.ObjectStore: Setting MetaStore object pin classes with hive.metastore.cache.pinobjtypes="Table,StorageDescriptor,SerDeInfo,Partition,Database,Type,FieldSchema,Order"
+16/09/19 22:18:44 INFO DataNucleus.Datastore: The class "org.apache.hadoop.hive.metastore.model.MFieldSchema" is tagged as "embedded-only" so does not have its own datastore table.
+16/09/19 22:18:44 INFO DataNucleus.Datastore: The class "org.apache.hadoop.hive.metastore.model.MOrder" is tagged as "embedded-only" so does not have its own datastore table.
+16/09/19 22:18:46 INFO DataNucleus.Datastore: The class "org.apache.hadoop.hive.metastore.model.MFieldSchema" is tagged as "embedded-only" so does not have its own datastore table.
+16/09/19 22:18:46 INFO DataNucleus.Datastore: The class "org.apache.hadoop.hive.metastore.model.MOrder" is tagged as "embedded-only" so does not have its own datastore table.
+16/09/19 22:18:46 INFO metastore.MetaStoreDirectSql: Using direct SQL, underlying DB is DERBY
+16/09/19 22:18:46 INFO metastore.ObjectStore: Initialized ObjectStore
+16/09/19 22:18:46 WARN metastore.ObjectStore: Failed to get database default, returning NoSuchObjectException
+16/09/19 22:18:46 INFO metastore.HiveMetaStore: Added admin role in metastore
+16/09/19 22:18:46 INFO metastore.HiveMetaStore: Added public role in metastore
+16/09/19 22:18:47 INFO metastore.HiveMetaStore: No user is added in admin role, since config is empty
+16/09/19 22:18:47 INFO session.SessionState: Created local directory: /tmp/dde11a12-3990-418d-8fc8-b03b00135094_resources
+16/09/19 22:18:47 INFO session.SessionState: Created HDFS directory: /tmp/hive/hduser/dde11a12-3990-418d-8fc8-b03b00135094
+16/09/19 22:18:47 INFO session.SessionState: Created local directory: /tmp/hivelog/dde11a12-3990-418d-8fc8-b03b00135094
+16/09/19 22:18:47 INFO session.SessionState: Created HDFS directory: /tmp/hive/hduser/dde11a12-3990-418d-8fc8-b03b00135094/_tmp_space.db
+16/09/19 22:18:47 WARN conf.HiveConf: HiveConf of name hive.server2.thrift.http.min.worker.threads does not exist
+16/09/19 22:18:47 WARN conf.HiveConf: HiveConf of name hive.mapjoin.optimized.keys does not exist
+16/09/19 22:18:47 WARN conf.HiveConf: HiveConf of name hive.mapjoin.lazy.hashtable does not exist
+16/09/19 22:18:47 WARN conf.HiveConf: HiveConf of name hive.server2.thrift.http.max.worker.threads does not exist
+16/09/19 22:18:47 WARN conf.HiveConf: HiveConf of name hive.server2.logging.operation.verbose does not exist
+16/09/19 22:18:47 WARN conf.HiveConf: HiveConf of name hive.optimize.multigroupby.common.distincts does not exist
+16/09/19 22:18:47 INFO hive.HiveContext: default warehouse location is /user/hive/warehouse
+16/09/19 22:18:47 INFO hive.HiveContext: Initializing HiveMetastoreConnection version 1.2.1 using Spark classes.
+16/09/19 22:18:47 INFO client.ClientWrapper: Inspected Hadoop version: 2.6.0
+16/09/19 22:18:47 INFO client.ClientWrapper: Loaded org.apache.hadoop.hive.shims.Hadoop23Shims for Hadoop version 2.6.0
+16/09/19 22:18:48 WARN conf.HiveConf: HiveConf of name hive.server2.thrift.http.min.worker.threads does not exist
+16/09/19 22:18:48 WARN conf.HiveConf: HiveConf of name hive.mapjoin.optimized.keys does not exist
+16/09/19 22:18:48 WARN conf.HiveConf: HiveConf of name hive.mapjoin.lazy.hashtable does not exist
+16/09/19 22:18:48 WARN conf.HiveConf: HiveConf of name hive.server2.thrift.http.max.worker.threads does not exist
+16/09/19 22:18:48 WARN conf.HiveConf: HiveConf of name hive.server2.logging.operation.verbose does not exist
+16/09/19 22:18:48 WARN conf.HiveConf: HiveConf of name hive.optimize.multigroupby.common.distincts does not exist
+16/09/19 22:18:48 INFO hive.metastore: Trying to connect to metastore with URI thrift://localhost:9083
+16/09/19 22:18:48 INFO hive.metastore: Connected to metastore.
+16/09/19 22:18:48 INFO session.SessionState: Created local directory: /tmp/9ff623b9-fdaf-49f4-b6f4-126c57e07dbb_resources
+16/09/19 22:18:48 INFO session.SessionState: Created HDFS directory: /tmp/hive/hduser/9ff623b9-fdaf-49f4-b6f4-126c57e07dbb
+16/09/19 22:18:48 INFO session.SessionState: Created local directory: /tmp/hivelog/9ff623b9-fdaf-49f4-b6f4-126c57e07dbb
+16/09/19 22:18:48 INFO session.SessionState: Created HDFS directory: /tmp/hive/hduser/9ff623b9-fdaf-49f4-b6f4-126c57e07dbb/_tmp_space.db
+sqlhc: org.apache.spark.sql.hive.HiveContext = org.apache.spark.sql.hive.HiveContext@7be4a93b
+scala>
+====================================================================================================
+scala> val empDF = sqlc.read.json("file:///home/hduser/Desktop/Work/Sample_Data/employee4.json")
+empDF: org.apache.spark.sql.DataFrame = [age: string, id: string, name: string]
+
+scala> sqlc.sql("Select * from empDF");
+org.apache.spark.sql.AnalysisException: Table not found: empDF;
+
+scala> empDF.registerTempTable("Employee");
+
+scala> sqlc.sql("Select * from Employee");
+res6: org.apache.spark.sql.DataFrame = [age: string, id: string, name: string]
+
+scala> sqlc.sql("select max(B.age) from Employee B");
+res8: org.apache.spark.sql.DataFrame = [_c0: string]
+
+scala> val maxAge = sqlc.sql("select max(B.age) from Employee B");
+maxAge: org.apache.spark.sql.DataFrame = [_c0: string]
+
+scala> val maxAge = sqlc.sql("select max(B.age) from Employee B").show;
++---+
+|_c0|
++---+
+| 39|
++---+
+maxAge: Unit = ()
+
+scala> val maxAge = sqlc.sql("select max(B.age) from Employee B").toInt.show;
+<console>:32: error: value toInt is not a member of org.apache.spark.sql.DataFrame
+         val maxAge = sqlc.sql("select max(B.age) from Employee B").toInt.show;
+                                                                    ^
+
+scala> sqlc.sql("Select A.id, A.name from Employee A where A.age = (select max(B.age) from Employee B)");
+java.lang.RuntimeException: [1.59] failure: ``)'' expected but identifier max found
+Select A.id, A.name from Employee A where A.age = (select max(B.age) from Employee B)
+                                                          ^
+
+scala> sqlc.sql("Select A.id, A.name from Employee A where A.age in (select max(B.age) from Employee B)");
+java.lang.RuntimeException: [1.60] failure: ``)'' expected but identifier max found
+Select A.id, A.name from Employee A where A.age in (select max(B.age) from Employee B)
+                                                           ^
+
+scala> val maxAge = sqlc.sql("select max(B.age) from Employee B");
+maxAge: org.apache.spark.sql.DataFrame = [_c0: string]
+
+scala> sqlc.sql("Select * from Employee where age = " + maxAge).show;
+java.lang.RuntimeException: [1.36] failure: identifier expected
+Select * from Employee where age = [_c0: string]
+
+
+scala> val maxAge = sqlc.sql("select max(B.age) from Employee B").show;
++---+
+|_c0|
++---+
+| 39|
++---+
+maxAge: Unit = ()
+scala> sqlc.sql("Select * from Employee where age = " + maxAge).show;
+java.lang.RuntimeException: [1.37] failure: identifier expected
+Select * from Employee where age = ()
+                                    ^
+
+scala> val maxAge = sqlc.sql("select max(age) from Employee").collect;
+maxAge: Array[org.apache.spark.sql.Row] = Array([39])
+
+scala> sqlc.sql("Select * from Employee where age = " + maxAge).show;
+java.lang.RuntimeException: [1.36] failure: identifier expected
+Select * from Employee where age = [Lorg.apache.spark.sql.Row;@35039ac1
+                                   ^
+
+scala> sqlc.sql("Select * from Employee where age = " + maxAge(0)).show;
+java.lang.RuntimeException: [1.36] failure: identifier expected
+Select * from Employee where age = [39]
+                                   ^
+
+scala> sqlc.sql("Select * from Employee where age = 39").show;
+scala> sqlc.sql("Select * from Employee where age = '39'").show;
+>>> both Same result
++---+----+-----+
+|age|  id| name|
++---+----+-----+
+| 39|1203|amith|
++---+----+-----+
+
+scala> val maxAge = "'39'";
+maxAge: String = '39'
+scala> sqlc.sql("Select * from Employee where age = " + maxAge(0)).show;
+java.lang.RuntimeException: [1.37] failure: identifier expected
+
+Select * from Employee where age = '
+                                    ^
+
+scala> val maxAge = "39";
+maxAge: String = 39
+
+scala> sqlc.sql("Select * from Employee where age = " + maxAge(0)).show;
++---+---+----+
+|age| id|name|
++---+---+----+
++---+---+----+
+
+scala> sqlc.sql("Select * from Employee where age = "+maxAge).show;
++---+----+-----+
+|age|  id| name|
++---+----+-----+
+| 39|1203|amith|
++---+----+-----+
+====================================================================================================
+scala> sqlhc.sql("Select * from dkmdb02.manutdplayers1 limit 10").show;
+16/09/19 23:41:45 INFO parse.ParseDriver: Parsing command: Select * from dkmdb02.manutdplayers1 limit 10
+16/09/19 23:41:47 INFO parse.ParseDriver: Parse Completed
+16/09/19 23:41:48 INFO storage.BlockManagerInfo: Removed broadcast_50_piece0 on localhost:50932 in memory (size: 4.1 KB, free: 511.4 MB)
+16/09/19 23:41:48 INFO spark.ContextCleaner: Cleaned accumulator 61
+16/09/19 23:41:48 INFO storage.BlockManagerInfo: Removed broadcast_49_piece0 on localhost:50932 in memory (size: 4.1 KB, free: 511.4 MB)
+16/09/19 23:41:48 INFO spark.ContextCleaner: Cleaned accumulator 60
+16/09/19 23:41:48 INFO spark.ContextCleaner: Cleaned accumulator 59
+16/09/19 23:41:48 INFO spark.ContextCleaner: Cleaned accumulator 58
+16/09/19 23:41:48 INFO storage.BlockManagerInfo: Removed broadcast_48_piece0 on localhost:50932 in memory (size: 19.7 KB, free: 511.4 MB)
+16/09/19 23:41:48 INFO storage.BlockManagerInfo: Removed broadcast_47_piece0 on localhost:50932 in memory (size: 19.6 KB, free: 511.4 MB)
+16/09/19 23:41:48 INFO storage.BlockManagerInfo: Removed broadcast_46_piece0 on localhost:50932 in memory (size: 4.2 KB, free: 511.4 MB)
+16/09/19 23:41:48 INFO spark.ContextCleaner: Cleaned accumulator 57
+16/09/19 23:41:48 INFO storage.BlockManagerInfo: Removed broadcast_45_piece0 on localhost:50932 in memory (size: 4.2 KB, free: 511.4 MB)
+16/09/19 23:41:48 INFO spark.ContextCleaner: Cleaned accumulator 56
+16/09/19 23:41:48 INFO spark.ContextCleaner: Cleaned accumulator 55
+16/09/19 23:41:48 INFO spark.ContextCleaner: Cleaned accumulator 54
+16/09/19 23:41:48 INFO storage.BlockManagerInfo: Removed broadcast_44_piece0 on localhost:50932 in memory (size: 19.7 KB, free: 511.5 MB)
+16/09/19 23:41:48 INFO storage.BlockManagerInfo: Removed broadcast_43_piece0 on localhost:50932 in memory (size: 19.6 KB, free: 511.5 MB)
+16/09/19 23:41:48 INFO storage.BlockManagerInfo: Removed broadcast_42_piece0 on localhost:50932 in memory (size: 4.2 KB, free: 511.5 MB)
+16/09/19 23:41:48 INFO spark.ContextCleaner: Cleaned accumulator 53
+16/09/19 23:41:48 INFO storage.BlockManagerInfo: Removed broadcast_41_piece0 on localhost:50932 in memory (size: 4.2 KB, free: 511.5 MB)
+16/09/19 23:41:48 INFO storage.MemoryStore: Block broadcast_51 stored as values in memory (estimated size 513.9 KB, free 762.8 KB)
+16/09/19 23:41:48 INFO storage.MemoryStore: Block broadcast_51_piece0 stored as bytes in memory (estimated size 39.7 KB, free 802.5 KB)
+16/09/19 23:41:48 INFO storage.BlockManagerInfo: Added broadcast_51_piece0 in memory on localhost:50932 (size: 39.7 KB, free: 511.4 MB)
+16/09/19 23:41:48 INFO spark.SparkContext: Created broadcast 51 from show at <console>:33
+16/09/19 23:41:49 INFO mapred.FileInputFormat: Total input paths to process : 1
+16/09/19 23:41:49 INFO mapred.FileInputFormat: Total input paths to process : 1
+16/09/19 23:41:49 INFO mapred.FileInputFormat: Total input paths to process : 1
+16/09/19 23:41:49 INFO mapred.FileInputFormat: Total input paths to process : 1
+16/09/19 23:41:49 INFO mapred.FileInputFormat: Total input paths to process : 1
+16/09/19 23:41:49 INFO mapred.FileInputFormat: Total input paths to process : 1
+16/09/19 23:41:49 INFO mapred.FileInputFormat: Total input paths to process : 1
+16/09/19 23:41:49 INFO spark.SparkContext: Starting job: show at <console>:33
+16/09/19 23:41:49 INFO scheduler.DAGScheduler: Got job 23 (show at <console>:33) with 1 output partitions
+16/09/19 23:41:49 INFO scheduler.DAGScheduler: Final stage: ResultStage 28 (show at <console>:33)
+16/09/19 23:41:49 INFO scheduler.DAGScheduler: Parents of final stage: List()
+16/09/19 23:41:49 INFO scheduler.DAGScheduler: Missing parents: List()
+16/09/19 23:41:49 INFO scheduler.DAGScheduler: Submitting ResultStage 28 (MapPartitionsRDD[135] at show at <console>:33), which has no missing parents
+16/09/19 23:41:49 INFO storage.MemoryStore: Block broadcast_52 stored as values in memory (estimated size 11.9 KB, free 814.4 KB)
+16/09/19 23:41:49 INFO storage.MemoryStore: Block broadcast_52_piece0 stored as bytes in memory (estimated size 4.7 KB, free 819.1 KB)
+16/09/19 23:41:49 INFO storage.BlockManagerInfo: Added broadcast_52_piece0 in memory on localhost:50932 (size: 4.7 KB, free: 511.4 MB)
+16/09/19 23:41:49 INFO spark.SparkContext: Created broadcast 52 from broadcast at DAGScheduler.scala:1006
+16/09/19 23:41:49 INFO scheduler.DAGScheduler: Submitting 1 missing tasks from ResultStage 28 (MapPartitionsRDD[135] at show at <console>:33)
+16/09/19 23:41:49 INFO scheduler.TaskSchedulerImpl: Adding task set 28.0 with 1 tasks
+16/09/19 23:41:49 INFO scheduler.TaskSetManager: Starting task 0.0 in stage 28.0 (TID 41, localhost, partition 0,ANY, 2306 bytes)
+16/09/19 23:41:49 INFO executor.Executor: Running task 0.0 in stage 28.0 (TID 41)
+16/09/19 23:41:49 INFO rdd.HadoopRDD: Input split: hdfs://localhost:54310/user/hive/warehouse/dkmdb02.db/manutdplayers1/country=Argentina/000000_0:0+223
+16/09/19 23:41:49 INFO executor.Executor: Finished task 0.0 in stage 28.0 (TID 41). 2937 bytes result sent to driver
+16/09/19 23:41:49 INFO scheduler.TaskSetManager: Finished task 0.0 in stage 28.0 (TID 41) in 269 ms on localhost (1/1)
+16/09/19 23:41:49 INFO scheduler.TaskSchedulerImpl: Removed TaskSet 28.0, whose tasks have all completed, from pool
+16/09/19 23:41:49 INFO scheduler.DAGScheduler: ResultStage 28 (show at <console>:33) finished in 0.271 s
+16/09/19 23:41:49 INFO scheduler.DAGScheduler: Job 23 finished: show at <console>:33, took 0.308099 s
+16/09/19 23:41:49 INFO spark.SparkContext: Starting job: show at <console>:33
+16/09/19 23:41:49 INFO scheduler.DAGScheduler: Got job 24 (show at <console>:33) with 2 output partitions
+16/09/19 23:41:49 INFO scheduler.DAGScheduler: Final stage: ResultStage 29 (show at <console>:33)
+16/09/19 23:41:49 INFO scheduler.DAGScheduler: Parents of final stage: List()
+16/09/19 23:41:49 INFO scheduler.DAGScheduler: Missing parents: List()
+16/09/19 23:41:49 INFO scheduler.DAGScheduler: Submitting ResultStage 29 (MapPartitionsRDD[135] at show at <console>:33), which has no missing parents
+16/09/19 23:41:49 INFO storage.MemoryStore: Block broadcast_53 stored as values in memory (estimated size 11.9 KB, free 831.0 KB)
+16/09/19 23:41:49 INFO storage.MemoryStore: Block broadcast_53_piece0 stored as bytes in memory (estimated size 4.7 KB, free 835.7 KB)
+16/09/19 23:41:49 INFO storage.BlockManagerInfo: Added broadcast_53_piece0 in memory on localhost:50932 (size: 4.7 KB, free: 511.4 MB)
+16/09/19 23:41:49 INFO spark.SparkContext: Created broadcast 53 from broadcast at DAGScheduler.scala:1006
+16/09/19 23:41:49 INFO scheduler.DAGScheduler: Submitting 2 missing tasks from ResultStage 29 (MapPartitionsRDD[135] at show at <console>:33)
+16/09/19 23:41:49 INFO scheduler.TaskSchedulerImpl: Adding task set 29.0 with 2 tasks
+16/09/19 23:41:49 INFO scheduler.TaskSetManager: Starting task 0.0 in stage 29.0 (TID 42, localhost, partition 1,ANY, 2304 bytes)
+16/09/19 23:41:49 INFO scheduler.TaskSetManager: Starting task 1.0 in stage 29.0 (TID 43, localhost, partition 2,ANY, 2308 bytes)
+16/09/19 23:41:49 INFO executor.Executor: Running task 0.0 in stage 29.0 (TID 42)
+16/09/19 23:41:49 INFO executor.Executor: Running task 1.0 in stage 29.0 (TID 43)
+16/09/19 23:41:49 INFO rdd.HadoopRDD: Input split: hdfs://localhost:54310/user/hive/warehouse/dkmdb02.db/manutdplayers1/country=Germany/000000_0:0+85
+16/09/19 23:41:49 INFO rdd.HadoopRDD: Input split: hdfs://localhost:54310/user/hive/warehouse/dkmdb02.db/manutdplayers1/country=Netherlands/000000_0:0+404
+16/09/19 23:41:49 INFO executor.Executor: Finished task 1.0 in stage 29.0 (TID 43). 2770 bytes result sent to driver
+16/09/19 23:41:49 INFO scheduler.TaskSetManager: Finished task 1.0 in stage 29.0 (TID 43) in 78 ms on localhost (1/2)
+16/09/19 23:41:49 INFO executor.Executor: Finished task 0.0 in stage 29.0 (TID 42). 2621 bytes result sent to driver
+16/09/19 23:41:49 INFO scheduler.TaskSetManager: Finished task 0.0 in stage 29.0 (TID 42) in 91 ms on localhost (2/2)
+16/09/19 23:41:49 INFO scheduler.TaskSchedulerImpl: Removed TaskSet 29.0, whose tasks have all completed, from pool
+16/09/19 23:41:49 INFO scheduler.DAGScheduler: ResultStage 29 (show at <console>:33) finished in 0.086 s
+16/09/19 23:41:49 INFO scheduler.DAGScheduler: Job 24 finished: show at <console>:33, took 0.144026 s
++--------------------+----------+----------+-----------+
+|              player|  position|       dob|    country|
++--------------------+----------+----------+-----------+
+|       �ngel Di Mar�|Midfielder|1988-02-14|  Argentina|
+|      Gabriel Heinze|  Defender|1978-04-19|  Argentina|
+|         Marcos Rojo|  Defender|1990-03-20|  Argentina|
+|       Sergio Romero|Goalkeeper|1987-02-22|  Argentina|
+|        Carlos T�vez|   Forward|1984-02-05|  Argentina|
+| Juan Sebasti�n Ver�|Midfielder|1975-03-09|  Argentina|
+|Bastian Schweinst...|Midfielder|1984-08-01|    Germany|
+|   Ron-Robert Zieler|Goalkeeper|1989-02-12|    Germany|
+|         Daley Blind|Midfielder|1990-03-09|Netherlands|
+|   Alexander B�ttner|  Defender|1989-02-11|Netherlands|
++--------------------+----------+----------+-----------+
+====================================================================================================
+scala> sqlhc.sql("Select a.* from dkmdb01.employee a where a.emp_sal in (select max(b.emp_sal) from dkmdb01.employee b)").show;
+16/09/19 23:45:07 INFO parse.ParseDriver: Parsing command: Select a.* from dkmdb01.employee a where a.emp_sal in (select max(b.emp_sal) from dkmdb01.employee b)
+16/09/19 23:45:07 INFO parse.ParseDriver: Parse Completed
+16/09/19 23:45:07 INFO parse.ParseDriver: Parsing command: Select a.* from dkmdb01.employee a where a.emp_sal in (select max(b.emp_sal) from dkmdb01.employee b)
+16/09/19 23:45:07 INFO parse.ParseDriver: Parse Completed
+org.apache.spark.sql.AnalysisException:
+Unsupported language features in query: Select a.* from dkmdb01.employee a where a.emp_sal in (select max(b.emp_sal) from dkmdb01.employee b)
+TOK_QUERY 1, 0,39, 16
+  TOK_FROM 1, 6,12, 16
+    TOK_TABREF 1, 8,12, 16
+      TOK_TABNAME 1, 8,10, 16
+        dkmdb01 1, 8,8, 16
+        employee 1, 10,10, 24
+      a 1, 12,12, 33
+  TOK_INSERT 0, -1,39, 0
+    TOK_DESTINATION 0, -1,-1, 0
+      TOK_DIR 0, -1,-1, 0
+        TOK_TMP_FILE 0, -1,-1, 0
+    TOK_SELECT 1, 0,4, 7
+      TOK_SELEXPR 1, 2,4, 7
+        TOK_ALLCOLREF 1, 2,4, 7
+          TOK_TABNAME 1, 2,2, 7
+            a 1, 2,2, 7
+    TOK_WHERE 1, 14,39, 51
+      TOK_SUBQUERY_EXPR 1, 16,39, 51
+        TOK_SUBQUERY_OP 1, 20,20, 51
+          in 1, 20,20, 51
+        TOK_QUERY 1, 22,39, 82
+          TOK_FROM 1, 32,38, 82
+            TOK_TABREF 1, 34,38, 82
+              TOK_TABNAME 1, 34,36, 82
+                dkmdb01 1, 34,34, 82
+                employee 1, 36,36, 90
+              b 1, 38,38, 99
+          TOK_INSERT 0, -1,30, 0
+            TOK_DESTINATION 0, -1,-1, 0
+              TOK_DIR 0, -1,-1, 0
+                TOK_TMP_FILE 0, -1,-1, 0
+            TOK_SELECT 1, 23,30, 62
+              TOK_SELEXPR 1, 25,30, 62
+                TOK_FUNCTION 1, 25,30, 62
+                  max 1, 25,25, 62
+                  . 1, 27,29, 67
+                    TOK_TABLE_OR_COL 1, 27,27, 66
+                      b 1, 27,27, 66
+                    emp_sal 1, 29,29, 68
+        . 1, 16,18, 42
+          TOK_TABLE_OR_COL 1, 16,16, 41
+            a 1, 16,16, 41
+          emp_sal 1, 18,18, 43
+
+scala.NotImplementedError: No parse rules for ASTNode type: 864, text: TOK_SUBQUERY_EXPR :
+TOK_SUBQUERY_EXPR 1, 16,39, 51
+  TOK_SUBQUERY_OP 1, 20,20, 51
+    in 1, 20,20, 51
+  TOK_QUERY 1, 22,39, 82
+    TOK_FROM 1, 32,38, 82
+      TOK_TABREF 1, 34,38, 82
+        TOK_TABNAME 1, 34,36, 82
+          dkmdb01 1, 34,34, 82
+          employee 1, 36,36, 90
+        b 1, 38,38, 99
+    TOK_INSERT 0, -1,30, 0
+      TOK_DESTINATION 0, -1,-1, 0
+        TOK_DIR 0, -1,-1, 0
+          TOK_TMP_FILE 0, -1,-1, 0
+      TOK_SELECT 1, 23,30, 62
+        TOK_SELEXPR 1, 25,30, 62
+          TOK_FUNCTION 1, 25,30, 62
+            max 1, 25,25, 62
+            . 1, 27,29, 67
+              TOK_TABLE_OR_COL 1, 27,27, 66
+                b 1, 27,27, 66
+              emp_sal 1, 29,29, 68
+  . 1, 16,18, 42
+    TOK_TABLE_OR_COL 1, 16,16, 41
+      a 1, 16,16, 41
+    emp_sal 1, 18,18, 43
+" +
+
+org.apache.spark.sql.hive.HiveQl$.nodeToExpr(HiveQl.scala:1721)
+          ;
+====================================================================================================
+scala> sqlhc.sql("create table dkmdb02.hive_table_via_spark_sql (id int, value char(10)) row format delimited fields terminated by ','");
+16/09/19 23:51:24 INFO parse.ParseDriver: Parsing command: create table dkmdb02.hive_table_via_spark_sql (id int, value char(10)) row format delimited fields terminated by ','
+16/09/19 23:51:24 INFO parse.ParseDriver: Parse Completed
+16/09/19 23:51:24 INFO log.PerfLogger: <PERFLOG method=Driver.run from=org.apache.hadoop.hive.ql.Driver>
+16/09/19 23:51:24 INFO log.PerfLogger: <PERFLOG method=TimeToSubmit from=org.apache.hadoop.hive.ql.Driver>
+16/09/19 23:51:24 INFO log.PerfLogger: <PERFLOG method=compile from=org.apache.hadoop.hive.ql.Driver>
+16/09/19 23:51:24 INFO log.PerfLogger: <PERFLOG method=parse from=org.apache.hadoop.hive.ql.Driver>
+16/09/19 23:51:24 INFO parse.ParseDriver: Parsing command: create table dkmdb02.hive_table_via_spark_sql (id int, value char(10)) row format delimited fields terminated by ','
+16/09/19 23:51:25 INFO parse.ParseDriver: Parse Completed
+16/09/19 23:51:25 INFO log.PerfLogger: </PERFLOG method=parse start=1474309284449 end=1474309285305 duration=856 from=org.apache.hadoop.hive.ql.Driver>
+16/09/19 23:51:25 INFO log.PerfLogger: <PERFLOG method=semanticAnalyze from=org.apache.hadoop.hive.ql.Driver>
+16/09/19 23:51:25 INFO parse.SemanticAnalyzer: Starting Semantic Analysis
+16/09/19 23:51:25 INFO parse.SemanticAnalyzer: Creating table dkmdb02.hive_table_via_spark_sql position=13
+16/09/19 23:51:25 INFO ql.Driver: Semantic Analysis Completed
+16/09/19 23:51:25 INFO log.PerfLogger: </PERFLOG method=semanticAnalyze start=1474309285441 end=1474309285669 duration=228 from=org.apache.hadoop.hive.ql.Driver>
+16/09/19 23:51:25 INFO ql.Driver: Returning Hive schema: Schema(fieldSchemas:null, properties:null)
+16/09/19 23:51:25 INFO log.PerfLogger: </PERFLOG method=compile start=1474309284412 end=1474309285678 duration=1266 from=org.apache.hadoop.hive.ql.Driver>
+16/09/19 23:51:25 INFO log.PerfLogger: <PERFLOG method=acquireReadWriteLocks from=org.apache.hadoop.hive.ql.Driver>
+16/09/19 23:51:25 INFO lockmgr.DbTxnManager: Setting lock request transaction to 0 for queryId=hduser_20160919235124_54a69120-66c3-4730-a5b4-d1a641c893ee
+16/09/19 23:51:25 INFO lockmgr.DbLockManager: Requesting: queryId=hduser_20160919235124_54a69120-66c3-4730-a5b4-d1a641c893ee LockRequest(component:[LockComponent(type:SHARED_READ, level:DB, dbname:dkmdb02)], txnid:0, user:hduser, hostname:Inceptez)
+16/09/19 23:51:25 INFO lockmgr.DbLockManager: Response to queryId=hduser_20160919235124_54a69120-66c3-4730-a5b4-d1a641c893ee LockResponse(lockid:381, state:ACQUIRED)
+16/09/19 23:51:25 INFO log.PerfLogger: </PERFLOG method=acquireReadWriteLocks start=1474309285679 end=1474309285732 duration=53 from=org.apache.hadoop.hive.ql.Driver>
+16/09/19 23:51:25 INFO log.PerfLogger: <PERFLOG method=Driver.execute from=org.apache.hadoop.hive.ql.Driver>
+16/09/19 23:51:25 INFO ql.Driver: Starting command(queryId=hduser_20160919235124_54a69120-66c3-4730-a5b4-d1a641c893ee): create table dkmdb02.hive_table_via_spark_sql (id int, value char(10)) row format delimited fields terminated by ','
+16/09/19 23:51:25 INFO log.PerfLogger: </PERFLOG method=TimeToSubmit start=1474309284412 end=1474309285751 duration=1339 from=org.apache.hadoop.hive.ql.Driver>
+16/09/19 23:51:25 INFO log.PerfLogger: <PERFLOG method=runTasks from=org.apache.hadoop.hive.ql.Driver>
+16/09/19 23:51:25 INFO log.PerfLogger: <PERFLOG method=task.DDL.Stage-0 from=org.apache.hadoop.hive.ql.Driver>
+16/09/19 23:51:25 INFO ql.Driver: Starting task [Stage-0:DDL] in serial mode
+16/09/19 23:51:27 INFO log.PerfLogger: </PERFLOG method=runTasks start=1474309285751 end=1474309287536 duration=1785 from=org.apache.hadoop.hive.ql.Driver>
+16/09/19 23:51:27 INFO metadata.Hive: Dumping metastore api call timing information for : execution phase
+16/09/19 23:51:27 INFO metadata.Hive: Total time spent in this metastore function was greater than 1000ms : createTable_(Table, )=1669
+16/09/19 23:51:27 INFO log.PerfLogger: </PERFLOG method=Driver.execute start=1474309285732 end=1474309287537 duration=1805 from=org.apache.hadoop.hive.ql.Driver>
+16/09/19 23:51:27 INFO ql.Driver: OK
+16/09/19 23:51:27 INFO log.PerfLogger: <PERFLOG method=releaseLocks from=org.apache.hadoop.hive.ql.Driver>
+16/09/19 23:51:27 INFO log.PerfLogger: </PERFLOG method=releaseLocks start=1474309287538 end=1474309287702 duration=164 from=org.apache.hadoop.hive.ql.Driver>
+16/09/19 23:51:27 INFO log.PerfLogger: </PERFLOG method=Driver.run start=1474309284412 end=1474309287703 duration=3291 from=org.apache.hadoop.hive.ql.Driver>
+res34: org.apache.spark.sql.DataFrame = [result: string]
+
+hive> show tables in dkmdb02;
+OK
+hive_table_via_spark_sql
+manutdplayers1
+manutdplayers2
+salesorders1
+Time taken: 0.083 seconds, Fetched: 4 row(s)
+
+hive> show create table dkmdb02.hive_table_via_spark_sql;
+OK
+CREATE TABLE `dkmdb02.hive_table_via_spark_sql`(
+  `id` int,
+  `value` char(10))
+ROW FORMAT DELIMITED
+  FIELDS TERMINATED BY ','
+STORED AS INPUTFORMAT
+  'org.apache.hadoop.mapred.TextInputFormat'
+OUTPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION
+  'hdfs://localhost:54310/user/hive/warehouse/dkmdb02.db/hive_table_via_spark_sql'
+TBLPROPERTIES (
+  'transient_lastDdlTime'='1474309287')
+Time taken: 0.376 seconds, Fetched: 13 row(s)
+====================================================================================================
+scala> val hiveQResult = sqlhc.sql("from manutdplayers select * limit 3");
+16/09/19 23:56:55 INFO parse.ParseDriver: Parsing command: from manutdplayers select * limit 3
+16/09/19 23:56:55 INFO parse.ParseDriver: Parse Completed
+hiveQResult: org.apache.spark.sql.DataFrame = [player: string, country: string, position: string, dob: date]
+
+scala> hiveQResult.printSchema();
+root
+ |-- player: string (nullable = true)
+ |-- country: string (nullable = true)
+ |-- position: string (nullable = true)
+ |-- dob: date (nullable = true)
+
+scala> hiveQResult.show;
++-------------+---------+----------+----------+
+|       player|  country|  position|       dob|
++-------------+---------+----------+----------+
+| Peter Abbott|  England|   Forward|1953-10-01|
+|Stan Ackerley|Australia|  Defender|1942-07-12|
+|    Ted Adams|  England|Goalkeeper|1906-11-30|
++-------------+---------+----------+----------+
+====================================================================================================

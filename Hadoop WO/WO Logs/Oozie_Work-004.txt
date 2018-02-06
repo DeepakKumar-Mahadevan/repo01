@@ -1,0 +1,56 @@
+[root@sandbox myshscripts]# hdfs dfs -ls my_scripts
+Found 2 items
+-rw-r--r--   3 root hdfs        112 2016-08-19 03:03 my_scripts/check_file_exists.sh
+-rw-r--r--   3 root hdfs         13 2016-08-20 23:06 my_scripts/hdfs_ls.sh
+[root@sandbox myshscripts]# hdfs dfs -cat my_scripts/hdfs_ls.sh
+hdfs dfs -ls
+
+<workflow-app name="DKM-HDFS-Shell-WF-001" xmlns="uri:oozie:workflow:0.4">
+    <start to="DKM-HDFS-Shell-WF-001a"/>
+    <action name="DKM-HDFS-Shell-WF-001a">
+        <shell xmlns="uri:oozie:shell-action:0.1">
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <exec>hdfs_ls.sh</exec>
+            <file>/user/root/my_scripts/hdfs_ls.sh#hdfs_ls.sh</file>
+        </shell>
+        <ok to="end"/>
+        <error to="kill"/>
+    </action>
+    <kill name="kill">
+        <message>Action failed, error message[${wf:errorMessage(wf:lastErrorNode())}]</message>
+    </kill>
+    <end name="end"/>
+</workflow-app>
+
+Logs	Id	Name	Type	Status	External Id	Start Time	End Time	Retries	Error Code	Error Message	Transition	Data
+0000000-160820220117011-oozie-oozi-W@DKM-HDFS-Shell-WF-001a	DKM-HDFS-Shell-WF-001a	shell	ERROR	1471710654835_0001	Sat, 20 Aug 2016 10:43:01	Sat, 20 Aug 2016 10:46:00	0	JA018	Main class [org.apache.oozie.action.hadoop.ShellMain], exit code [1]	kill	
+
+
+[root@sandbox myshscripts]# cp hdfs_ls.sh ls.sh
+[root@sandbox myshscripts]# vi ls.sh
+[root@sandbox myshscripts]# hdfs dfs -put ls.sh my_scripts
+[root@sandbox myshscripts]# hdfs dfs -ls my_scripts
+Found 3 items
+-rw-r--r--   3 root hdfs        112 2016-08-19 03:03 my_scripts/check_file_exists.sh
+-rw-r--r--   3 root hdfs         13 2016-08-20 23:06 my_scripts/hdfs_ls.sh
+-rw-r--r--   3 root hdfs          3 2016-08-20 23:22 my_scripts/ls.sh
+
+<workflow-app name="DKM-HDFS-Shell-WF-001" xmlns="uri:oozie:workflow:0.4">
+    <start to="DKM-HDFS-Shell-WF-001a"/>
+    <action name="DKM-HDFS-Shell-WF-001a">
+        <shell xmlns="uri:oozie:shell-action:0.1">
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <exec>ls.sh</exec>
+            <file>/user/root/my_scripts/ls.sh#ls.sh</file>
+        </shell>
+        <ok to="end"/>
+        <error to="kill"/>
+    </action>
+    <kill name="kill">
+        <message>Action failed, error message[${wf:errorMessage(wf:lastErrorNode())}]</message>
+    </kill>
+    <end name="end"/>
+</workflow-app>
+========================================================

@@ -1,0 +1,255 @@
+hive> select * from dkmdb01.salesorders3 limit 3;
+OK
+2016-05-14      Central Gill    Pencil  53      NULL    NULL
+2015-02-09      Central Jardine Pencil  36      NULL    NULL
+2016-04-10      Central Andrews Pencil  66      NULL    NULL
+Time taken: 0.104 seconds, Fetched: 3 row(s)
+
+hive> load data local inpath '/home/hduser/hive_data_01/salesorders_new.data' overwrite into table dkmdb01.salesorders3;
+Loading data to table dkmdb01.salesorders3
+Table dkmdb01.salesorders3 stats: [numFiles=1, numRows=0, totalSize=1964, rawDataSize=0]
+OK
+Time taken: 0.516 seconds
+hive> select * from dkmdb01.salesorders3 limit 3;
+OK
+2015-01-06      East    Jones   Pencil  95      1.99    189.05
+2015-01-23      Central Kivell  Binder  50      19.99   999.5
+2015-02-09      Central Jardine Pencil  36      4.99    179.64
+Time taken: 0.097 seconds, Fetched: 3 row(s)
+====================================================================================================
+CREATE TABLE DKMDB01.salesorders(ord_dt date, region varchar(8), rep varchar(15), item varchar(15), unit int, unit_cost decimal(9,2), total decimal(10,2));
+
+mysql> load data local infile '/home/hduser/hive_data_01/salesorders_new.data' into table DKMDB01.salesorders fields terminated by ',' lines terminated by '\n';
+Query OK, 43 rows affected (0.00 sec)
+Records: 43  Deleted: 0  Skipped: 0  Warnings: 0
+
+mysql> select a.*, rank() over (partition by region, order by total desc) as rank from dkmdb01.salesorders3;
+ERROR 1305 (42000): FUNCTION rank does not exist
+
+mysql> select a.*, row_number() over (partition by region, order by total desc) as rank from dkmdb01.salesorders3;
+ERROR 1305 (42000): FUNCTION row_number does not exist
+====================================================================================================
+hive> select a.*, rank() over (partition by region, order by total desc) as rank from dkmdb01.salesorders3 a;
+FAILED: ParseException line 1:52 missing ) at 'by' near 'by'
+line 1:55 missing EOF at 'total' near 'by'
+
+hive> select a.*, row_number() over (partition by region, order by total desc) as rank from dkmdb01.salesorders3 a;
+FAILED: ParseException line 1:58 missing ) at 'by' near 'by'
+line 1:61 missing EOF at 'total' near 'by'
+====================================================================================================
+hive> select a.*, rank() over (partition by region order by total desc) as rank from dkmdb01.salesorders3 a;
+Query ID = hduser_20160827142727_14ff410c-2575-4980-bc3a-650947afc195
+Total jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1472282911255_0001, Tracking URL = http://Inceptez:8088/proxy/application_1472282911255_0001/
+Kill Command = /usr/local/hadoop/bin/hadoop job  -kill job_1472282911255_0001
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2016-08-27 14:28:05,865 Stage-1 map = 0%,  reduce = 0%
+2016-08-27 14:28:17,500 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.45 sec
+2016-08-27 14:28:30,900 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 3.36 sec
+MapReduce Total cumulative CPU time: 3 seconds 360 msec
+Ended Job = job_1472282911255_0001
+MapReduce Jobs Launched:
+Stage-Stage-1: Map: 1  Reduce: 1   Cumulative CPU: 3.36 sec   HDFS Read: 2203 HDFS Write: 2068 SUCCESS
+Total MapReduce CPU Time Spent: 3 seconds 360 msec
+OK
+2016-12-04      Central Jardine Binder  94      19.99   1879.06 1
+2016-02-01      Central Smith   Binder  87      15      1305    2
+2015-01-23      Central Kivell  Binder  50      19.99   999.5   3
+2016-05-31      Central Gill    Binder  80      8.99    719.2   4
+2016-07-21      Central Morgan  Pen Set 55      12.49   686.95  5
+2016-06-17      Central Kivell  Desk    5       125     625     6
+2015-02-26      Central Gill    Pen     27      19.99   539.73  7
+2015-11-25      Central Kivell  Pen Set 96      4.99    479.04  8
+2015-06-25      Central Morgan  Pencil  90      4.99    449.1   9
+2015-05-05      Central Jardine Pencil  90      4.99    449.1   9
+2016-01-15      Central Gill    Binder  46      8.99    413.54  11
+2015-10-05      Central Morgan  Binder  28      8.99    251.72  12
+2015-09-01      Central Smith   Desk    2       125     250     13
+2016-03-24      Central Jardine Pen Set 50      4.99    249.5   14
+2015-02-09      Central Jardine Pencil  36      4.99    179.64  15
+2015-04-18      Central Andrews Pencil  75      1.99    149.25  16
+2016-12-21      Central Andrews Binder  28      4.99    139.72  17
+2016-04-10      Central Andrews Pencil  66      1.99    131.34  18
+2015-12-12      Central Smith   Pencil  67      1.29    86.43   19
+2016-05-14      Central Gill    Pencil  53      1.29    68.37   20
+2016-11-17      Central Jardine Binder  11      4.99    54.89   21
+2016-10-31      Central Andrews Pencil  14      1.29    18.06   22
+2016-08-07      Central Kivell  Pen Set 42      23.95   15.9    23
+2016-09-10      Central Gill    Pencil  7       1.29    9.03    24
+2015-07-29      East    Parent  Binder  81      19.99   1619.19 1
+2015-12-29      East    Parent  Pen Set 74      15.99   1183.26 2
+2015-10-22      East    Jones   Pen     64      8.99    575.36  3
+2015-06-08      East    Jones   Binder  60      8.99    539.4   4
+2016-04-27      East    Howard  Pen     96      4.99    479.04  5
+2016-07-04      East    Jones   Pen Set 62      4.99    309.38  6
+2015-11-08      East    Parent  Pen     15      19.99   299.85  7
+2015-04-01      East    Jones   Binder  60      4.99    299.4   8
+2015-09-18      East    Jones   Pen Set 16      15.99   255.84  9
+2015-01-06      East    Jones   Pencil  95      1.99    189.05  10
+2015-08-15      East    Jones   Pencil  35      4.99    174.65  11
+2015-07-12      East    Howard  Binder  29      1.99    57.71   12
+2016-02-18      East    Jones   Binder  4       4.99    19.96   13
+2016-10-14      West    Thompson        Binder  57      19.99   1139.43 1
+2016-08-24      West    Sorvino Desk    3       275     825     2
+2015-03-15      West    Sorvino Pencil  56      2.99    167.44  3
+2016-09-27      West    Sorvino Pen     76      1.99    151.24  4
+2016-03-07      West    Sorvino Binder  7       19.99   139.93  5
+2015-05-22      West    Thompson        Pencil  32      1.99    63.68   6
+Time taken: 59.151 seconds, Fetched: 43 row(s)
+====================================================================================================
+hive> create table dkmdb02.salesorders1 (ord_dt date, rep varchar(15), item varchar(15), unit int, unit_cost decimal(9,2), total decimal(10,2))
+    > partitioned by (region varchar(8))
+    > stored as orc;
+OK
+Time taken: 0.536 seconds
+
+hive> show create table dkmdb02.salesorders1;
+OK
+CREATE TABLE `dkmdb02.salesorders1`(
+  `ord_dt` date,
+  `rep` varchar(15),
+  `item` varchar(15),
+  `unit` int,
+  `unit_cost` decimal(9,2),
+  `total` decimal(10,2))
+PARTITIONED BY (
+  `region` varchar(8))
+ROW FORMAT SERDE
+  'org.apache.hadoop.hive.ql.io.orc.OrcSerde'
+STORED AS INPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.orc.OrcInputFormat'
+OUTPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.orc.OrcOutputFormat'
+LOCATION
+  'hdfs://localhost:54310/user/hive/warehouse/dkmdb02.db/salesorders1'
+TBLPROPERTIES (
+  'transient_lastDdlTime'='1472289019')
+Time taken: 0.1 seconds, Fetched: 19 row(s)
+
+[hduser@Inceptez ~]$ hdfs dfs -ls -R /user/hive/warehouse/dkmdb02.db
+drwxr-xr-x   - hduser supergroup          0 2016-08-27 14:40 /user/hive/warehouse/dkmdb02.db/salesorders1
+
+hive> insert into table dkmdb02.salesorders1 partition by (region) select ord_dt, rep, item, unit, unit_cost, total, region from dkmdb01.salesorders3;
+FAILED: ParseException line 1:49 extraneous input 'by' expecting ( near '<EOF>'
+
+hive> insert into table dkmdb02.salesorders1 partition(region) select ord_dt, rep, item, unit, unit_cost, total, region from dkmdb01.salesorders3;
+Query ID = hduser_20160827144444_e5aebe5f-5336-4095-be8a-6a6f75d51a5f
+Total jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_1472282911255_0002, Tracking URL = http://Inceptez:8088/proxy/application_1472282911255_0002/
+Kill Command = /usr/local/hadoop/bin/hadoop job  -kill job_1472282911255_0002
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 0
+2016-08-27 14:45:01,251 Stage-1 map = 0%,  reduce = 0%
+2016-08-27 14:45:12,136 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.9 sec
+MapReduce Total cumulative CPU time: 1 seconds 900 msec
+Ended Job = job_1472282911255_0002
+Stage-4 is selected by condition resolver.
+Stage-3 is filtered out by condition resolver.
+Stage-5 is filtered out by condition resolver.
+Moving data to: hdfs://localhost:54310/tmp/hive/hduser/c17ae000-f89d-4bf5-acd9-af2ff4b6b524/hive_2016-08-27_14-44-41_473_2154812728180564751-1/-ext-10000
+Loading data to table dkmdb02.salesorders1 partition (region=null)
+         Time taken for load dynamic partitions : 641
+        Loading partition {region=East}
+        Loading partition {region=West}
+        Loading partition {region=Central}
+         Time taken for adding to write entity : 3
+[Error 30017]: Skipping stats aggregation by error org.apache.hadoop.hive.ql.metadata.HiveException: [Error 30001]: StatsPublisher cannot be initialized. There was a error in the initialization of StatsPublisher, and retrying might help. If you dont want the query to fail because accurate statistics could not be collected, set hive.stats.reliable=false
+Partition dkmdb02.salesorders1{region=Central} stats: [numFiles=1, numRows=-1, totalSize=1000, rawDataSize=-1]
+Partition dkmdb02.salesorders1{region=East} stats: [numFiles=1, numRows=-1, totalSize=877, rawDataSize=-1]
+Partition dkmdb02.salesorders1{region=West} stats: [numFiles=1, numRows=-1, totalSize=840, rawDataSize=-1]
+MapReduce Jobs Launched:
+Stage-Stage-1: Map: 1   Cumulative CPU: 1.9 sec   HDFS Read: 2203 HDFS Write: 2717 SUCCESS
+Total MapReduce CPU Time Spent: 1 seconds 900 msec
+OK
+Time taken: 32.93 seconds
+
+[hduser@Inceptez ~]$ hdfs dfs -ls -R /user/hive/warehouse/dkmdb02.db/salesorders1
+16/08/27 14:46:21 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+drwxr-xr-x   - hduser supergroup          0 2016-08-27 14:45 /user/hive/warehouse/dkmdb02.db/salesorders1/region=Central
+-rw-r--r--   1 hduser supergroup       1000 2016-08-27 14:45 /user/hive/warehouse/dkmdb02.db/salesorders1/region=Central/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-08-27 14:45 /user/hive/warehouse/dkmdb02.db/salesorders1/region=East
+-rw-r--r--   1 hduser supergroup        877 2016-08-27 14:45 /user/hive/warehouse/dkmdb02.db/salesorders1/region=East/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-08-27 14:45 /user/hive/warehouse/dkmdb02.db/salesorders1/region=West
+-rw-r--r--   1 hduser supergroup        840 2016-08-27 14:45 /user/hive/warehouse/dkmdb02.db/salesorders1/region=West/000000_0
+====================================================================================================
+hive> select a.*, rank() over (partition by region order by total desc) as rank from dkmdb02.salesorders1 a where rank = 1;
+FAILED: SemanticException [Error 10004]: Line 1:108 Invalid table alias or column reference 'rank': (possible column names are: ord_dt, rep, item, unit, unit_cost, total, region)
+
+hive> select * from (select a.*, rank() over (partition by region order by total desc) as rank from dkmdb02.salesorders1 a ) tab where tab.rank = 1;
+Query ID = hduser_20160827144949_04aacadb-21a7-4aa4-86f0-030d5d38ab48
+Total jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1472282911255_0003, Tracking URL = http://Inceptez:8088/proxy/application_1472282911255_0003/
+Kill Command = /usr/local/hadoop/bin/hadoop job  -kill job_1472282911255_0003
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2016-08-27 14:50:06,913 Stage-1 map = 0%,  reduce = 0%
+2016-08-27 14:50:16,383 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.38 sec
+2016-08-27 14:50:30,830 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 3.22 sec
+MapReduce Total cumulative CPU time: 3 seconds 220 msec
+Ended Job = job_1472282911255_0003
+MapReduce Jobs Launched:
+Stage-Stage-1: Map: 1  Reduce: 1   Cumulative CPU: 3.22 sec   HDFS Read: 4144 HDFS Write: 153 SUCCESS
+Total MapReduce CPU Time Spent: 3 seconds 220 msec
+OK
+2016-12-04      Jardine Binder  94      19.99   1879.06 Central 1
+2015-07-29      Parent  Binder  81      19.99   1619.19 East    1
+2016-10-14      Thompson        Binder  57      19.99   1139.43 West    1
+Time taken: 42.539 seconds, Fetched: 3 row(s)
+====================================================================================================
+hive (dkmdb01)> select * from (select rank() over (partition by item order by total desc) as rank, region, rep, item, total from salesorders3) x where rank <= 3;
+Query ID = hduser_20160925195454_6b785e5f-534c-4308-9886-16e7bf30c4f0
+Total jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1474812913688_0002, Tracking URL = http://Inceptez:8088/proxy/application_1474812913688_0002/
+Kill Command = /usr/local/hadoop/bin/hadoop job  -kill job_1474812913688_0002
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2016-09-25 19:55:17,093 Stage-1 map = 0%,  reduce = 0%
+2016-09-25 19:55:26,658 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.36 sec
+2016-09-25 19:55:37,545 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 3.36 sec
+MapReduce Total cumulative CPU time: 3 seconds 360 msec
+Ended Job = job_1474812913688_0002
+MapReduce Jobs Launched:
+Stage-Stage-1: Map: 1  Reduce: 1   Cumulative CPU: 3.36 sec   HDFS Read: 2203 HDFS Write: 422 SUCCESS
+Total MapReduce CPU Time Spent: 3 seconds 360 msec
+OK
+1       Central Jardine Binder  1879.06
+2       East    Parent  Binder  1619.19
+3       Central Smith   Binder  1305
+1       West    Sorvino Desk    825
+2       Central Kivell  Desk    625
+3       Central Smith   Desk    250
+1       East    Jones   Pen     575.36
+2       Central Gill    Pen     539.73
+3       East    Howard  Pen     479.04
+1       East    Parent  Pen Set 1183.26
+2       Central Morgan  Pen Set 686.95
+3       Central Kivell  Pen Set 479.04
+1       Central Morgan  Pencil  449.1
+1       Central Jardine Pencil  449.1
+3       East    Jones   Pencil  189.05
+Time taken: 41.204 seconds, Fetched: 15 row(s)
+====================================================================================================
+====================================================================================================

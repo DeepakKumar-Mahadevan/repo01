@@ -1,0 +1,139 @@
+scala> val a = sc.parallelize(1 to 100, 4)
+a: org.apache.spark.rdd.RDD[Int] = ParallelCollectionRDD[0] at parallelize at <console>:21
+
+scala> a.collect
+16/09/06 21:55:13 INFO spark.SparkContext: Starting job: collect at <console>:24
+16/09/06 21:55:14 INFO scheduler.DAGScheduler: Got job 0 (collect at <console>:24) with 4 output partitions
+16/09/06 21:55:14 INFO scheduler.DAGScheduler: Final stage: ResultStage 0 (collect at <console>:24)
+16/09/06 21:55:14 INFO scheduler.DAGScheduler: Parents of final stage: List()
+16/09/06 21:55:14 INFO scheduler.DAGScheduler: Missing parents: List()
+16/09/06 21:55:14 INFO scheduler.DAGScheduler: Submitting ResultStage 0 (ParallelCollectionRDD[0] at parallelize at <console>:21), which has no missing parents
+16/09/06 21:55:14 INFO storage.MemoryStore: Block broadcast_0 stored as values in memory (estimated size 1272.0 B, free 1272.0 B)
+16/09/06 21:55:14 INFO storage.MemoryStore: Block broadcast_0_piece0 stored as bytes in memory (estimated size 843.0 B, free 2.1 KB)
+16/09/06 21:55:14 INFO storage.BlockManagerInfo: Added broadcast_0_piece0 in memory on localhost:53679 (size: 843.0 B, free: 517.4 MB)
+16/09/06 21:55:14 INFO spark.SparkContext: Created broadcast 0 from broadcast at DAGScheduler.scala:1006
+16/09/06 21:55:14 INFO scheduler.DAGScheduler: Submitting 4 missing tasks from ResultStage 0 (ParallelCollectionRDD[0] at parallelize at <console>:21)
+16/09/06 21:55:14 INFO scheduler.TaskSchedulerImpl: Adding task set 0.0 with 4 tasks
+16/09/06 21:55:14 INFO scheduler.TaskSetManager: Starting task 0.0 in stage 0.0 (TID 0, localhost, partition 0,PROCESS_LOCAL, 2078 bytes)
+16/09/06 21:55:14 INFO executor.Executor: Running task 0.0 in stage 0.0 (TID 0)
+16/09/06 21:55:14 INFO executor.Executor: Finished task 0.0 in stage 0.0 (TID 0). 998 bytes result sent to driver
+16/09/06 21:55:14 INFO scheduler.TaskSetManager: Starting task 1.0 in stage 0.0 (TID 1, localhost, partition 1,PROCESS_LOCAL, 2078 bytes)
+16/09/06 21:55:14 INFO executor.Executor: Running task 1.0 in stage 0.0 (TID 1)
+16/09/06 21:55:14 INFO executor.Executor: Finished task 1.0 in stage 0.0 (TID 1). 998 bytes result sent to driver
+16/09/06 21:55:14 INFO scheduler.TaskSetManager: Starting task 2.0 in stage 0.0 (TID 2, localhost, partition 2,PROCESS_LOCAL, 2078 bytes)
+16/09/06 21:55:14 INFO executor.Executor: Running task 2.0 in stage 0.0 (TID 2)
+16/09/06 21:55:14 INFO executor.Executor: Finished task 2.0 in stage 0.0 (TID 2). 998 bytes result sent to driver
+16/09/06 21:55:14 INFO scheduler.TaskSetManager: Starting task 3.0 in stage 0.0 (TID 3, localhost, partition 3,PROCESS_LOCAL, 2135 bytes)
+16/09/06 21:55:14 INFO executor.Executor: Running task 3.0 in stage 0.0 (TID 3)
+16/09/06 21:55:14 INFO executor.Executor: Finished task 3.0 in stage 0.0 (TID 3). 998 bytes result sent to driver
+16/09/06 21:55:14 INFO scheduler.TaskSetManager: Finished task 1.0 in stage 0.0 (TID 1) in 51 ms on localhost (1/4)
+16/09/06 21:55:14 INFO scheduler.TaskSetManager: Finished task 2.0 in stage 0.0 (TID 2) in 63 ms on localhost (2/4)
+16/09/06 21:55:14 INFO scheduler.TaskSetManager: Finished task 0.0 in stage 0.0 (TID 0) in 181 ms on localhost (3/4)
+16/09/06 21:55:14 INFO scheduler.DAGScheduler: ResultStage 0 (collect at <console>:24) finished in 0.192 s
+16/09/06 21:55:14 INFO scheduler.TaskSetManager: Finished task 3.0 in stage 0.0 (TID 3) in 54 ms on localhost (4/4)
+16/09/06 21:55:14 INFO scheduler.TaskSchedulerImpl: Removed TaskSet 0.0, whose tasks have all completed, from pool
+16/09/06 21:55:14 INFO scheduler.DAGScheduler: Job 0 finished: collect at <console>:24, took 1.171167 s
+res0: Array[Int] = Array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100)
+
+scala> a.partitions.size
+res1: Int = 4
+====================================================================================================
+scala> val a = sc.parallelize(1 to 100, 10)
+a: org.apache.spark.rdd.RDD[Int] = ParallelCollectionRDD[1] at parallelize at <console>:21
+
+scala> a.setName("a 10")
+res2: a.type = a 10 ParallelCollectionRDD[1] at parallelize at <console>:21
+
+scala> a.cache
+res3: a.type = a 10 ParallelCollectionRDD[1] at parallelize at <console>:21
+
+scala> a.collect
+16/09/06 22:07:08 INFO spark.SparkContext: Starting job: collect at <console>:24
+16/09/06 22:07:08 INFO scheduler.DAGScheduler: Got job 1 (collect at <console>:24) with 10 output partitions
+16/09/06 22:07:08 INFO scheduler.DAGScheduler: Final stage: ResultStage 1 (collect at <console>:24)
+16/09/06 22:07:08 INFO scheduler.DAGScheduler: Parents of final stage: List()
+16/09/06 22:07:08 INFO scheduler.DAGScheduler: Missing parents: List()
+16/09/06 22:07:08 INFO scheduler.DAGScheduler: Submitting ResultStage 1 (a 10 ParallelCollectionRDD[1] at parallelize at <console>:21), which has no missing parents
+16/09/06 22:07:08 INFO storage.MemoryStore: Block broadcast_1 stored as values in memory (estimated size 1272.0 B, free 3.3 KB)
+16/09/06 22:07:08 INFO storage.MemoryStore: Block broadcast_1_piece0 stored as bytes in memory (estimated size 843.0 B, free 4.1 KB)
+16/09/06 22:07:08 INFO storage.BlockManagerInfo: Added broadcast_1_piece0 in memory on localhost:53679 (size: 843.0 B, free: 517.4 MB)
+16/09/06 22:07:08 INFO spark.SparkContext: Created broadcast 1 from broadcast at DAGScheduler.scala:1006
+16/09/06 22:07:08 INFO scheduler.DAGScheduler: Submitting 10 missing tasks from ResultStage 1 (a 10 ParallelCollectionRDD[1] at parallelize at <console>:21)
+16/09/06 22:07:08 INFO scheduler.TaskSchedulerImpl: Adding task set 1.0 with 10 tasks
+16/09/06 22:07:08 INFO scheduler.TaskSetManager: Starting task 0.0 in stage 1.0 (TID 4, localhost, partition 0,PROCESS_LOCAL, 2078 bytes)
+16/09/06 22:07:08 INFO executor.Executor: Running task 0.0 in stage 1.0 (TID 4)
+16/09/06 22:07:08 INFO spark.CacheManager: Partition rdd_1_0 not found, computing it
+16/09/06 22:07:08 INFO storage.MemoryStore: Block rdd_1_0 stored as values in memory (estimated size 216.0 B, free 4.3 KB)
+16/09/06 22:07:08 INFO storage.BlockManagerInfo: Added rdd_1_0 in memory on localhost:53679 (size: 216.0 B, free: 517.4 MB)
+16/09/06 22:07:08 INFO executor.Executor: Finished task 0.0 in stage 1.0 (TID 4). 1552 bytes result sent to driver
+16/09/06 22:07:08 INFO scheduler.TaskSetManager: Starting task 1.0 in stage 1.0 (TID 5, localhost, partition 1,PROCESS_LOCAL, 2078 bytes)
+16/09/06 22:07:08 INFO scheduler.TaskSetManager: Finished task 0.0 in stage 1.0 (TID 4) in 23 ms on localhost (1/10)
+16/09/06 22:07:08 INFO executor.Executor: Running task 1.0 in stage 1.0 (TID 5)
+16/09/06 22:07:08 INFO spark.CacheManager: Partition rdd_1_1 not found, computing it
+16/09/06 22:07:08 INFO storage.MemoryStore: Block rdd_1_1 stored as values in memory (estimated size 216.0 B, free 4.6 KB)
+16/09/06 22:07:08 INFO storage.BlockManagerInfo: Added rdd_1_1 in memory on localhost:53679 (size: 216.0 B, free: 517.4 MB)
+16/09/06 22:07:08 INFO executor.Executor: Finished task 1.0 in stage 1.0 (TID 5). 1552 bytes result sent to driver
+16/09/06 22:07:08 INFO scheduler.TaskSetManager: Starting task 2.0 in stage 1.0 (TID 6, localhost, partition 2,PROCESS_LOCAL, 2078 bytes)
+16/09/06 22:07:08 INFO scheduler.TaskSetManager: Finished task 1.0 in stage 1.0 (TID 5) in 33 ms on localhost (2/10)
+16/09/06 22:07:08 INFO executor.Executor: Running task 2.0 in stage 1.0 (TID 6)
+16/09/06 22:07:08 INFO spark.CacheManager: Partition rdd_1_2 not found, computing it
+16/09/06 22:07:08 INFO storage.MemoryStore: Block rdd_1_2 stored as values in memory (estimated size 216.0 B, free 4.8 KB)
+16/09/06 22:07:08 INFO storage.BlockManagerInfo: Added rdd_1_2 in memory on localhost:53679 (size: 216.0 B, free: 517.4 MB)
+16/09/06 22:07:08 INFO executor.Executor: Finished task 2.0 in stage 1.0 (TID 6). 1552 bytes result sent to driver
+16/09/06 22:07:08 INFO scheduler.TaskSetManager: Starting task 3.0 in stage 1.0 (TID 7, localhost, partition 3,PROCESS_LOCAL, 2078 bytes)
+16/09/06 22:07:08 INFO executor.Executor: Running task 3.0 in stage 1.0 (TID 7)
+16/09/06 22:07:08 INFO scheduler.TaskSetManager: Finished task 2.0 in stage 1.0 (TID 6) in 17 ms on localhost (3/10)
+16/09/06 22:07:08 INFO spark.CacheManager: Partition rdd_1_3 not found, computing it
+16/09/06 22:07:08 INFO storage.MemoryStore: Block rdd_1_3 stored as values in memory (estimated size 216.0 B, free 5.0 KB)
+16/09/06 22:07:08 INFO storage.BlockManagerInfo: Added rdd_1_3 in memory on localhost:53679 (size: 216.0 B, free: 517.4 MB)
+16/09/06 22:07:08 INFO executor.Executor: Finished task 3.0 in stage 1.0 (TID 7). 1552 bytes result sent to driver
+16/09/06 22:07:08 INFO scheduler.TaskSetManager: Starting task 4.0 in stage 1.0 (TID 8, localhost, partition 4,PROCESS_LOCAL, 2078 bytes)
+16/09/06 22:07:08 INFO executor.Executor: Running task 4.0 in stage 1.0 (TID 8)
+16/09/06 22:07:08 INFO scheduler.TaskSetManager: Finished task 3.0 in stage 1.0 (TID 7) in 18 ms on localhost (4/10)
+16/09/06 22:07:08 INFO spark.CacheManager: Partition rdd_1_4 not found, computing it
+16/09/06 22:07:08 INFO storage.MemoryStore: Block rdd_1_4 stored as values in memory (estimated size 216.0 B, free 5.2 KB)
+16/09/06 22:07:08 INFO storage.BlockManagerInfo: Added rdd_1_4 in memory on localhost:53679 (size: 216.0 B, free: 517.4 MB)
+16/09/06 22:07:08 INFO executor.Executor: Finished task 4.0 in stage 1.0 (TID 8). 1552 bytes result sent to driver
+16/09/06 22:07:08 INFO scheduler.TaskSetManager: Starting task 5.0 in stage 1.0 (TID 9, localhost, partition 5,PROCESS_LOCAL, 2078 bytes)
+16/09/06 22:07:08 INFO scheduler.TaskSetManager: Finished task 4.0 in stage 1.0 (TID 8) in 17 ms on localhost (5/10)
+16/09/06 22:07:08 INFO executor.Executor: Running task 5.0 in stage 1.0 (TID 9)
+16/09/06 22:07:08 INFO spark.CacheManager: Partition rdd_1_5 not found, computing it
+16/09/06 22:07:08 INFO storage.MemoryStore: Block rdd_1_5 stored as values in memory (estimated size 216.0 B, free 5.4 KB)
+16/09/06 22:07:08 INFO storage.BlockManagerInfo: Added rdd_1_5 in memory on localhost:53679 (size: 216.0 B, free: 517.4 MB)
+16/09/06 22:07:08 INFO executor.Executor: Finished task 5.0 in stage 1.0 (TID 9). 1552 bytes result sent to driver
+16/09/06 22:07:08 INFO scheduler.TaskSetManager: Starting task 6.0 in stage 1.0 (TID 10, localhost, partition 6,PROCESS_LOCAL, 2078 bytes)
+16/09/06 22:07:08 INFO scheduler.TaskSetManager: Finished task 5.0 in stage 1.0 (TID 9) in 18 ms on localhost (6/10)
+16/09/06 22:07:08 INFO executor.Executor: Running task 6.0 in stage 1.0 (TID 10)
+16/09/06 22:07:08 INFO spark.CacheManager: Partition rdd_1_6 not found, computing it
+16/09/06 22:07:08 INFO storage.MemoryStore: Block rdd_1_6 stored as values in memory (estimated size 216.0 B, free 5.6 KB)
+16/09/06 22:07:08 INFO storage.BlockManagerInfo: Added rdd_1_6 in memory on localhost:53679 (size: 216.0 B, free: 517.4 MB)
+16/09/06 22:07:08 INFO executor.Executor: Finished task 6.0 in stage 1.0 (TID 10). 1552 bytes result sent to driver
+16/09/06 22:07:08 INFO scheduler.TaskSetManager: Starting task 7.0 in stage 1.0 (TID 11, localhost, partition 7,PROCESS_LOCAL, 2078 bytes)
+16/09/06 22:07:08 INFO scheduler.TaskSetManager: Finished task 6.0 in stage 1.0 (TID 10) in 19 ms on localhost (7/10)
+16/09/06 22:07:08 INFO executor.Executor: Running task 7.0 in stage 1.0 (TID 11)
+16/09/06 22:07:08 INFO spark.CacheManager: Partition rdd_1_7 not found, computing it
+16/09/06 22:07:08 INFO storage.MemoryStore: Block rdd_1_7 stored as values in memory (estimated size 216.0 B, free 5.8 KB)
+16/09/06 22:07:08 INFO storage.BlockManagerInfo: Added rdd_1_7 in memory on localhost:53679 (size: 216.0 B, free: 517.4 MB)
+16/09/06 22:07:08 INFO executor.Executor: Finished task 7.0 in stage 1.0 (TID 11). 1552 bytes result sent to driver
+16/09/06 22:07:08 INFO scheduler.TaskSetManager: Starting task 8.0 in stage 1.0 (TID 12, localhost, partition 8,PROCESS_LOCAL, 2078 bytes)
+16/09/06 22:07:08 INFO scheduler.TaskSetManager: Finished task 7.0 in stage 1.0 (TID 11) in 16 ms on localhost (8/10)
+16/09/06 22:07:08 INFO executor.Executor: Running task 8.0 in stage 1.0 (TID 12)
+16/09/06 22:07:08 INFO spark.CacheManager: Partition rdd_1_8 not found, computing it
+16/09/06 22:07:08 INFO storage.MemoryStore: Block rdd_1_8 stored as values in memory (estimated size 216.0 B, free 6.0 KB)
+16/09/06 22:07:08 INFO storage.BlockManagerInfo: Added rdd_1_8 in memory on localhost:53679 (size: 216.0 B, free: 517.4 MB)
+16/09/06 22:07:08 INFO executor.Executor: Finished task 8.0 in stage 1.0 (TID 12). 1552 bytes result sent to driver
+16/09/06 22:07:08 INFO scheduler.TaskSetManager: Starting task 9.0 in stage 1.0 (TID 13, localhost, partition 9,PROCESS_LOCAL, 2135 bytes)
+16/09/06 22:07:08 INFO scheduler.TaskSetManager: Finished task 8.0 in stage 1.0 (TID 12) in 15 ms on localhost (9/10)
+16/09/06 22:07:08 INFO executor.Executor: Running task 9.0 in stage 1.0 (TID 13)
+16/09/06 22:07:08 INFO spark.CacheManager: Partition rdd_1_9 not found, computing it
+16/09/06 22:07:08 INFO storage.MemoryStore: Block rdd_1_9 stored as values in memory (estimated size 216.0 B, free 6.2 KB)
+16/09/06 22:07:08 INFO storage.BlockManagerInfo: Added rdd_1_9 in memory on localhost:53679 (size: 216.0 B, free: 517.4 MB)
+16/09/06 22:07:08 INFO executor.Executor: Finished task 9.0 in stage 1.0 (TID 13). 1552 bytes result sent to driver
+16/09/06 22:07:08 INFO scheduler.DAGScheduler: ResultStage 1 (collect at <console>:24) finished in 0.170 s
+16/09/06 22:07:08 INFO scheduler.DAGScheduler: Job 1 finished: collect at <console>:24, took 0.185884 s
+res4: Array[Int] = Array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100)
+
+scala> a.partitions.size
+res5: Int = 10
+====================================================================================================
+====================================================================================================

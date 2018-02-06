@@ -1,0 +1,127 @@
+[hduser@Inceptez spark_apps]$ sbt package
+-bash: sbt: command not found
+[hduser@Inceptez spark_apps]$ locate sbt
+/lib/modules/2.6.32-431.el6.x86_64/kernel/drivers/input/touchscreen/usbtouchscreen.ko
+/lib/modules/2.6.32-431.el6.x86_64/kernel/drivers/usb/class/usbtmc.ko
+/lib/modules/2.6.32-431.el6.x86_64/kernel/drivers/usb/misc/legousbtower.ko
+/lib/modules/2.6.32-573.3.1.el6.x86_64/kernel/drivers/input/touchscreen/usbtouchscreen.ko
+/lib/modules/2.6.32-573.3.1.el6.x86_64/kernel/drivers/usb/class/usbtmc.ko
+/lib/modules/2.6.32-573.3.1.el6.x86_64/kernel/drivers/usb/misc/legousbtower.ko
+/usr/local/spark/licenses/LICENSE-sbt-launch-lib.txt
+[hduser@Inceptez spark_apps]$ wget http://dl.bintray.com/sbt/rpm/sbt-0.13.5.rpm
+--2016-09-15 22:17:12--  http://dl.bintray.com/sbt/rpm/sbt-0.13.5.rpm
+Resolving dl.bintray.com... 75.126.118.188, 108.168.243.150
+Connecting to dl.bintray.com|75.126.118.188|:80... connected.
+HTTP request sent, awaiting response... 302
+Location: http://akamai.bintray.com/b3/b3ecdec9a76c54a09a54d7dce9c9873400c88fc3?__gda__=exp=1473958753~hmac=e1e633b869d40a36cdf673e61e790b1b646cbe5e95935ddac921e91b9b44f644&response-content-disposition=attachment%3Bfilename%3D%22sbt-0.13.5.rpm%22&response-content-type=application%2Foctet-stream&requestInfo=U2FsdGVkX1-bAv5_ZAEZ6fkos3_R68Qv58NoHkx5ZhJjtkYc9tSnCygwd2PMuCKJo2qlX6cu5FY3Y8bdb6-kb1Ns60AumkTXEHT0j9NKaX0 [following]
+--2016-09-15 22:17:15--  http://akamai.bintray.com/b3/b3ecdec9a76c54a09a54d7dce9c9873400c88fc3?__gda__=exp=1473958753~hmac=e1e633b869d40a36cdf673e61e790b1b646cbe5e95935ddac921e91b9b44f644&response-content-disposition=attachment%3Bfilename%3D%22sbt-0.13.5.rpm%22&response-content-type=application%2Foctet-stream&requestInfo=U2FsdGVkX1-bAv5_ZAEZ6fkos3_R68Qv58NoHkx5ZhJjtkYc9tSnCygwd2PMuCKJo2qlX6cu5FY3Y8bdb6-kb1Ns60AumkTXEHT0j9NKaX0
+Resolving akamai.bintray.com... 23.35.83.168
+Connecting to akamai.bintray.com|23.35.83.168|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 1037624 (1013K) [application/octet-stream]
+Saving to: “sbt-0.13.5.rpm”
+
+100%[==============================================================================================================================>] 1,037,624    591K/s   in 1.7s
+
+2016-09-15 22:17:17 (591 KB/s) - “sbt-0.13.5.rpm” saved [1037624/1037624]
+
+[hduser@Inceptez spark_apps]$ ls
+dkmapp01.sbt  sbt-0.13.5.rpm  src
+
+
+[hduser@Inceptez spark_apps]$ mv sbt-0.13.5.rpm /home/hduser/install/
+[hduser@Inceptez spark_apps]$ cd /home/hduser/install/
+[hduser@Inceptez install]$ ls
+all_docs                            hdfs.conf                     netcat_flume.conf                           squirrelsql-3.7.1-standard.zip
+apache-flume-1.4.0-bin.tar.gz       helloword.java                nifi-0.6.0-bin.tar.gz                       tail_exec.conf
+apache-hive-0.14.0-bin.tar.gz       hive-exec-0.14.0.jar          phoenix                                     twitter.conf
+flume-sources-1.0-SNAPSHOT.jar      hive-site_rms_transction.xml  pig-0.15.0.tar.gz                           zookeeper-3.4.6.tar.gz
+flume-sources-1.0-SNAPSHOT_old.jar  hivexmlserde-1.0.5.3.jar      sbt-0.13.5.rpm
+hadoop-2.6.0.tar.gz                 IZ_KAFKA_NIFI_SPARK           sqoop-1.4.5.bin__hadoop-2.0.4-alpha.tar.gz
+hbase-0.98.4-hadoop2-bin.tar.gz     mysql-connector-java.jar      squirrelsql-3.7.1-standard
+
+
+[hduser@Inceptez install]$ sudo yum localinstall sbt-0.13.5.rpm
+[sudo] password for hduser:
+Loaded plugins: fastestmirror, refresh-packagekit, security
+Setting up Local Package Process
+Examining sbt-0.13.5.rpm: sbt-0.13.5-1.noarch
+Marking sbt-0.13.5.rpm to be installed
+Loading mirror speeds from cached hostfile
+ * base: centos.excellmedia.net
+ * extras: centos.excellmedia.net
+ * updates: centos.excellmedia.net
+base                                                                                                                                             | 3.7 kB     00:00
+extras                                                                                                                                           | 3.4 kB     00:00
+updates                                                                                                                                          | 3.4 kB     00:00
+Resolving Dependencies
+--> Running transaction check
+---> Package sbt.noarch 0:0.13.5-1 will be installed
+--> Processing Dependency: java-devel for package: sbt-0.13.5-1.noarch
+--> Running transaction check
+---> Package java-1.7.0-openjdk-devel.x86_64 1:1.7.0.85-2.6.1.3.el6_7 will be updated
+---> Package java-1.7.0-openjdk-devel.x86_64 1:1.7.0.111-2.6.7.2.el6_8 will be an update
+--> Processing Dependency: java-1.7.0-openjdk = 1:1.7.0.111-2.6.7.2.el6_8 for package: 1:java-1.7.0-openjdk-devel-1.7.0.111-2.6.7.2.el6_8.x86_64
+--> Running transaction check
+---> Package java-1.7.0-openjdk.x86_64 1:1.7.0.85-2.6.1.3.el6_7 will be updated
+---> Package java-1.7.0-openjdk.x86_64 1:1.7.0.111-2.6.7.2.el6_8 will be an update
+--> Processing Dependency: libsctp.so.1(VERS_1)(64bit) for package: 1:java-1.7.0-openjdk-1.7.0.111-2.6.7.2.el6_8.x86_64
+--> Processing Dependency: libsctp.so.1()(64bit) for package: 1:java-1.7.0-openjdk-1.7.0.111-2.6.7.2.el6_8.x86_64
+--> Running transaction check
+---> Package lksctp-tools.x86_64 0:1.0.10-7.el6 will be installed
+--> Finished Dependency Resolution
+
+Dependencies Resolved
+
+========================================================================================================================================================================
+ Package                                        Arch                         Version                                            Repository                         Size
+========================================================================================================================================================================
+Installing:
+ sbt                                            noarch                       0.13.5-1                                           /sbt-0.13.5                       1.1 M
+Installing for dependencies:
+ lksctp-tools                                   x86_64                       1.0.10-7.el6                                       base                               79 k
+Updating for dependencies:
+ java-1.7.0-openjdk                             x86_64                       1:1.7.0.111-2.6.7.2.el6_8                          updates                            26 M
+ java-1.7.0-openjdk-devel                       x86_64                       1:1.7.0.111-2.6.7.2.el6_8                          updates                           9.5 M
+
+Transaction Summary
+========================================================================================================================================================================
+Install       2 Package(s)
+Upgrade       2 Package(s)
+
+Total size: 37 M
+Total download size: 36 M
+Is this ok [y/N]: y
+Downloading Packages:
+(1/3): java-1.7.0-openjdk-1.7.0.111-2.6.7.2.el6_8.x86_64.rpm                                                                                     |  26 MB     01:12
+(2/3): java-1.7.0-openjdk-devel-1.7.0.111-2.6.7.2.el6_8.x86_64.rpm                                                                               | 9.5 MB     00:29
+(3/3): lksctp-tools-1.0.10-7.el6.x86_64.rpm                                                                                                      |  79 kB     00:00
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Total                                                                                                                                   360 kB/s |  36 MB     01:41
+Running rpm_check_debug
+Running Transaction Test
+Transaction Test Succeeded
+Running Transaction
+  Installing : lksctp-tools-1.0.10-7.el6.x86_64                                                                                                                     1/6
+  Updating   : 1:java-1.7.0-openjdk-1.7.0.111-2.6.7.2.el6_8.x86_64                                                                                                  2/6
+  Updating   : 1:java-1.7.0-openjdk-devel-1.7.0.111-2.6.7.2.el6_8.x86_64                                                                                            3/6
+  Installing : sbt-0.13.5-1.noarch                                                                                                                                  4/6
+  Cleanup    : 1:java-1.7.0-openjdk-devel-1.7.0.85-2.6.1.3.el6_7.x86_64                                                                                             5/6
+  Cleanup    : 1:java-1.7.0-openjdk-1.7.0.85-2.6.1.3.el6_7.x86_64                                                                                                   6/6
+  Verifying  : sbt-0.13.5-1.noarch                                                                                                                                  1/6
+  Verifying  : 1:java-1.7.0-openjdk-1.7.0.111-2.6.7.2.el6_8.x86_64                                                                                                  2/6
+  Verifying  : 1:java-1.7.0-openjdk-devel-1.7.0.111-2.6.7.2.el6_8.x86_64                                                                                            3/6
+  Verifying  : lksctp-tools-1.0.10-7.el6.x86_64                                                                                                                     4/6
+  Verifying  : 1:java-1.7.0-openjdk-devel-1.7.0.85-2.6.1.3.el6_7.x86_64                                                                                             5/6
+  Verifying  : 1:java-1.7.0-openjdk-1.7.0.85-2.6.1.3.el6_7.x86_64                                                                                                   6/6
+
+Installed:
+  sbt.noarch 0:0.13.5-1
+
+Dependency Installed:
+  lksctp-tools.x86_64 0:1.0.10-7.el6
+
+Dependency Updated:
+  java-1.7.0-openjdk.x86_64 1:1.7.0.111-2.6.7.2.el6_8                             java-1.7.0-openjdk-devel.x86_64 1:1.7.0.111-2.6.7.2.el6_8
+
+Complete!

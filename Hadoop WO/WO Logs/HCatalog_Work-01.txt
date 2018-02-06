@@ -1,0 +1,402 @@
+export PIG_CLASSPATH = $HCAT_HOME/share/HCatalog/HCatalog-core*.jar:\
+$HCAT_HOME/share/HCatalog/HCatalog-pig-adapter*.jar:\
+$HIVE_HOME/lib/hive-metastore-*.jar:$HIVE_HOME/lib/libthrift-*.jar:\
+$HIVE_HOME/lib/hive-exec-*.jar:$HIVE_HOME/lib/libfb303-*.jar:\
+$HIVE_HOME/lib/jdo2-api-*-ec.jar:$HIVE_HOME/conf:$HADOOP_HOME/conf:\
+$HIVE_HOME/lib/slf4j-api-*.jar
+
+export PIG_CLASSPATH = $HCAT_HOME/share/hcatalog/hive-hcatalog-core*.jar:\
+$HCAT_HOME/share/hcatalog/hive-hcatalog-pig-adapter*.jar:\
+$HIVE_HOME/lib/hive-metastore-*.jar:$HIVE_HOME/lib/libthrift-*.jar:\
+$HIVE_HOME/lib/hive-exec-*.jar:$HIVE_HOME/lib/libfb303-*.jar:\
+$HIVE_HOME/lib/jdo-api-*-ec.jar:$HIVE_HOME/conf:\
+$HADOOP_HOME/share/hadoop/common/lib/slf4j-api-*.jar
+
+[hduser@Inceptez ~]$ vi .bashrc 
+[hduser@Inceptez ~]$ source .bashrc
+bash: export: `=': not a valid identifier
+bash: export: `/usr/local/hive/hcatalog/share/hcatalog/hive-hcatalog-core*.jar:/usr/local/hive/hcatalog/share/hcatalog/hive-hcatalog-pig-adapter*.jar:/usr/local/hive/lib/hive-metastore-*.jar:/usr/local/hive/lib/libthrift-*.jar:/usr/local/hive/lib/hive-exec-*.jar:/usr/local/hive/lib/libfb303-*.jar:/usr/local/hive/lib/jdo-api-*-ec.jar:/usr/local/hive/conf:/usr/local/hadoop/share/hadoop/common/lib/slf4j-api-1.7.5.jar': not a valid identifier
+
+[hduser@Inceptez ~]$ vi .bashrc 
+[hduser@Inceptez ~]$ source .bashrc
+[hduser@Inceptez ~]$ tail -11 .bashrc 
+export HCAT_HOME=$HIVE_HOME/hcatalog
+export PATH=$PATH:$HCAT_HOME/bin
+export PIG_CLASSPATH=$HCAT_HOME/share/hcatalog/hive-hcatalog-core*.jar:\
+$HCAT_HOME/share/hcatalog/hive-hcatalog-pig-adapter*.jar:\
+$HIVE_HOME/lib/hive-metastore-*.jar:$HIVE_HOME/lib/libthrift-*.jar:\
+$HIVE_HOME/lib/hive-exec-*.jar:$HIVE_HOME/lib/libfb303-*.jar:\
+$HIVE_HOME/lib/jdo-api-*-ec.jar:$HIVE_HOME/conf:\
+$HADOOP_HOME/share/hadoop/common/lib/slf4j-api-1.7.5.jar
+#My Scripts
+export MY_SCRIPTS=/home/hduser/my_sh_scritps
+export PATH=$PATH:$MY_SCRIPTS
+
+[hduser@Inceptez ~]$ vi .bashrc 
+[hduser@Inceptez ~]$ source .bashrc
+[hduser@Inceptez ~]$ tail -11 .bashrc 
+export HCAT_HOME=$HIVE_HOME/hcatalog
+export PATH=$PATH:$HCAT_HOME/bin
+export PIG_CLASSPATH=$HCAT_HOME/share/hcatalog/hive-hcatalog-core*.jar:\
+$HCAT_HOME/share/hcatalog/hive-hcatalog-pig-adapter*.jar:\
+$HIVE_HOME/lib/hive-metastore-*.jar:$HIVE_HOME/lib/libthrift-*.jar:\
+$HIVE_HOME/lib/hive-exec-*.jar:$HIVE_HOME/lib/libfb303-*.jar:\
+$HIVE_HOME/lib/jdo-api-*-ec.jar:$HIVE_HOME/conf:\
+$HADOOP_HOME/share/hadoop/common/lib/slf4j-api-*.jar
+#My Scripts
+export MY_SCRIPTS=/home/hduser/my_sh_scritps
+export PATH=$PATH:$MY_SCRIPTS
+====================================================================================================
+[hduser@Inceptez ~]$ pig -useHCatalog
+ls: cannot access /usr/local/hive/lib/slf4j-api-*.jar: No such file or directory
+ls: cannot access /usr/local/hive/hcatalog/lib/*hbase-storage-handler-*.jar: No such file or directory
+16/08/03 22:31:37 INFO pig.ExecTypeProvider: Trying ExecType : LOCAL
+16/08/03 22:31:37 INFO pig.ExecTypeProvider: Trying ExecType : MAPREDUCE
+16/08/03 22:31:37 INFO pig.ExecTypeProvider: Picked MAPREDUCE as the ExecType
+2016-08-03 22:31:38,052 [main] INFO  org.apache.pig.Main - Apache Pig version 0.15.0 (r1682971) compiled Jun 01 2015, 11:44:35
+2016-08-03 22:31:38,053 [main] INFO  org.apache.pig.Main - Logging error messages to: /home/hduser/pig_1470243698049.log
+2016-08-03 22:31:38,242 [main] INFO  org.apache.pig.impl.util.Utils - Default bootup file /home/hduser/.pigbootup not found
+2016-08-03 22:31:40,790 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.job.tracker is deprecated. Instead, use mapreduce.jobtracker.address
+2016-08-03 22:31:40,790 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+2016-08-03 22:31:40,790 [main] INFO  org.apache.pig.backend.hadoop.executionengine.HExecutionEngine - Connecting to hadoop file system at: hdfs://localhost:54310
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/usr/local/hadoop/share/hadoop/common/lib/slf4j-log4j12-1.7.5.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/usr/local/hbase/lib/slf4j-log4j12-1.6.4.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.Log4jLoggerFactory]
+2016-08-03 22:31:42,560 [main] WARN  org.apache.hadoop.util.NativeCodeLoader - Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+2016-08-03 22:31:44,755 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+2016-08-03 22:31:45,046 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+2016-08-03 22:31:45,241 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+2016-08-03 22:31:45,412 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+2016-08-03 22:31:45,723 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+2016-08-03 22:31:45,966 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+2016-08-03 22:31:46,227 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+2016-08-03 22:31:46,473 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+2016-08-03 22:31:46,658 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+
+grunt> a = load 'dkmdb01.student' using org.apache.hcatalog.pig.HCatLoader();
+2016-08-03 22:33:33,896 [main] ERROR org.apache.pig.tools.grunt.Grunt - ERROR 1070: Could not resolve org.apache.hcatalog.pig.HCatLoader using imports: [, java.lang., org.apache.pig.builtin., org.apache.pig.impl.builtin.]
+Details at logfile: /home/hduser/pig_1470243698049.log
+
+grunt> a = load 'dkmdb01.student' using org.apache.hive.hcatalog.pig.HCatLoader();
+2016-08-03 22:40:06,694 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+2016-08-03 22:40:08,520 [main] INFO  hive.metastore - Trying to connect to metastore with URI thrift://localhost:9083
+2016-08-03 22:40:08,951 [main] INFO  hive.metastore - Connected to metastore.
+2016-08-03 22:40:09,894 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+
+grunt> dump a;
+(1,Deepak,1,2016-06-21 14:54:56)
+(2,Farooq,1,2016-06-21 14:55:21)
+(3,Vadivel,2,2016-06-21 14:55:43)
+(4,Hari,3,2016-06-21 14:56:05)
+(5,Karthick,1,2016-06-21 14:56:21)
+(6,Mani,4,2016-06-21 15:11:08)
+(7,Syed,1,2016-07-13 15:53:48)
+(8,Rajesh,1,2016-07-13 15:54:44)
+(9,Vignesh,3,2016-07-13 15:55:01)
+====================================================================================================
+[hduser@Inceptez ~]$ hcat
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/usr/local/hadoop/share/hadoop/common/lib/slf4j-log4j12-1.7.5.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/usr/local/hive/lib/hive-jdbc-0.14.0-standalone.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/usr/local/hbase/lib/slf4j-log4j12-1.6.4.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.Log4jLoggerFactory]
+usage: hcat { -e "<query>" | -f "<filepath>" } [ -g "<group>" ] [ -p "<perms>" ] [ -D"<name>=<value>" ]
+ -D <property=value>   use hadoop value for given property
+ -e <exec>             hcat command given from command line
+ -f <file>             hcat commands in file
+ -g <group>            group for the db/table specified in CREATE statement
+ -h,--help             Print help information
+ -p <perms>            permissions for the db/table specified in CREATE statement
+[hduser@Inceptez ~]$ 
+====================================================================================================
+[hduser@Inceptez mydata01]$ hadoop fs -put BPL.csv pig_data_01/
+
+[hduser@Inceptez mydata01]$ hadoop fs -cat pig_data_01/BPL*
+TEAM,PLAYED,WON,DRAWN,LOST,POINTS
+MANU,38,35,2,1,107
+CHEL,38,25,5,8,80
+ARSL,38,23,7,8,76
+MANC,38,20,8,10,68
+LIVP,38,18,8,12,62
+TOTH,38,16,11,11,59
+
+grunt> bpl = load data 'pig_data_01/BPL.csv' using PigStorage (',') as (team:chararray, played:int, won:int, drawn:int, lost:int, points:int);
+2016-08-03 23:04:43,324 [main] ERROR org.apache.pig.tools.grunt.Grunt - ERROR 1200: <line 2, column 11>  mismatched input 'data' expecting QUOTEDSTRING
+Details at logfile: /home/hduser/pig_1470243698049.log
+grunt> bpl = load 'pig_data_01/BPL.csv' using PigStorage (',') as (team:chararray, played:int, won:int, drawn:int, lost:int, points:int);     
+2016-08-03 23:04:52,385 [main] INFO  hive.metastore - Trying to connect to metastore with URI thrift://localhost:9083
+2016-08-03 23:04:52,424 [main] INFO  hive.metastore - Connected to metastore.
+grunt> dump
+(TEAM,,,,,)
+(MANU,38,35,2,1,107)
+(CHEL,38,25,5,8,80)
+(ARSL,38,23,7,8,76)
+(MANC,38,20,8,10,68)
+(LIVP,38,18,8,12,62)
+(TOTH,38,16,11,11,59)
+
+
+---------------------------------------------------------------
+How to resolve: retrying to connect to server pig error
+---------------------------------------------------------------
+Yes the problem was that the job history server was not running.
+
+All we had to do to fix this problem was enter this command into the command prompt:
+
+mr-jobhistory-daemon.sh start historyserver
+
+This command starts up the job history server. Now if we enter 'jps', we can see that the JobHistoryServer is running and my Pig jobs no longer waste time trying to connect to the server.
+
+[hduser@Inceptez mydata01]$ mr-jobhistory-daemon.sh start historyserver
+starting historyserver, logging to /usr/local/hadoop/logs/mapred-hduser-historyserver-Inceptez.out
+[hduser@Inceptez mydata01]$ jps
+8785 NameNode
+13092 Jps
+10043 RunJar
+10873 RunJar
+9332 NodeManager
+9233 ResourceManager
+8880 DataNode
+10542 RunJar
+13064 JobHistoryServer
+9088 SecondaryNameNode
+---------------------------------------------------------------
+
+grunt> bpl_nh = filter bpl by team != 'TEAM';
+2016-08-03 23:12:44,934 [main] INFO  hive.metastore - Trying to connect to metastore with URI thrift://localhost:9083
+2016-08-03 23:12:45,032 [main] INFO  hive.metastore - Connected to metastore.
+grunt> dump
+(MANU,38,35,2,1,107)
+(CHEL,38,25,5,8,80)
+(ARSL,38,23,7,8,76)
+(MANC,38,20,8,10,68)
+(LIVP,38,18,8,12,62)
+(TOTH,38,16,11,11,59)
+
+store bpl_nh into 'dkmdb01.bpl' using org.apache.hive.hcatalog.pig.HCatStorer();
+
+grunt> store bpl_nh into 'dkmdb01.bpl' using org.apache.hive.hcatalog.pig.HCatStorer();
+2016-08-03 23:20:38,312 [main] INFO  hive.metastore - Trying to connect to metastore with URI thrift://localhost:9083
+2016-08-03 23:20:38,582 [main] INFO  hive.metastore - Connected to metastore.
+2016-08-03 23:20:40,527 [main] ERROR org.apache.pig.tools.grunt.Grunt - ERROR 1115: org.apache.hive.hcatalog.common.HCatException : 2001 : Error setting output information. Cause : NoSuchObjectException(message:dkmdb01.bpl table not found)
+Details at logfile: /home/hduser/pig_1470243698049.log
+
+---------------------------------------------------------------
+hive> show tables in dkmdb01;
+OK
+emp1_like
+employee1
+players1
+players2
+players3
+salesorders
+salesorders2
+salesorders3
+student
+testdml1
+testdml2
+testdml3
+Time taken: 5.617 seconds, Fetched: 12 row(s)
+---------------------------------------------------------------
+[hduser@Inceptez ~]$ hcat -e 'create table dkmdb01.bpl (team varchar(4), played int, won int, drawn int, lost int, ponts int);'
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/usr/local/hadoop/share/hadoop/common/lib/slf4j-log4j12-1.7.5.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/usr/local/hive/lib/hive-jdbc-0.14.0-standalone.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/usr/local/hbase/lib/slf4j-log4j12-1.6.4.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.Log4jLoggerFactory]
+OK
+Time taken: 18.929 seconds
+---------------------------------------------------------------
+hive> show tables in dkmdb01;
+OK
+bpl
+emp1_like
+employee1
+players1
+players2
+players3
+salesorders
+salesorders2
+salesorders3
+student
+testdml1
+testdml2
+testdml3
+Time taken: 4.822 seconds, Fetched: 13 row(s)
+
+hive> show create table dkmdb01.bpl;
+OK
+CREATE TABLE `dkmdb01.bpl`(
+  `team` varchar(4), 
+  `played` int, 
+  `won` int, 
+  `drawn` int, 
+  `lost` int, 
+  `ponts` int)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.mapred.TextInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION
+  'hdfs://localhost:54310/user/hive/warehouse/dkmdb01.db/bpl'
+TBLPROPERTIES (
+  'transient_lastDdlTime'='1470246870')
+Time taken: 7.225 seconds, Fetched: 17 row(s)
+
+hive> select * from dkmdb01.bpl;
+OK
+Time taken: 1.706 seconds
+---------------------------------------------------------------
+grunt> store bpl_nh into 'dkmdb01.bpl' using org.apache.hive.hcatalog.pig.HCatStorer();
+2016-08-03 23:28:02,145 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+2016-08-03 23:28:02,367 [main] INFO  hive.metastore - Trying to connect to metastore with URI thrift://localhost:9083
+2016-08-03 23:28:02,656 [main] INFO  hive.metastore - Connected to metastore.
+2016-08-03 23:28:04,745 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.output.dir is deprecated. Instead, use mapreduce.output.fileoutputformat.outputdir
+2016-08-03 23:28:04,856 [main] ERROR org.apache.pig.tools.grunt.Grunt - ERROR 2116: 
+<line 5, column 0> Output Location Validation Failed for: 'dkmdb01.bpl More info to follow:
+org.apache.hive.hcatalog.common.HCatException : 2007 : Invalid column position in partition schema : Expected column <ponts> at position 6, found column <points>
+Details at logfile: /home/hduser/pig_1470243698049.log
+---------------------------------------------------------------
+hive> alter table rename ponts points int;
+FAILED: ParseException line 1:19 cannot recognize input near 'ponts' 'points' 'int' in alter table statement
+hive> alter table bpl change ponts points int;
+FAILED: SemanticException [Error 10001]: Table not found bpl
+
+hive> alter table dkmdb01.bpl change ponts points int;
+OK
+Time taken: 1.267 seconds
+
+hive> show create table dkmdb01.bpl;                  
+OK
+CREATE TABLE `dkmdb01.bpl`(
+  `team` varchar(4), 
+  `played` int, 
+  `won` int, 
+  `drawn` int, 
+  `lost` int, 
+  `points` int)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.mapred.TextInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION
+  'hdfs://localhost:54310/user/hive/warehouse/dkmdb01.db/bpl'
+TBLPROPERTIES (
+  'COLUMN_STATS_ACCURATE'='false', 
+  'last_modified_by'='hduser', 
+  'last_modified_time'='1470247300', 
+  'numFiles'='0', 
+  'numRows'='-1', 
+  'rawDataSize'='-1', 
+  'totalSize'='0', 
+  'transient_lastDdlTime'='1470247300')
+Time taken: 0.482 seconds, Fetched: 24 row(s)
+
+hive> alter table dkmdb01.bpl ROW FORMAT DELIMITED;;  
+FAILED: ParseException line 1:24 cannot recognize input near 'ROW' 'FORMAT' 'DELIMITED' in alter table statement
+
+hive> alter table dkmdb01.bpl set ROW FORMAT DELIMITED;;
+FAILED: ParseException line 1:24 cannot recognize input near 'set' 'ROW' 'FORMAT' in alter table statement
+
+hive> alter table dkmdb01.bpl set serdeproperties ('field.delim' = ',');                     
+OK
+Time taken: 0.42 seconds
+
+hive> show create table dkmdb01.bpl;                                    
+OK
+CREATE TABLE `dkmdb01.bpl`(
+  `team` varchar(4), 
+  `played` int, 
+  `won` int, 
+  `drawn` int, 
+  `lost` int, 
+  `points` int)
+ROW FORMAT DELIMITED 
+  FIELDS TERMINATED BY ',' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.mapred.TextInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION
+  'hdfs://localhost:54310/user/hive/warehouse/dkmdb01.db/bpl'
+TBLPROPERTIES (
+  'COLUMN_STATS_ACCURATE'='false', 
+  'last_modified_by'='hduser', 
+  'last_modified_time'='1470247871', 
+  'numFiles'='0', 
+  'numRows'='-1', 
+  'rawDataSize'='-1', 
+  'totalSize'='0', 
+  'transient_lastDdlTime'='1470247871')
+Time taken: 0.618 seconds, Fetched: 24 row(s)
+---------------------------------------------------------------
+[hduser@Inceptez mydata01]$ hdfs dfs -ls /user/hive/warehouse/dkmdb01.db/bpl/
+Found 1 items
+drwxr-xr-x   - hduser supergroup          0 2016-08-03 23:43 /user/hive/warehouse/dkmdb01.db/bpl/_SCRATCH0.228611909371248
+---------------------------------------------------------------
+grunt> store bpl_nh into 'dkmdb01.bpl' using org.apache.hive.hcatalog.pig.HCatStorer();
+
+Success!
+
+Job Stats (time in seconds):
+JobId	Maps	Reduces	MaxMapTime	MinMapTime	AvgMapTime	MedianMapTime	MaxReduceTime	MinReduceTime	AvgReduceTime	MedianReducetime	Alias	Feature	Outputs
+job_1470240554449_0004	1	0	70	70	70	70	0	0	0	0	bpl,bpl_nh	MAP_ONLY	dkmdb01.bpl,
+
+Input(s):
+Successfully read 7 records (535 bytes) from: "hdfs://localhost:54310/user/hduser/pig_data_01/BPL.csv"
+
+Output(s):
+Successfully stored 6 records (113 bytes) in: "dkmdb01.bpl"
+
+Counters:
+Total records written : 6
+Total bytes written : 113
+Spillable Memory Manager spill count : 0
+Total bags proactively spilled: 0
+Total records proactively spilled: 0
+
+Job DAG:
+job_1470240554449_0004
+
+
+2016-08-03 23:45:25,831 [main] INFO  org.apache.hadoop.yarn.client.RMProxy - Connecting to ResourceManager at /0.0.0.0:8032
+2016-08-03 23:45:25,841 [main] INFO  org.apache.hadoop.mapred.ClientServiceDelegate - Application state is completed. FinalApplicationStatus=SUCCEEDED. Redirecting to job history server
+2016-08-03 23:45:26,235 [main] INFO  org.apache.hadoop.yarn.client.RMProxy - Connecting to ResourceManager at /0.0.0.0:8032
+2016-08-03 23:45:26,254 [main] INFO  org.apache.hadoop.mapred.ClientServiceDelegate - Application state is completed. FinalApplicationStatus=SUCCEEDED. Redirecting to job history server
+2016-08-03 23:45:26,366 [main] INFO  org.apache.hadoop.yarn.client.RMProxy - Connecting to ResourceManager at /0.0.0.0:8032
+2016-08-03 23:45:26,409 [main] INFO  org.apache.hadoop.mapred.ClientServiceDelegate - Application state is completed. FinalApplicationStatus=SUCCEEDED. Redirecting to job history server
+2016-08-03 23:45:26,632 [main] WARN  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - Encountered Warning FIELD_DISCARDED_TYPE_CONVERSION_FAILED 5 time(s).
+2016-08-03 23:45:26,632 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - Success!
+---------------------------------------------------------------
+hive> select * from dkmdb01.bpl;                                        
+OK
+MANU	38	35	2	1	107
+CHEL	38	25	5	8	80
+ARSL	38	23	7	8	76
+MANC	38	20	8	10	68
+LIVP	38	18	8	12	62
+TOTH	38	16	11	11	59
+Time taken: 8.812 seconds, Fetched: 6 row(s)
+---------------------------------------------------------------
+[hduser@Inceptez mydata01]$ hdfs dfs -ls /user/hive/warehouse/dkmdb01.db/bpl/
+Found 1 items
+-rw-r--r--   1 hduser supergroup        113 2016-08-03 23:45 /user/hive/warehouse/dkmdb01.db/bpl/part-m-00000
+[hduser@Inceptez mydata01]$ hdfs dfs -cat /user/hive/warehouse/dkmdb01.db/bpl/part*
+MANU,38,35,2,1,107
+CHEL,38,25,5,8,80
+ARSL,38,23,7,8,76
+MANC,38,20,8,10,68
+LIVP,38,18,8,12,62
+TOTH,38,16,11,11,59
+---------------------------------------------------------------
+[hduser@Inceptez ~]$ mr-jobhistory-daemon.sh stop historyserver
+stopping historyserver
+====================================================================================================

@@ -1,0 +1,232 @@
+[root@sandbox ~]# yum install postfix mailx cyrus-sasl-plain
+Loaded plugins: fastestmirror, priorities
+Determining fastest mirrors
+epel/metalink                                                                                                                                    | 3.9 kB     00:00
+ * base: centos.excellmedia.net
+ * epel: epel.mirror.net.in
+ * extras: centos.excellmedia.net
+ * updates: centos.excellmedia.net
+http://s3.amazonaws.com/dev.hortonworks.com/AMBARI.bwga-1.x/repos/centos6/repodata/repomd.xml: [Errno 14] PYCURL ERROR 22 - "The requested URL returned error: 404 Not Found"
+Trying other mirror.
+HDP-2.0.6                                                                                                                                        | 2.9 kB     00:00
+HDP-UTILS-1.1.0.16                                                                                                                               | 2.9 kB     00:00
+base                                                                                                                                             | 3.7 kB     00:00
+base/primary_db                                                                                                                                  | 4.7 MB     00:12
+epel                                                                                                                                             | 4.3 kB     00:00
+epel/primary_db                                                                                                                                  | 5.9 MB     00:13
+extras                                                                                                                                           | 3.4 kB     00:00
+extras/primary_db                                                                                                                                |  37 kB     00:00
+hue-bigtop                                                                                                                                       | 2.9 kB     00:00
+sandbox                                                                                                                                          | 2.9 kB     00:00
+updates                                                                                                                                          | 3.4 kB     00:00
+updates/primary_db                                                                                                                               | 1.4 MB     00:03
+45 packages excluded due to repository priority protections
+Setting up Install Process
+Resolving Dependencies
+--> Running transaction check
+---> Package cyrus-sasl-plain.x86_64 0:2.1.23-15.el6_6.2 will be installed
+--> Processing Dependency: cyrus-sasl-lib = 2.1.23-15.el6_6.2 for package: cyrus-sasl-plain-2.1.23-15.el6_6.2.x86_64
+---> Package mailx.x86_64 0:12.4-6.el6 will be updated
+---> Package mailx.x86_64 0:12.4-8.el6_6 will be an update
+---> Package postfix.x86_64 2:2.6.6-2.2.el6_1 will be updated
+---> Package postfix.x86_64 2:2.6.6-6.el6_7.1 will be an update
+--> Processing Dependency: libssl.so.10(libssl.so.10)(64bit) for package: 2:postfix-2.6.6-6.el6_7.1.x86_64
+--> Processing Dependency: libcrypto.so.10(libcrypto.so.10)(64bit) for package: 2:postfix-2.6.6-6.el6_7.1.x86_64
+--> Processing Dependency: libcrypto.so.10(OPENSSL_1.0.1_EC)(64bit) for package: 2:postfix-2.6.6-6.el6_7.1.x86_64
+--> Processing Dependency: libcrypto.so.10(OPENSSL_1.0.1)(64bit) for package: 2:postfix-2.6.6-6.el6_7.1.x86_64
+--> Running transaction check
+---> Package cyrus-sasl-lib.x86_64 0:2.1.23-13.el6_3.1 will be updated
+--> Processing Dependency: cyrus-sasl-lib = 2.1.23-13.el6_3.1 for package: cyrus-sasl-gssapi-2.1.23-13.el6_3.1.x86_64
+--> Processing Dependency: cyrus-sasl-lib = 2.1.23-13.el6_3.1 for package: cyrus-sasl-2.1.23-13.el6_3.1.x86_64
+---> Package cyrus-sasl-lib.x86_64 0:2.1.23-15.el6_6.2 will be an update
+---> Package openssl.x86_64 0:1.0.0-27.el6_4.2 will be updated
+---> Package openssl.x86_64 0:1.0.1e-48.el6_8.1 will be an update
+--> Running transaction check
+---> Package cyrus-sasl.x86_64 0:2.1.23-13.el6_3.1 will be updated
+---> Package cyrus-sasl.x86_64 0:2.1.23-15.el6_6.2 will be an update
+---> Package cyrus-sasl-gssapi.x86_64 0:2.1.23-13.el6_3.1 will be updated
+---> Package cyrus-sasl-gssapi.x86_64 0:2.1.23-15.el6_6.2 will be an update
+--> Finished Dependency Resolution
+
+Dependencies Resolved
+
+========================================================================================================================================================================
+ Package                                      Arch                              Version                                        Repository                          Size
+========================================================================================================================================================================
+Installing:
+ cyrus-sasl-plain                             x86_64                            2.1.23-15.el6_6.2                              base                                31 k
+Updating:
+ mailx                                        x86_64                            12.4-8.el6_6                                   base                               235 k
+ postfix                                      x86_64                            2:2.6.6-6.el6_7.1                              base                               2.0 M
+Updating for dependencies:
+ cyrus-sasl                                   x86_64                            2.1.23-15.el6_6.2                              base                                78 k
+ cyrus-sasl-gssapi                            x86_64                            2.1.23-15.el6_6.2                              base                                34 k
+ cyrus-sasl-lib                               x86_64                            2.1.23-15.el6_6.2                              base                               136 k
+ openssl                                      x86_64                            1.0.1e-48.el6_8.1                              updates                            1.5 M
+
+Transaction Summary
+========================================================================================================================================================================
+Install       1 Package(s)
+Upgrade       6 Package(s)
+
+Total download size: 4.1 M
+Is this ok [y/N]: y
+Downloading Packages:
+(1/7): cyrus-sasl-2.1.23-15.el6_6.2.x86_64.rpm                                                                                                   |  78 kB     00:01
+(2/7): cyrus-sasl-gssapi-2.1.23-15.el6_6.2.x86_64.rpm                                                                                            |  34 kB     00:00
+(3/7): cyrus-sasl-lib-2.1.23-15.el6_6.2.x86_64.rpm                                                                                               | 136 kB     00:00
+(4/7): cyrus-sasl-plain-2.1.23-15.el6_6.2.x86_64.rpm                                                                                             |  31 kB     00:00
+(5/7): mailx-12.4-8.el6_6.x86_64.rpm                                                                                                             | 235 kB     00:00
+(6/7): openssl-1.0.1e-48.el6_8.1.x86_64.rpm                                                                                                      | 1.5 MB     00:03
+(7/7): postfix-2.6.6-6.el6_7.1.x86_64.rpm                                                                                                        | 2.0 MB     00:05
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Total                                                                                                                                   236 kB/s | 4.1 MB     00:17
+Running rpm_check_debug
+Running Transaction Test
+Transaction Test Succeeded
+Running Transaction
+  Updating   : cyrus-sasl-lib-2.1.23-15.el6_6.2.x86_64                                                                                                             1/13
+  Updating   : openssl-1.0.1e-48.el6_8.1.x86_64                                                                                                                    2/13
+  Updating   : cyrus-sasl-2.1.23-15.el6_6.2.x86_64                                                                                                                 3/13
+  Updating   : 2:postfix-2.6.6-6.el6_7.1.x86_64                                                                                                                    4/13
+  Updating   : cyrus-sasl-gssapi-2.1.23-15.el6_6.2.x86_64                                                                                                          5/13
+  Installing : cyrus-sasl-plain-2.1.23-15.el6_6.2.x86_64                                                                                                           6/13
+  Updating   : mailx-12.4-8.el6_6.x86_64                                                                                                                           7/13
+  Cleanup    : 2:postfix-2.6.6-2.2.el6_1.x86_64                                                                                                                    8/13
+  Cleanup    : cyrus-sasl-2.1.23-13.el6_3.1.x86_64                                                                                                                 9/13
+  Cleanup    : cyrus-sasl-gssapi-2.1.23-13.el6_3.1.x86_64                                                                                                         10/13
+  Cleanup    : cyrus-sasl-lib-2.1.23-13.el6_3.1.x86_64                                                                                                            11/13
+  Cleanup    : openssl-1.0.0-27.el6_4.2.x86_64                                                                                                                    12/13
+  Cleanup    : mailx-12.4-6.el6.x86_64                                                                                                                            13/13
+  Verifying  : cyrus-sasl-lib-2.1.23-15.el6_6.2.x86_64                                                                                                             1/13
+  Verifying  : cyrus-sasl-gssapi-2.1.23-15.el6_6.2.x86_64                                                                                                          2/13
+  Verifying  : cyrus-sasl-plain-2.1.23-15.el6_6.2.x86_64                                                                                                           3/13
+  Verifying  : cyrus-sasl-2.1.23-15.el6_6.2.x86_64                                                                                                                 4/13
+  Verifying  : 2:postfix-2.6.6-6.el6_7.1.x86_64                                                                                                                    5/13
+  Verifying  : mailx-12.4-8.el6_6.x86_64                                                                                                                           6/13
+  Verifying  : openssl-1.0.1e-48.el6_8.1.x86_64                                                                                                                    7/13
+  Verifying  : cyrus-sasl-2.1.23-13.el6_3.1.x86_64                                                                                                                 8/13
+  Verifying  : cyrus-sasl-lib-2.1.23-13.el6_3.1.x86_64                                                                                                             9/13
+  Verifying  : 2:postfix-2.6.6-2.2.el6_1.x86_64                                                                                                                   10/13
+  Verifying  : mailx-12.4-6.el6.x86_64                                                                                                                            11/13
+  Verifying  : openssl-1.0.0-27.el6_4.2.x86_64                                                                                                                    12/13
+  Verifying  : cyrus-sasl-gssapi-2.1.23-13.el6_3.1.x86_64                                                                                                         13/13
+
+Installed:
+  cyrus-sasl-plain.x86_64 0:2.1.23-15.el6_6.2
+
+Updated:
+  mailx.x86_64 0:12.4-8.el6_6                                                      postfix.x86_64 2:2.6.6-6.el6_7.1
+
+Dependency Updated:
+  cyrus-sasl.x86_64 0:2.1.23-15.el6_6.2  cyrus-sasl-gssapi.x86_64 0:2.1.23-15.el6_6.2  cyrus-sasl-lib.x86_64 0:2.1.23-15.el6_6.2  openssl.x86_64 0:1.0.1e-48.el6_8.1
+
+Complete!
+
+
+[root@sandbox ~]# cd /etc/postfix/
+[root@sandbox postfix]# ls -l
+total 140
+-rw-r--r-- 1 root root 19579 Nov 10  2015 access
+-rw-r--r-- 1 root root 11681 Nov 10  2015 canonical
+-rw-r--r-- 1 root root  9904 Nov 10  2015 generic
+-rw-r--r-- 1 root root 18287 Nov 10  2015 header_checks
+-rw-r--r-- 1 root root 27014 Nov 10  2015 main.cf
+-rw-r--r-- 1 root root  5113 Nov 10  2015 master.cf
+-rw-r--r-- 1 root root  6816 Nov 10  2015 relocated
+-rw-r--r-- 1 root root 12500 Nov 10  2015 transport
+-rw-r--r-- 1 root root 12494 Nov 10  2015 virtual
+
+[root@sandbox postfix]# echo "smtp.gmail.com    smtp_user:smtp_passwd" > /etc/postfix/sasl_passwd
+[root@sandbox postfix]# ls -l
+total 144
+-rw-r--r-- 1 root root 19579 Nov 10  2015 access
+-rw-r--r-- 1 root root 11681 Nov 10  2015 canonical
+-rw-r--r-- 1 root root  9904 Nov 10  2015 generic
+-rw-r--r-- 1 root root 18287 Nov 10  2015 header_checks
+-rw-r--r-- 1 root root 27014 Nov 10  2015 main.cf
+-rw-r--r-- 1 root root  5113 Nov 10  2015 master.cf
+-rw-r--r-- 1 root root  6816 Nov 10  2015 relocated
+-rw-r--r-- 1 root root    40 Aug 21 07:31 sasl_passwd
+-rw-r--r-- 1 root root 12500 Nov 10  2015 transport
+-rw-r--r-- 1 root root 12494 Nov 10  2015 virtual
+
+[root@sandbox postfix]# postmap hash:/etc/postfix/sasl_passwd
+
+[root@sandbox postfix]# cd /etc/pki/tls/certs/
+[root@sandbox certs]# ls -l
+total 1208
+-rw-r--r--. 1 root root 571450 Apr  7  2010 ca-bundle.crt
+-rw-r--r--. 1 root root 651083 Apr  7  2010 ca-bundle.trust.crt
+-rwxr-xr-x  1 root root    610 May  9 05:32 make-dummy-cert
+-rw-r--r--  1 root root   2242 May  9 05:32 Makefile
+-rwxr-xr-x  1 root root    829 May  9 05:32 renew-dummy-cert
+
+
+#Added by DKM
+smtp_sasl_auth_enable = yes
+smtp_sasl_password_maps = hash:/etc/postfix/sasl_passwd
+smtp_sasl_security_options = noanonymous
+# Secure channel TLS with exact nexthop name match.
+smtp_tls_security_level = secure
+smtp_tls_mandatory_protocols = TLSv1
+smtp_tls_mandatory_ciphers = high
+smtp_tls_secure_cert_match = nexthop
+smtp_tls_CAfile = /etc/pki/tls/certs/ca-bundle.crt
+relayhost = smtp.gmail.com:587
+
+
+[root@sandbox certs]# cd -
+/etc/postfix
+[root@sandbox postfix]# ls -l
+total 152
+-rw-r--r-- 1 root root 19579 Nov 10  2015 access
+-rw-r--r-- 1 root root 11681 Nov 10  2015 canonical
+-rw-r--r-- 1 root root  9904 Nov 10  2015 generic
+-rw-r--r-- 1 root root 18287 Nov 10  2015 header_checks
+-rw-r--r-- 1 root root 27014 Nov 10  2015 main.cf
+-rw-r--r-- 1 root root  5113 Nov 10  2015 master.cf
+-rw-r--r-- 1 root root  6816 Nov 10  2015 relocated
+-rw-r--r-- 1 root root    40 Aug 21 07:31 sasl_passwd
+-rw-r--r-- 1 root root 12288 Aug 21 07:32 sasl_passwd.db
+-rw-r--r-- 1 root root 12500 Nov 10  2015 transport
+-rw-r--r-- 1 root root 12494 Nov 10  2015 virtual
+[root@sandbox postfix]# cp main.cf /root/bkup_files/
+[root@sandbox postfix]# vi main.cf
+[root@sandbox postfix]# ls -l
+total 152
+-rw-r--r-- 1 root root 19579 Nov 10  2015 access
+-rw-r--r-- 1 root root 11681 Nov 10  2015 canonical
+-rw-r--r-- 1 root root  9904 Nov 10  2015 generic
+-rw-r--r-- 1 root root 18287 Nov 10  2015 header_checks
+-rw-r--r-- 1 root root 27429 Aug 21 07:35 main.cf
+-rw-r--r-- 1 root root  5113 Nov 10  2015 master.cf
+-rw-r--r-- 1 root root  6816 Nov 10  2015 relocated
+-rw-r--r-- 1 root root    40 Aug 21 07:31 sasl_passwd
+-rw-r--r-- 1 root root 12288 Aug 21 07:32 sasl_passwd.db
+-rw-r--r-- 1 root root 12500 Nov 10  2015 transport
+-rw-r--r-- 1 root root 12494 Nov 10  2015 virtual
+
+[root@sandbox postfix]# service postfix restart
+
+[root@sandbox mail]# echo "Test to gmail" | mail -s "DKM oozie" connectdeepakkumar.m@gmail.com
+
+[root@sandbox mail]# pwd
+/var/mail
+[root@sandbox mail]# ls -l
+total 620
+-rw-rw---- 1 ambari-qa mail      0 Oct 20  2013 ambari-qa
+-rw-rw---- 1 guest     mail      0 Oct 28  2013 guest
+-rw-rw---- 1 hbase     mail      0 Oct 20  2013 hbase
+-rw-rw---- 1 hcat      mail      0 Oct 20  2013 hcat
+-rw-rw---- 1 hdfs      mail      0 Oct 20  2013 hdfs
+-rw-rw---- 1 hive      mail      0 Oct 20  2013 hive
+-rw-rw---- 1 hue       mail      0 Oct 28  2013 hue
+-rw-rw---- 1 mapred    mail      0 Oct 20  2013 mapred
+-rw-rw---- 1 nagios    mail 313218 Aug 21 07:49 nagios
+-rw-rw---- 1 oozie     mail   6633 Aug 21 05:32 oozie
+-rw-rw---- 1 puppet    mail      0 Oct 20  2013 puppet
+-rw------- 1 root      mail 301658 Aug 21 06:37 root
+-rw-rw---- 1 vagrant   mail      0 Oct 20  2013 vagrant
+-rw-rw---- 1 yarn      mail      0 Oct 20  2013 yarn
+

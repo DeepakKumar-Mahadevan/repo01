@@ -1,0 +1,139 @@
+[hduser@Inceptez mydata01]$ vi wcip.txt
+[hduser@Inceptez mydata01]$ hdfs dfs -put wcip.txt spark_data/
+[hduser@Inceptez mydata01]$ hdfs dfs -ls spark_data/
+-rw-r--r--   1 hduser supergroup         81 2016-07-30 12:32 spark_data/coursedetails.txt
+-rw-r--r--   1 hduser supergroup         36 2016-07-31 21:19 spark_data/sampledata.txt
+-rw-r--r--   1 hduser supergroup        399 2016-07-30 12:04 spark_data/spark_input.txt
+-rw-r--r--   1 hduser supergroup        144 2016-08-19 11:45 spark_data/wcip.txt
+
+val ipfile = sc.textFile("spark_data/wcip.txt")
+val line_to_words = ipfile.flatMap(line => line.split(" "))
+val mapwords = line_to_words.map(word => (word, 1))
+val wc = mapwords.reduceByKey(_+_)
+wc.saveAsTextFile("spark_data/wcop")
+wc.cache()
+
+[hduser@Inceptez ~]$ spark-shell
+16/08/19 11:38:07 INFO util.Utils: Successfully started service 'SparkUI' on port 4040.
+16/08/19 11:38:07 INFO ui.SparkUI: Started SparkUI at http://192.168.107.133:4040
+
+-------------------
+
+
+scala> val ipfile = sc.textFile("spark_data/wcip.txt")
+16/08/19 11:57:59 INFO storage.MemoryStore: Block broadcast_0 stored as values in memory (estimated size 86.5 KB, free 86.5 KB)
+16/08/19 11:57:59 INFO storage.MemoryStore: Block broadcast_0_piece0 stored as bytes in memory (estimated size 19.6 KB, free 106.0 KB)
+16/08/19 11:58:00 INFO storage.BlockManagerInfo: Added broadcast_0_piece0 in memory on localhost:35634 (size: 19.6 KB, free: 517.4 MB)
+16/08/19 11:58:00 INFO spark.SparkContext: Created broadcast 0 from textFile at <console>:27
+ipfile: org.apache.spark.rdd.RDD[String] = MapPartitionsRDD[1] at textFile at <console>:27
+
+scala> val line_to_words = ipfile.flatMap(line => line.split(" "))
+line_to_words: org.apache.spark.rdd.RDD[String] = MapPartitionsRDD[2] at flatMap at <console>:29
+
+scala> val mapwords = line_to_words.map(word => (word, 1))
+mapwords: org.apache.spark.rdd.RDD[(String, Int)] = MapPartitionsRDD[3] at map at <console>:31
+
+scala> val wc = mapwords.reduceByKey(_+_)
+16/08/19 11:59:33 INFO mapred.FileInputFormat: Total input paths to process : 1
+wc: org.apache.spark.rdd.RDD[(String, Int)] = ShuffledRDD[4] at reduceByKey at <console>:33
+
+scala> wc.saveAsTextFile("spark_data/wcop")
+16/08/19 12:00:12 INFO Configuration.deprecation: mapred.tip.id is deprecated. Instead, use mapreduce.task.id
+16/08/19 12:00:12 INFO Configuration.deprecation: mapred.task.id is deprecated. Instead, use mapreduce.task.attempt.id
+16/08/19 12:00:12 INFO Configuration.deprecation: mapred.task.is.map is deprecated. Instead, use mapreduce.task.ismap
+16/08/19 12:00:12 INFO Configuration.deprecation: mapred.task.partition is deprecated. Instead, use mapreduce.task.partition
+16/08/19 12:00:12 INFO Configuration.deprecation: mapred.job.id is deprecated. Instead, use mapreduce.job.id
+16/08/19 12:00:13 INFO spark.SparkContext: Starting job: saveAsTextFile at <console>:36
+16/08/19 12:00:13 INFO scheduler.DAGScheduler: Registering RDD 3 (map at <console>:31)
+16/08/19 12:00:13 INFO scheduler.DAGScheduler: Got job 0 (saveAsTextFile at <console>:36) with 1 output partitions
+16/08/19 12:00:13 INFO scheduler.DAGScheduler: Final stage: ResultStage 1 (saveAsTextFile at <console>:36)
+16/08/19 12:00:13 INFO scheduler.DAGScheduler: Parents of final stage: List(ShuffleMapStage 0)
+16/08/19 12:00:13 INFO scheduler.DAGScheduler: Missing parents: List(ShuffleMapStage 0)
+16/08/19 12:00:13 INFO scheduler.DAGScheduler: Submitting ShuffleMapStage 0 (MapPartitionsRDD[3] at map at <console>:31), which has no missing parents
+16/08/19 12:00:13 INFO storage.MemoryStore: Block broadcast_1 stored as values in memory (estimated size 4.1 KB, free 110.1 KB)
+16/08/19 12:00:13 INFO storage.MemoryStore: Block broadcast_1_piece0 stored as bytes in memory (estimated size 2.3 KB, free 112.4 KB)
+16/08/19 12:00:13 INFO storage.BlockManagerInfo: Added broadcast_1_piece0 in memory on localhost:35634 (size: 2.3 KB, free: 517.4 MB)
+16/08/19 12:00:13 INFO spark.SparkContext: Created broadcast 1 from broadcast at DAGScheduler.scala:1006
+16/08/19 12:00:13 INFO scheduler.DAGScheduler: Submitting 1 missing tasks from ShuffleMapStage 0 (MapPartitionsRDD[3] at map at <console>:31)
+16/08/19 12:00:13 INFO scheduler.TaskSchedulerImpl: Adding task set 0.0 with 1 tasks
+16/08/19 12:00:13 INFO scheduler.TaskSetManager: Starting task 0.0 in stage 0.0 (TID 0, localhost, partition 0,ANY, 2145 bytes)
+16/08/19 12:00:13 INFO executor.Executor: Running task 0.0 in stage 0.0 (TID 0)
+16/08/19 12:00:13 INFO rdd.HadoopRDD: Input split: hdfs://localhost:54310/user/hduser/spark_data/wcip.txt:0+144
+16/08/19 12:00:14 INFO executor.Executor: Finished task 0.0 in stage 0.0 (TID 0). 2253 bytes result sent to driver
+16/08/19 12:00:14 INFO scheduler.DAGScheduler: ShuffleMapStage 0 (map at <console>:31) finished in 0.485 s
+16/08/19 12:00:14 INFO scheduler.TaskSetManager: Finished task 0.0 in stage 0.0 (TID 0) in 445 ms on localhost (1/1)
+16/08/19 12:00:14 INFO scheduler.DAGScheduler: looking for newly runnable stages
+16/08/19 12:00:14 INFO scheduler.DAGScheduler: running: Set()
+16/08/19 12:00:14 INFO scheduler.DAGScheduler: waiting: Set(ResultStage 1)
+16/08/19 12:00:14 INFO scheduler.DAGScheduler: failed: Set()
+16/08/19 12:00:14 INFO scheduler.DAGScheduler: Submitting ResultStage 1 (MapPartitionsRDD[5] at saveAsTextFile at <console>:36), which has no missing parents
+16/08/19 12:00:14 INFO scheduler.TaskSchedulerImpl: Removed TaskSet 0.0, whose tasks have all completed, from pool 
+16/08/19 12:00:14 INFO storage.MemoryStore: Block broadcast_2 stored as values in memory (estimated size 64.8 KB, free 177.2 KB)
+16/08/19 12:00:14 INFO storage.MemoryStore: Block broadcast_2_piece0 stored as bytes in memory (estimated size 22.5 KB, free 199.7 KB)
+16/08/19 12:00:14 INFO storage.BlockManagerInfo: Added broadcast_2_piece0 in memory on localhost:35634 (size: 22.5 KB, free: 517.4 MB)
+16/08/19 12:00:14 INFO spark.SparkContext: Created broadcast 2 from broadcast at DAGScheduler.scala:1006
+16/08/19 12:00:14 INFO scheduler.DAGScheduler: Submitting 1 missing tasks from ResultStage 1 (MapPartitionsRDD[5] at saveAsTextFile at <console>:36)
+16/08/19 12:00:14 INFO scheduler.TaskSchedulerImpl: Adding task set 1.0 with 1 tasks
+16/08/19 12:00:14 INFO scheduler.TaskSetManager: Starting task 0.0 in stage 1.0 (TID 1, localhost, partition 0,NODE_LOCAL, 1894 bytes)
+16/08/19 12:00:14 INFO executor.Executor: Running task 0.0 in stage 1.0 (TID 1)
+16/08/19 12:00:14 INFO storage.ShuffleBlockFetcherIterator: Getting 1 non-empty blocks out of 1 blocks
+16/08/19 12:00:14 INFO storage.ShuffleBlockFetcherIterator: Started 0 remote fetches in 12 ms
+16/08/19 12:00:14 INFO output.FileOutputCommitter: Saved output of task 'attempt_201608191200_0001_m_000000_1' to hdfs://localhost:54310/user/hduser/spark_data/wcop/_temporary/0/task_201608191200_0001_m_000000
+16/08/19 12:00:14 INFO mapred.SparkHadoopMapRedUtil: attempt_201608191200_0001_m_000000_1: Committed
+16/08/19 12:00:14 INFO executor.Executor: Finished task 0.0 in stage 1.0 (TID 1). 2080 bytes result sent to driver
+16/08/19 12:00:14 INFO scheduler.DAGScheduler: ResultStage 1 (saveAsTextFile at <console>:36) finished in 0.479 s
+16/08/19 12:00:14 INFO scheduler.TaskSetManager: Finished task 0.0 in stage 1.0 (TID 1) in 482 ms on localhost (1/1)
+16/08/19 12:00:14 INFO scheduler.TaskSchedulerImpl: Removed TaskSet 1.0, whose tasks have all completed, from pool 
+16/08/19 12:00:14 INFO scheduler.DAGScheduler: Job 0 finished: saveAsTextFile at <console>:36, took 1.372866 s
+
+scala> wc.cache()
+res1: wc.type = ShuffledRDD[4] at reduceByKey at <console>:33
+
+scala> 16/08/19 12:08:11 INFO storage.BlockManagerInfo: Removed broadcast_2_piece0 on localhost:35634 in memory (size: 22.5 KB, free: 517.4 MB)
+16/08/19 12:08:11 INFO spark.ContextCleaner: Cleaned accumulator 2
+16/08/19 12:08:11 INFO storage.BlockManagerInfo: Removed broadcast_1_piece0 on localhost:35634 in memory (size: 2.3 KB, free: 517.4 MB)
+16/08/19 12:08:11 INFO spark.ContextCleaner: Cleaned accumulator 1
+
+
+scala> wc.toDebugString
+res2: String = 
+(1) ShuffledRDD[4] at reduceByKey at <console>:33 [Memory Deserialized 1x Replicated]
+ +-(1) MapPartitionsRDD[3] at map at <console>:31 [Memory Deserialized 1x Replicated]
+    |  MapPartitionsRDD[2] at flatMap at <console>:29 [Memory Deserialized 1x Replicated]
+    |  MapPartitionsRDD[1] at textFile at <console>:27 [Memory Deserialized 1x Replicated]
+    |  spark_data/wcip.txt HadoopRDD[0] at textFile at <console>:27 [Memory Deserialized 1x Replicated]
+----------------------------
+scala> exit()
+16/08/19 12:13:55 INFO ui.SparkUI: Stopped Spark web UI at http://192.168.107.133:4040
+
+
+[hduser@Inceptez mydata01]$ hdfs dfs -ls spark_data/
+16/08/19 12:00:49 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Found 5 items
+-rw-r--r--   1 hduser supergroup         81 2016-07-30 12:32 spark_data/coursedetails.txt
+-rw-r--r--   1 hduser supergroup         36 2016-07-31 21:19 spark_data/sampledata.txt
+-rw-r--r--   1 hduser supergroup        399 2016-07-30 12:04 spark_data/spark_input.txt
+-rw-r--r--   1 hduser supergroup        144 2016-08-19 11:45 spark_data/wcip.txt
+drwxr-xr-x   - hduser supergroup          0 2016-08-19 12:00 spark_data/wcop
+[hduser@Inceptez mydata01]$ hdfs dfs -ls spark_data/wcop
+16/08/19 12:01:00 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Found 2 items
+-rw-r--r--   1 hduser supergroup          0 2016-08-19 12:00 spark_data/wcop/_SUCCESS
+-rw-r--r--   1 hduser supergroup        137 2016-08-19 12:00 spark_data/wcop/part-00000
+[hduser@Inceptez mydata01]$ hdfs dfs -cat spark_data/wcop/p*
+16/08/19 12:01:14 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+(talk.,1)
+(are,2)
+(not,1)
+(people,1)
+(share.,1)
+(or,1)
+(only,1)
+(as,8)
+(,1)
+(care,1)
+(they,7)
+(beautiful,2)
+(walk,1)
+(love,,1)
+(look,,1)

@@ -1,0 +1,352 @@
+[hduser@Inceptez ~]$ pwd
+/home/hduser
+[hduser@Inceptez ~]$ ls
+70-persistent-net.rules  eclipse-jee-juno-SR2-linux-gtk-x86_64.tar.gz  ifcfg-eth0    my_sh_scritps          pig_1470243551697.log  spark_scripts    y.pub
+bkup_files               fleet.tar.gz                                  install       mysql_pwd.txt          pig_1470243698049.log  Sqoop_Work-01~   zookeeper.out
+derby.log                flume_bkp                                     Installation  nifi_ip_dir_01         pig_1485879384527.log  Templates
+Desktop                  hive                                          metastore_db  nifi_op_dir_01         pigdata                twitter_data
+device1                  hive2local_data                               mrdata        nwbkup                 pig_logs               untitled folder
+dkmdb01_dir.txt          hive_data_01                                  Music         part-m-00000_new       pig_scripts_01         Videos
+Documents                hive_scripts                                  mydata01      Pictures               Public                 workspace
+Downloads                hive_udfs                                     MyJars        pig_1469031153489.log  spark_op               y
+[hduser@Inceptez ~]$ tar xvzf fleet.tar.gz
+
+[hduser@Inceptez ~]$ sudo service mysqld start
+[sudo] password for hduser:
+Starting mysqld:                                           [  OK  ]
+
+[hduser@Inceptez ~]$ mysql -u root -p
+Enter password:
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| DKMDB01            |
+| metastore          |
+| mysql              |
+| test               |
++--------------------+
+5 rows in set (0.19 sec)
+
+mysql> create database fleetdb;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> use fleetdb;
+Database changed
+
+mysql> CREATE TABLE timesheet(driverId INTEGER NOT NULL ,week INTEGER NOT NULL,hourslogged INTEGER NOT NULL,mileslogged INTEGER NOT NULL);
+mysql> source /home/hduser/fleet/timesheet_inserts.txt
+mysql> select count(*) from timesheet;
++----------+
+| count(*) |
++----------+
+|     1768 |
++----------+
+1 row in set (0.01 sec)
+
+mysql> CREATE TABLE driver(driverId INTEGER NOT NULL PRIMARY KEY,name VARCHAR(19) NOT NULL,ssn INTEGER NOT NULL,location VARCHAR(34) NOT NULL,certified VARCHAR(1) NOT NULL,wageplan VARCHAR(5) NOT NULL);
+Query OK, 0 rows affected (0.09 sec)
+mysql> source /home/hduser/fleet/drivers_inserts.txt;
+mysql> select count(*) from driver;
++----------+
+| count(*) |
++----------+
+|       33 |
++----------+
+1 row in set (0.00 sec)
+====================================================================================================
+[hduser@Inceptez ~]$ cd install/
+[hduser@Inceptez install]$ ls
+all_docs                            hbase-0.98.4-hadoop2-bin.tar.gz  kibana-6.1.1-linux-x86_64.tar.gz  sqoop-1.4.5.bin__hadoop-2.0.4-alpha.tar.gz
+apache-flume-1.4.0-bin.tar.gz       hdfs.conf                        mysql-connector-java.jar          squirrelsql-3.7.1-standard
+apache-hive-0.14.0-bin.tar.gz       helloword.java                   netcat_flume.conf                 squirrelsql-3.7.1-standard.zip
+apache-maven-3.0.5-bin.tar.gz       hive-exec-0.14.0.jar             nifi-0.6.0-bin.tar.gz             tail_exec.conf
+elasticsearch-6.1.1.tar.gz          hive-site_rms_transction.xml     parquet-hive-bundle-1.8.1.jar     twitter.conf
+flume-sources-1.0-SNAPSHOT.jar      hivexmlserde-1.0.5.3.jar         phoenix                           zookeeper-3.4.6.tar.gz
+flume-sources-1.0-SNAPSHOT_old.jar  hue-3.12.0.tgz                   pig-0.15.0.tar.gz
+hadoop-2.6.0.tar.gz                 IZ_KAFKA_NIFI_SPARK              sbt-0.13.5.rpm
+
+[hduser@Inceptez install]$ tar xvzf elasticsearch-6.1.1.tar.gz
+[hduser@Inceptez install]$ ls
+all_docs                            hadoop-2.6.0.tar.gz              IZ_KAFKA_NIFI_SPARK               sbt-0.13.5.rpm
+apache-flume-1.4.0-bin.tar.gz       hbase-0.98.4-hadoop2-bin.tar.gz  kibana-6.1.1-linux-x86_64.tar.gz  sqoop-1.4.5.bin__hadoop-2.0.4-alpha.tar.gz
+apache-hive-0.14.0-bin.tar.gz       hdfs.conf                        mysql-connector-java.jar          squirrelsql-3.7.1-standard
+apache-maven-3.0.5-bin.tar.gz       helloword.java                   netcat_flume.conf                 squirrelsql-3.7.1-standard.zip
+elasticsearch-6.1.1                 hive-exec-0.14.0.jar             nifi-0.6.0-bin.tar.gz             tail_exec.conf
+elasticsearch-6.1.1.tar.gz          hive-site_rms_transction.xml     parquet-hive-bundle-1.8.1.jar     twitter.conf
+flume-sources-1.0-SNAPSHOT.jar      hivexmlserde-1.0.5.3.jar         phoenix                           zookeeper-3.4.6.tar.gz
+flume-sources-1.0-SNAPSHOT_old.jar  hue-3.12.0.tgz                   pig-0.15.0.tar.gz
+
+[hduser@Inceptez install]$ sudo mv elasticsearch-6.1.1 /usr/local/elasticsearch
+[sudo] password for hduser:
+[hduser@Inceptez install]$ ls
+all_docs                            hbase-0.98.4-hadoop2-bin.tar.gz  kibana-6.1.1-linux-x86_64.tar.gz  sqoop-1.4.5.bin__hadoop-2.0.4-alpha.tar.gz
+apache-flume-1.4.0-bin.tar.gz       hdfs.conf                        mysql-connector-java.jar          squirrelsql-3.7.1-standard
+apache-hive-0.14.0-bin.tar.gz       helloword.java                   netcat_flume.conf                 squirrelsql-3.7.1-standard.zip
+apache-maven-3.0.5-bin.tar.gz       hive-exec-0.14.0.jar             nifi-0.6.0-bin.tar.gz             tail_exec.conf
+elasticsearch-6.1.1.tar.gz          hive-site_rms_transction.xml     parquet-hive-bundle-1.8.1.jar     twitter.conf
+flume-sources-1.0-SNAPSHOT.jar      hivexmlserde-1.0.5.3.jar         phoenix                           zookeeper-3.4.6.tar.gz
+flume-sources-1.0-SNAPSHOT_old.jar  hue-3.12.0.tgz                   pig-0.15.0.tar.gz
+hadoop-2.6.0.tar.gz                 IZ_KAFKA_NIFI_SPARK              sbt-0.13.5.rpm
+[hduser@Inceptez install]$ cd /usr/local/elasticsearch
+[hduser@Inceptez elasticsearch]$ ls
+bin  config  lib  LICENSE.txt  modules  NOTICE.txt  plugins  README.textile
+[hduser@Inceptez elasticsearch]$ cd bin/
+[hduser@Inceptez bin]$ ls
+elasticsearch      elasticsearch-env.bat       elasticsearch-plugin       elasticsearch-service-mgr.exe  elasticsearch-translog.bat
+elasticsearch.bat  elasticsearch-keystore      elasticsearch-plugin.bat   elasticsearch-service-x64.exe
+elasticsearch-env  elasticsearch-keystore.bat  elasticsearch-service.bat  elasticsearch-translog
+[hduser@Inceptez bin]$ elasticsearch
+-bash: elasticsearch: command not found
+[hduser@Inceptez bin]$ run elasticsearch
+-bash: run: command not found
+[hduser@Inceptez bin]$ sh elasticsearch
+the minimum required Java version is 8; your Java version from [/usr/lib/jvm/java-1.7.0-openjdk-1.7.0.111.x86_64/jre] does not meet this requirement
+[hduser@Inceptez ~]$ echo $JAVA_HOME
+/usr/lib/jvm/java-1.7.0-openjdk-1.7.0.111.x86_64
+====================================================================================================
+[hduser@Inceptez java-1.8.0]$ sudo yum install java-1.8.0-openjdk
+[hduser@Inceptez ~]$ vi .bashrc
+[hduser@Inceptez ~]$ source .bashrc
+[hduser@Inceptez ~]$ echo $JAVA_HOME
+/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.151-1.b12.el6_9.x86_64
+[hduser@Inceptez ~]$ cd /usr/local/elasticsearch/bin
+[hduser@Inceptez bin]$ ls
+elasticsearch      elasticsearch-env.bat       elasticsearch-plugin       elasticsearch-service-mgr.exe  elasticsearch-translog.bat
+elasticsearch.bat  elasticsearch-keystore      elasticsearch-plugin.bat   elasticsearch-service-x64.exe
+elasticsearch-env  elasticsearch-keystore.bat  elasticsearch-service.bat  elasticsearch-translog
+[hduser@Inceptez bin]$ sh elasticsearch
+[2018-01-02T21:27:11,320][WARN ][o.e.b.JNANatives         ] unable to install syscall filter:
+java.lang.UnsupportedOperationException: seccomp unavailable: CONFIG_SECCOMP not compiled into kernel, CONFIG_SECCOMP and CONFIG_SECCOMP_FILTER are needed
+        at org.elasticsearch.bootstrap.SystemCallFilter.linuxImpl(SystemCallFilter.java:341) ~[elasticsearch-6.1.1.jar:6.1.1]
+        at org.elasticsearch.bootstrap.SystemCallFilter.init(SystemCallFilter.java:616) ~[elasticsearch-6.1.1.jar:6.1.1]
+        at org.elasticsearch.bootstrap.JNANatives.tryInstallSystemCallFilter(JNANatives.java:258) [elasticsearch-6.1.1.jar:6.1.1]
+        at org.elasticsearch.bootstrap.Natives.tryInstallSystemCallFilter(Natives.java:113) [elasticsearch-6.1.1.jar:6.1.1]
+        at org.elasticsearch.bootstrap.Bootstrap.initializeNatives(Bootstrap.java:109) [elasticsearch-6.1.1.jar:6.1.1]
+        at org.elasticsearch.bootstrap.Bootstrap.setup(Bootstrap.java:171) [elasticsearch-6.1.1.jar:6.1.1]
+        at org.elasticsearch.bootstrap.Bootstrap.init(Bootstrap.java:322) [elasticsearch-6.1.1.jar:6.1.1]
+        at org.elasticsearch.bootstrap.Elasticsearch.init(Elasticsearch.java:121) [elasticsearch-6.1.1.jar:6.1.1]
+        at org.elasticsearch.bootstrap.Elasticsearch.execute(Elasticsearch.java:112) [elasticsearch-6.1.1.jar:6.1.1]
+        at org.elasticsearch.cli.EnvironmentAwareCommand.execute(EnvironmentAwareCommand.java:86) [elasticsearch-6.1.1.jar:6.1.1]
+        at org.elasticsearch.cli.Command.mainWithoutErrorHandling(Command.java:124) [elasticsearch-cli-6.1.1.jar:6.1.1]
+        at org.elasticsearch.cli.Command.main(Command.java:90) [elasticsearch-cli-6.1.1.jar:6.1.1]
+        at org.elasticsearch.bootstrap.Elasticsearch.main(Elasticsearch.java:92) [elasticsearch-6.1.1.jar:6.1.1]
+        at org.elasticsearch.bootstrap.Elasticsearch.main(Elasticsearch.java:85) [elasticsearch-6.1.1.jar:6.1.1]
+[2018-01-02T21:27:12,317][INFO ][o.e.n.Node               ] [] initializing ...
+[2018-01-02T21:27:13,158][INFO ][o.e.e.NodeEnvironment    ] [CJFO82N] using [1] data paths, mounts [[/ (rootfs)]], net usable_space [13.8gb], net total_space [25.9gb], types [rootfs]
+[2018-01-02T21:27:13,162][INFO ][o.e.e.NodeEnvironment    ] [CJFO82N] heap size [1007.3mb], compressed ordinary object pointers [true]
+[2018-01-02T21:27:13,171][INFO ][o.e.n.Node               ] node name [CJFO82N] derived from node ID [CJFO82NGTBK7fgpmpC-g9A]; set [node.name] to override
+[2018-01-02T21:27:13,174][INFO ][o.e.n.Node               ] version[6.1.1], pid[2654], build[bd92e7f/2017-12-17T20:23:25.338Z], OS[Linux/2.6.32-573.3.1.el6.x86_64/amd64], JVM[Oracle Corporation/OpenJDK 64-Bit Server VM/1.8.0_151/25.151-b12]
+[2018-01-02T21:27:13,175][INFO ][o.e.n.Node               ] JVM arguments [-Xms1g, -Xmx1g, -XX:+UseConcMarkSweepGC, -XX:CMSInitiatingOccupancyFraction=75, -XX:+UseCMSInitiatingOccupancyOnly, -XX:+AlwaysPreTouch, -Xss1m, -Djava.awt.headless=true, -Dfile.encoding=UTF-8, -Djna.nosys=true, -XX:-OmitStackTraceInFastThrow, -Dio.netty.noUnsafe=true, -Dio.netty.noKeySetOptimization=true, -Dio.netty.recycler.maxCapacityPerThread=0, -Dlog4j.shutdownHookEnabled=false, -Dlog4j2.disable.jmx=true, -XX:+HeapDumpOnOutOfMemoryError, -Des.path.home=/usr/local/elasticsearch, -Des.path.conf=/usr/local/elasticsearch/config]
+[2018-01-02T21:27:20,336][INFO ][o.e.p.PluginsService     ] [CJFO82N] loaded module [aggs-matrix-stats]
+[2018-01-02T21:27:20,337][INFO ][o.e.p.PluginsService     ] [CJFO82N] loaded module [analysis-common]
+[2018-01-02T21:27:20,338][INFO ][o.e.p.PluginsService     ] [CJFO82N] loaded module [ingest-common]
+[2018-01-02T21:27:20,338][INFO ][o.e.p.PluginsService     ] [CJFO82N] loaded module [lang-expression]
+[2018-01-02T21:27:20,476][INFO ][o.e.p.PluginsService     ] [CJFO82N] loaded module [lang-mustache]
+[2018-01-02T21:27:20,476][INFO ][o.e.p.PluginsService     ] [CJFO82N] loaded module [lang-painless]
+[2018-01-02T21:27:20,477][INFO ][o.e.p.PluginsService     ] [CJFO82N] loaded module [mapper-extras]
+[2018-01-02T21:27:20,477][INFO ][o.e.p.PluginsService     ] [CJFO82N] loaded module [parent-join]
+[2018-01-02T21:27:20,483][INFO ][o.e.p.PluginsService     ] [CJFO82N] loaded module [percolator]
+[2018-01-02T21:27:20,484][INFO ][o.e.p.PluginsService     ] [CJFO82N] loaded module [reindex]
+[2018-01-02T21:27:20,484][INFO ][o.e.p.PluginsService     ] [CJFO82N] loaded module [repository-url]
+[2018-01-02T21:27:20,485][INFO ][o.e.p.PluginsService     ] [CJFO82N] loaded module [transport-netty4]
+[2018-01-02T21:27:20,490][INFO ][o.e.p.PluginsService     ] [CJFO82N] loaded module [tribe]
+[2018-01-02T21:27:20,493][INFO ][o.e.p.PluginsService     ] [CJFO82N] no plugins loaded
+[2018-01-02T21:27:29,213][INFO ][o.e.d.DiscoveryModule    ] [CJFO82N] using discovery type [zen]
+[2018-01-02T21:27:31,038][INFO ][o.e.n.Node               ] initialized
+[2018-01-02T21:27:31,039][INFO ][o.e.n.Node               ] [CJFO82N] starting ...
+[2018-01-02T21:27:31,649][INFO ][o.e.t.TransportService   ] [CJFO82N] publish_address {127.0.0.1:9300}, bound_addresses {[::1]:9300}, {127.0.0.1:9300}
+[2018-01-02T21:27:31,687][WARN ][o.e.b.BootstrapChecks    ] [CJFO82N] max file descriptors [4096] for elasticsearch process is too low, increase to at least [65536]
+[2018-01-02T21:27:31,689][WARN ][o.e.b.BootstrapChecks    ] [CJFO82N] max number of threads [1024] for user [hduser] is too low, increase to at least [4096]
+[2018-01-02T21:27:31,691][WARN ][o.e.b.BootstrapChecks    ] [CJFO82N] max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]
+[2018-01-02T21:27:31,691][WARN ][o.e.b.BootstrapChecks    ] [CJFO82N] system call filters failed to install; check the logs and fix your configuration or disable system call filters at your own risk
+[2018-01-02T21:27:34,905][INFO ][o.e.c.s.MasterService    ] [CJFO82N] zen-disco-elected-as-master ([0] nodes joined), reason: new_master {CJFO82N}{CJFO82NGTBK7fgpmpC-g9A}{Esa354k1RQuF55xJBlWkKg}{127.0.0.1}{127.0.0.1:9300}
+[2018-01-02T21:27:34,966][INFO ][o.e.c.s.ClusterApplierService] [CJFO82N] new_master {CJFO82N}{CJFO82NGTBK7fgpmpC-g9A}{Esa354k1RQuF55xJBlWkKg}{127.0.0.1}{127.0.0.1:9300}, reason: apply cluster state (from master [master {CJFO82N}{CJFO82NGTBK7fgpmpC-g9A}{Esa354k1RQuF55xJBlWkKg}{127.0.0.1}{127.0.0.1:9300} committed version [1] source [zen-disco-elected-as-master ([0] nodes joined)]])
+[2018-01-02T21:27:35,099][INFO ][o.e.h.n.Netty4HttpServerTransport] [CJFO82N] publish_address {127.0.0.1:9200}, bound_addresses {[::1]:9200}, {127.0.0.1:9200}
+[2018-01-02T21:27:35,100][INFO ][o.e.n.Node               ] [CJFO82N] started
+[2018-01-02T21:27:35,169][INFO ][o.e.g.GatewayService     ] [CJFO82N] recovered [0] indices into cluster_state
+
+[hduser@Inceptez ~]$ curl http://localhost:9200/
+{
+  "name" : "CJFO82N",
+  "cluster_name" : "elasticsearch",
+  "cluster_uuid" : "A-51HYP8Q3uJbSWPtRzOYA",
+  "version" : {
+    "number" : "6.1.1",
+    "build_hash" : "bd92e7f",
+    "build_date" : "2017-12-17T20:23:25.338Z",
+    "build_snapshot" : false,
+    "lucene_version" : "7.1.0",
+    "minimum_wire_compatibility_version" : "5.6.0",
+    "minimum_index_compatibility_version" : "5.0.0"
+  },
+  "tagline" : "You Know, for Search"
+====================================================================================================
+^C[2018-01-02T21:39:10,250][INFO ][o.e.n.Node               ] [CJFO82N] stopping ...
+[2018-01-02T21:39:10,363][INFO ][o.e.n.Node               ] [CJFO82N] stopped
+[2018-01-02T21:39:10,365][INFO ][o.e.n.Node               ] [CJFO82N] closing ...
+[2018-01-02T21:39:10,417][INFO ][o.e.n.Node               ] [CJFO82N] closed
+
+[hduser@Inceptez ~]$ curl -X GET 'http://localhost:9200/'
+curl: (7) couldn't connect to host
+====================================================================================================
+[hduser@Inceptez bin]$ cd ..
+[hduser@Inceptez elasticsearch]$ ls
+bin  config  data  lib  LICENSE.txt  logs  modules  NOTICE.txt  plugins  README.textile
+[hduser@Inceptez elasticsearch]$ cd config/
+[hduser@Inceptez config]$ ls
+elasticsearch.yml  jvm.options  log4j2.properties
+[hduser@Inceptez config]$ vi elasticsearch.yml
+[hduser@Inceptez config]$ grep cluster.name elasticsearch.yml
+cluster.name: DKM ES Cluster
+[hduser@Inceptez config]$ grep node.name elasticsearch.yml
+node.name: DKM ES Node-1
+====================================================================================================
+[hduser@Inceptez config]$ cd ../bin/
+[hduser@Inceptez bin]$ sh elasticsearch
+[2018-01-02T21:43:15,827][WARN ][o.e.b.JNANatives         ] unable to install syscall filter:
+java.lang.UnsupportedOperationException: seccomp unavailable: CONFIG_SECCOMP not compiled into kernel, CONFIG_SECCOMP and CONFIG_SECCOMP_FILTER are needed
+        at org.elasticsearch.bootstrap.SystemCallFilter.linuxImpl(SystemCallFilter.java:341) ~[elasticsearch-6.1.1.jar:6.1.1]
+        at org.elasticsearch.bootstrap.SystemCallFilter.init(SystemCallFilter.java:616) ~[elasticsearch-6.1.1.jar:6.1.1]
+        at org.elasticsearch.bootstrap.JNANatives.tryInstallSystemCallFilter(JNANatives.java:258) [elasticsearch-6.1.1.jar:6.1.1]
+        at org.elasticsearch.bootstrap.Natives.tryInstallSystemCallFilter(Natives.java:113) [elasticsearch-6.1.1.jar:6.1.1]
+        at org.elasticsearch.bootstrap.Bootstrap.initializeNatives(Bootstrap.java:109) [elasticsearch-6.1.1.jar:6.1.1]
+        at org.elasticsearch.bootstrap.Bootstrap.setup(Bootstrap.java:171) [elasticsearch-6.1.1.jar:6.1.1]
+        at org.elasticsearch.bootstrap.Bootstrap.init(Bootstrap.java:322) [elasticsearch-6.1.1.jar:6.1.1]
+        at org.elasticsearch.bootstrap.Elasticsearch.init(Elasticsearch.java:121) [elasticsearch-6.1.1.jar:6.1.1]
+        at org.elasticsearch.bootstrap.Elasticsearch.execute(Elasticsearch.java:112) [elasticsearch-6.1.1.jar:6.1.1]
+        at org.elasticsearch.cli.EnvironmentAwareCommand.execute(EnvironmentAwareCommand.java:86) [elasticsearch-6.1.1.jar:6.1.1]
+        at org.elasticsearch.cli.Command.mainWithoutErrorHandling(Command.java:124) [elasticsearch-cli-6.1.1.jar:6.1.1]
+        at org.elasticsearch.cli.Command.main(Command.java:90) [elasticsearch-cli-6.1.1.jar:6.1.1]
+        at org.elasticsearch.bootstrap.Elasticsearch.main(Elasticsearch.java:92) [elasticsearch-6.1.1.jar:6.1.1]
+        at org.elasticsearch.bootstrap.Elasticsearch.main(Elasticsearch.java:85) [elasticsearch-6.1.1.jar:6.1.1]
+[2018-01-02T21:43:16,360][INFO ][o.e.n.Node               ] [DKM ES Node-1] initializing ...
+[2018-01-02T21:43:16,736][INFO ][o.e.e.NodeEnvironment    ] [DKM ES Node-1] using [1] data paths, mounts [[/ (rootfs)]], net usable_space [13.8gb], net total_space [25.9gb], types [rootfs]
+[2018-01-02T21:43:16,737][INFO ][o.e.e.NodeEnvironment    ] [DKM ES Node-1] heap size [1007.3mb], compressed ordinary object pointers [true]
+[2018-01-02T21:43:16,741][INFO ][o.e.n.Node               ] [DKM ES Node-1] node name [DKM ES Node-1], node ID [CJFO82NGTBK7fgpmpC-g9A]
+[2018-01-02T21:43:16,742][INFO ][o.e.n.Node               ] [DKM ES Node-1] version[6.1.1], pid[2824], build[bd92e7f/2017-12-17T20:23:25.338Z], OS[Linux/2.6.32-573.3.1.el6.x86_64/amd64], JVM[Oracle Corporation/OpenJDK 64-Bit Server VM/1.8.0_151/25.151-b12]
+[2018-01-02T21:43:16,743][INFO ][o.e.n.Node               ] [DKM ES Node-1] JVM arguments [-Xms1g, -Xmx1g, -XX:+UseConcMarkSweepGC, -XX:CMSInitiatingOccupancyFraction=75, -XX:+UseCMSInitiatingOccupancyOnly, -XX:+AlwaysPreTouch, -Xss1m, -Djava.awt.headless=true, -Dfile.encoding=UTF-8, -Djna.nosys=true, -XX:-OmitStackTraceInFastThrow, -Dio.netty.noUnsafe=true, -Dio.netty.noKeySetOptimization=true, -Dio.netty.recycler.maxCapacityPerThread=0, -Dlog4j.shutdownHookEnabled=false, -Dlog4j2.disable.jmx=true, -XX:+HeapDumpOnOutOfMemoryError, -Des.path.home=/usr/local/elasticsearch, -Des.path.conf=/usr/local/elasticsearch/config]
+[2018-01-02T21:43:19,957][INFO ][o.e.p.PluginsService     ] [DKM ES Node-1] loaded module [aggs-matrix-stats]
+[2018-01-02T21:43:19,958][INFO ][o.e.p.PluginsService     ] [DKM ES Node-1] loaded module [analysis-common]
+[2018-01-02T21:43:19,960][INFO ][o.e.p.PluginsService     ] [DKM ES Node-1] loaded module [ingest-common]
+[2018-01-02T21:43:19,961][INFO ][o.e.p.PluginsService     ] [DKM ES Node-1] loaded module [lang-expression]
+[2018-01-02T21:43:19,961][INFO ][o.e.p.PluginsService     ] [DKM ES Node-1] loaded module [lang-mustache]
+[2018-01-02T21:43:19,964][INFO ][o.e.p.PluginsService     ] [DKM ES Node-1] loaded module [lang-painless]
+[2018-01-02T21:43:19,965][INFO ][o.e.p.PluginsService     ] [DKM ES Node-1] loaded module [mapper-extras]
+[2018-01-02T21:43:19,965][INFO ][o.e.p.PluginsService     ] [DKM ES Node-1] loaded module [parent-join]
+[2018-01-02T21:43:19,967][INFO ][o.e.p.PluginsService     ] [DKM ES Node-1] loaded module [percolator]
+[2018-01-02T21:43:19,968][INFO ][o.e.p.PluginsService     ] [DKM ES Node-1] loaded module [reindex]
+[2018-01-02T21:43:19,968][INFO ][o.e.p.PluginsService     ] [DKM ES Node-1] loaded module [repository-url]
+[2018-01-02T21:43:19,969][INFO ][o.e.p.PluginsService     ] [DKM ES Node-1] loaded module [transport-netty4]
+[2018-01-02T21:43:19,969][INFO ][o.e.p.PluginsService     ] [DKM ES Node-1] loaded module [tribe]
+[2018-01-02T21:43:19,971][INFO ][o.e.p.PluginsService     ] [DKM ES Node-1] no plugins loaded
+[2018-01-02T21:43:26,748][INFO ][o.e.d.DiscoveryModule    ] [DKM ES Node-1] using discovery type [zen]
+[2018-01-02T21:43:28,437][INFO ][o.e.n.Node               ] [DKM ES Node-1] initialized
+[2018-01-02T21:43:28,438][INFO ][o.e.n.Node               ] [DKM ES Node-1] starting ...
+[2018-01-02T21:43:28,865][INFO ][o.e.t.TransportService   ] [DKM ES Node-1] publish_address {127.0.0.1:9300}, bound_addresses {[::1]:9300}, {127.0.0.1:9300}
+[2018-01-02T21:43:28,922][WARN ][o.e.b.BootstrapChecks    ] [DKM ES Node-1] max file descriptors [4096] for elasticsearch process is too low, increase to at least [65536]
+[2018-01-02T21:43:28,922][WARN ][o.e.b.BootstrapChecks    ] [DKM ES Node-1] max number of threads [1024] for user [hduser] is too low, increase to at least [4096]
+[2018-01-02T21:43:28,923][WARN ][o.e.b.BootstrapChecks    ] [DKM ES Node-1] max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]
+[2018-01-02T21:43:28,923][WARN ][o.e.b.BootstrapChecks    ] [DKM ES Node-1] system call filters failed to install; check the logs and fix your configuration or disable system call filters at your own risk
+[2018-01-02T21:43:32,111][INFO ][o.e.c.s.MasterService    ] [DKM ES Node-1] zen-disco-elected-as-master ([0] nodes joined), reason: new_master {DKM ES Node-1}{CJFO82NGTBK7fgpmpC-g9A}{5KbER6DzQWeomyh58xNtPQ}{127.0.0.1}{127.0.0.1:9300}
+[2018-01-02T21:43:32,129][INFO ][o.e.c.s.ClusterApplierService] [DKM ES Node-1] new_master {DKM ES Node-1}{CJFO82NGTBK7fgpmpC-g9A}{5KbER6DzQWeomyh58xNtPQ}{127.0.0.1}{127.0.0.1:9300}, reason: apply cluster state (from master [master {DKM ES Node-1}{CJFO82NGTBK7fgpmpC-g9A}{5KbER6DzQWeomyh58xNtPQ}{127.0.0.1}{127.0.0.1:9300} committed version [1] source [zen-disco-elected-as-master ([0] nodes joined)]])
+[2018-01-02T21:43:32,226][INFO ][o.e.h.n.Netty4HttpServerTransport] [DKM ES Node-1] publish_address {127.0.0.1:9200}, bound_addresses {[::1]:9200}, {127.0.0.1:9200}
+[2018-01-02T21:43:32,229][INFO ][o.e.n.Node               ] [DKM ES Node-1] started
+[2018-01-02T21:43:32,254][INFO ][o.e.g.GatewayService     ] [DKM ES Node-1] recovered [0] indices into cluster_state
+
+[hduser@Inceptez ~]$ curl -X GET 'http://localhost:9200/'
+{
+  "name" : "DKM ES Node-1",
+  "cluster_name" : "DKM ES Cluster",
+  "cluster_uuid" : "A-51HYP8Q3uJbSWPtRzOYA",
+  "version" : {
+    "number" : "6.1.1",
+    "build_hash" : "bd92e7f",
+    "build_date" : "2017-12-17T20:23:25.338Z",
+    "build_snapshot" : false,
+    "lucene_version" : "7.1.0",
+    "minimum_wire_compatibility_version" : "5.6.0",
+    "minimum_index_compatibility_version" : "5.0.0"
+  },
+  "tagline" : "You Know, for Search"
+}
+====================================================================================================
+[hduser@Inceptez install]$ tar xvzf kibana-6.1.1-linux-x86_64.tar.gz
+[hduser@Inceptez install]$ ls
+all_docs                            hbase-0.98.4-hadoop2-bin.tar.gz  kibana-6.1.1-linux-x86_64         sbt-0.13.5.rpm
+apache-flume-1.4.0-bin.tar.gz       hdfs.conf                        kibana-6.1.1-linux-x86_64.tar.gz  sqoop-1.4.5.bin__hadoop-2.0.4-alpha.tar.gz
+apache-hive-0.14.0-bin.tar.gz       helloword.java                   mysql-connector-java.jar          squirrelsql-3.7.1-standard
+apache-maven-3.0.5-bin.tar.gz       hive-exec-0.14.0.jar             netcat_flume.conf                 squirrelsql-3.7.1-standard.zip
+elasticsearch-6.1.1.tar.gz          hive-site_rms_transction.xml     nifi-0.6.0-bin.tar.gz             tail_exec.conf
+flume-sources-1.0-SNAPSHOT.jar      hivexmlserde-1.0.5.3.jar         parquet-hive-bundle-1.8.1.jar     twitter.conf
+flume-sources-1.0-SNAPSHOT_old.jar  hue-3.12.0.tgz                   phoenix                           zookeeper-3.4.6.tar.gz
+hadoop-2.6.0.tar.gz                 IZ_KAFKA_NIFI_SPARK              pig-0.15.0.tar.gz
+
+[hduser@Inceptez install]$ sudo mv kibana-6.1.1-linux-x86_64 /usr/local/kibana
+[hduser@Inceptez local]$ ls
+apache-maven-3.0.5  elasticsearch  flume  hadoop        hbase  include  kibana  lib64    maven  phoenix  sbin   spark  src
+bin                 etc            games  hadoop_store  hive   kafka    lib     libexec  nifi   pig      share  sqoop  zookeeper
+
+[hduser@Inceptez local]$ cd kibana/
+[hduser@Inceptez kibana]$ ls
+bin  config  data  LICENSE.txt  node  node_modules  NOTICE.txt  optimize  package.json  plugins  README.txt  src  ui_framework  webpackShims
+[hduser@Inceptez kibana]$ cd config/
+[hduser@Inceptez config]$ ls
+kibana.yml
+[hduser@Inceptez config]$ vi kibana.yml
+elasticsearch.url: "http://localhost:9200"
+
+[hduser@Inceptez config]$ cd ../bin/
+[hduser@Inceptez bin]$ ls
+kibana  kibana-keystore  kibana-plugin
+[hduser@Inceptez bin]$ sh kibana
+  log   [16:44:33.568] [info][status][plugin:kibana@6.1.1] Status changed from uninitialized to green - Ready
+  log   [16:44:33.728] [info][status][plugin:elasticsearch@6.1.1] Status changed from uninitialized to yellow - Waiting for Elasticsearch
+  log   [16:44:33.814] [info][status][plugin:console@6.1.1] Status changed from uninitialized to green - Ready
+  log   [16:44:33.999] [info][status][plugin:metrics@6.1.1] Status changed from uninitialized to green - Ready
+  log   [16:44:34.998] [info][status][plugin:timelion@6.1.1] Status changed from uninitialized to green - Ready
+  log   [16:44:35.019] [info][listening] Server running at http://localhost:5601
+  log   [16:44:35.115] [info][status][plugin:elasticsearch@6.1.1] Status changed from yellow to green - Ready
+====================================================================================================
+server.host: "0.0.0.0" to access Kibana from Windows
+====================================================================================================
+[hduser@Inceptez ~]$ cd /usr/local/
+[hduser@Inceptez local]$ ls
+apache-maven-3.0.5  elasticsearch  flume  hadoop        hbase  include  kibana  lib64    maven  phoenix  sbin   spark  src
+bin                 etc            games  hadoop_store  hive   kafka    lib     libexec  nifi   pig      share  sqoop  zookeeper
+
+[hduser@Inceptez fleet]$ cd
+[hduser@Inceptez ~]$ sudo rm -r /usr/local/kafka/
+[sudo] password for hduser:
+[hduser@Inceptez ~]$ cd fleet
+[hduser@Inceptez fleet]$ ls
+derby.log            fleet_Stream_complete_final_any_submision.scala  metastore_db                                     timesheet.csv
+drivers.csv          fleet_Stream_complete_final.scala                nohup.out                                        timesheet_inserts.txt
+drivers_inserts.txt  fleet_Stream_complete_final.scala~               pom.xml                                          truck_event_text_partition_backup.csv
+fleetkafka.xml       hs_err_pid9028.log                               simulate_fleets.bsh                              truck_event_text_partition.csv
+fleetout             kafka_2.11-0.10.0.1.tgz                          spark1-0.0.1-SNAPSHOT-jar-with-dependencies.jar
+[hduser@Inceptez fleet]$ tar xvzf kafka_2.11-0.10.0.1.tgz
+[hduser@Inceptez fleet]$ ls
+derby.log            fleet_Stream_complete_final_any_submision.scala  kafka_2.11-0.10.0.1.tgz  spark1-0.0.1-SNAPSHOT-jar-with-dependencies.jar
+drivers.csv          fleet_Stream_complete_final.scala                metastore_db             timesheet.csv
+drivers_inserts.txt  fleet_Stream_complete_final.scala~               nohup.out                timesheet_inserts.txt
+fleetkafka.xml       hs_err_pid9028.log                               pom.xml                  truck_event_text_partition_backup.csv
+fleetout             kafka_2.11-0.10.0.1                              simulate_fleets.bsh      truck_event_text_partition.csv
+[hduser@Inceptez fleet]$ sudo mv kafka_2.11-0.10.0.1 /usr/local/kafka
+[sudo] password for hduser:
+
+[hduser@Inceptez fleet]$ cat simulate_fleets.bsh
+echo 'starting fleet simulation'
+ln=`wc -l $1 | awk '{print $1}'`
+echo $ln
+for((i=1;i<=$ln;i+=13));
+do
+head -13 $1 > ./fleetout/simulateddata.txt
+sed -e '1,13d' < $1 > splitdata2.txt
+mv splitdata2.txt $1
+sleep 10
+wc -l $1
+done
+echo 'fleet simulation completed'

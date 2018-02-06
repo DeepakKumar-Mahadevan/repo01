@@ -1,0 +1,100 @@
+Creating Pair RDDs using keyBy & mapValues
+------------------------------------------
+scala> val orgz = sc.textFile("file:/home/hduser/mydata01/org.csv").map(x => x.split(",")).filter(x.charAt(0) != 'i')
+<console>:21: error: not found: value x
+         val orgz = sc.textFile("file:/home/hduser/mydata01/org.csv").map(x => x.split(",")).filter(x.charAt(0) != 'i')
+                                                                                                    ^
+scala> val orgz = sc.textFile("file:/home/hduser/mydata01/org.csv").map(x => x.split(",")).filter(_.charAt(0) != 'i')
+<console>:21: error: value charAt is not a member of Array[String]
+         val orgz = sc.textFile("file:/home/hduser/mydata01/org.csv").map(x => x.split(",")).filter(_.charAt(0) != 'i')
+                                                                                                      ^
+scala> val orgz = sc.textFile("file:/home/hduser/mydata01/org.csv").map(x => x.split(","))
+orgz: org.apache.spark.rdd.RDD[Array[String]] = MapPartitionsRDD[2] at map at <console>:21
+
+scala> val orgz1 = orgz.filter(_.charAt(0) != 'i')
+<console>:23: error: value charAt is not a member of Array[String]
+         val orgz1 = orgz.filter(_.charAt(0) != 'i')
+                                   ^
+scala> val orgz = sc.textFile("file:/home/hduser/mydata01/org.csv").filter(_.charAt(0) != 'i')
+orgz: org.apache.spark.rdd.RDD[String] = MapPartitionsRDD[5] at filter at <console>:21
+
+scala> orgz.count
+res0: Long = 14
+
+scala> orgz.first
+res1: String = 10,Microsoft,US
+
+scala> val orgz1 = orgz.mapValues(x => (x(1),x(2)))
+<console>:23: error: value mapValues is not a member of org.apache.spark.rdd.RDD[String]
+         val orgz1 = orgz.mapValues(x => (x(1),x(2)))
+                          ^
+scala> val orgz1 = orgz.map(_.split(","))
+orgz1: org.apache.spark.rdd.RDD[Array[String]] = MapPartitionsRDD[6] at map at <console>:23
+
+scala> orgz1.take(3)
+res2: Array[Array[String]] = Array(Array(10, Microsoft, US), Array(11, Macromedia, US), Array(12, Google, US))
+
+scala> val orgz2 = orgz.mapValues(x => (x(1),x(2)))
+<console>:23: error: value mapValues is not a member of org.apache.spark.rdd.RDD[String]
+         val orgz2 = orgz.mapValues(x => (x(1),x(2)))
+                          ^
+scala> val orgz2 = orgz1.mapValues(x => (x(1),x(2)))
+<console>:25: error: value mapValues is not a member of org.apache.spark.rdd.RDD[Array[String]]
+         val orgz2 = orgz1.mapValues(x => (x(1),x(2)))
+                           ^
+scala> val orgz2 = orgz1.keyBy(_(0))
+orgz2: org.apache.spark.rdd.RDD[(String, Array[String])] = MapPartitionsRDD[7] at keyBy at <console>:25
+
+scala> orgz2.take(3)
+res3: Array[(String, Array[String])] = Array((10,Array(10, Microsoft, US)), (11,Array(11, Macromedia, US)), (12,Array(12, Google, US)))
+
+scala> val orgz3 = orgz2.mapValues(x => (x(1),x(2)))
+orgz3: org.apache.spark.rdd.RDD[(String, (String, String))] = MapPartitionsRDD[8] at mapValues at <console>:27
+
+scala> orgz3.take(3)
+res4: Array[(String, (String, String))] = Array((10,(Microsoft,US)), (11,(Macromedia,US)), (12,(Google,US)))
+
+scala> val orgz_new = sc.textFile("file:/home/hduser/mydata01/org.csv").filter(_.charAt(0) != 'i').map(_.split(",")).keyBy(_(0)).mapValues(x => (x(1),x(2)))
+orgz_new: org.apache.spark.rdd.RDD[(String, (String, String))] = MapPartitionsRDD[14] at mapValues at <console>:21
+
+scala> orgz_new.take(3)
+res5: Array[(String, (String, String))] = Array((10,(Microsoft,US)), (11,(Macromedia,US)), (12,(Google,US)))
+====================================================================================================
+same as above, except that keyBy is replaced with map
+-----------------------------------------------------
+scala> val orgz_new2 = sc.textFile("file:/home/hduser/mydata01/org.csv").filter(_.charAt(0) != 'i').map(_.split(",")).map(x => (x(0),x))
+orgz_new2: org.apache.spark.rdd.RDD[(String, Array[String])] = MapPartitionsRDD[25] at map at <console>:21
+
+scala> orgz_new2.take(3)
+res7: Array[(String, Array[String])] = Array((10,Array(10, Microsoft, US)), (11,Array(11, Macromedia, US)), (12,Array(12, Google, US)))
+
+scala> val orgz_new2 = sc.textFile("file:/home/hduser/mydata01/org.csv").filter(_.charAt(0) != 'i').map(_.split(",")).map(x => (x(0),x)).mapValues(x => (x(1),x(2)))
+orgz_new2: org.apache.spark.rdd.RDD[(String, (String, String))] = MapPartitionsRDD[20] at mapValues at <console>:21
+
+scala> orgz_new2.take(3)
+res6: Array[(String, (String, String))] = Array((10,(Microsoft,US)), (11,(Macromedia,US)), (12,(Google,US)))
+====================================================================================================
+scala> val orgz_new2_sorted = orgz_new2.sortByKey()
+orgz_new2_sorted: org.apache.spark.rdd.RDD[(String, Array[String])] = ShuffledRDD[27] at sortByKey at <console>:23
+
+scala> orgz_new2_sorted.take(15)
+res10: Array[(String, Array[String])] = Array((10,Array(10, Microsoft, US)), (11,Array(11, Macromedia, US)), (12,Array(12, Google, US)), (13,Array(13, Yahoo, US)), (14,Array(14, Lycos, US)), (15,Array(15, IBM, US)), (16,Array(16, SAP, Germany)), (17,Array(17, Adobe, US)), (18,Array(18, Amazon, US)), (19,Array(19, Lavasoft, Sweden)), (20,Array(20, Cakewalk, US)), (21,Array(21, Sibelius, Finland)), (22,Array(22, Oracle, US)), (23,Array(23, Apple Systems, US)))
+
+scala> val orgz_new2_sorted = orgz_new2.sortByKey(desc)
+<console>:23: error: missing arguments for method desc in object functions;
+follow this method with `_' if you want to treat it as a partially applied function
+         val orgz_new2_sorted = orgz_new2.sortByKey(desc)
+                                   
+------
+myrdd.sortByKey(true)
+
+true => ascending
+false => descending
+------
+								   ^
+scala> val orgz_new2_sorted = orgz_new2.sortByKey(false)
+orgz_new2_sorted: org.apache.spark.rdd.RDD[(String, Array[String])] = ShuffledRDD[28] at sortByKey at <console>:23
+
+scala> orgz_new2_sorted.take(15)
+res11: Array[(String, Array[String])] = Array((23,Array(23, Apple Systems, US)), (22,Array(22, Oracle, US)), (21,Array(21, Sibelius, Finland)), (20,Array(20, Cakewalk, US)), (19,Array(19, Lavasoft, Sweden)), (18,Array(18, Amazon, US)), (17,Array(17, Adobe, US)), (16,Array(16, SAP, Germany)), (15,Array(15, IBM, US)), (14,Array(14, Lycos, US)), (13,Array(13, Yahoo, US)), (12,Array(12, Google, US)), (11,Array(11, Macromedia, US)), (10,Array(10, Microsoft, US)))
+====================================================================================================

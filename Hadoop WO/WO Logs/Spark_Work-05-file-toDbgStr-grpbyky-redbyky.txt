@@ -1,0 +1,271 @@
+scala> val a = sc.textFile ("file:///home/hduser/hive_data_01/salesorders.data")
+16/08/30 22:09:46 INFO storage.MemoryStore: Block broadcast_2 stored as values in memory (estimated size 228.9 KB, free 583.3 KB)
+16/08/30 22:09:46 INFO storage.MemoryStore: Block broadcast_2_piece0 stored as bytes in memory (estimated size 19.6 KB, free 602.9 KB)
+16/08/30 22:09:46 INFO storage.BlockManagerInfo: Added broadcast_2_piece0 in memory on localhost:40736 (size: 19.6 KB, free: 517.3 MB)
+16/08/30 22:09:46 INFO spark.SparkContext: Created broadcast 2 from textFile at <console>:21
+a: org.apache.spark.rdd.RDD[String] = MapPartitionsRDD[5] at textFile at <console>:21
+
+scala> a.toDebugString
+16/08/30 22:09:48 INFO mapred.FileInputFormat: Total input paths to process : 1
+res2: String =
+(1) MapPartitionsRDD[5] at textFile at <console>:21 []
+ |  file:///home/hduser/hive_data_01/salesorders.data HadoopRDD[4] at textFile at <console>:21 []
+
+scala> a.count
+res3: Long = 43
+
+scala> val b = a.map(rec => rec.split(","))
+b: org.apache.spark.rdd.RDD[Array[String]] = MapPartitionsRDD[6] at map at <console>:23
+
+scala> b.toDebugString
+res4: String =
+(1) MapPartitionsRDD[6] at map at <console>:23 []
+ |  MapPartitionsRDD[5] at textFile at <console>:21 []
+ |  file:///home/hduser/hive_data_01/salesorders.data HadoopRDD[4] at textFile at <console>:21 []
+
+scala> val c = b.map(rec => (rec(3))
+     | )
+c: org.apache.spark.rdd.RDD[String] = MapPartitionsRDD[7] at map at <console>:25
+ 
+scala> c.toDebugString
+res5: String =
+(1) MapPartitionsRDD[7] at map at <console>:25 []
+ |  MapPartitionsRDD[6] at map at <console>:23 []
+ |  MapPartitionsRDD[5] at textFile at <console>:21 []
+ |  file:///home/hduser/hive_data_01/salesorders.data HadoopRDD[4] at textFile at <console>:21 []
+
+scala> c.first()
+16/08/30 22:16:30 INFO spark.SparkContext: Starting job: first at <console>:28
+16/08/30 22:16:30 INFO scheduler.DAGScheduler: Got job 1 (first at <console>:28) with 1 output partitions
+16/08/30 22:16:30 INFO scheduler.DAGScheduler: Final stage: ResultStage 1 (first at <console>:28)
+16/08/30 22:16:30 INFO scheduler.DAGScheduler: Parents of final stage: List()
+16/08/30 22:16:30 INFO scheduler.DAGScheduler: Missing parents: List()
+16/08/30 22:16:30 INFO scheduler.DAGScheduler: Submitting ResultStage 1 (MapPartitionsRDD[7] at map at <console>:25), which has no missing parents
+16/08/30 22:16:30 INFO storage.MemoryStore: Block broadcast_4 stored as values in memory (estimated size 3.4 KB, free 610.9 KB)
+16/08/30 22:16:30 INFO storage.MemoryStore: Block broadcast_4_piece0 stored as bytes in memory (estimated size 1983.0 B, free 612.9 KB)
+16/08/30 22:16:30 INFO storage.BlockManagerInfo: Added broadcast_4_piece0 in memory on localhost:40736 (size: 1983.0 B, free: 517.3 MB)
+16/08/30 22:16:30 INFO spark.SparkContext: Created broadcast 4 from broadcast at DAGScheduler.scala:1006
+16/08/30 22:16:30 INFO scheduler.DAGScheduler: Submitting 1 missing tasks from ResultStage 1 (MapPartitionsRDD[7] at map at <console>:25)
+16/08/30 22:16:30 INFO scheduler.TaskSchedulerImpl: Adding task set 1.0 with 1 tasks
+16/08/30 22:16:30 INFO scheduler.TaskSetManager: Starting task 0.0 in stage 1.0 (TID 1, localhost, partition 0,PROCESS_LOCAL, 2149 bytes)
+16/08/30 22:16:30 INFO executor.Executor: Running task 0.0 in stage 1.0 (TID 1)
+16/08/30 22:16:30 INFO rdd.HadoopRDD: Input split: file:/home/hduser/hive_data_01/salesorders.data:0+2165
+16/08/30 22:16:30 INFO executor.Executor: Finished task 0.0 in stage 1.0 (TID 1). 2053 bytes result sent to driver
+16/08/30 22:16:30 INFO scheduler.DAGScheduler: ResultStage 1 (first at <console>:28) finished in 0.017 s
+16/08/30 22:16:30 INFO scheduler.DAGScheduler: Job 1 finished: first at <console>:28, took 0.029016 s
+res6: String = Pencil
+
+scala> val d = c.map(val => (val,1)).toDebugString
+<console>:1: error: illegal start of simple expression
+       val d = c.map(val => (val,1)).toDebugString
+                     ^
+
+scala> val d = c.map(value => (value,1)).toDebugString
+d: String =
+(1) MapPartitionsRDD[8] at map at <console>:27 []
+ |  MapPartitionsRDD[7] at map at <console>:25 []
+ |  MapPartitionsRDD[6] at map at <console>:23 []
+ |  MapPartitionsRDD[5] at textFile at <console>:21 []
+ |  file:///home/hduser/hive_data_01/salesorders.data HadoopRDD[4] at textFile at <console>:21 []
+
+scala> d.take(3)
+res7: String = (1)
+
+scala> d.count()
+<console>:30: error: not enough arguments for method count: (p: Char => Boolean)Int.
+Unspecified value parameter p.
+              d.count()
+                     ^
+
+scala> d.count
+<console>:30: error: missing arguments for method count in trait TraversableOnce;
+follow this method with `_' if you want to treat it as a partially applied function
+              d.count
+                ^
+
+scala> val d = c.map(value => (value,1))
+d: org.apache.spark.rdd.RDD[(String, Int)] = MapPartitionsRDD[9] at map at <console>:27
+
+scala> d.count
+res10: Long = 43
+
+scala> d.take(3)
+res11: Array[(String, Int)] = Array((Pencil,1), (Binder,1), (Pencil,1))
+
+scala> d.toDebugString
+res12: String =
+(1) MapPartitionsRDD[9] at map at <console>:27 []
+ |  MapPartitionsRDD[7] at map at <console>:25 []
+ |  MapPartitionsRDD[6] at map at <console>:23 []
+ |  MapPartitionsRDD[5] at textFile at <console>:21 []
+ |  file:///home/hduser/hive_data_01/salesorders.data HadoopRDD[4] at textFile at <console>:21 []
+ 
+scala> val e = d.groupByKey()
+e: org.apache.spark.rdd.RDD[(String, Iterable[Int])] = ShuffledRDD[10] at groupByKey at <console>:29
+
+scala> e.toDebugString
+res13: String =
+(1) ShuffledRDD[10] at groupByKey at <console>:29 []
+ +-(1) MapPartitionsRDD[9] at map at <console>:27 []
+    |  MapPartitionsRDD[7] at map at <console>:25 []
+    |  MapPartitionsRDD[6] at map at <console>:23 []
+    |  MapPartitionsRDD[5] at textFile at <console>:21 []
+    |  file:///home/hduser/hive_data_01/salesorders.data HadoopRDD[4] at textFile at <console>:21 []
+
+scala> e.count
+16/08/30 22:26:25 INFO spark.SparkContext: Starting job: count at <console>:32
+16/08/30 22:26:25 INFO scheduler.DAGScheduler: Registering RDD 9 (map at <console>:27)
+16/08/30 22:26:25 INFO scheduler.DAGScheduler: Got job 4 (count at <console>:32) with 1 output partitions
+16/08/30 22:26:25 INFO scheduler.DAGScheduler: Final stage: ResultStage 5 (count at <console>:32)
+16/08/30 22:26:25 INFO scheduler.DAGScheduler: Parents of final stage: List(ShuffleMapStage 4)
+16/08/30 22:26:25 INFO scheduler.DAGScheduler: Missing parents: List(ShuffleMapStage 4)
+16/08/30 22:26:25 INFO scheduler.DAGScheduler: Submitting ShuffleMapStage 4 (MapPartitionsRDD[9] at map at <console>:27), which has no missing parents
+16/08/30 22:26:25 INFO storage.MemoryStore: Block broadcast_7 stored as values in memory (estimated size 5.1 KB, free 628.7 KB)
+16/08/30 22:26:25 INFO storage.MemoryStore: Block broadcast_7_piece0 stored as bytes in memory (estimated size 2.7 KB, free 631.4 KB)
+16/08/30 22:26:25 INFO storage.BlockManagerInfo: Added broadcast_7_piece0 in memory on localhost:40736 (size: 2.7 KB, free: 517.3 MB)
+16/08/30 22:26:25 INFO spark.SparkContext: Created broadcast 7 from broadcast at DAGScheduler.scala:1006
+16/08/30 22:26:25 INFO scheduler.DAGScheduler: Submitting 1 missing tasks from ShuffleMapStage 4 (MapPartitionsRDD[9] at map at <console>:27)
+16/08/30 22:26:25 INFO scheduler.TaskSchedulerImpl: Adding task set 4.0 with 1 tasks
+16/08/30 22:26:25 INFO scheduler.TaskSetManager: Starting task 0.0 in stage 4.0 (TID 4, localhost, partition 0,PROCESS_LOCAL, 2138 bytes)
+16/08/30 22:26:25 INFO executor.Executor: Running task 0.0 in stage 4.0 (TID 4)
+16/08/30 22:26:25 INFO rdd.HadoopRDD: Input split: file:/home/hduser/hive_data_01/salesorders.data:0+2165
+16/08/30 22:26:25 INFO executor.Executor: Finished task 0.0 in stage 4.0 (TID 4). 2253 bytes result sent to driver
+16/08/30 22:26:25 INFO scheduler.DAGScheduler: ShuffleMapStage 4 (map at <console>:27) finished in 0.117 s
+16/08/30 22:26:25 INFO scheduler.DAGScheduler: looking for newly runnable stages
+16/08/30 22:26:25 INFO scheduler.DAGScheduler: running: Set()
+16/08/30 22:26:25 INFO scheduler.DAGScheduler: waiting: Set(ResultStage 5)
+16/08/30 22:26:25 INFO scheduler.DAGScheduler: failed: Set()
+16/08/30 22:26:25 INFO scheduler.TaskSetManager: Finished task 0.0 in stage 4.0 (TID 4) in 119 ms on localhost (1/1)
+16/08/30 22:26:25 INFO scheduler.TaskSchedulerImpl: Removed TaskSet 4.0, whose tasks have all completed, from pool
+16/08/30 22:26:25 INFO scheduler.DAGScheduler: Submitting ResultStage 5 (ShuffledRDD[10] at groupByKey at <console>:29), which has no missing parents
+16/08/30 22:26:25 INFO storage.MemoryStore: Block broadcast_8 stored as values in memory (estimated size 5.7 KB, free 637.1 KB)
+16/08/30 22:26:25 INFO storage.MemoryStore: Block broadcast_8_piece0 stored as bytes in memory (estimated size 3.0 KB, free 640.0 KB)
+16/08/30 22:26:25 INFO storage.BlockManagerInfo: Added broadcast_8_piece0 in memory on localhost:40736 (size: 3.0 KB, free: 517.3 MB)
+16/08/30 22:26:25 INFO spark.SparkContext: Created broadcast 8 from broadcast at DAGScheduler.scala:1006
+16/08/30 22:26:25 INFO scheduler.DAGScheduler: Submitting 1 missing tasks from ResultStage 5 (ShuffledRDD[10] at groupByKey at <console>:29)
+16/08/30 22:26:25 INFO scheduler.TaskSchedulerImpl: Adding task set 5.0 with 1 tasks
+16/08/30 22:26:25 INFO scheduler.TaskSetManager: Starting task 0.0 in stage 5.0 (TID 5, localhost, partition 0,NODE_LOCAL, 1894 bytes)
+16/08/30 22:26:25 INFO executor.Executor: Running task 0.0 in stage 5.0 (TID 5)
+16/08/30 22:26:26 INFO storage.ShuffleBlockFetcherIterator: Getting 1 non-empty blocks out of 1 blocks
+16/08/30 22:26:26 INFO storage.ShuffleBlockFetcherIterator: Started 0 remote fetches in 411 ms
+16/08/30 22:26:26 INFO storage.BlockManagerInfo: Removed broadcast_7_piece0 on localhost:40736 in memory (size: 2.7 KB, free: 517.3 MB)
+16/08/30 22:26:26 INFO storage.BlockManagerInfo: Removed broadcast_6_piece0 on localhost:40736 in memory (size: 2006.0 B, free: 517.3 MB)
+16/08/30 22:26:26 INFO spark.ContextCleaner: Cleaned accumulator 4
+16/08/30 22:26:26 INFO storage.BlockManagerInfo: Removed broadcast_5_piece0 on localhost:40736 in memory (size: 1945.0 B, free: 517.3 MB)
+16/08/30 22:26:26 INFO spark.ContextCleaner: Cleaned accumulator 3
+16/08/30 22:26:26 INFO storage.BlockManagerInfo: Removed broadcast_4_piece0 on localhost:40736 in memory (size: 1983.0 B, free: 517.3 MB)
+16/08/30 22:26:26 INFO spark.ContextCleaner: Cleaned accumulator 2
+16/08/30 22:26:26 INFO storage.BlockManagerInfo: Removed broadcast_3_piece0 on localhost:40736 in memory (size: 1790.0 B, free: 517.3 MB)
+16/08/30 22:26:26 INFO spark.ContextCleaner: Cleaned accumulator 1
+16/08/30 22:26:26 INFO executor.Executor: Finished task 0.0 in stage 5.0 (TID 5). 1203 bytes result sent to driver
+16/08/30 22:26:26 INFO scheduler.TaskSetManager: Finished task 0.0 in stage 5.0 (TID 5) in 508 ms on localhost (1/1)
+16/08/30 22:26:26 INFO scheduler.TaskSchedulerImpl: Removed TaskSet 5.0, whose tasks have all completed, from pool
+16/08/30 22:26:26 INFO scheduler.DAGScheduler: ResultStage 5 (count at <console>:32) finished in 0.508 s
+16/08/30 22:26:26 INFO scheduler.DAGScheduler: Job 4 finished: count at <console>:32, took 0.878380 s
+res14: Long = 5
+
+
+scala> val f = d.reduceByKey()
+<console>:29: error: overloaded method value reduceByKey with alternatives:
+  (func: (Int, Int) => Int)org.apache.spark.rdd.RDD[(String, Int)] <and>
+  (func: (Int, Int) => Int,numPartitions: Int)org.apache.spark.rdd.RDD[(String, Int)] <and>
+  (partitioner: org.apache.spark.Partitioner,func: (Int, Int) => Int)org.apache.spark.rdd.RDD[(String, Int)]
+ cannot be applied to ()
+         val f = d.reduceByKey()
+                   ^
+
+scala> val f = d.reduceByKey(v1,v1 => v1+v2)
+<console>:29: error: not found: value v1
+         val f = d.reduceByKey(v1,v1 => v1+v2)
+                               ^
+
+scala> val f = d.reduceByKey((v1,v1) => v1+v2))
+<console>:1: error: ';' expected but ')' found.
+       val f = d.reduceByKey((v1,v1) => v1+v2))
+                                              ^
+
+scala> val f = d.reduceByKey((v1,v1) => v1+v2)
+<console>:29: error: v1 is already defined as value v1
+         val f = d.reduceByKey((v1,v1) => v1+v2)
+                                   ^
+
+scala> val f = d.reduceByKey((v1,v2) => v1+v2)
+f: org.apache.spark.rdd.RDD[(String, Int)] = ShuffledRDD[11] at reduceByKey at <console>:29
+
+scala> f.toDebugString
+res15: String =
+(1) ShuffledRDD[11] at reduceByKey at <console>:29 []
+ +-(1) MapPartitionsRDD[9] at map at <console>:27 []
+    |  MapPartitionsRDD[7] at map at <console>:25 []
+    |  MapPartitionsRDD[6] at map at <console>:23 []
+    |  MapPartitionsRDD[5] at textFile at <console>:21 []
+    |  file:///home/hduser/hive_data_01/salesorders.data HadoopRDD[4] at textFile at <console>:21 []
+
+scala> e.collect()
+16/08/30 22:31:29 INFO spark.SparkContext: Starting job: collect at <console>:32
+16/08/30 22:31:29 INFO spark.MapOutputTrackerMaster: Size of output statuses for shuffle 0 is 143 bytes
+16/08/30 22:31:29 INFO scheduler.DAGScheduler: Got job 5 (collect at <console>:32) with 1 output partitions
+16/08/30 22:31:29 INFO scheduler.DAGScheduler: Final stage: ResultStage 7 (collect at <console>:32)
+16/08/30 22:31:29 INFO scheduler.DAGScheduler: Parents of final stage: List(ShuffleMapStage 6)
+16/08/30 22:31:29 INFO scheduler.DAGScheduler: Missing parents: List()
+16/08/30 22:31:29 INFO scheduler.DAGScheduler: Submitting ResultStage 7 (ShuffledRDD[10] at groupByKey at <console>:29), which has no missing parents
+16/08/30 22:31:29 INFO storage.MemoryStore: Block broadcast_9 stored as values in memory (estimated size 5.9 KB, free 617.4 KB)
+16/08/30 22:31:29 INFO storage.MemoryStore: Block broadcast_9_piece0 stored as bytes in memory (estimated size 3.0 KB, free 620.4 KB)
+16/08/30 22:31:29 INFO storage.BlockManagerInfo: Added broadcast_9_piece0 in memory on localhost:40736 (size: 3.0 KB, free: 517.3 MB)
+16/08/30 22:31:29 INFO spark.SparkContext: Created broadcast 9 from broadcast at DAGScheduler.scala:1006
+16/08/30 22:31:29 INFO scheduler.DAGScheduler: Submitting 1 missing tasks from ResultStage 7 (ShuffledRDD[10] at groupByKey at <console>:29)
+16/08/30 22:31:29 INFO scheduler.TaskSchedulerImpl: Adding task set 7.0 with 1 tasks
+16/08/30 22:31:29 INFO scheduler.TaskSetManager: Starting task 0.0 in stage 7.0 (TID 6, localhost, partition 0,NODE_LOCAL, 1894 bytes)
+16/08/30 22:31:29 INFO executor.Executor: Running task 0.0 in stage 7.0 (TID 6)
+16/08/30 22:31:29 INFO storage.ShuffleBlockFetcherIterator: Getting 1 non-empty blocks out of 1 blocks
+16/08/30 22:31:29 INFO storage.ShuffleBlockFetcherIterator: Started 0 remote fetches in 1 ms
+16/08/30 22:31:29 INFO executor.Executor: Finished task 0.0 in stage 7.0 (TID 6). 2131 bytes result sent to driver
+16/08/30 22:31:29 INFO scheduler.DAGScheduler: ResultStage 7 (collect at <console>:32) finished in 0.024 s
+16/08/30 22:31:29 INFO scheduler.DAGScheduler: Job 5 finished: collect at <console>:32, took 0.041588 s
+res17: Array[(String, Iterable[Int])] = Array((Pen,CompactBuffer(1, 1, 1, 1, 1)), (Desk,CompactBuffer(1, 1, 1)), (Pencil,CompactBuffer(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)), (Binder,CompactBuffer(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)), (Pen Set,CompactBuffer(1, 1, 1, 1, 1, 1, 1)))
+
+scala> 16/08/30 22:31:29 INFO scheduler.TaskSetManager: Finished task 0.0 in stage 7.0 (TID 6) in 24 ms on localhost (1/1)
+16/08/30 22:31:29 INFO scheduler.TaskSchedulerImpl: Removed TaskSet 7.0, whose tasks have all completed, from pool
+e.colle
+
+scala> f.collect()
+16/08/30 22:31:48 INFO spark.SparkContext: Starting job: collect at <console>:32
+16/08/30 22:31:48 INFO scheduler.DAGScheduler: Registering RDD 9 (map at <console>:27)
+16/08/30 22:31:48 INFO scheduler.DAGScheduler: Got job 6 (collect at <console>:32) with 1 output partitions
+16/08/30 22:31:48 INFO scheduler.DAGScheduler: Final stage: ResultStage 9 (collect at <console>:32)
+16/08/30 22:31:48 INFO scheduler.DAGScheduler: Parents of final stage: List(ShuffleMapStage 8)
+16/08/30 22:31:48 INFO scheduler.DAGScheduler: Missing parents: List(ShuffleMapStage 8)
+16/08/30 22:31:48 INFO scheduler.DAGScheduler: Submitting ShuffleMapStage 8 (MapPartitionsRDD[9] at map at <console>:27), which has no missing parents
+16/08/30 22:31:48 INFO storage.MemoryStore: Block broadcast_10 stored as values in memory (estimated size 4.2 KB, free 624.6 KB)
+16/08/30 22:31:48 INFO storage.MemoryStore: Block broadcast_10_piece0 stored as bytes in memory (estimated size 2.3 KB, free 626.9 KB)
+16/08/30 22:31:48 INFO storage.BlockManagerInfo: Added broadcast_10_piece0 in memory on localhost:40736 (size: 2.3 KB, free: 517.3 MB)
+16/08/30 22:31:48 INFO spark.SparkContext: Created broadcast 10 from broadcast at DAGScheduler.scala:1006
+16/08/30 22:31:48 INFO scheduler.DAGScheduler: Submitting 1 missing tasks from ShuffleMapStage 8 (MapPartitionsRDD[9] at map at <console>:27)
+16/08/30 22:31:48 INFO scheduler.TaskSchedulerImpl: Adding task set 8.0 with 1 tasks
+16/08/30 22:31:48 INFO scheduler.TaskSetManager: Starting task 0.0 in stage 8.0 (TID 7, localhost, partition 0,PROCESS_LOCAL, 2138 bytes)
+16/08/30 22:31:48 INFO executor.Executor: Running task 0.0 in stage 8.0 (TID 7)
+16/08/30 22:31:48 INFO rdd.HadoopRDD: Input split: file:/home/hduser/hive_data_01/salesorders.data:0+2165
+16/08/30 22:31:48 INFO executor.Executor: Finished task 0.0 in stage 8.0 (TID 7). 2253 bytes result sent to driver
+16/08/30 22:31:48 INFO scheduler.DAGScheduler: ShuffleMapStage 8 (map at <console>:27) finished in 0.053 s
+16/08/30 22:31:48 INFO scheduler.DAGScheduler: looking for newly runnable stages
+16/08/30 22:31:48 INFO scheduler.DAGScheduler: running: Set()
+16/08/30 22:31:48 INFO scheduler.DAGScheduler: waiting: Set(ResultStage 9)
+16/08/30 22:31:48 INFO scheduler.DAGScheduler: failed: Set()
+16/08/30 22:31:48 INFO scheduler.DAGScheduler: Submitting ResultStage 9 (ShuffledRDD[11] at reduceByKey at <console>:29), which has no missing parents
+16/08/30 22:31:48 INFO scheduler.TaskSetManager: Finished task 0.0 in stage 8.0 (TID 7) in 58 ms on localhost (1/1)
+16/08/30 22:31:48 INFO scheduler.TaskSchedulerImpl: Removed TaskSet 8.0, whose tasks have all completed, from pool
+16/08/30 22:31:48 INFO storage.MemoryStore: Block broadcast_11 stored as values in memory (estimated size 2.6 KB, free 629.5 KB)
+16/08/30 22:31:48 INFO storage.MemoryStore: Block broadcast_11_piece0 stored as bytes in memory (estimated size 1574.0 B, free 631.0 KB)
+16/08/30 22:31:48 INFO storage.BlockManagerInfo: Added broadcast_11_piece0 in memory on localhost:40736 (size: 1574.0 B, free: 517.3 MB)
+16/08/30 22:31:48 INFO spark.SparkContext: Created broadcast 11 from broadcast at DAGScheduler.scala:1006
+16/08/30 22:31:48 INFO scheduler.DAGScheduler: Submitting 1 missing tasks from ResultStage 9 (ShuffledRDD[11] at reduceByKey at <console>:29)
+16/08/30 22:31:48 INFO scheduler.TaskSchedulerImpl: Adding task set 9.0 with 1 tasks
+16/08/30 22:31:48 INFO scheduler.TaskSetManager: Starting task 0.0 in stage 9.0 (TID 8, localhost, partition 0,NODE_LOCAL, 1894 bytes)
+16/08/30 22:31:48 INFO executor.Executor: Running task 0.0 in stage 9.0 (TID 8)
+16/08/30 22:31:48 INFO storage.ShuffleBlockFetcherIterator: Getting 1 non-empty blocks out of 1 blocks
+16/08/30 22:31:48 INFO storage.ShuffleBlockFetcherIterator: Started 0 remote fetches in 1 ms
+16/08/30 22:31:48 INFO executor.Executor: Finished task 0.0 in stage 9.0 (TID 8). 1411 bytes result sent to driver
+16/08/30 22:31:48 INFO scheduler.DAGScheduler: ResultStage 9 (collect at <console>:32) finished in 0.014 s
+16/08/30 22:31:48 INFO scheduler.DAGScheduler: Job 6 finished: collect at <console>:32, took 0.099686 s
+res18: Array[(String, Int)] = Array((Pen,5), (Desk,3), (Pencil,13), (Binder,15), (Pen Set,7))
+====================================================================================================

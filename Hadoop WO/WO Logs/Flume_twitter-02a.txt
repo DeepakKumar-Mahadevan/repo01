@@ -1,0 +1,228 @@
+cp ~/install/flume-source*.jar /usr/local/flume/lib
+
+[hduser@Inceptez ~]$ hdfs dfs -mkdir twitter_data_hive_01
+16/08/16 23:32:34 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+[hduser@Inceptez ~]$ hdfs dfs -cp twitter_data/*V2* twitter_data_hive_01
+16/08/16 23:33:05 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+[hduser@Inceptez ~]$ hdfs dfs -ls twitter_data_hive_01
+16/08/16 23:33:28 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Found 24 items
+-rw-r--r--   1 hduser supergroup      37355 2016-08-16 23:33 twitter_data_hive_01/DKM_Twitter_App01-V2.1471370063122
+-rw-r--r--   1 hduser supergroup      43993 2016-08-16 23:33 twitter_data_hive_01/DKM_Twitter_App01-V2.1471370063123
+-rw-r--r--   1 hduser supergroup      51640 2016-08-16 23:33 twitter_data_hive_01/DKM_Twitter_App01-V2.1471370063124
+-rw-r--r--   1 hduser supergroup      53015 2016-08-16 23:33 twitter_data_hive_01/DKM_Twitter_App01-V2.1471370063125
+-rw-r--r--   1 hduser supergroup      56410 2016-08-16 23:33 twitter_data_hive_01/DKM_Twitter_App01-V2.1471370063126
+-rw-r--r--   1 hduser supergroup      47722 2016-08-16 23:33 twitter_data_hive_01/DKM_Twitter_App01-V2.1471370063127
+-rw-r--r--   1 hduser supergroup      56345 2016-08-16 23:33 twitter_data_hive_01/DKM_Twitter_App01-V2.1471370063128
+-rw-r--r--   1 hduser supergroup      43941 2016-08-16 23:33 twitter_data_hive_01/DKM_Twitter_App01-V2.1471370063129
+-rw-r--r--   1 hduser supergroup      53330 2016-08-16 23:33 twitter_data_hive_01/DKM_Twitter_App01-V2.1471370063130
+-rw-r--r--   1 hduser supergroup      40426 2016-08-16 23:33 twitter_data_hive_01/DKM_Twitter_App01-V2.1471370063131
+-rw-r--r--   1 hduser supergroup      45516 2016-08-16 23:33 twitter_data_hive_01/DKM_Twitter_App01-V2.1471370063132
+-rw-r--r--   1 hduser supergroup      51093 2016-08-16 23:33 twitter_data_hive_01/DKM_Twitter_App01-V2.1471370063133
+-rw-r--r--   1 hduser supergroup      51476 2016-08-16 23:33 twitter_data_hive_01/DKM_Twitter_App01-V2.1471370063134
+-rw-r--r--   1 hduser supergroup      48466 2016-08-16 23:33 twitter_data_hive_01/DKM_Twitter_App01-V2.1471370063135
+-rw-r--r--   1 hduser supergroup      49794 2016-08-16 23:33 twitter_data_hive_01/DKM_Twitter_App01-V2.1471370063136
+-rw-r--r--   1 hduser supergroup      43317 2016-08-16 23:33 twitter_data_hive_01/DKM_Twitter_App01-V2.1471370063137
+-rw-r--r--   1 hduser supergroup      55714 2016-08-16 23:33 twitter_data_hive_01/DKM_Twitter_App01-V2.1471370063138
+-rw-r--r--   1 hduser supergroup      45590 2016-08-16 23:33 twitter_data_hive_01/DKM_Twitter_App01-V2.1471370063139
+-rw-r--r--   1 hduser supergroup      51376 2016-08-16 23:33 twitter_data_hive_01/DKM_Twitter_App01-V2.1471370063140
+-rw-r--r--   1 hduser supergroup      57721 2016-08-16 23:33 twitter_data_hive_01/DKM_Twitter_App01-V2.1471370063141
+-rw-r--r--   1 hduser supergroup      40796 2016-08-16 23:33 twitter_data_hive_01/DKM_Twitter_App01-V2.1471370063142
+-rw-r--r--   1 hduser supergroup      50561 2016-08-16 23:33 twitter_data_hive_01/DKM_Twitter_App01-V2.1471370063143
+-rw-r--r--   1 hduser supergroup      52226 2016-08-16 23:33 twitter_data_hive_01/DKM_Twitter_App01-V2.1471370063144
+-rw-r--r--   1 hduser supergroup      17439 2016-08-16 23:33 twitter_data_hive_01/DKM_Twitter_App01-V2.1471370063145
+
+hive> list jars;
+hive> add jar /usr/local/hive/lib/hive-serdes-1.0-SNAPSHOT.jar;
+Added [/usr/local/hive/lib/hive-serdes-1.0-SNAPSHOT.jar] to class path
+Added resources: [/usr/local/hive/lib/hive-serdes-1.0-SNAPSHOT.jar]
+
+CREATE EXTERNAL TABLE tweets (
+   id BIGINT,
+   created_at STRING,
+   source STRING,
+   favorited BOOLEAN,
+   retweet_count INT,
+   retweeted_status STRUCT<
+      text:STRING,
+      user:STRUCT<screen_name:STRING,name:STRING>>,
+   entities STRUCT<
+      urls:ARRAY<STRUCT<expanded_url:STRING>>,
+      user_mentions:ARRAY<STRUCT<screen_name:STRING,name:STRING>>,
+      hashtags:ARRAY<STRUCT<text:STRING>>>,
+   text STRING,
+   user STRUCT<
+      screen_name:STRING,
+      name:STRING,
+      friends_count:INT,
+      followers_count:INT,
+      statuses_count:INT,
+      verified:BOOLEAN,
+      utc_offset:INT,
+      time_zone:STRING>,
+   in_reply_to_screen_name STRING
+) 
+ROW FORMAT SERDE 'com.cloudera.hive.serde.JSONSerDe'
+LOCATION '/user/hduser/twitter_data_hive_01/';
+
+hive> CREATE EXTERNAL TABLE tweets (
+    >    id BIGINT,
+    >    created_at STRING,
+    >    source STRING,
+    >    favorited BOOLEAN,
+    >    retweet_count INT,
+    >    retweeted_status STRUCT<
+    >       text:STRING,
+    >       user:STRUCT<screen_name:STRING,name:STRING>>,
+    >    entities STRUCT<
+    >       urls:ARRAY<STRUCT<expanded_url:STRING>>,
+    >       user_mentions:ARRAY<STRUCT<screen_name:STRING,name:STRING>>,
+    >       hashtags:ARRAY<STRUCT<text:STRING>>>,
+    >    text STRING,
+    >    user STRUCT<
+    >       screen_name:STRING,
+    >       name:STRING,
+    >       friends_count:INT,
+    >       followers_count:INT,
+    >       statuses_count:INT,
+    >       verified:BOOLEAN,
+    >       utc_offset:INT,
+    >       time_zone:STRING>,
+    >    in_reply_to_screen_name STRING
+    > ) 
+    > ROW FORMAT SERDE 'com.cloudera.hive.serde.JSONSerDe'
+    > LOCATION '/user/hduser/twitter_data_hive_01/';
+OK
+Time taken: 2.77 seconds
+
+hive> show create table tweets;
+OK
+createtab_stmt
+CREATE EXTERNAL TABLE `tweets`(
+  `id` bigint COMMENT 'from deserializer', 
+  `created_at` string COMMENT 'from deserializer', 
+  `source` string COMMENT 'from deserializer', 
+  `favorited` boolean COMMENT 'from deserializer', 
+  `retweet_count` int COMMENT 'from deserializer', 
+  `retweeted_status` struct<text:string,user:struct<screen_name:string,name:string>> COMMENT 'from deserializer', 
+  `entities` struct<urls:array<struct<expanded_url:string>>,user_mentions:array<struct<screen_name:string,name:string>>,hashtags:array<struct<text:string>>> COMMENT 'from deserializer', 
+  `text` string COMMENT 'from deserializer', 
+  `user` struct<screen_name:string,name:string,friends_count:int,followers_count:int,statuses_count:int,verified:boolean,utc_offset:int,time_zone:string> COMMENT 'from deserializer', 
+  `in_reply_to_screen_name` string COMMENT 'from deserializer')
+ROW FORMAT SERDE 
+  'com.cloudera.hive.serde.JSONSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.mapred.TextInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION
+  'hdfs://localhost:54310/user/hduser/twitter_data_hive_01'
+TBLPROPERTIES (
+  'COLUMN_STATS_ACCURATE'='false', 
+  'numFiles'='0', 
+  'numRows'='-1', 
+  'rawDataSize'='-1', 
+  'totalSize'='0', 
+  'transient_lastDdlTime'='1471371250')
+Time taken: 0.316 seconds, Fetched: 26 row(s)
+=============================================
+
+hive> select * from tweets limit 5;
+OK
+765607649027194880	Tue Aug 16 17:54:22 +0000 2016	<a href="http://twitter.com/download/iphone" rel="nofollow">Twitter for iPhone</a>	false	0	NULL	{"urls":[{"expanded_url":"http://www.techworld.com/security/uks-13-most-infamous-data-breaches-2016-3604586/"}],"user_mentions":[],"hashtags":[{"text":"dataprivacy"},{"text":"dataprotection"},{"text":"business"},{"text":"privacy"},{"text":"personaldata"},{"text":"law"}]}	One list your business does not want to get on! #dataprivacy #dataprotection #business #privacy #personaldata #law 
+https://t.co/i6tYmevxzx	{"screen_name":"lucydujones","name":"Lucy Du-Jones","friends_count":1239,"followers_count":1412,"statuses_count":369,"verified":false,"utc_offset":3600,"time_zone":"London"}	NULL
+765607649262141440	Tue Aug 16 17:54:22 +0000 2016	<a href="http://twitter.com/download/android" rel="nofollow">Twitter for Android</a>	false	0	{"text":"Yo vi nadar a Phelps, yo vi correr a Bolt, yo vi jugar a Messi. Gracias.","user":{"screen_name":"DiosMessi101","name":"Messi 10"}}	{"urls":[],"user_mentions":[{"screen_name":"DiosMessi101","name":"Messi 10"}],"hashtags":[]}	RT @DiosMessi101: Yo vi nadar a Phelps, yo vi correr a Bolt, yo vi jugar a Messi. Gracias.	{"screen_name":"juliojcm79","name":"Julio J Cm","friends_count":196,"followers_count":64,"statuses_count":1460,"verified":false,"utc_offset":null,"time_zone":null}	NULL
+765607648389697536	Tue Aug 16 17:54:22 +0000 2016	<a href="http://ifttt.com" rel="nofollow">IFTTT</a>	false	0	NULL	{"urls":[{"expanded_url":"http://bit.ly/2bvXWvL"}],"user_mentions":[],"hashtags":[{"text":"bigdata"},{"text":"analy"}]}	Brazil Taps GE's Big Data in Path to Canoeing Medal in Rio ... - Bloomberg https://t.co/5LqD3IGa8D #bigdata #analy… https://t.co/M7ahMl4zBC	{"screen_name":"formfeuer","name":"Formfeuer","friends_count":559,"followers_count":978,"statuses_count":33559,"verified":false,"utc_offset":null,"time_zone":null}	NULL
+765607649832566784	Tue Aug 16 17:54:22 +0000 2016	<a href="http://twitter.com/download/android" rel="nofollow">Twitter for Android</a>	false	0	{"text":"\"Hidden Figures\" tells a largely untold story of NASA's black female mathematicians https://t.co/1HnfzNuzgr https://t.co/3U0DjwM21y","user":{"screen_name":"nytimes","name":"The New York Times"}}	{"urls":[{"expanded_url":"http://nyti.ms/2b1S9gN"}],"user_mentions":[{"screen_name":"nytimes","name":"The New York Times"}],"hashtags":[]}	RT @nytimes: "Hidden Figures" tells a largely untold story of NASA's black female mathematicians https://t.co/1HnfzNuzgr https://t.co/3U0Dj…	{"screen_name":"KuldipPandey","name":"Kuldip Pandey","friends_count":195,"followers_count":140,"statuses_count":8773,"verified":false,"utc_offset":3600,"time_zone":"London"}	NULL
+765607650008510464	Tue Aug 16 17:54:22 +0000 2016	<a href="http://twitterfeed.com" rel="nofollow">twitterfeed</a>	false	0	NULL	{"urls":[{"expanded_url":"http://bit.ly/2aSjB3E"}],"user_mentions":[],"hashtags":[]}	Heskey: Coutinho Bisa Setara Dengan Messi dan Ronaldo: Emile Heskey meluncurkan pujian kepada bintang Liverpo... https://t.co/r5pbaDR1YD	{"screen_name":"BudhiDM","name":"dwibudhim","friends_count":203,"followers_count":449,"statuses_count":73835,"verified":false,"utc_offset":25200,"time_zone":"Jakarta"}	NULL
+Time taken: 0.907 seconds, Fetched: 5 row(s)
+
+
+hive> set hive.cli.print.header=true;
+hive> select * from tweets limit 1;  
+OK
+tweets.id	tweets.created_at	tweets.source	tweets.favorited	tweets.retweet_count	tweets.retweeted_status	tweets.entities	tweets.text	tweets.user	tweets.in_reply_to_screen_name
+765607649027194880	Tue Aug 16 17:54:22 +0000 2016	<a href="http://twitter.com/download/iphone" rel="nofollow">Twitter for iPhone</a>	false	0	NULL	{"urls":[{"expanded_url":"http://www.techworld.com/security/uks-13-most-infamous-data-breaches-2016-3604586/"}],"user_mentions":[],"hashtags":[{"text":"dataprivacy"},{"text":"dataprotection"},{"text":"business"},{"text":"privacy"},{"text":"personaldata"},{"text":"law"}]}	One list your business does not want to get on! #dataprivacy #dataprotection #business #privacy #personaldata #law 
+https://t.co/i6tYmevxzx	{"screen_name":"lucydujones","name":"Lucy Du-Jones","friends_count":1239,"followers_count":1412,"statuses_count":369,"verified":false,"utc_offset":3600,"time_zone":"London"}	NULL
+Time taken: 0.125 seconds, Fetched: 1 row(s)
+
+
+hive> select text from tweets limit 1;
+OK
+text
+One list your business does not want to get on! #dataprivacy #dataprotection #business #privacy #personaldata #law 
+https://t.co/i6tYmevxzx
+Time taken: 0.158 seconds, Fetched: 1 row(s)
+
+
+hive> select text from tweets limit 10;
+OK
+text
+One list your business does not want to get on! #dataprivacy #dataprotection #business #privacy #personaldata #law 
+https://t.co/i6tYmevxzx
+RT @DiosMessi101: Yo vi nadar a Phelps, yo vi correr a Bolt, yo vi jugar a Messi. Gracias.
+Brazil Taps GE's Big Data in Path to Canoeing Medal in Rio ... - Bloomberg https://t.co/5LqD3IGa8D #bigdata #analy… https://t.co/M7ahMl4zBC
+RT @nytimes: "Hidden Figures" tells a largely untold story of NASA's black female mathematicians https://t.co/1HnfzNuzgr https://t.co/3U0Dj…
+Heskey: Coutinho Bisa Setara Dengan Messi dan Ronaldo: Emile Heskey meluncurkan pujian kepada bintang Liverpo... https://t.co/r5pbaDR1YD
+【地球終了】遂に小惑星ベンヌが地球に衝突！！！「世界的大惨事になる」NASA探査機打ち上げへ。 https://t.co/uO0ObovcxB https://t.co/na5QMfbLKM
+Tech: MTN XtraBytes: How To Borrow Up-to (750MB) Data &amp; Pay Later https://t.co/ap0WQHT9XT https://t.co/XXpNcPlY6N
+RT @beatabiel: News Lab Data Visualization Round Up with Alberto Cairo @albertocairo - w ten piątek online o 21.00. Warto!  
+https://t.co/1…
+Data Security: Top 100 Influencer and Brands https://t.co/mg7z30yHsP #secureatsource #informaticacareers
+@xiaomiindonesia kenapa kalo download di playstore harus pake wifi? Gimana settingnya supaya download pake data seluler kayak biasa. Thx
+Time taken: 0.149 seconds, Fetched: 10 row(s)
+
+hive> select count(1) from tweets;
+Query ID = hduser_20160816234949_493c6110-35b0-4db2-96b5-2f874abe9dc0
+Total jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks determined at compile time: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1471368397470_0001, Tracking URL = http://Inceptez:8088/proxy/application_1471368397470_0001/
+Kill Command = /usr/local/hadoop/bin/hadoop job  -kill job_1471368397470_0001
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2016-08-16 23:50:20,963 Stage-1 map = 0%,  reduce = 0%
+2016-08-16 23:50:51,966 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 3.75 sec
+2016-08-16 23:51:28,024 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 5.35 sec
+MapReduce Total cumulative CPU time: 5 seconds 350 msec
+Ended Job = job_1471368397470_0001
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1  Reduce: 1   Cumulative CPU: 5.35 sec   HDFS Read: 1147967 HDFS Write: 4 SUCCESS
+Total MapReduce CPU Time Spent: 5 seconds 350 msec
+OK
+_c0
+234
+Time taken: 114.075 seconds, Fetched: 1 row(s)
+
+
+[hduser@Inceptez twitter_data]$ wc -l *V2*
+     10 DKM_Twitter_App01-V2.1471370063122
+     10 DKM_Twitter_App01-V2.1471370063123
+     10 DKM_Twitter_App01-V2.1471370063124
+     10 DKM_Twitter_App01-V2.1471370063125
+     10 DKM_Twitter_App01-V2.1471370063126
+     10 DKM_Twitter_App01-V2.1471370063127
+     10 DKM_Twitter_App01-V2.1471370063128
+     10 DKM_Twitter_App01-V2.1471370063129
+     10 DKM_Twitter_App01-V2.1471370063130
+     10 DKM_Twitter_App01-V2.1471370063131
+     10 DKM_Twitter_App01-V2.1471370063132
+     10 DKM_Twitter_App01-V2.1471370063133
+     10 DKM_Twitter_App01-V2.1471370063134
+     10 DKM_Twitter_App01-V2.1471370063135
+     10 DKM_Twitter_App01-V2.1471370063136
+     10 DKM_Twitter_App01-V2.1471370063137
+     10 DKM_Twitter_App01-V2.1471370063138
+     10 DKM_Twitter_App01-V2.1471370063139
+     10 DKM_Twitter_App01-V2.1471370063140
+     10 DKM_Twitter_App01-V2.1471370063141
+     10 DKM_Twitter_App01-V2.1471370063142
+     10 DKM_Twitter_App01-V2.1471370063143
+     10 DKM_Twitter_App01-V2.1471370063144
+      4 DKM_Twitter_App01-V2.1471370063145
+    234 total

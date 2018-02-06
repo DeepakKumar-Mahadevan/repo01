@@ -1,0 +1,58 @@
+cd /home/hduser/install
+wget http://mirror.cc.columbia.edu/pub/software/apache/maven/maven-3/3.0.5/binaries/apache-maven-3.0.5-bin.tar.gz
+
+[hduser@Inceptez install]$ ls -l
+total 1052644
+drwxrwxr-x 2 hduser hduser      4096 Jul 31 22:10 all_docs
+-rwxr-xr-x 1 hduser hduser  60965956 Aug 11  2015 apache-flume-1.4.0-bin.tar.gz
+-rwxr-xr-x 1 hduser hduser  80288778 Sep 25  2015 apache-hive-0.14.0-bin.tar.gz
+-rw-rw-r-- 1 hduser hduser   5144659 Feb 19  2013 apache-maven-3.0.5-bin.tar.gz
+-rwxr-xr-x 1 hduser hduser    395297 Jun  1 08:24 flume-sources-1.0-SNAPSHOT.jar
+-rwxr-xr-x 1 hduser hduser    397417 Aug 11  2015 flume-sources-1.0-SNAPSHOT_old.jar
+-rwxr-xr-x 1 hduser hduser 195257604 Jun 13  2015 hadoop-2.6.0.tar.gz
+-rwxr-xr-x 1 hduser hduser  80700853 Jul 22  2015 hbase-0.98.4-hadoop2-bin.tar.gz
+-rwxr-xr-x 1 hduser hduser       731 Nov  1  2015 hdfs.conf
+-rwxr-xr-x 1 hduser hduser       257 Jan 17  2016 helloword.java
+-rwxr-xr-x 1 hduser hduser  17407964 Nov 30  2015 hive-exec-0.14.0.jar
+-rwxr-xr-x 1 hduser hduser    144851 Dec  6  2015 hive-site_rms_transction.xml
+-rwxr-xr-x 1 hduser hduser     50656 Nov 30  2015 hivexmlserde-1.0.5.3.jar
+drwx------ 3 hduser hduser      4096 Jul 31 12:01 IZ_KAFKA_NIFI_SPARK
+-rwxr-xr-x 1 hduser hduser    915836 Jul  2  2015 mysql-connector-java.jar
+-rwxr-xr-x 1 hduser hduser       697 Jun 20  2015 netcat_flume.conf
+-rwxr-xr-x 1 hduser hduser 441634334 Apr  6 10:47 nifi-0.6.0-bin.tar.gz
+-rw-rw-r-- 1 hduser hduser   2996832 Sep 21 23:04 parquet-hive-bundle-1.8.1.jar
+drwx------ 2 hduser hduser      4096 Jul 23 11:44 phoenix
+-rwxr-xr-x 1 hduser hduser 120806038 Jul 31 12:17 pig-0.15.0.tar.gz
+-rw-rw-r-- 1 hduser hduser   1037624 May 27  2014 sbt-0.13.5.rpm
+-rwxr-xr-x 1 hduser hduser   6459385 Jul  4  2015 sqoop-1.4.5.bin__hadoop-2.0.4-alpha.tar.gz
+drwxr-xr-x 5 hduser hduser      4096 May  9 20:27 squirrelsql-3.7.1-standard
+-rw-rw-r-- 1 hduser hduser  45530058 Jul 23 17:47 squirrelsql-3.7.1-standard.zip
+-rwxr-xr-x 1 hduser hduser       581 Nov  1  2015 tail_exec.conf
+-rwxr-xr-x 1 hduser hduser      1284 Nov  1  2015 twitter.conf
+-rwxr-xr-x 1 hduser hduser  17699306 Aug  1  2015 zookeeper-3.4.6.tar.gz
+
+sudo tar xzf apache-maven-3.0.5-bin.tar.gz -C /usr/local
+cd /usr/local
+sudo ln -s apache-maven-3.0.5 maven
+
+[hduser@Inceptez local]$ ls
+apache-maven-3.0.5  etc    games   hadoop_store  hive     kafka  lib64    maven  phoenix  sbin   spark  src
+bin                 flume  hadoop  hbase         include  lib    libexec  nifi   pig      share  sqoop  zookeeper
+
+sudo vi /etc/profile.d/maven.sh
+copy and paste the below lines
+---
+export M2_HOME=/usr/local/maven
+export PATH=${M2_HOME}/bin:${PATH}
+---
+
+Finally, log out and log in again to activate the above environment variables.
+ To verify successful installation of maven, check the version of maven:
+ 
+[hduser@Inceptez ~]$ mvn -version
+Apache Maven 3.0.5 (r01de14724cdef164cd33c7c8c2fe155faf9602da; 2013-02-19 19:21:                                                                                        28+0530)
+Maven home: /usr/local/maven
+Java version: 1.7.0_111, vendor: Oracle Corporation
+Java home: /usr/lib/jvm/java-1.7.0-openjdk-1.7.0.111.x86_64/jre
+Default locale: en_US, platform encoding: UTF-8
+OS name: "linux", version: "2.6.32-573.3.1.el6.x86_64", arch: "amd64", family: "                                                                                        unix"

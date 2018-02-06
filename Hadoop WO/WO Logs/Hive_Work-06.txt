@@ -1,0 +1,87 @@
+hive> create table dummy1 (id int, value varchar(10));   
+OK
+Time taken: 2.019 seconds
+hive> show create table dummy1;
+OK
+CREATE TABLE `dummy1`(
+  `id` int, 
+  `value` varchar(10))
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.mapred.TextInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION
+  'hdfs://localhost:54310/user/hive/warehouse/dummy1'
+TBLPROPERTIES (
+  'transient_lastDdlTime'='1470231774')
+Time taken: 0.377 seconds, Fetched: 13 row(s)
+hive> insert into table dummy1 values (1,'test1');
+Query ID = hduser_20160803191414_ded2e651-9c1d-4743-b0bf-a38e1225b4e5
+Total jobs = 3
+Launching Job 1 out of 3
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_1470231561899_0001, Tracking URL = http://Inceptez:8088/proxy/application_1470231561899_0001/
+Kill Command = /usr/local/hadoop/bin/hadoop job  -kill job_1470231561899_0001
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 0
+2016-08-03 19:14:50,415 Stage-1 map = 0%,  reduce = 0%
+2016-08-03 19:15:00,524 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.74 sec
+MapReduce Total cumulative CPU time: 1 seconds 740 msec
+Ended Job = job_1470231561899_0001
+Stage-4 is selected by condition resolver.
+Stage-3 is filtered out by condition resolver.
+Stage-5 is filtered out by condition resolver.
+Moving data to: hdfs://localhost:54310/tmp/hive/hduser/496fc9ee-ea2a-4c64-acdc-7ec84731a7dc/hive_2016-08-03_19-14-32_115_5408190489948498752-1/-ext-10000
+Loading data to table default.dummy1
+[Error 30017]: Skipping stats aggregation by error org.apache.hadoop.hive.ql.metadata.HiveException: [Error 30001]: StatsPublisher cannot be initialized. There was a error in the initialization of StatsPublisher, and retrying might help. If you dont want the query to fail because accurate statistics could not be collected, set hive.stats.reliable=false
+Table default.dummy1 stats: [numFiles=1, totalSize=8]
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1   Cumulative CPU: 1.74 sec   HDFS Read: 283 HDFS Write: 8 SUCCESS
+Total MapReduce CPU Time Spent: 1 seconds 740 msec
+OK
+Time taken: 30.31 seconds
+hive> select * from dummy1;
+OK
+1	test1
+Time taken: 0.286 seconds, Fetched: 1 row(s)
+
+[hduser@Inceptez ~]$ hdfs dfs -ls hdfs://localhost:54310/user/hive/warehouse/dummy1
+16/08/03 19:16:38 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Found 1 items
+-rw-r--r--   1 hduser supergroup          8 2016-08-03 19:14 hdfs://localhost:54310/user/hive/warehouse/dummy1/000000_0
+[hduser@Inceptez ~]$ hdfs dfs -cat hdfs://localhost:54310/user/hive/warehouse/dummy1/000000_0
+16/08/03 19:18:26 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+1test1
+
+
+hive> create table dummy1 (id int, value varchar(10)) row format delimited fields terminated by ','; 
+FAILED: Execution Error, return code 1 from org.apache.hadoop.hive.ql.exec.DDLTask. AlreadyExistsException(message:Table dummy1 already exists)
+hive> create table dummy2 (id int, value varchar(10)) row format delimited fields terminated by ',';
+OK
+Time taken: 0.135 seconds
+hive> desc dummy2;
+OK
+id                  	int                 	                    
+value               	varchar(10)         	                    
+Time taken: 0.169 seconds, Fetched: 2 row(s)
+hive> show create table dummy2;
+OK
+CREATE TABLE `dummy2`(
+  `id` int, 
+  `value` varchar(10))
+ROW FORMAT DELIMITED 
+  FIELDS TERMINATED BY ',' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.mapred.TextInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION
+  'hdfs://localhost:54310/user/hive/warehouse/dummy2'
+TBLPROPERTIES (
+  'transient_lastDdlTime'='1470232230')
+Time taken: 0.151 seconds, Fetched: 13 row(s)
+
+[hduser@Inceptez ~]$ hdfs dfs -cat hdfs://localhost:54310/user/hive/warehouse/dummy2/000000_0
+16/08/03 19:23:45 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+1,test1

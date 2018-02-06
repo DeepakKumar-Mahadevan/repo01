@@ -1,0 +1,1047 @@
+pig -x local (Mapreduce wont run)
+pig -x mapreduce (or) pig (Mapreduce will run)
+pig -x local_tez (Mapreduce wont run)
+pig -x tez (Mapreduce with TEZ engine)
+
+Note: tez is inbuilt in pig, but not in Hive.
+====================================================================================================
+grunt> raw = LOAD '/home/hduser/pigdata/testdata.txt' USING PigStorage('\t');
+2016-07-16 10:10:58,118 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+2016-07-16 10:10:58,153 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - io.bytes.per.checksum is deprecated. Instead, use dfs.bytes-per-checksum
+grunt> DUMP raw;
+2016-07-16 10:11:06,322 [main] INFO  org.apache.pig.tools.pigstats.ScriptState - Pig features used in the script: UNKNOWN
+2016-07-16 10:11:06,576 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - io.bytes.per.checksum is deprecated. Instead, use dfs.bytes-per-checksum
+2016-07-16 10:11:06,591 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+2016-07-16 10:11:06,816 [main] INFO  org.apache.pig.newplan.logical.optimizer.LogicalPlanOptimizer - {RULES_ENABLED=[AddForEach, ColumnMapKeyPrune, ConstantCalculator, GroupByConstParallelSetter, LimitOptimizer, LoadTypeCastInserter, MergeFilter, MergeForEach, PartitionFilterOptimizer, PredicatePushdownOptimizer, PushDownForEachFlatten, PushUpFilter, SplitFilter, StreamTypeCastInserter]}
+2016-07-16 10:11:07,242 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MRCompiler - File concatenation threshold: 100 optimistic? false
+2016-07-16 10:11:07,361 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MultiQueryOptimizer - MR plan size before optimization: 1
+2016-07-16 10:11:07,362 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MultiQueryOptimizer - MR plan size after optimization: 1
+2016-07-16 10:11:07,603 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - io.bytes.per.checksum is deprecated. Instead, use dfs.bytes-per-checksum
+2016-07-16 10:11:07,613 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+2016-07-16 10:11:07,729 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - session.id is deprecated. Instead, use dfs.metrics.session-id
+2016-07-16 10:11:07,737 [main] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Initializing JVM Metrics with processName=JobTracker, sessionId=
+2016-07-16 10:11:07,944 [main] INFO  org.apache.pig.tools.pigstats.mapreduce.MRScriptState - Pig script settings are added to the job
+2016-07-16 10:11:07,964 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.job.reduce.markreset.buffer.percent is deprecated. Instead, use mapreduce.reduce.markreset.buffer.percent
+2016-07-16 10:11:07,964 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.JobControlCompiler - mapred.job.reduce.markreset.buffer.percent is not set, set to default 0.3
+2016-07-16 10:11:07,964 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.output.compress is deprecated. Instead, use mapreduce.output.fileoutputformat.compress
+2016-07-16 10:11:08,168 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.JobControlCompiler - Setting up single store job
+2016-07-16 10:11:08,334 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - 1 map-reduce job(s) waiting for submission.
+2016-07-16 10:11:08,342 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.job.tracker.http.address is deprecated. Instead, use mapreduce.jobtracker.http.address
+2016-07-16 10:11:08,397 [JobControl] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+2016-07-16 10:11:08,713 [JobControl] WARN  org.apache.hadoop.mapreduce.JobSubmitter - No job jar file set.  User classes may not be found. See Job or Job#setJar(String).
+2016-07-16 10:11:08,935 [JobControl] INFO  org.apache.hadoop.mapreduce.lib.input.FileInputFormat - Total input paths to process : 1
+2016-07-16 10:11:08,935 [JobControl] INFO  org.apache.pig.backend.hadoop.executionengine.util.MapRedUtil - Total input paths to process : 1
+2016-07-16 10:11:08,979 [JobControl] INFO  org.apache.pig.backend.hadoop.executionengine.util.MapRedUtil - Total input paths (combined) to process : 1
+2016-07-16 10:11:09,096 [JobControl] INFO  org.apache.hadoop.mapreduce.JobSubmitter - number of splits:1
+2016-07-16 10:11:09,945 [JobControl] INFO  org.apache.hadoop.mapreduce.JobSubmitter - Submitting tokens for job: job_local1386105133_0001
+2016-07-16 10:11:10,943 [JobControl] INFO  org.apache.hadoop.mapreduce.Job - The url to track the job: http://localhost:8080/
+2016-07-16 10:11:10,945 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - HadoopJobId: job_local1386105133_0001
+2016-07-16 10:11:10,946 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - Processing aliases raw
+2016-07-16 10:11:10,946 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - detailed locations: M: raw[1,6] C:  R: 
+2016-07-16 10:11:10,967 [Thread-15] INFO  org.apache.hadoop.mapred.LocalJobRunner - OutputCommitter set in config null
+2016-07-16 10:11:10,983 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - 0% complete
+2016-07-16 10:11:10,984 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - Running jobs are [job_local1386105133_0001]
+2016-07-16 10:11:11,130 [Thread-15] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+2016-07-16 10:11:11,131 [Thread-15] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.job.reduce.markreset.buffer.percent is deprecated. Instead, use mapreduce.reduce.markreset.buffer.percent
+2016-07-16 10:11:11,131 [Thread-15] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.job.tracker is deprecated. Instead, use mapreduce.jobtracker.address
+2016-07-16 10:11:11,132 [Thread-15] INFO  org.apache.hadoop.conf.Configuration.deprecation - io.bytes.per.checksum is deprecated. Instead, use dfs.bytes-per-checksum
+2016-07-16 10:11:11,148 [Thread-15] INFO  org.apache.hadoop.mapred.LocalJobRunner - OutputCommitter is org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.PigOutputCommitter
+2016-07-16 10:11:11,518 [Thread-15] INFO  org.apache.hadoop.mapred.LocalJobRunner - Waiting for map tasks
+2016-07-16 10:11:11,519 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.LocalJobRunner - Starting task: attempt_local1386105133_0001_m_000000_0
+2016-07-16 10:11:11,968 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.Task -  Using ResourceCalculatorProcessTree : [ ]
+2016-07-16 10:11:12,034 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.MapTask - Processing split: Number of splits :1
+Total Length = 100
+Input split[0]:
+   Length = 100
+   ClassName: org.apache.hadoop.mapreduce.lib.input.FileSplit
+   Locations:
+
+-----------------------
+
+2016-07-16 10:11:12,206 [LocalJobRunner Map Task Executor #0] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.PigRecordReader - Current split being processed file:/home/hduser/pigdata/testdata.txt:0+100
+2016-07-16 10:11:12,489 [LocalJobRunner Map Task Executor #0] WARN  org.apache.pig.data.SchemaTupleBackend - SchemaTupleBackend has already been initialized
+2016-07-16 10:11:12,534 [LocalJobRunner Map Task Executor #0] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.PigMapOnly$Map - Aliases being processed per job phase (AliasName[line,offset]): M: raw[1,6] C:  R: 
+2016-07-16 10:11:12,631 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.LocalJobRunner - 
+2016-07-16 10:11:12,632 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.Task - Task:attempt_local1386105133_0001_m_000000_0 is done. And is in the process of committing
+2016-07-16 10:11:12,688 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.LocalJobRunner - 
+2016-07-16 10:11:12,693 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.Task - Task attempt_local1386105133_0001_m_000000_0 is allowed to commit now
+2016-07-16 10:11:12,726 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapreduce.lib.output.FileOutputCommitter - Saved output of task 'attempt_local1386105133_0001_m_000000_0' to file:/tmp/temp1093467889/tmp-365421174/_temporary/0/task_local1386105133_0001_m_000000
+2016-07-16 10:11:12,730 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.LocalJobRunner - map
+2016-07-16 10:11:12,731 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.Task - Task 'attempt_local1386105133_0001_m_000000_0' done.
+2016-07-16 10:11:12,735 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.LocalJobRunner - Finishing task: attempt_local1386105133_0001_m_000000_0
+2016-07-16 10:11:12,735 [Thread-15] INFO  org.apache.hadoop.mapred.LocalJobRunner - map task executor complete.
+2016-07-16 10:11:12,996 [main] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+2016-07-16 10:11:13,014 [main] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+2016-07-16 10:11:13,018 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.map.tasks is deprecated. Instead, use mapreduce.job.maps
+2016-07-16 10:11:13,018 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.reduce.tasks is deprecated. Instead, use mapreduce.job.reduces
+2016-07-16 10:11:13,034 [main] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+2016-07-16 10:11:13,201 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - 100% complete
+2016-07-16 10:11:13,208 [main] INFO  org.apache.pig.tools.pigstats.mapreduce.SimplePigStats - Script Statistics: 
+
+HadoopVersion	PigVersion	UserId	StartedAt	FinishedAt	Features
+2.6.0	0.15.0	hduser	2016-07-16 10:11:07	2016-07-16 10:11:13	UNKNOWN
+
+Success!
+
+Job Stats (time in seconds):
+JobId	Maps	Reduces	MaxMapTime	MinMapTime	AvgMapTime	MedianMapTime	MaxReduceTime	MinReduceTime	AvgReduceTime	MedianReducetime	Alias	Feature	Outputs
+job_local1386105133_0001	1	0	n/a	n/a	n/a	n/a	0	0	0	0	raw	MAP_ONLY	file:/tmp/temp1093467889/tmp-365421174,
+
+Input(s):
+Successfully read 2 records from: "/home/hduser/pigdata/testdata.txt"
+
+Output(s):
+Successfully stored 2 records in: "file:/tmp/temp1093467889/tmp-365421174"
+
+Counters:
+Total records written : 2
+Total bytes written : 0
+Spillable Memory Manager spill count : 0
+Total bags proactively spilled: 0
+Total records proactively spilled: 0
+
+Job DAG:
+job_local1386105133_0001
+
+
+2016-07-16 10:11:13,210 [main] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+2016-07-16 10:11:13,212 [main] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+2016-07-16 10:11:13,217 [main] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+2016-07-16 10:11:13,241 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - Success!
+2016-07-16 10:11:13,250 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - io.bytes.per.checksum is deprecated. Instead, use dfs.bytes-per-checksum
+2016-07-16 10:11:13,361 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+2016-07-16 10:11:13,362 [main] WARN  org.apache.pig.data.SchemaTupleBackend - SchemaTupleBackend has already been initialized
+2016-07-16 10:11:13,482 [main] INFO  org.apache.hadoop.mapreduce.lib.input.FileInputFormat - Total input paths to process : 1
+2016-07-16 10:11:13,482 [main] INFO  org.apache.pig.backend.hadoop.executionengine.util.MapRedUtil - Total input paths to process : 1
+(this is a sample data to test pig commands)
+(display of this data shows the execution of the commands)
+grunt> STORE raw INTO '/home/hduser/pigdata/rawstorage';
+2016-07-16 10:11:32,698 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+2016-07-16 10:11:32,700 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - io.bytes.per.checksum is deprecated. Instead, use dfs.bytes-per-checksum
+2016-07-16 10:11:32,719 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.textoutputformat.separator is deprecated. Instead, use mapreduce.output.textoutputformat.separator
+2016-07-16 10:11:32,826 [main] INFO  org.apache.pig.tools.pigstats.ScriptState - Pig features used in the script: UNKNOWN
+2016-07-16 10:11:32,900 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - io.bytes.per.checksum is deprecated. Instead, use dfs.bytes-per-checksum
+2016-07-16 10:11:32,901 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+2016-07-16 10:11:32,901 [main] WARN  org.apache.pig.data.SchemaTupleBackend - SchemaTupleBackend has already been initialized
+2016-07-16 10:11:32,902 [main] INFO  org.apache.pig.newplan.logical.optimizer.LogicalPlanOptimizer - {RULES_ENABLED=[AddForEach, ColumnMapKeyPrune, ConstantCalculator, GroupByConstParallelSetter, LimitOptimizer, LoadTypeCastInserter, MergeFilter, MergeForEach, PartitionFilterOptimizer, PredicatePushdownOptimizer, PushDownForEachFlatten, PushUpFilter, SplitFilter, StreamTypeCastInserter]}
+2016-07-16 10:11:32,903 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MRCompiler - File concatenation threshold: 100 optimistic? false
+2016-07-16 10:11:32,905 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MultiQueryOptimizer - MR plan size before optimization: 1
+2016-07-16 10:11:32,905 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MultiQueryOptimizer - MR plan size after optimization: 1
+2016-07-16 10:11:32,939 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - io.bytes.per.checksum is deprecated. Instead, use dfs.bytes-per-checksum
+2016-07-16 10:11:32,940 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+2016-07-16 10:11:32,950 [main] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+2016-07-16 10:11:32,952 [main] INFO  org.apache.pig.tools.pigstats.mapreduce.MRScriptState - Pig script settings are added to the job
+2016-07-16 10:11:32,953 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.JobControlCompiler - mapred.job.reduce.markreset.buffer.percent is not set, set to default 0.3
+2016-07-16 10:11:33,013 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.JobControlCompiler - Setting up single store job
+2016-07-16 10:11:33,079 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - 1 map-reduce job(s) waiting for submission.
+2016-07-16 10:11:33,085 [JobControl] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+2016-07-16 10:11:33,189 [JobControl] WARN  org.apache.hadoop.mapreduce.JobSubmitter - No job jar file set.  User classes may not be found. See Job or Job#setJar(String).
+2016-07-16 10:11:33,357 [JobControl] INFO  org.apache.hadoop.mapreduce.lib.input.FileInputFormat - Total input paths to process : 1
+2016-07-16 10:11:33,358 [JobControl] INFO  org.apache.pig.backend.hadoop.executionengine.util.MapRedUtil - Total input paths to process : 1
+2016-07-16 10:11:33,359 [JobControl] INFO  org.apache.pig.backend.hadoop.executionengine.util.MapRedUtil - Total input paths (combined) to process : 1
+2016-07-16 10:11:33,412 [JobControl] INFO  org.apache.hadoop.mapreduce.JobSubmitter - number of splits:1
+2016-07-16 10:11:33,733 [JobControl] INFO  org.apache.hadoop.mapreduce.JobSubmitter - Submitting tokens for job: job_local1463859016_0002
+2016-07-16 10:11:34,227 [JobControl] INFO  org.apache.hadoop.mapreduce.Job - The url to track the job: http://localhost:8080/
+2016-07-16 10:11:34,228 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - HadoopJobId: job_local1463859016_0002
+2016-07-16 10:11:34,228 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - Processing aliases raw
+2016-07-16 10:11:34,228 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - detailed locations: M: raw[1,6] C:  R: 
+2016-07-16 10:11:34,240 [Thread-31] INFO  org.apache.hadoop.mapred.LocalJobRunner - OutputCommitter set in config null
+2016-07-16 10:11:34,251 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - 0% complete
+2016-07-16 10:11:34,252 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - Running jobs are [job_local1463859016_0002]
+2016-07-16 10:11:34,298 [Thread-31] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.textoutputformat.separator is deprecated. Instead, use mapreduce.output.textoutputformat.separator
+2016-07-16 10:11:34,310 [Thread-31] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+2016-07-16 10:11:34,310 [Thread-31] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.job.reduce.markreset.buffer.percent is deprecated. Instead, use mapreduce.reduce.markreset.buffer.percent
+2016-07-16 10:11:34,311 [Thread-31] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.job.tracker is deprecated. Instead, use mapreduce.jobtracker.address
+2016-07-16 10:11:34,312 [Thread-31] INFO  org.apache.hadoop.conf.Configuration.deprecation - io.bytes.per.checksum is deprecated. Instead, use dfs.bytes-per-checksum
+2016-07-16 10:11:34,313 [Thread-31] INFO  org.apache.hadoop.mapred.LocalJobRunner - OutputCommitter is org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.PigOutputCommitter
+2016-07-16 10:11:34,453 [Thread-31] INFO  org.apache.hadoop.mapred.LocalJobRunner - Waiting for map tasks
+2016-07-16 10:11:34,457 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.LocalJobRunner - Starting task: attempt_local1463859016_0002_m_000000_0
+2016-07-16 10:11:34,490 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.Task -  Using ResourceCalculatorProcessTree : [ ]
+2016-07-16 10:11:34,499 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.MapTask - Processing split: Number of splits :1
+Total Length = 100
+Input split[0]:
+   Length = 100
+   ClassName: org.apache.hadoop.mapreduce.lib.input.FileSplit
+   Locations:
+
+-----------------------
+
+2016-07-16 10:11:34,549 [LocalJobRunner Map Task Executor #0] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.PigRecordReader - Current split being processed file:/home/hduser/pigdata/testdata.txt:0+100
+2016-07-16 10:11:34,605 [LocalJobRunner Map Task Executor #0] WARN  org.apache.pig.data.SchemaTupleBackend - SchemaTupleBackend has already been initialized
+2016-07-16 10:11:34,622 [LocalJobRunner Map Task Executor #0] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.PigMapOnly$Map - Aliases being processed per job phase (AliasName[line,offset]): M: raw[1,6] C:  R: 
+2016-07-16 10:11:34,624 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.LocalJobRunner - 
+2016-07-16 10:11:34,625 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.Task - Task:attempt_local1463859016_0002_m_000000_0 is done. And is in the process of committing
+2016-07-16 10:11:34,631 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.LocalJobRunner - 
+2016-07-16 10:11:34,631 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.Task - Task attempt_local1463859016_0002_m_000000_0 is allowed to commit now
+2016-07-16 10:11:34,635 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapreduce.lib.output.FileOutputCommitter - Saved output of task 'attempt_local1463859016_0002_m_000000_0' to file:/home/hduser/pigdata/rawstorage/_temporary/0/task_local1463859016_0002_m_000000
+2016-07-16 10:11:34,645 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.LocalJobRunner - map
+2016-07-16 10:11:34,645 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.Task - Task 'attempt_local1463859016_0002_m_000000_0' done.
+2016-07-16 10:11:34,645 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.LocalJobRunner - Finishing task: attempt_local1463859016_0002_m_000000_0
+2016-07-16 10:11:34,646 [Thread-31] INFO  org.apache.hadoop.mapred.LocalJobRunner - map task executor complete.
+2016-07-16 10:11:34,753 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - 50% complete
+2016-07-16 10:11:34,753 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - Running jobs are [job_local1463859016_0002]
+2016-07-16 10:11:34,869 [main] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+2016-07-16 10:11:34,879 [main] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+2016-07-16 10:11:34,880 [main] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+2016-07-16 10:11:34,922 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - 100% complete
+2016-07-16 10:11:34,923 [main] INFO  org.apache.pig.tools.pigstats.mapreduce.SimplePigStats - Script Statistics: 
+
+HadoopVersion	PigVersion	UserId	StartedAt	FinishedAt	Features
+2.6.0	0.15.0	hduser	2016-07-16 10:11:32	2016-07-16 10:11:34	UNKNOWN
+
+Success!
+
+Job Stats (time in seconds):
+JobId	Maps	Reduces	MaxMapTime	MinMapTime	AvgMapTime	MedianMapTime	MaxReduceTime	MinReduceTime	AvgReduceTime	MedianReducetime	Alias	Feature	Outputs
+job_local1463859016_0002	1	0	n/a	n/a	n/a	n/a	0	0	0	0	raw	MAP_ONLY	/home/hduser/pigdata/rawstorage,
+
+Input(s):
+Successfully read 2 records from: "/home/hduser/pigdata/testdata.txt"
+
+Output(s):
+Successfully stored 2 records in: "/home/hduser/pigdata/rawstorage"
+
+Counters:
+Total records written : 2
+Total bytes written : 0
+Spillable Memory Manager spill count : 0
+Total bags proactively spilled: 0
+Total records proactively spilled: 0
+
+Job DAG:
+job_local1463859016_0002
+
+
+2016-07-16 10:11:34,933 [main] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+2016-07-16 10:11:34,934 [main] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+2016-07-16 10:11:34,935 [main] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+2016-07-16 10:11:34,979 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - Success!
+grunt> quit;
+2016-07-16 10:11:45,299 [main] INFO  org.apache.pig.Main - Pig script completed in 2 minutes, 39 seconds and 741 milliseconds (159741 ms)
+[hduser@Inceptez ~]$ cd /home/hduser/pigdata/rawstorage
+[hduser@Inceptez rawstorage]$ l
+bash: l: command not found
+[hduser@Inceptez rawstorage]$ ls
+part-m-00000  _SUCCESS
+[hduser@Inceptez rawstorage]$ cat part-m-00000 
+this is a sample data to test pig commands
+display of this data shows the execution of the commands
+====================================================================================================
+[hduser@Inceptez ~]$ cat /home/hduser/pigdata/tuple.txt
+(3,8,9) (4,5,6)
+(1,4,7) (3,7,5)
+(2,5,8) (9,5,8)
+
+[hduser@Inceptez pig_scripts_01]$ cat tuple1.pig 
+A = LOAD '/home/hduser/pigdata/tuple.txt' using PigStorage(' ') AS (t1:tuple(t1a:int,
+t1b:int,t1c:int),t2:tuple(t2a:int,t2b:int,t2c:int));
+describe A;
+X = FOREACH A GENERATE t1.t1a,t2.$0;
+dump X
+
+[hduser@Inceptez pig_scripts_01]$ pig -x local -f tuple1.pig
+16/07/16 10:29:39 INFO pig.ExecTypeProvider: Trying ExecType : LOCAL
+16/07/16 10:29:39 INFO pig.ExecTypeProvider: Picked LOCAL as the ExecType
+2016-07-16 10:29:39,442 [main] INFO  org.apache.pig.Main - Apache Pig version 0.15.0 (r1682971) compiled Jun 01 2015, 11:44:35
+2016-07-16 10:29:39,442 [main] INFO  org.apache.pig.Main - Logging error messages to: /home/hduser/pig_scripts_01/pig_1468645179440.log
+2016-07-16 10:29:39,474 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - user.name is deprecated. Instead, use mapreduce.job.user.name
+2016-07-16 10:29:40,078 [main] INFO  org.apache.pig.impl.util.Utils - Default bootup file /home/hduser/.pigbootup not found
+2016-07-16 10:29:40,555 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+2016-07-16 10:29:40,555 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.job.tracker is deprecated. Instead, use mapreduce.jobtracker.address
+2016-07-16 10:29:40,557 [main] INFO  org.apache.pig.backend.hadoop.executionengine.HExecutionEngine - Connecting to hadoop file system at: file:///
+2016-07-16 10:29:41,363 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+A: {t1: (t1a: int,t1b: int,t1c: int),t2: (t2a: int,t2b: int,t2c: int)}
+2016-07-16 10:29:41,755 [main] WARN  org.apache.hadoop.util.NativeCodeLoader - Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+2016-07-16 10:29:41,860 [main] INFO  org.apache.pig.tools.pigstats.ScriptState - Pig features used in the script: UNKNOWN
+2016-07-16 10:29:41,973 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+2016-07-16 10:29:42,102 [main] INFO  org.apache.pig.newplan.logical.optimizer.LogicalPlanOptimizer - {RULES_ENABLED=[AddForEach, ColumnMapKeyPrune, ConstantCalculator, GroupByConstParallelSetter, LimitOptimizer, LoadTypeCastInserter, MergeFilter, MergeForEach, PartitionFilterOptimizer, PredicatePushdownOptimizer, PushDownForEachFlatten, PushUpFilter, SplitFilter, StreamTypeCastInserter]}
+2016-07-16 10:29:42,390 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MRCompiler - File concatenation threshold: 100 optimistic? false
+2016-07-16 10:29:42,441 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MultiQueryOptimizer - MR plan size before optimization: 1
+2016-07-16 10:29:42,441 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MultiQueryOptimizer - MR plan size after optimization: 1
+2016-07-16 10:29:42,499 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+2016-07-16 10:29:42,519 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - session.id is deprecated. Instead, use dfs.metrics.session-id
+2016-07-16 10:29:42,519 [main] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Initializing JVM Metrics with processName=JobTracker, sessionId=
+2016-07-16 10:29:42,550 [main] INFO  org.apache.pig.tools.pigstats.mapreduce.MRScriptState - Pig script settings are added to the job
+2016-07-16 10:29:42,559 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.job.reduce.markreset.buffer.percent is deprecated. Instead, use mapreduce.reduce.markreset.buffer.percent
+2016-07-16 10:29:42,559 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.JobControlCompiler - mapred.job.reduce.markreset.buffer.percent is not set, set to default 0.3
+2016-07-16 10:29:42,560 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.output.compress is deprecated. Instead, use mapreduce.output.fileoutputformat.compress
+2016-07-16 10:29:42,619 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.JobControlCompiler - Setting up single store job
+2016-07-16 10:29:42,659 [main] INFO  org.apache.pig.data.SchemaTupleFrontend - Key [pig.schematuple] is false, will not generate code.
+2016-07-16 10:29:42,663 [main] INFO  org.apache.pig.data.SchemaTupleFrontend - Starting process to move generated code to distributed cacche
+2016-07-16 10:29:42,663 [main] INFO  org.apache.pig.data.SchemaTupleFrontend - Distributed cache not supported or needed in local mode. Setting key [pig.schematuple.local.dir] with code temp directory: /tmp/1468645182659-0
+2016-07-16 10:29:42,714 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - 1 map-reduce job(s) waiting for submission.
+2016-07-16 10:29:42,715 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.job.tracker.http.address is deprecated. Instead, use mapreduce.jobtracker.http.address
+2016-07-16 10:29:42,729 [JobControl] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+2016-07-16 10:29:42,864 [JobControl] WARN  org.apache.hadoop.mapreduce.JobSubmitter - No job jar file set.  User classes may not be found. See Job or Job#setJar(String).
+2016-07-16 10:29:42,928 [JobControl] INFO  org.apache.hadoop.mapreduce.lib.input.FileInputFormat - Total input paths to process : 1
+2016-07-16 10:29:42,928 [JobControl] INFO  org.apache.pig.backend.hadoop.executionengine.util.MapRedUtil - Total input paths to process : 1
+2016-07-16 10:29:42,940 [JobControl] INFO  org.apache.pig.backend.hadoop.executionengine.util.MapRedUtil - Total input paths (combined) to process : 1
+2016-07-16 10:29:43,001 [JobControl] INFO  org.apache.hadoop.mapreduce.JobSubmitter - number of splits:1
+2016-07-16 10:29:43,342 [JobControl] INFO  org.apache.hadoop.mapreduce.JobSubmitter - Submitting tokens for job: job_local391871047_0001
+2016-07-16 10:29:43,903 [JobControl] INFO  org.apache.hadoop.mapreduce.Job - The url to track the job: http://localhost:8080/
+2016-07-16 10:29:43,904 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - HadoopJobId: job_local391871047_0001
+2016-07-16 10:29:43,904 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - Processing aliases A,X
+2016-07-16 10:29:43,904 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - detailed locations: M: A[1,4],X[-1,-1] C:  R: 
+2016-07-16 10:29:43,908 [Thread-14] INFO  org.apache.hadoop.mapred.LocalJobRunner - OutputCommitter set in config null
+2016-07-16 10:29:43,912 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - 0% complete
+2016-07-16 10:29:43,913 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - Running jobs are [job_local391871047_0001]
+2016-07-16 10:29:43,944 [Thread-14] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+2016-07-16 10:29:43,944 [Thread-14] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.job.reduce.markreset.buffer.percent is deprecated. Instead, use mapreduce.reduce.markreset.buffer.percent
+2016-07-16 10:29:43,945 [Thread-14] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.job.tracker is deprecated. Instead, use mapreduce.jobtracker.address
+2016-07-16 10:29:43,948 [Thread-14] INFO  org.apache.hadoop.mapred.LocalJobRunner - OutputCommitter is org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.PigOutputCommitter
+2016-07-16 10:29:44,032 [Thread-14] INFO  org.apache.hadoop.mapred.LocalJobRunner - Waiting for map tasks
+2016-07-16 10:29:44,033 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.LocalJobRunner - Starting task: attempt_local391871047_0001_m_000000_0
+2016-07-16 10:29:44,159 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.Task -  Using ResourceCalculatorProcessTree : [ ]
+2016-07-16 10:29:44,167 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.MapTask - Processing split: Number of splits :1
+Total Length = 50
+Input split[0]:
+   Length = 50
+   ClassName: org.apache.hadoop.mapreduce.lib.input.FileSplit
+   Locations:
+
+-----------------------
+
+2016-07-16 10:29:44,232 [LocalJobRunner Map Task Executor #0] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.PigRecordReader - Current split being processed file:/home/hduser/pigdata/tuple.txt:0+50
+2016-07-16 10:29:44,303 [LocalJobRunner Map Task Executor #0] INFO  org.apache.pig.data.SchemaTupleBackend - Key [pig.schematuple] was not set... will not generate code.
+2016-07-16 10:29:44,326 [LocalJobRunner Map Task Executor #0] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.PigMapOnly$Map - Aliases being processed per job phase (AliasName[line,offset]): M: A[1,4],X[-1,-1] C:  R: 
+2016-07-16 10:29:44,350 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.LocalJobRunner - 
+2016-07-16 10:29:44,350 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.Task - Task:attempt_local391871047_0001_m_000000_0 is done. And is in the process of committing
+2016-07-16 10:29:44,382 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.LocalJobRunner - 
+2016-07-16 10:29:44,382 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.Task - Task attempt_local391871047_0001_m_000000_0 is allowed to commit now
+2016-07-16 10:29:44,389 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapreduce.lib.output.FileOutputCommitter - Saved output of task 'attempt_local391871047_0001_m_000000_0' to file:/tmp/temp-296230195/tmp-1877020873/_temporary/0/task_local391871047_0001_m_000000
+2016-07-16 10:29:44,391 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.LocalJobRunner - map
+2016-07-16 10:29:44,391 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.Task - Task 'attempt_local391871047_0001_m_000000_0' done.
+2016-07-16 10:29:44,391 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.LocalJobRunner - Finishing task: attempt_local391871047_0001_m_000000_0
+2016-07-16 10:29:44,391 [Thread-14] INFO  org.apache.hadoop.mapred.LocalJobRunner - map task executor complete.
+2016-07-16 10:29:44,421 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - 50% complete
+2016-07-16 10:29:44,421 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - Running jobs are [job_local391871047_0001]
+2016-07-16 10:29:44,565 [main] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+2016-07-16 10:29:44,568 [main] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+2016-07-16 10:29:44,568 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.map.tasks is deprecated. Instead, use mapreduce.job.maps
+2016-07-16 10:29:44,568 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.reduce.tasks is deprecated. Instead, use mapreduce.job.reduces
+2016-07-16 10:29:44,569 [main] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+2016-07-16 10:29:44,633 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - 100% complete
+2016-07-16 10:29:44,635 [main] INFO  org.apache.pig.tools.pigstats.mapreduce.SimplePigStats - Script Statistics: 
+
+HadoopVersion	PigVersion	UserId	StartedAt	FinishedAt	Features
+2.6.0	0.15.0	hduser	2016-07-16 10:29:42	2016-07-16 10:29:44	UNKNOWN
+
+Success!
+
+Job Stats (time in seconds):
+JobId	Maps	Reduces	MaxMapTime	MinMapTime	AvgMapTime	MedianMapTime	MaxReduceTime	MinReduceTime	AvgReduceTime	MedianReducetime	Alias	Feature	Outputs
+job_local391871047_0001	1	0	n/a	n/a	n/a	n/a	0	0	0	0	A,X	MAP_ONLY	file:/tmp/temp-296230195/tmp-1877020873,
+
+Input(s):
+Successfully read 3 records from: "/home/hduser/pigdata/tuple.txt"
+
+Output(s):
+Successfully stored 3 records in: "file:/tmp/temp-296230195/tmp-1877020873"
+
+Counters:
+Total records written : 3
+Total bytes written : 0
+Spillable Memory Manager spill count : 0
+Total bags proactively spilled: 0
+Total records proactively spilled: 0
+
+Job DAG:
+job_local391871047_0001
+
+
+2016-07-16 10:29:44,636 [main] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+2016-07-16 10:29:44,636 [main] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+2016-07-16 10:29:44,639 [main] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+2016-07-16 10:29:44,650 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - Success!
+2016-07-16 10:29:44,657 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+2016-07-16 10:29:44,657 [main] WARN  org.apache.pig.data.SchemaTupleBackend - SchemaTupleBackend has already been initialized
+2016-07-16 10:29:44,683 [main] INFO  org.apache.hadoop.mapreduce.lib.input.FileInputFormat - Total input paths to process : 1
+2016-07-16 10:29:44,683 [main] INFO  org.apache.pig.backend.hadoop.executionengine.util.MapRedUtil - Total input paths to process : 1
+(3,4)
+(1,3)
+(2,9)
+2016-07-16 10:29:44,779 [main] INFO  org.apache.pig.Main - Pig script completed in 5 seconds and 920 milliseconds (5920 ms)
+[hduser@Inceptez pig_scripts_01]$ cp tuple1.pig tuple2.pig 
+[hduser@Inceptez pig_scripts_01]$ vi tuple2.pig 
+[hduser@Inceptez pig_scripts_01]$ pig -x local -f tuple2.pig
+16/07/16 10:31:19 INFO pig.ExecTypeProvider: Trying ExecType : LOCAL
+16/07/16 10:31:19 INFO pig.ExecTypeProvider: Picked LOCAL as the ExecType
+2016-07-16 10:31:19,452 [main] INFO  org.apache.pig.Main - Apache Pig version 0.15.0 (r1682971) compiled Jun 01 2015, 11:44:35
+2016-07-16 10:31:19,452 [main] INFO  org.apache.pig.Main - Logging error messages to: /home/hduser/pig_scripts_01/pig_1468645279451.log
+2016-07-16 10:31:19,483 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - user.name is deprecated. Instead, use mapreduce.job.user.name
+2016-07-16 10:31:20,106 [main] INFO  org.apache.pig.impl.util.Utils - Default bootup file /home/hduser/.pigbootup not found
+2016-07-16 10:31:20,580 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+2016-07-16 10:31:20,580 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.job.tracker is deprecated. Instead, use mapreduce.jobtracker.address
+2016-07-16 10:31:20,582 [main] INFO  org.apache.pig.backend.hadoop.executionengine.HExecutionEngine - Connecting to hadoop file system at: file:///
+2016-07-16 10:31:21,393 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+A: {t1: (t1a: int,t1b: int,t1c: int),t2: (t2a: int,t2b: int,t2c: int)}
+2016-07-16 10:31:21,721 [main] WARN  org.apache.hadoop.util.NativeCodeLoader - Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+2016-07-16 10:31:21,841 [main] INFO  org.apache.pig.tools.pigstats.ScriptState - Pig features used in the script: UNKNOWN
+2016-07-16 10:31:21,959 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+2016-07-16 10:31:22,089 [main] INFO  org.apache.pig.newplan.logical.optimizer.LogicalPlanOptimizer - {RULES_ENABLED=[AddForEach, ColumnMapKeyPrune, ConstantCalculator, GroupByConstParallelSetter, LimitOptimizer, LoadTypeCastInserter, MergeFilter, MergeForEach, PartitionFilterOptimizer, PredicatePushdownOptimizer, PushDownForEachFlatten, PushUpFilter, SplitFilter, StreamTypeCastInserter]}
+2016-07-16 10:31:22,280 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MRCompiler - File concatenation threshold: 100 optimistic? false
+2016-07-16 10:31:22,309 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MultiQueryOptimizer - MR plan size before optimization: 1
+2016-07-16 10:31:22,309 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MultiQueryOptimizer - MR plan size after optimization: 1
+2016-07-16 10:31:22,341 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+2016-07-16 10:31:22,365 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - session.id is deprecated. Instead, use dfs.metrics.session-id
+2016-07-16 10:31:22,366 [main] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Initializing JVM Metrics with processName=JobTracker, sessionId=
+2016-07-16 10:31:22,403 [main] INFO  org.apache.pig.tools.pigstats.mapreduce.MRScriptState - Pig script settings are added to the job
+2016-07-16 10:31:22,413 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.job.reduce.markreset.buffer.percent is deprecated. Instead, use mapreduce.reduce.markreset.buffer.percent
+2016-07-16 10:31:22,413 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.JobControlCompiler - mapred.job.reduce.markreset.buffer.percent is not set, set to default 0.3
+2016-07-16 10:31:22,414 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.output.compress is deprecated. Instead, use mapreduce.output.fileoutputformat.compress
+2016-07-16 10:31:22,479 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.JobControlCompiler - Setting up single store job
+2016-07-16 10:31:22,515 [main] INFO  org.apache.pig.data.SchemaTupleFrontend - Key [pig.schematuple] is false, will not generate code.
+2016-07-16 10:31:22,515 [main] INFO  org.apache.pig.data.SchemaTupleFrontend - Starting process to move generated code to distributed cacche
+2016-07-16 10:31:22,516 [main] INFO  org.apache.pig.data.SchemaTupleFrontend - Distributed cache not supported or needed in local mode. Setting key [pig.schematuple.local.dir] with code temp directory: /tmp/1468645282515-0
+2016-07-16 10:31:22,574 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - 1 map-reduce job(s) waiting for submission.
+2016-07-16 10:31:22,575 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.job.tracker.http.address is deprecated. Instead, use mapreduce.jobtracker.http.address
+2016-07-16 10:31:22,590 [JobControl] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+2016-07-16 10:31:22,734 [JobControl] WARN  org.apache.hadoop.mapreduce.JobSubmitter - No job jar file set.  User classes may not be found. See Job or Job#setJar(String).
+2016-07-16 10:31:22,791 [JobControl] INFO  org.apache.hadoop.mapreduce.lib.input.FileInputFormat - Total input paths to process : 1
+2016-07-16 10:31:22,792 [JobControl] INFO  org.apache.pig.backend.hadoop.executionengine.util.MapRedUtil - Total input paths to process : 1
+2016-07-16 10:31:22,812 [JobControl] INFO  org.apache.pig.backend.hadoop.executionengine.util.MapRedUtil - Total input paths (combined) to process : 1
+2016-07-16 10:31:23,020 [JobControl] INFO  org.apache.hadoop.mapreduce.JobSubmitter - number of splits:1
+2016-07-16 10:31:23,385 [JobControl] INFO  org.apache.hadoop.mapreduce.JobSubmitter - Submitting tokens for job: job_local782481633_0001
+2016-07-16 10:31:23,960 [JobControl] INFO  org.apache.hadoop.mapreduce.Job - The url to track the job: http://localhost:8080/
+2016-07-16 10:31:23,962 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - HadoopJobId: job_local782481633_0001
+2016-07-16 10:31:23,962 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - Processing aliases A,X
+2016-07-16 10:31:23,962 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - detailed locations: M: A[1,4],A[-1,-1],X[3,4] C:  R: 
+2016-07-16 10:31:23,971 [Thread-14] INFO  org.apache.hadoop.mapred.LocalJobRunner - OutputCommitter set in config null
+2016-07-16 10:31:23,973 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - 0% complete
+2016-07-16 10:31:23,973 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - Running jobs are [job_local782481633_0001]
+2016-07-16 10:31:24,031 [Thread-14] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+2016-07-16 10:31:24,031 [Thread-14] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.job.reduce.markreset.buffer.percent is deprecated. Instead, use mapreduce.reduce.markreset.buffer.percent
+2016-07-16 10:31:24,032 [Thread-14] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.job.tracker is deprecated. Instead, use mapreduce.jobtracker.address
+2016-07-16 10:31:24,040 [Thread-14] INFO  org.apache.hadoop.mapred.LocalJobRunner - OutputCommitter is org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.PigOutputCommitter
+2016-07-16 10:31:24,142 [Thread-14] INFO  org.apache.hadoop.mapred.LocalJobRunner - Waiting for map tasks
+2016-07-16 10:31:24,142 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.LocalJobRunner - Starting task: attempt_local782481633_0001_m_000000_0
+2016-07-16 10:31:24,283 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.Task -  Using ResourceCalculatorProcessTree : [ ]
+2016-07-16 10:31:24,302 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.MapTask - Processing split: Number of splits :1
+Total Length = 50
+Input split[0]:
+   Length = 50
+   ClassName: org.apache.hadoop.mapreduce.lib.input.FileSplit
+   Locations:
+
+-----------------------
+
+2016-07-16 10:31:24,368 [LocalJobRunner Map Task Executor #0] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.PigRecordReader - Current split being processed file:/home/hduser/pigdata/tuple.txt:0+50
+2016-07-16 10:31:24,443 [LocalJobRunner Map Task Executor #0] INFO  org.apache.pig.data.SchemaTupleBackend - Key [pig.schematuple] was not set... will not generate code.
+2016-07-16 10:31:24,469 [LocalJobRunner Map Task Executor #0] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.PigMapOnly$Map - Aliases being processed per job phase (AliasName[line,offset]): M: A[1,4],A[-1,-1],X[3,4] C:  R: 
+2016-07-16 10:31:24,490 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.LocalJobRunner - 
+2016-07-16 10:31:24,490 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.Task - Task:attempt_local782481633_0001_m_000000_0 is done. And is in the process of committing
+2016-07-16 10:31:24,518 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.LocalJobRunner - 
+2016-07-16 10:31:24,518 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.Task - Task attempt_local782481633_0001_m_000000_0 is allowed to commit now
+2016-07-16 10:31:24,529 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapreduce.lib.output.FileOutputCommitter - Saved output of task 'attempt_local782481633_0001_m_000000_0' to file:/tmp/temp1198836108/tmp1757403875/_temporary/0/task_local782481633_0001_m_000000
+2016-07-16 10:31:24,532 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.LocalJobRunner - map
+2016-07-16 10:31:24,532 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.Task - Task 'attempt_local782481633_0001_m_000000_0' done.
+2016-07-16 10:31:24,532 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.LocalJobRunner - Finishing task: attempt_local782481633_0001_m_000000_0
+2016-07-16 10:31:24,535 [Thread-14] INFO  org.apache.hadoop.mapred.LocalJobRunner - map task executor complete.
+2016-07-16 10:31:24,795 [main] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+2016-07-16 10:31:24,811 [main] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+2016-07-16 10:31:24,814 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.map.tasks is deprecated. Instead, use mapreduce.job.maps
+2016-07-16 10:31:24,814 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.reduce.tasks is deprecated. Instead, use mapreduce.job.reduces
+2016-07-16 10:31:24,815 [main] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+2016-07-16 10:31:24,878 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - 100% complete
+2016-07-16 10:31:24,880 [main] INFO  org.apache.pig.tools.pigstats.mapreduce.SimplePigStats - Script Statistics: 
+
+HadoopVersion	PigVersion	UserId	StartedAt	FinishedAt	Features
+2.6.0	0.15.0	hduser	2016-07-16 10:31:22	2016-07-16 10:31:24	UNKNOWN
+
+Success!
+
+Job Stats (time in seconds):
+JobId	Maps	Reduces	MaxMapTime	MinMapTime	AvgMapTime	MedianMapTime	MaxReduceTime	MinReduceTime	AvgReduceTime	MedianReducetime	Alias	Feature	Outputs
+job_local782481633_0001	1	0	n/a	n/a	n/a	n/a	0	0	0	0	A,X	MAP_ONLY	file:/tmp/temp1198836108/tmp1757403875,
+
+Input(s):
+Successfully read 3 records from: "/home/hduser/pigdata/tuple.txt"
+
+Output(s):
+Successfully stored 3 records in: "file:/tmp/temp1198836108/tmp1757403875"
+
+Counters:
+Total records written : 3
+Total bytes written : 0
+Spillable Memory Manager spill count : 0
+Total bags proactively spilled: 0
+Total records proactively spilled: 0
+
+Job DAG:
+job_local782481633_0001
+
+
+2016-07-16 10:31:24,881 [main] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+2016-07-16 10:31:24,882 [main] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+2016-07-16 10:31:24,884 [main] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+2016-07-16 10:31:24,893 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - Success!
+2016-07-16 10:31:24,901 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+2016-07-16 10:31:24,901 [main] WARN  org.apache.pig.data.SchemaTupleBackend - SchemaTupleBackend has already been initialized
+2016-07-16 10:31:24,927 [main] INFO  org.apache.hadoop.mapreduce.lib.input.FileInputFormat - Total input paths to process : 1
+2016-07-16 10:31:24,927 [main] INFO  org.apache.pig.backend.hadoop.executionengine.util.MapRedUtil - Total input paths to process : 1
+(8,6,9)
+(4,5,7)
+(5,8,8)
+2016-07-16 10:31:25,044 [main] INFO  org.apache.pig.Main - Pig script completed in 6 seconds and 160 milliseconds (6160 ms)
+====================================================================================================
+[hduser@Inceptez pig_scripts_01]$ cp tuple2.pig tuple3.pig 
+[hduser@Inceptez pig_scripts_01]$ vi tuple3.pig 
+[hduser@Inceptez pig_scripts_01]$ pig -x local -f tuple3.pig
+16/07/16 10:39:40 INFO pig.ExecTypeProvider: Trying ExecType : LOCAL
+16/07/16 10:39:40 INFO pig.ExecTypeProvider: Picked LOCAL as the ExecType
+2016-07-16 10:39:40,221 [main] INFO  org.apache.pig.Main - Apache Pig version 0.15.0 (r1682971) compiled Jun 01 2015, 11:44:35
+2016-07-16 10:39:40,222 [main] INFO  org.apache.pig.Main - Logging error messages to: /home/hduser/pig_scripts_01/pig_1468645780220.log
+2016-07-16 10:39:40,243 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - user.name is deprecated. Instead, use mapreduce.job.user.name
+2016-07-16 10:39:40,875 [main] INFO  org.apache.pig.impl.util.Utils - Default bootup file /home/hduser/.pigbootup not found
+2016-07-16 10:39:41,354 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+2016-07-16 10:39:41,354 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.job.tracker is deprecated. Instead, use mapreduce.jobtracker.address
+2016-07-16 10:39:41,356 [main] INFO  org.apache.pig.backend.hadoop.executionengine.HExecutionEngine - Connecting to hadoop file system at: file:///
+2016-07-16 10:39:41,864 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+A: {t1: (t1a: int,t1b: int,t1c: int),t2: (t2a: int,t2b: int,t2c: int)}
+2016-07-16 10:39:42,267 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+2016-07-16 10:39:42,410 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+2016-07-16 10:39:42,472 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.textoutputformat.separator is deprecated. Instead, use mapreduce.output.textoutputformat.separator
+2016-07-16 10:39:42,560 [main] INFO  org.apache.pig.tools.pigstats.ScriptState - Pig features used in the script: UNKNOWN
+2016-07-16 10:39:42,669 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+2016-07-16 10:39:42,757 [main] INFO  org.apache.pig.newplan.logical.optimizer.LogicalPlanOptimizer - {RULES_ENABLED=[AddForEach, ColumnMapKeyPrune, ConstantCalculator, GroupByConstParallelSetter, LimitOptimizer, LoadTypeCastInserter, MergeFilter, MergeForEach, PartitionFilterOptimizer, PredicatePushdownOptimizer, PushDownForEachFlatten, PushUpFilter, SplitFilter, StreamTypeCastInserter]}
+2016-07-16 10:39:42,870 [main] WARN  org.apache.hadoop.util.NativeCodeLoader - Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+2016-07-16 10:39:42,899 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MRCompiler - File concatenation threshold: 100 optimistic? false
+2016-07-16 10:39:42,939 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MultiQueryOptimizer - MR plan size before optimization: 3
+2016-07-16 10:39:42,941 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MultiQueryOptimizer - Merged 2 map-only splittees.
+2016-07-16 10:39:42,941 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MultiQueryOptimizer - Merged 2 out of total 3 MR operators.
+2016-07-16 10:39:42,941 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MultiQueryOptimizer - MR plan size after optimization: 1
+2016-07-16 10:39:42,978 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+2016-07-16 10:39:42,993 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - session.id is deprecated. Instead, use dfs.metrics.session-id
+2016-07-16 10:39:42,994 [main] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Initializing JVM Metrics with processName=JobTracker, sessionId=
+2016-07-16 10:39:43,034 [main] INFO  org.apache.pig.tools.pigstats.mapreduce.MRScriptState - Pig script settings are added to the job
+2016-07-16 10:39:43,043 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.job.reduce.markreset.buffer.percent is deprecated. Instead, use mapreduce.reduce.markreset.buffer.percent
+2016-07-16 10:39:43,043 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.JobControlCompiler - mapred.job.reduce.markreset.buffer.percent is not set, set to default 0.3
+2016-07-16 10:39:43,043 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.output.compress is deprecated. Instead, use mapreduce.output.fileoutputformat.compress
+2016-07-16 10:39:43,099 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.JobControlCompiler - Setting up multi store job
+2016-07-16 10:39:43,127 [main] INFO  org.apache.pig.data.SchemaTupleFrontend - Key [pig.schematuple] is false, will not generate code.
+2016-07-16 10:39:43,127 [main] INFO  org.apache.pig.data.SchemaTupleFrontend - Starting process to move generated code to distributed cacche
+2016-07-16 10:39:43,127 [main] INFO  org.apache.pig.data.SchemaTupleFrontend - Distributed cache not supported or needed in local mode. Setting key [pig.schematuple.local.dir] with code temp directory: /tmp/1468645783127-0
+2016-07-16 10:39:43,276 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - 1 map-reduce job(s) waiting for submission.
+2016-07-16 10:39:43,277 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.job.tracker.http.address is deprecated. Instead, use mapreduce.jobtracker.http.address
+2016-07-16 10:39:43,295 [JobControl] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+2016-07-16 10:39:43,439 [JobControl] WARN  org.apache.hadoop.mapreduce.JobSubmitter - No job jar file set.  User classes may not be found. See Job or Job#setJar(String).
+2016-07-16 10:39:43,514 [JobControl] INFO  org.apache.hadoop.mapreduce.lib.input.FileInputFormat - Total input paths to process : 1
+2016-07-16 10:39:43,514 [JobControl] INFO  org.apache.pig.backend.hadoop.executionengine.util.MapRedUtil - Total input paths to process : 1
+2016-07-16 10:39:43,536 [JobControl] INFO  org.apache.pig.backend.hadoop.executionengine.util.MapRedUtil - Total input paths (combined) to process : 1
+2016-07-16 10:39:43,718 [JobControl] INFO  org.apache.hadoop.mapreduce.JobSubmitter - number of splits:1
+2016-07-16 10:39:44,132 [JobControl] INFO  org.apache.hadoop.mapreduce.JobSubmitter - Submitting tokens for job: job_local1002772387_0001
+2016-07-16 10:39:44,648 [JobControl] INFO  org.apache.hadoop.mapreduce.Job - The url to track the job: http://localhost:8080/
+2016-07-16 10:39:44,650 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - HadoopJobId: job_local1002772387_0001
+2016-07-16 10:39:44,650 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - Processing aliases A,X
+2016-07-16 10:39:44,650 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - detailed locations: M: A[1,4],A[-1,-1],X[3,4] C:  R: 
+2016-07-16 10:39:44,657 [Thread-14] INFO  org.apache.hadoop.mapred.LocalJobRunner - OutputCommitter set in config null
+2016-07-16 10:39:44,668 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - 0% complete
+2016-07-16 10:39:44,668 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - Running jobs are [job_local1002772387_0001]
+2016-07-16 10:39:44,712 [Thread-14] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.textoutputformat.separator is deprecated. Instead, use mapreduce.output.textoutputformat.separator
+2016-07-16 10:39:44,724 [Thread-14] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+2016-07-16 10:39:44,725 [Thread-14] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.job.reduce.markreset.buffer.percent is deprecated. Instead, use mapreduce.reduce.markreset.buffer.percent
+2016-07-16 10:39:44,725 [Thread-14] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.job.tracker is deprecated. Instead, use mapreduce.jobtracker.address
+2016-07-16 10:39:44,746 [Thread-14] INFO  org.apache.hadoop.mapred.LocalJobRunner - OutputCommitter is org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.PigOutputCommitter
+2016-07-16 10:39:44,877 [Thread-14] INFO  org.apache.hadoop.mapred.LocalJobRunner - Waiting for map tasks
+2016-07-16 10:39:44,878 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.LocalJobRunner - Starting task: attempt_local1002772387_0001_m_000000_0
+2016-07-16 10:39:44,979 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.Task -  Using ResourceCalculatorProcessTree : [ ]
+2016-07-16 10:39:44,985 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.MapTask - Processing split: Number of splits :1
+Total Length = 50
+Input split[0]:
+   Length = 50
+   ClassName: org.apache.hadoop.mapreduce.lib.input.FileSplit
+   Locations:
+
+-----------------------
+
+2016-07-16 10:39:45,016 [LocalJobRunner Map Task Executor #0] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.PigRecordReader - Current split being processed file:/home/hduser/pigdata/tuple.txt:0+50
+2016-07-16 10:39:45,077 [LocalJobRunner Map Task Executor #0] INFO  org.apache.pig.data.SchemaTupleBackend - Key [pig.schematuple] was not set... will not generate code.
+2016-07-16 10:39:45,150 [LocalJobRunner Map Task Executor #0] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.PigMapOnly$Map - Aliases being processed per job phase (AliasName[line,offset]): M: A[1,4],A[-1,-1],X[3,4] C:  R: 
+2016-07-16 10:39:45,223 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.LocalJobRunner - 
+2016-07-16 10:39:45,224 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.Task - Task:attempt_local1002772387_0001_m_000000_0 is done. And is in the process of committing
+2016-07-16 10:39:45,254 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.LocalJobRunner - 
+2016-07-16 10:39:45,254 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.Task - Task attempt_local1002772387_0001_m_000000_0 is allowed to commit now
+2016-07-16 10:39:45,256 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapreduce.lib.output.FileOutputCommitter - Saved output of task 'attempt_local1002772387_0001_m_000000_0' to file:/home/hduser/pigdata/rawstorageA/_temporary/0/task_local1002772387_0001_m_000000
+2016-07-16 10:39:45,267 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapreduce.lib.output.FileOutputCommitter - Saved output of task 'attempt_local1002772387_0001_m_000000_0' to file:/home/hduser/pigdata/rawstorageX/_temporary/0/task_local1002772387_0001_m_000000
+2016-07-16 10:39:45,270 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.LocalJobRunner - map
+2016-07-16 10:39:45,270 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.Task - Task 'attempt_local1002772387_0001_m_000000_0' done.
+2016-07-16 10:39:45,270 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.LocalJobRunner - Finishing task: attempt_local1002772387_0001_m_000000_0
+2016-07-16 10:39:45,270 [Thread-14] INFO  org.apache.hadoop.mapred.LocalJobRunner - map task executor complete.
+2016-07-16 10:39:45,491 [main] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+2016-07-16 10:39:45,501 [main] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+2016-07-16 10:39:45,501 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.map.tasks is deprecated. Instead, use mapreduce.job.maps
+2016-07-16 10:39:45,501 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.reduce.tasks is deprecated. Instead, use mapreduce.job.reduces
+2016-07-16 10:39:45,502 [main] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+2016-07-16 10:39:45,600 [main] INFO  org.apache.pig.tools.pigstats.JobStats - using output size reader: org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.FileBasedOutputSizeReader
+2016-07-16 10:39:45,602 [main] INFO  org.apache.pig.tools.pigstats.JobStats - using output size reader: org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.FileBasedOutputSizeReader
+2016-07-16 10:39:45,604 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - 100% complete
+2016-07-16 10:39:45,610 [main] INFO  org.apache.pig.tools.pigstats.mapreduce.SimplePigStats - Script Statistics: 
+
+HadoopVersion	PigVersion	UserId	StartedAt	FinishedAt	Features
+2.6.0	0.15.0	hduser	2016-07-16 10:39:43	2016-07-16 10:39:45	UNKNOWN
+
+Success!
+
+Job Stats (time in seconds):
+JobId	Maps	Reduces	MaxMapTime	MinMapTime	AvgMapTime	MedianMapTime	MaxReduceTime	MinReduceTime	AvgReduceTime	MedianReducetime	Alias	Feature	Outputs
+job_local1002772387_0001	1	0	n/a	n/a	n/a	n/a	0	0	0	0	A,X	MULTI_QUERY,MAP_ONLY	/home/hduser/pigdata/rawstorageA,/home/hduser/pigdata/rawstorageX,
+
+Input(s):
+Successfully read 3 records from: "/home/hduser/pigdata/tuple.txt"
+
+Output(s):
+Successfully stored 3 records (48 bytes) in: "/home/hduser/pigdata/rawstorageA"
+Successfully stored 3 records (18 bytes) in: "/home/hduser/pigdata/rawstorageX"
+
+Counters:
+Total records written : 6
+Total bytes written : 66
+Spillable Memory Manager spill count : 0
+Total bags proactively spilled: 0
+Total records proactively spilled: 0
+
+Job DAG:
+job_local1002772387_0001
+
+
+2016-07-16 10:39:45,611 [main] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+2016-07-16 10:39:45,612 [main] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+2016-07-16 10:39:45,620 [main] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+2016-07-16 10:39:45,631 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - Success!
+2016-07-16 10:39:45,671 [main] INFO  org.apache.pig.Main - Pig script completed in 6 seconds and 58 milliseconds (6058 ms)
+[hduser@Inceptez pig_scripts_01]$ cd /home/hduser/pigdata/
+[hduser@Inceptez pigdata]$ ls
+bag.txt   coursedetails.txt  EMP_DATA.txt   excite-small.log  map.txt   rawstorage   rawstorageX  student       tuple.txt   tuple.txt1  weblogs_parse.txt
+bag.txt~  custs              EMP_DATA.txt~  hbdata            map.txt~  rawstorageA  results      testdata.txt  tuple.txt~  txns
+[hduser@Inceptez pigdata]$ cd rawstorageA
+[hduser@Inceptez rawstorageA]$ ls
+part-m-00000  _SUCCESS
+[hduser@Inceptez rawstorageA]$ cat part-m-00000 
+(3,8,9)	(4,5,6)
+(1,4,7)	(3,7,5)
+(2,5,8)	(9,5,8)
+[hduser@Inceptez rawstorageA]$ cd ../rawstorageX
+[hduser@Inceptez rawstorageX]$ cat part-m-00000 
+3	5	9
+1	7	7
+2	5	8
+====================================================================================================
+[hduser@Inceptez pig_scripts_01]$ pig -x local -f testpig2.pig 
+16/07/16 10:44:31 INFO pig.ExecTypeProvider: Trying ExecType : LOCAL
+16/07/16 10:44:31 INFO pig.ExecTypeProvider: Picked LOCAL as the ExecType
+2016-07-16 10:44:31,701 [main] INFO  org.apache.pig.Main - Apache Pig version 0.15.0 (r1682971) compiled Jun 01 2015, 11:44:35
+2016-07-16 10:44:31,701 [main] INFO  org.apache.pig.Main - Logging error messages to: /home/hduser/pig_scripts_01/pig_1468646071699.log
+2016-07-16 10:44:31,728 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - user.name is deprecated. Instead, use mapreduce.job.user.name
+2016-07-16 10:44:32,348 [main] INFO  org.apache.pig.impl.util.Utils - Default bootup file /home/hduser/.pigbootup not found
+2016-07-16 10:44:32,827 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+2016-07-16 10:44:32,827 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.job.tracker is deprecated. Instead, use mapreduce.jobtracker.address
+2016-07-16 10:44:32,837 [main] INFO  org.apache.pig.backend.hadoop.executionengine.HExecutionEngine - Connecting to hadoop file system at: file:///
+2016-07-16 10:44:33,370 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+2016-07-16 10:44:33,500 [main] WARN  org.apache.hadoop.util.NativeCodeLoader - Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+2016-07-16 10:44:33,577 [main] INFO  org.apache.pig.tools.pigstats.ScriptState - Pig features used in the script: UNKNOWN
+2016-07-16 10:44:33,703 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+2016-07-16 10:44:33,816 [main] INFO  org.apache.pig.newplan.logical.optimizer.LogicalPlanOptimizer - {RULES_ENABLED=[AddForEach, ColumnMapKeyPrune, ConstantCalculator, GroupByConstParallelSetter, LimitOptimizer, LoadTypeCastInserter, MergeFilter, MergeForEach, PartitionFilterOptimizer, PredicatePushdownOptimizer, PushDownForEachFlatten, PushUpFilter, SplitFilter, StreamTypeCastInserter]}
+2016-07-16 10:44:34,000 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MRCompiler - File concatenation threshold: 100 optimistic? false
+2016-07-16 10:44:34,056 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MultiQueryOptimizer - MR plan size before optimization: 1
+2016-07-16 10:44:34,057 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MultiQueryOptimizer - MR plan size after optimization: 1
+2016-07-16 10:44:34,098 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+2016-07-16 10:44:34,132 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - session.id is deprecated. Instead, use dfs.metrics.session-id
+2016-07-16 10:44:34,139 [main] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Initializing JVM Metrics with processName=JobTracker, sessionId=
+2016-07-16 10:44:34,191 [main] INFO  org.apache.pig.tools.pigstats.mapreduce.MRScriptState - Pig script settings are added to the job
+2016-07-16 10:44:34,212 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.job.reduce.markreset.buffer.percent is deprecated. Instead, use mapreduce.reduce.markreset.buffer.percent
+2016-07-16 10:44:34,212 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.JobControlCompiler - mapred.job.reduce.markreset.buffer.percent is not set, set to default 0.3
+2016-07-16 10:44:34,212 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.output.compress is deprecated. Instead, use mapreduce.output.fileoutputformat.compress
+2016-07-16 10:44:34,323 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.JobControlCompiler - Setting up single store job
+2016-07-16 10:44:34,397 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - 1 map-reduce job(s) waiting for submission.
+2016-07-16 10:44:34,401 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.job.tracker.http.address is deprecated. Instead, use mapreduce.jobtracker.http.address
+2016-07-16 10:44:34,419 [JobControl] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+2016-07-16 10:44:34,567 [JobControl] WARN  org.apache.hadoop.mapreduce.JobSubmitter - No job jar file set.  User classes may not be found. See Job or Job#setJar(String).
+2016-07-16 10:44:34,636 [JobControl] INFO  org.apache.hadoop.mapreduce.lib.input.FileInputFormat - Total input paths to process : 1
+2016-07-16 10:44:34,636 [JobControl] INFO  org.apache.pig.backend.hadoop.executionengine.util.MapRedUtil - Total input paths to process : 1
+2016-07-16 10:44:34,657 [JobControl] INFO  org.apache.pig.backend.hadoop.executionengine.util.MapRedUtil - Total input paths (combined) to process : 1
+2016-07-16 10:44:34,709 [JobControl] INFO  org.apache.hadoop.mapreduce.JobSubmitter - number of splits:1
+2016-07-16 10:44:35,045 [JobControl] INFO  org.apache.hadoop.mapreduce.JobSubmitter - Submitting tokens for job: job_local1049809718_0001
+2016-07-16 10:44:35,571 [JobControl] INFO  org.apache.hadoop.mapreduce.Job - The url to track the job: http://localhost:8080/
+2016-07-16 10:44:35,573 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - HadoopJobId: job_local1049809718_0001
+2016-07-16 10:44:35,573 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - Processing aliases raw
+2016-07-16 10:44:35,573 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - detailed locations: M: raw[1,6] C:  R: 
+2016-07-16 10:44:35,577 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - 0% complete
+2016-07-16 10:44:35,577 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - Running jobs are [job_local1049809718_0001]
+2016-07-16 10:44:35,577 [Thread-14] INFO  org.apache.hadoop.mapred.LocalJobRunner - OutputCommitter set in config null
+2016-07-16 10:44:35,631 [Thread-14] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+2016-07-16 10:44:35,631 [Thread-14] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.job.reduce.markreset.buffer.percent is deprecated. Instead, use mapreduce.reduce.markreset.buffer.percent
+2016-07-16 10:44:35,632 [Thread-14] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.job.tracker is deprecated. Instead, use mapreduce.jobtracker.address
+2016-07-16 10:44:35,646 [Thread-14] INFO  org.apache.hadoop.mapred.LocalJobRunner - OutputCommitter is org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.PigOutputCommitter
+2016-07-16 10:44:35,813 [Thread-14] INFO  org.apache.hadoop.mapred.LocalJobRunner - Waiting for map tasks
+2016-07-16 10:44:35,814 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.LocalJobRunner - Starting task: attempt_local1049809718_0001_m_000000_0
+2016-07-16 10:44:36,031 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.Task -  Using ResourceCalculatorProcessTree : [ ]
+2016-07-16 10:44:36,040 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.MapTask - Processing split: Number of splits :1
+Total Length = 100
+Input split[0]:
+   Length = 100
+   ClassName: org.apache.hadoop.mapreduce.lib.input.FileSplit
+   Locations:
+
+-----------------------
+
+2016-07-16 10:44:36,121 [LocalJobRunner Map Task Executor #0] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.PigRecordReader - Current split being processed file:/home/hduser/pigdata/testdata.txt:0+100
+2016-07-16 10:44:36,198 [LocalJobRunner Map Task Executor #0] WARN  org.apache.pig.data.SchemaTupleBackend - SchemaTupleBackend has already been initialized
+2016-07-16 10:44:36,206 [LocalJobRunner Map Task Executor #0] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.PigMapOnly$Map - Aliases being processed per job phase (AliasName[line,offset]): M: raw[1,6] C:  R: 
+2016-07-16 10:44:36,223 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.LocalJobRunner - 
+2016-07-16 10:44:36,224 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.Task - Task:attempt_local1049809718_0001_m_000000_0 is done. And is in the process of committing
+2016-07-16 10:44:36,241 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.LocalJobRunner - 
+2016-07-16 10:44:36,241 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.Task - Task attempt_local1049809718_0001_m_000000_0 is allowed to commit now
+2016-07-16 10:44:36,248 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapreduce.lib.output.FileOutputCommitter - Saved output of task 'attempt_local1049809718_0001_m_000000_0' to file:/tmp/temp-1481216629/tmp-779925256/_temporary/0/task_local1049809718_0001_m_000000
+2016-07-16 10:44:36,255 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.LocalJobRunner - map
+2016-07-16 10:44:36,255 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.Task - Task 'attempt_local1049809718_0001_m_000000_0' done.
+2016-07-16 10:44:36,255 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.LocalJobRunner - Finishing task: attempt_local1049809718_0001_m_000000_0
+2016-07-16 10:44:36,256 [Thread-14] INFO  org.apache.hadoop.mapred.LocalJobRunner - map task executor complete.
+2016-07-16 10:44:36,402 [main] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+2016-07-16 10:44:36,412 [main] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+2016-07-16 10:44:36,417 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.map.tasks is deprecated. Instead, use mapreduce.job.maps
+2016-07-16 10:44:36,417 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.reduce.tasks is deprecated. Instead, use mapreduce.job.reduces
+2016-07-16 10:44:36,418 [main] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+2016-07-16 10:44:36,478 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - 100% complete
+2016-07-16 10:44:36,480 [main] INFO  org.apache.pig.tools.pigstats.mapreduce.SimplePigStats - Script Statistics: 
+
+HadoopVersion	PigVersion	UserId	StartedAt	FinishedAt	Features
+2.6.0	0.15.0	hduser	2016-07-16 10:44:34	2016-07-16 10:44:36	UNKNOWN
+
+Success!
+
+Job Stats (time in seconds):
+JobId	Maps	Reduces	MaxMapTime	MinMapTime	AvgMapTime	MedianMapTime	MaxReduceTime	MinReduceTime	AvgReduceTime	MedianReducetime	Alias	Feature	Outputs
+job_local1049809718_0001	1	0	n/a	n/a	n/a	n/a	0	0	0	0	raw	MAP_ONLY	file:/tmp/temp-1481216629/tmp-779925256,
+
+Input(s):
+Successfully read 2 records from: "/home/hduser/pigdata/testdata.txt"
+
+Output(s):
+Successfully stored 2 records in: "file:/tmp/temp-1481216629/tmp-779925256"
+
+Counters:
+Total records written : 2
+Total bytes written : 0
+Spillable Memory Manager spill count : 0
+Total bags proactively spilled: 0
+Total records proactively spilled: 0
+
+Job DAG:
+job_local1049809718_0001
+
+
+2016-07-16 10:44:36,481 [main] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+2016-07-16 10:44:36,481 [main] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+2016-07-16 10:44:36,482 [main] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+2016-07-16 10:44:36,541 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - Success!
+2016-07-16 10:44:36,549 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+2016-07-16 10:44:36,550 [main] WARN  org.apache.pig.data.SchemaTupleBackend - SchemaTupleBackend has already been initialized
+2016-07-16 10:44:36,586 [main] INFO  org.apache.hadoop.mapreduce.lib.input.FileInputFormat - Total input paths to process : 1
+2016-07-16 10:44:36,586 [main] INFO  org.apache.pig.backend.hadoop.executionengine.util.MapRedUtil - Total input paths to process : 1
+(this,is,a,sample,data,to,test,pig,commands)
+(display,of,this,data,shows,the,execution,of,the,commands)
+2016-07-16 10:44:36,709 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+2016-07-16 10:44:36,710 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.textoutputformat.separator is deprecated. Instead, use mapreduce.output.textoutputformat.separator
+2016-07-16 10:44:36,714 [main] ERROR org.apache.pig.tools.grunt.Grunt - ERROR 6000: 
+<file testpig2.pig, line 3, column 0> Output Location Validation Failed for: '/home/hduser/pigdata/rawstorage More info to follow:
+Output directory file:/home/hduser/pigdata/rawstorage already exists
+Details at logfile: /home/hduser/pig_scripts_01/pig_1468646071699.log
+2016-07-16 10:44:36,750 [main] INFO  org.apache.pig.Main - Pig script completed in 5 seconds and 636 milliseconds (5636 ms)
+[hduser@Inceptez pig_scripts_01]$ cd file:/home/hduser/pigdata/rawstorage
+bash: cd: file:/home/hduser/pigdata/rawstorage: No such file or directory
+[hduser@Inceptez pig_scripts_01]$ cd /home/hduser/pigdata/rawstorage
+[hduser@Inceptez rawstorage]$ ls
+part-m-00000  _SUCCESS
+[hduser@Inceptez rawstorage]$ ls -l
+total 4
+-rw-r--r-- 1 hduser hduser 100 Jul 16 10:11 part-m-00000
+-rw-r--r-- 1 hduser hduser   0 Jul 16 10:11 _SUCCESS
+[hduser@Inceptez rawstorage]$ time
+
+real	0m0.000s
+user	0m0.000s
+sys	0m0.000s
+[hduser@Inceptez rawstorage]$ date
+Sat Jul 16 10:45:05 IST 2016
+[hduser@Inceptez rawstorage]$ cd -
+/home/hduser/pig_scripts_01
+[hduser@Inceptez pig_scripts_01]$ vi testpig2.pig 
+[hduser@Inceptez pig_scripts_01]$ pig -x local -f testpig2.pig 
+16/07/16 10:45:45 INFO pig.ExecTypeProvider: Trying ExecType : LOCAL
+16/07/16 10:45:45 INFO pig.ExecTypeProvider: Picked LOCAL as the ExecType
+2016-07-16 10:45:45,257 [main] INFO  org.apache.pig.Main - Apache Pig version 0.15.0 (r1682971) compiled Jun 01 2015, 11:44:35
+2016-07-16 10:45:45,257 [main] INFO  org.apache.pig.Main - Logging error messages to: /home/hduser/pig_scripts_01/pig_1468646145256.log
+2016-07-16 10:45:45,288 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - user.name is deprecated. Instead, use mapreduce.job.user.name
+2016-07-16 10:45:45,917 [main] INFO  org.apache.pig.impl.util.Utils - Default bootup file /home/hduser/.pigbootup not found
+2016-07-16 10:45:46,385 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+2016-07-16 10:45:46,386 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.job.tracker is deprecated. Instead, use mapreduce.jobtracker.address
+2016-07-16 10:45:46,387 [main] INFO  org.apache.pig.backend.hadoop.executionengine.HExecutionEngine - Connecting to hadoop file system at: file:///
+2016-07-16 10:45:46,888 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+2016-07-16 10:45:47,006 [main] WARN  org.apache.hadoop.util.NativeCodeLoader - Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+2016-07-16 10:45:47,085 [main] INFO  org.apache.pig.tools.pigstats.ScriptState - Pig features used in the script: UNKNOWN
+2016-07-16 10:45:47,191 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+2016-07-16 10:45:47,305 [main] INFO  org.apache.pig.newplan.logical.optimizer.LogicalPlanOptimizer - {RULES_ENABLED=[AddForEach, ColumnMapKeyPrune, ConstantCalculator, GroupByConstParallelSetter, LimitOptimizer, LoadTypeCastInserter, MergeFilter, MergeForEach, PartitionFilterOptimizer, PredicatePushdownOptimizer, PushDownForEachFlatten, PushUpFilter, SplitFilter, StreamTypeCastInserter]}
+2016-07-16 10:45:47,489 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MRCompiler - File concatenation threshold: 100 optimistic? false
+2016-07-16 10:45:47,533 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MultiQueryOptimizer - MR plan size before optimization: 1
+2016-07-16 10:45:47,533 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MultiQueryOptimizer - MR plan size after optimization: 1
+2016-07-16 10:45:47,567 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+2016-07-16 10:45:47,602 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - session.id is deprecated. Instead, use dfs.metrics.session-id
+2016-07-16 10:45:47,603 [main] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Initializing JVM Metrics with processName=JobTracker, sessionId=
+2016-07-16 10:45:47,663 [main] INFO  org.apache.pig.tools.pigstats.mapreduce.MRScriptState - Pig script settings are added to the job
+2016-07-16 10:45:47,675 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.job.reduce.markreset.buffer.percent is deprecated. Instead, use mapreduce.reduce.markreset.buffer.percent
+2016-07-16 10:45:47,675 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.JobControlCompiler - mapred.job.reduce.markreset.buffer.percent is not set, set to default 0.3
+2016-07-16 10:45:47,676 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.output.compress is deprecated. Instead, use mapreduce.output.fileoutputformat.compress
+2016-07-16 10:45:47,793 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.JobControlCompiler - Setting up single store job
+2016-07-16 10:45:47,866 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - 1 map-reduce job(s) waiting for submission.
+2016-07-16 10:45:47,870 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.job.tracker.http.address is deprecated. Instead, use mapreduce.jobtracker.http.address
+2016-07-16 10:45:47,891 [JobControl] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+2016-07-16 10:45:48,038 [JobControl] WARN  org.apache.hadoop.mapreduce.JobSubmitter - No job jar file set.  User classes may not be found. See Job or Job#setJar(String).
+2016-07-16 10:45:48,103 [JobControl] INFO  org.apache.hadoop.mapreduce.lib.input.FileInputFormat - Total input paths to process : 1
+2016-07-16 10:45:48,103 [JobControl] INFO  org.apache.pig.backend.hadoop.executionengine.util.MapRedUtil - Total input paths to process : 1
+2016-07-16 10:45:48,126 [JobControl] INFO  org.apache.pig.backend.hadoop.executionengine.util.MapRedUtil - Total input paths (combined) to process : 1
+2016-07-16 10:45:48,178 [JobControl] INFO  org.apache.hadoop.mapreduce.JobSubmitter - number of splits:1
+2016-07-16 10:45:48,503 [JobControl] INFO  org.apache.hadoop.mapreduce.JobSubmitter - Submitting tokens for job: job_local1026470919_0001
+2016-07-16 10:45:49,090 [JobControl] INFO  org.apache.hadoop.mapreduce.Job - The url to track the job: http://localhost:8080/
+2016-07-16 10:45:49,094 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - HadoopJobId: job_local1026470919_0001
+2016-07-16 10:45:49,094 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - Processing aliases raw
+2016-07-16 10:45:49,094 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - detailed locations: M: raw[1,6] C:  R: 
+2016-07-16 10:45:49,097 [Thread-14] INFO  org.apache.hadoop.mapred.LocalJobRunner - OutputCommitter set in config null
+2016-07-16 10:45:49,101 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - 0% complete
+2016-07-16 10:45:49,101 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - Running jobs are [job_local1026470919_0001]
+2016-07-16 10:45:49,140 [Thread-14] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+2016-07-16 10:45:49,141 [Thread-14] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.job.reduce.markreset.buffer.percent is deprecated. Instead, use mapreduce.reduce.markreset.buffer.percent
+2016-07-16 10:45:49,141 [Thread-14] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.job.tracker is deprecated. Instead, use mapreduce.jobtracker.address
+2016-07-16 10:45:49,145 [Thread-14] INFO  org.apache.hadoop.mapred.LocalJobRunner - OutputCommitter is org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.PigOutputCommitter
+2016-07-16 10:45:49,277 [Thread-14] INFO  org.apache.hadoop.mapred.LocalJobRunner - Waiting for map tasks
+2016-07-16 10:45:49,278 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.LocalJobRunner - Starting task: attempt_local1026470919_0001_m_000000_0
+2016-07-16 10:45:49,456 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.Task -  Using ResourceCalculatorProcessTree : [ ]
+2016-07-16 10:45:49,464 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.MapTask - Processing split: Number of splits :1
+Total Length = 100
+Input split[0]:
+   Length = 100
+   ClassName: org.apache.hadoop.mapreduce.lib.input.FileSplit
+   Locations:
+
+-----------------------
+
+2016-07-16 10:45:49,539 [LocalJobRunner Map Task Executor #0] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.PigRecordReader - Current split being processed file:/home/hduser/pigdata/testdata.txt:0+100
+2016-07-16 10:45:49,592 [LocalJobRunner Map Task Executor #0] WARN  org.apache.pig.data.SchemaTupleBackend - SchemaTupleBackend has already been initialized
+2016-07-16 10:45:49,602 [LocalJobRunner Map Task Executor #0] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.PigMapOnly$Map - Aliases being processed per job phase (AliasName[line,offset]): M: raw[1,6] C:  R: 
+2016-07-16 10:45:49,625 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.LocalJobRunner - 
+2016-07-16 10:45:49,626 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.Task - Task:attempt_local1026470919_0001_m_000000_0 is done. And is in the process of committing
+2016-07-16 10:45:49,638 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.LocalJobRunner - 
+2016-07-16 10:45:49,638 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.Task - Task attempt_local1026470919_0001_m_000000_0 is allowed to commit now
+2016-07-16 10:45:49,656 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapreduce.lib.output.FileOutputCommitter - Saved output of task 'attempt_local1026470919_0001_m_000000_0' to file:/tmp/temp147398099/tmp1484450014/_temporary/0/task_local1026470919_0001_m_000000
+2016-07-16 10:45:49,657 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.LocalJobRunner - map
+2016-07-16 10:45:49,657 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.Task - Task 'attempt_local1026470919_0001_m_000000_0' done.
+2016-07-16 10:45:49,657 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.LocalJobRunner - Finishing task: attempt_local1026470919_0001_m_000000_0
+2016-07-16 10:45:49,657 [Thread-14] INFO  org.apache.hadoop.mapred.LocalJobRunner - map task executor complete.
+2016-07-16 10:45:49,856 [main] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+2016-07-16 10:45:49,873 [main] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+2016-07-16 10:45:49,873 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.map.tasks is deprecated. Instead, use mapreduce.job.maps
+2016-07-16 10:45:49,873 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.reduce.tasks is deprecated. Instead, use mapreduce.job.reduces
+2016-07-16 10:45:49,874 [main] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+2016-07-16 10:45:49,934 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - 100% complete
+2016-07-16 10:45:49,936 [main] INFO  org.apache.pig.tools.pigstats.mapreduce.SimplePigStats - Script Statistics: 
+
+HadoopVersion	PigVersion	UserId	StartedAt	FinishedAt	Features
+2.6.0	0.15.0	hduser	2016-07-16 10:45:47	2016-07-16 10:45:49	UNKNOWN
+
+Success!
+
+Job Stats (time in seconds):
+JobId	Maps	Reduces	MaxMapTime	MinMapTime	AvgMapTime	MedianMapTime	MaxReduceTime	MinReduceTime	AvgReduceTime	MedianReducetime	Alias	Feature	Outputs
+job_local1026470919_0001	1	0	n/a	n/a	n/a	n/a	0	0	0	0	raw	MAP_ONLY	file:/tmp/temp147398099/tmp1484450014,
+
+Input(s):
+Successfully read 2 records from: "/home/hduser/pigdata/testdata.txt"
+
+Output(s):
+Successfully stored 2 records in: "file:/tmp/temp147398099/tmp1484450014"
+
+Counters:
+Total records written : 2
+Total bytes written : 0
+Spillable Memory Manager spill count : 0
+Total bags proactively spilled: 0
+Total records proactively spilled: 0
+
+Job DAG:
+job_local1026470919_0001
+
+
+2016-07-16 10:45:49,937 [main] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+2016-07-16 10:45:49,937 [main] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+2016-07-16 10:45:49,938 [main] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+2016-07-16 10:45:49,949 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - Success!
+2016-07-16 10:45:49,956 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+2016-07-16 10:45:49,956 [main] WARN  org.apache.pig.data.SchemaTupleBackend - SchemaTupleBackend has already been initialized
+2016-07-16 10:45:49,984 [main] INFO  org.apache.hadoop.mapreduce.lib.input.FileInputFormat - Total input paths to process : 1
+2016-07-16 10:45:49,984 [main] INFO  org.apache.pig.backend.hadoop.executionengine.util.MapRedUtil - Total input paths to process : 1
+(this,is,a,sample,data,to,test,pig,commands)
+(display,of,this,data,shows,the,execution,of,the,commands)
+2016-07-16 10:45:50,116 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+2016-07-16 10:45:50,118 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.textoutputformat.separator is deprecated. Instead, use mapreduce.output.textoutputformat.separator
+2016-07-16 10:45:50,128 [main] INFO  org.apache.pig.tools.pigstats.ScriptState - Pig features used in the script: UNKNOWN
+2016-07-16 10:45:50,175 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+2016-07-16 10:45:50,175 [main] WARN  org.apache.pig.data.SchemaTupleBackend - SchemaTupleBackend has already been initialized
+2016-07-16 10:45:50,175 [main] INFO  org.apache.pig.newplan.logical.optimizer.LogicalPlanOptimizer - {RULES_ENABLED=[AddForEach, ColumnMapKeyPrune, ConstantCalculator, GroupByConstParallelSetter, LimitOptimizer, LoadTypeCastInserter, MergeFilter, MergeForEach, PartitionFilterOptimizer, PredicatePushdownOptimizer, PushDownForEachFlatten, PushUpFilter, SplitFilter, StreamTypeCastInserter]}
+2016-07-16 10:45:50,176 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MRCompiler - File concatenation threshold: 100 optimistic? false
+2016-07-16 10:45:50,177 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MultiQueryOptimizer - MR plan size before optimization: 1
+2016-07-16 10:45:50,177 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MultiQueryOptimizer - MR plan size after optimization: 1
+2016-07-16 10:45:50,195 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+2016-07-16 10:45:50,195 [main] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+2016-07-16 10:45:50,196 [main] INFO  org.apache.pig.tools.pigstats.mapreduce.MRScriptState - Pig script settings are added to the job
+2016-07-16 10:45:50,196 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.JobControlCompiler - mapred.job.reduce.markreset.buffer.percent is not set, set to default 0.3
+2016-07-16 10:45:50,213 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.JobControlCompiler - Setting up single store job
+2016-07-16 10:45:50,237 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - 1 map-reduce job(s) waiting for submission.
+2016-07-16 10:45:50,242 [JobControl] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+2016-07-16 10:45:50,276 [JobControl] WARN  org.apache.hadoop.mapreduce.JobSubmitter - No job jar file set.  User classes may not be found. See Job or Job#setJar(String).
+2016-07-16 10:45:50,325 [JobControl] INFO  org.apache.hadoop.mapreduce.lib.input.FileInputFormat - Total input paths to process : 1
+2016-07-16 10:45:50,325 [JobControl] INFO  org.apache.pig.backend.hadoop.executionengine.util.MapRedUtil - Total input paths to process : 1
+2016-07-16 10:45:50,330 [JobControl] INFO  org.apache.pig.backend.hadoop.executionengine.util.MapRedUtil - Total input paths (combined) to process : 1
+2016-07-16 10:45:50,354 [JobControl] INFO  org.apache.hadoop.mapreduce.JobSubmitter - number of splits:1
+2016-07-16 10:45:50,405 [JobControl] INFO  org.apache.hadoop.mapreduce.JobSubmitter - Submitting tokens for job: job_local1262865128_0002
+2016-07-16 10:45:50,619 [JobControl] INFO  org.apache.hadoop.mapreduce.Job - The url to track the job: http://localhost:8080/
+2016-07-16 10:45:50,620 [Thread-30] INFO  org.apache.hadoop.mapred.LocalJobRunner - OutputCommitter set in config null
+2016-07-16 10:45:50,630 [Thread-30] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.textoutputformat.separator is deprecated. Instead, use mapreduce.output.textoutputformat.separator
+2016-07-16 10:45:50,639 [Thread-30] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+2016-07-16 10:45:50,640 [Thread-30] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.job.reduce.markreset.buffer.percent is deprecated. Instead, use mapreduce.reduce.markreset.buffer.percent
+2016-07-16 10:45:50,640 [Thread-30] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.job.tracker is deprecated. Instead, use mapreduce.jobtracker.address
+2016-07-16 10:45:50,640 [Thread-30] INFO  org.apache.hadoop.mapred.LocalJobRunner - OutputCommitter is org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.PigOutputCommitter
+2016-07-16 10:45:50,659 [Thread-30] INFO  org.apache.hadoop.mapred.LocalJobRunner - Waiting for map tasks
+2016-07-16 10:45:50,659 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.LocalJobRunner - Starting task: attempt_local1262865128_0002_m_000000_0
+2016-07-16 10:45:50,679 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.Task -  Using ResourceCalculatorProcessTree : [ ]
+2016-07-16 10:45:50,681 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.MapTask - Processing split: Number of splits :1
+Total Length = 100
+Input split[0]:
+   Length = 100
+   ClassName: org.apache.hadoop.mapreduce.lib.input.FileSplit
+   Locations:
+
+-----------------------
+
+2016-07-16 10:45:50,706 [LocalJobRunner Map Task Executor #0] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.PigRecordReader - Current split being processed file:/home/hduser/pigdata/testdata.txt:0+100
+2016-07-16 10:45:50,740 [LocalJobRunner Map Task Executor #0] WARN  org.apache.pig.data.SchemaTupleBackend - SchemaTupleBackend has already been initialized
+2016-07-16 10:45:50,743 [LocalJobRunner Map Task Executor #0] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.PigMapOnly$Map - Aliases being processed per job phase (AliasName[line,offset]): M: raw[1,6] C:  R: 
+2016-07-16 10:45:50,744 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - HadoopJobId: job_local1262865128_0002
+2016-07-16 10:45:50,744 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - Processing aliases raw
+2016-07-16 10:45:50,744 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - detailed locations: M: raw[1,6] C:  R: 
+2016-07-16 10:45:50,750 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - 0% complete
+2016-07-16 10:45:50,750 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - Running jobs are [job_local1262865128_0002]
+2016-07-16 10:45:50,750 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.LocalJobRunner - 
+2016-07-16 10:45:50,750 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.Task - Task:attempt_local1262865128_0002_m_000000_0 is done. And is in the process of committing
+2016-07-16 10:45:50,761 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.LocalJobRunner - 
+2016-07-16 10:45:50,761 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.Task - Task attempt_local1262865128_0002_m_000000_0 is allowed to commit now
+2016-07-16 10:45:50,763 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapreduce.lib.output.FileOutputCommitter - Saved output of task 'attempt_local1262865128_0002_m_000000_0' to file:/home/hduser/pigdata/rawstorage2/_temporary/0/task_local1262865128_0002_m_000000
+2016-07-16 10:45:50,768 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.LocalJobRunner - map
+2016-07-16 10:45:50,768 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.Task - Task 'attempt_local1262865128_0002_m_000000_0' done.
+2016-07-16 10:45:50,768 [LocalJobRunner Map Task Executor #0] INFO  org.apache.hadoop.mapred.LocalJobRunner - Finishing task: attempt_local1262865128_0002_m_000000_0
+2016-07-16 10:45:50,768 [Thread-30] INFO  org.apache.hadoop.mapred.LocalJobRunner - map task executor complete.
+2016-07-16 10:45:50,925 [main] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+2016-07-16 10:45:50,926 [main] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+2016-07-16 10:45:50,926 [main] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+2016-07-16 10:45:50,933 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - 100% complete
+2016-07-16 10:45:50,934 [main] INFO  org.apache.pig.tools.pigstats.mapreduce.SimplePigStats - Script Statistics: 
+
+HadoopVersion	PigVersion	UserId	StartedAt	FinishedAt	Features
+2.6.0	0.15.0	hduser	2016-07-16 10:45:50	2016-07-16 10:45:50	UNKNOWN
+
+Success!
+
+Job Stats (time in seconds):
+JobId	Maps	Reduces	MaxMapTime	MinMapTime	AvgMapTime	MedianMapTime	MaxReduceTime	MinReduceTime	AvgReduceTime	MedianReducetime	Alias	Feature	Outputs
+job_local1262865128_0002	1	0	n/a	n/a	n/a	n/a	0	0	0	0	raw	MAP_ONLY	/home/hduser/pigdata/rawstorage2,
+
+Input(s):
+Successfully read 2 records from: "/home/hduser/pigdata/testdata.txt"
+
+Output(s):
+Successfully stored 2 records in: "/home/hduser/pigdata/rawstorage2"
+
+Counters:
+Total records written : 2
+Total bytes written : 0
+Spillable Memory Manager spill count : 0
+Total bags proactively spilled: 0
+Total records proactively spilled: 0
+
+Job DAG:
+job_local1262865128_0002
+
+
+2016-07-16 10:45:50,934 [main] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+2016-07-16 10:45:50,935 [main] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+2016-07-16 10:45:50,941 [main] INFO  org.apache.hadoop.metrics.jvm.JvmMetrics - Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+2016-07-16 10:45:50,945 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - Success!
+2016-07-16 10:45:51,001 [main] INFO  org.apache.pig.Main - Pig script completed in 6 seconds and 305 milliseconds (6305 ms)
+[hduser@Inceptez pig_scripts_01]$ cd -
+/home/hduser/pigdata/rawstorage
+[hduser@Inceptez rawstorage]$ cd ../rawstorage2/
+[hduser@Inceptez rawstorage2]$ ls
+part-m-00000  _SUCCESS
+[hduser@Inceptez rawstorage2]$ cat part-m-00000 
+this	is	a	sample	data	to	test	pig	commands
+display	of	this	data	shows	the	execution	of	the	commands
+[hduser@Inceptez rawstorage2]$ cat ../rawstorage/part-m-00000 
+this is a sample data to test pig commands
+display of this data shows the execution of the commands
+====================================================================================================
+[hduser@Inceptez ~]$ cat pigdata/bag.txt
+NAMENODE	addressvalue: 192.168.1.2
+DATANODE	addressvalue: 192.168.1.3
+DATANODE	addressvalue: 192.168.1.4
+DATANODE	addressvalue: 192.168.1.5
+DATANODE	addressvalue: 192.168.1.7
+EDGENODE	addressvalue: 192.168.1.9
+
+B = LOAD '/home/hduser/pigdata/bag.txt' USING PigStorage('\t') AS (node: chararray , ip: chararray);
+dump B;
+(NAMENODE,addressvalue: 192.168.1.2)
+(DATANODE,addressvalue: 192.168.1.3)
+(DATANODE,addressvalue: 192.168.1.4)
+(DATANODE,addressvalue: 192.168.1.5)
+(DATANODE,addressvalue: 192.168.1.7)
+(EDGENODE,addressvalue: 192.168.1.9)
+
+grunt> C = filter B by node matches 'DATANODE';                                                            
+grunt> dump C; 
+(DATANODE,addressvalue: 192.168.1.3)
+(DATANODE,addressvalue: 192.168.1.4)
+(DATANODE,addressvalue: 192.168.1.5)
+(DATANODE,addressvalue: 192.168.1.7)
+
+grunt> D = foreach C generate ip;
+grunt> DUMP d;
+(addressvalue: 192.168.1.3)
+(addressvalue: 192.168.1.4)
+(addressvalue: 192.168.1.5)
+(addressvalue: 192.168.1.7)
+
+grunt> E = foreach D generate TOKENIZE(ip);
+grunt> DUMP E;
+({(addressvalue:),(192.168.1.3)})
+({(addressvalue:),(192.168.1.4)})
+({(addressvalue:),(192.168.1.5)})
+({(addressvalue:),(192.168.1.7)})
+====================================================================================================
+[hduser@Inceptez ~]$ cat /home/hduser/pigdata/map.txt
+John,27
+Aravindh,30
+Bala,22
+Srini,32
+
+grunt> data = load '/home/hduser/pigdata/map.txt' using PigStorage (',') as (name:chararray, age:int);
+grunt> dump data;
+(John,27)
+(Aravindh,30)
+(Bala,22)
+(Srini,32)
+
+grunt> B = FOREACH data GENERATE TOMAP(name,age) AS m ;
+grunt> dump B;
+([John#27])
+([Aravindh#30])
+([Bala#22])
+([Srini#32])
+====================================================================================================

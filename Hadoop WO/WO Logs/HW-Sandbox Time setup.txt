@@ -1,0 +1,30 @@
+[root@sandbox zoneinfo]# ln -sf /usr/share/zoneinfo/UTC /etc/localtime
+[root@sandbox zoneinfo]# ls -l /etc/localtime
+lrwxrwxrwx 1 root root 23 Aug 21 11:40 /etc/localtime -> /usr/share/zoneinfo/UTC
+[root@sandbox zoneinfo]# date
+Sun Aug 21 11:41:09 UTC 2016
+
+[root@sandbox Etc]# ln -sf /usr/share/zoneinfo/Etc/UTC /etc/localtime
+[root@sandbox Etc]# date
+Sun Aug 21 11:55:01 UTC 2016
+
+[root@sandbox Europe]# ln -sf /usr/share/zoneinfo/GMT /etc/localtime
+[root@sandbox Europe]# date
+Sun Aug 21 11:56:05 GMT 2016
+
+[root@sandbox Europe]# ln -sf /usr/share/zoneinfo/Europe/London /etc/localtime
+[root@sandbox Europe]# date
+Sun Aug 21 12:56:50 BST 2016
+
+[root@sandbox Canada]# ln -sf /usr/share/zoneinfo/Canada/Eastern /etc/localtime
+[root@sandbox Canada]# date
+Sun Aug 21 08:00:18 EDT 2016
+
+[root@sandbox Canada]# ln -sf /usr/share/zoneinfo/America/Los_Angeles /etc/localtime
+[root@sandbox Canada]# date
+Sun Aug 21 05:01:01 PDT 2016
+
+Observation:
+------------
+UTC, GMT syncs with IST
+LA time syncs with Oozie's time, even though Oozie shows it UTC

@@ -1,0 +1,173 @@
+hive> load data local inpath '/root/hivedata/employee.data' into table employee;
+Copying data from file:/root/hivedata/employee.data
+Copying file: file:/root/hivedata/employee.data
+Loading data to table default.employee
+Table default.employee stats: [num_partitions: 0, num_files: 1, num_rows: 0, total_size: 119, raw_data_size: 0]
+OK
+Time taken: 3.695 seconds
+hive> select * from employee;
+OK
+1       Deepak  82000   1
+2       Farooq  70000   1
+3       Kathick 96000   1
+4       Hari    90000   2
+5       Vadivel 100000  3
+6       Mani    75000   4
+7       Vignesh 75000   2
+Time taken: 0.527 seconds, Fetched: 7 row(s)
+
+hive> insert overwrite local directory '/root/hivedata/hive2local_data' row format delimited fields terminated by '|' select * from employee;
+Total MapReduce jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_1471710654835_0003, Tracking URL = http://sandbox.hortonworks.com:8088/proxy/application_1471710654835_0003/
+Kill Command = /usr/lib/hadoop/bin/hadoop job  -kill job_1471710654835_0003
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 0
+2016-08-21 00:02:49,153 Stage-1 map = 0%,  reduce = 0%
+2016-08-21 00:03:50,221 Stage-1 map = 0%,  reduce = 0%
+2016-08-21 00:03:52,171 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.14 sec
+2016-08-21 00:03:53,208 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.14 sec
+2016-08-21 00:03:54,245 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.14 sec
+2016-08-21 00:03:55,481 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.14 sec
+MapReduce Total cumulative CPU time: 1 seconds 140 msec
+Ended Job = job_1471710654835_0003
+Copying data to local directory /root/hivedata/hive2local_data
+Copying data to local directory /root/hivedata/hive2local_data
+MapReduce Jobs Launched:
+Job 0: Map: 1   Cumulative CPU: 1.14 sec   HDFS Read: 351 HDFS Write: 119 SUCCESS
+Total MapReduce CPU Time Spent: 1 seconds 140 msec
+OK
+Time taken: 125.361 seconds
+
+[root@sandbox ~]# ls /root/hivedata/hive2local_data
+000000_0
+[root@sandbox ~]# cat /root/hivedata/hive2local_data/*
+1|Deepak|82000|1
+2|Farooq|70000|1
+3|Kathick|96000|1
+4|Hari|90000|2
+5|Vadivel|100000|3
+6|Mani|75000|4
+7|Vignesh|75000|2
+========================================================
+[root@sandbox myhqls]# hdfs dfs -ls my_hqls
+Found 1 items
+-rw-r--r--   3 root hdfs        170 2016-08-21 00:24 my_hqls/exp_emp.hql
+[root@sandbox myhqls]# hdfs dfs -cat my_hqls/*
+insert overwrite local directory '/root/hive2local_data' row format delimited fields terminated by '|' select *, from_unixtime(unix_timestamp()) from employee;
+
+<workflow-app name="DKM-Hive-WF-002" xmlns="uri:oozie:workflow:0.4">
+    <start to="DKM-Hive-WF-002a"/>
+    <action name="DKM-Hive-WF-002a">
+        <hive xmlns="uri:oozie:hive-action:0.2">
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+              <job-xml>/user/hue/MyWork01/hive-site.xml</job-xml>
+            <script>/user/root/my_hqls/exp_emp.hql</script>
+        </hive>
+        <ok to="end"/>
+        <error to="kill"/>
+    </action>
+    <kill name="kill">
+        <message>Action failed, error message[${wf:errorMessage(wf:lastErrorNode())}]</message>
+    </kill>
+    <end name="end"/>
+</workflow-app>
+
+Oozie WF completed sucessfully, but data not copied to local directory.
+
+[root@sandbox hive2local_data]# ls -l
+total 0
+================================================================================================================
+[root@sandbox myhqls]# hdfs dfs -ls my_hqls
+Found 2 items
+-rw-r--r--   3 root hdfs        160 2016-08-21 00:26 my_hqls/exp_emp.hql
+-rw-r--r--   3 root hdfs        153 2016-08-21 01:52 my_hqls/exp_emp2.hql
+[root@sandbox myhqls]# hdfs dfs -cat my_hqls/exp_emp2.hql
+insert overwrite directory '$(hdfs_out_dir)' row format delimited fields terminated by '|' select *, from_unixtime(unix_timestamp()) from '${tab_name}';
+
+Parameters:
+------------------------
+hdfs_out_dir=/user/root/hive2hdfs
+tab_name=employee
+------------------------
+
+Hive command arguments :
+--hivevar
+hdfs_out_dir=/user/root/hive2hdfs
+--hivevar
+tab_name=employee
+-f
+exp_emp2.hql
+
+=================================================================
+
+118205 [main] INFO  hive.ql.parse.ParseDriver  - Parsing command: insert overwrite directory '$(hdfs_out_dir)' row format delimited fields terminated by '|' select *, from_unixtime(unix_timestamp()) from 'employee'
+119098 [main] ERROR org.apache.hadoop.hive.ql.Driver  - FAILED: ParseException line 1:45 cannot recognize input near 'row' 'format' 'delimited' in select clause
+
+org.apache.hadoop.hive.ql.parse.ParseException: line 1:45 cannot recognize input near 'row' 'format' 'delimited' in select clause
+
+$(hdfs_out_dir) ==> Round braces not recognized.
+
+
+
+[root@sandbox myhqls]# hdfs dfs -cat my_hqls/exp_emp2.hql
+insert overwrite directory '${hdfs_out_dir}' row format delimited fields terminated by '|' select *, from_unixtime(unix_timestamp()) from '${tab_name}';
+
+==> Failed again
+
+52380 [main] INFO  hive.ql.parse.ParseDriver  - Parsing command: insert overwrite directory '/user/root/hive2hdfs' row format delimited fields terminated by '|' select *, from_unixtime(unix_timestamp()) from 'employee'
+54147 [main] ERROR org.apache.hadoop.hive.ql.Driver  - FAILED: ParseException line 1:50 cannot recognize input near 'row' 'format' 'delimited' in select clause
+
+org.apache.hadoop.hive.ql.parse.ParseException: line 1:50 cannot recognize input near 'row' 'format' 'delimited' in select clause
+
+
+
+[root@sandbox myhqls]# hdfs dfs -cat my_hqls/exp_emp2.hql
+insert overwrite directory '${hdfs_out_dir}' row format delimited fields terminated by '|' select *, from_unixtime(unix_timestamp()) from ${tab_name};
+
+==> Failed again
+
+59401 [main] INFO  hive.ql.parse.ParseDriver  - Parsing command: insert overwrite directory '/user/root/hive2hdfs' row format delimited fields terminated by '|' select *, from_unixtime(unix_timestamp()) from employee
+59961 [main] ERROR org.apache.hadoop.hive.ql.Driver  - FAILED: ParseException line 1:50 cannot recognize input near 'row' 'format' 'delimited' in select clause
+
+org.apache.hadoop.hive.ql.parse.ParseException: line 1:50 cannot recognize input near 'row' 'format' 'delimited' in select clause
+
+
+
+Note:
+-----
+row_format
+  : DELIMITED [FIELDS TERMINATED BY char [ESCAPED BY char]] [COLLECTION ITEMS TERMINATED BY char]
+        [MAP KEYS TERMINATED BY char] [LINES TERMINATED BY char]
+        [NULL DEFINED AS char] (Note: Only available starting with Hive 0.13)
+
+[root@sandbox myhqls]# hdfs dfs -cat my_hqls/exp_emp2.hql
+insert overwrite directory '${hdfs_out_dir}' select *, from_unixtime(unix_timestamp()) from ${tab_name};
+
+Success at last !!!
+
+[root@sandbox /]# hdfs dfs -ls
+Found 10 items
+drwx------   - root hdfs          0 2016-08-20 23:30 .Trash
+drwx------   - root hdfs          0 2016-08-21 00:46 .staging
+-rw-r--r--   3 root hdfs        174 2016-07-26 03:43 emp.pig
+drwxr-xr-x   - hue  hdfs          0 2016-08-21 02:54 hive2hdfs
+drwxr-xr-x   - root hdfs          0 2016-08-21 02:43 my_hqls
+drwxr-xr-x   - root hdfs          0 2016-08-20 23:22 my_scripts
+drwx------   - root hdfs          0 2016-08-19 05:24 oozie-oozi
+drwxr-xr-x   - root hdfs          0 2016-07-26 03:56 pig_out01
+drwxr-xr-x   - root hdfs          0 2016-07-26 01:44 sqoop_imp01
+-rw-r--r--   3 root hdfs        741 2016-08-19 05:18 test_oozie_job.properties
+[root@sandbox /]# cd
+[root@sandbox ~]# hdfs dfs -ls hive2hdfs
+Found 1 items
+-rw-r--r--   3 hue hdfs        259 2016-08-21 02:54 hive2hdfs/000000_0
+[root@sandbox ~]# hdfs dfs -cat hive2hdfs/000000_0
+1Deepak8200012016-08-21 02:54:14
+2Farooq7000012016-08-21 02:54:16
+3Kathick9600012016-08-21 02:54:16
+4Hari9000022016-08-21 02:54:16
+5Vadivel10000032016-08-21 02:54:16
+6Mani7500042016-08-21 02:54:16
+7Vignesh7500022016-08-21 02:54:16

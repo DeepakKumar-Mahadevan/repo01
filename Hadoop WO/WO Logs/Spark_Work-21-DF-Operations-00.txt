@@ -1,0 +1,386 @@
+scala> val empDF = sqlContext.read.json("file:/home/hduser/mydata01/employee4.json");
+<console>:19: error: not found: value sqlContext
+         val empDF = sqlContext.read.json("file:/home/hduser/mydata01/employee4.json");
+                     ^
+scala> import org.apache.spark.sql._
+import org.apache.spark.sql._
+
+scala> val empDF = sqlContext.read.json("file:/home/hduser/mydata01/employee4.json");
+<console>:22: error: not found: value sqlContext
+         val empDF = sqlContext.read.json("file:/home/hduser/mydata01/employee4.json");
+                     ^
+scala> val sqlContext = new org.apache.spark.sql.SQLContext(sc)
+sqlContext: org.apache.spark.sql.SQLContext = org.apache.spark.sql.SQLContext@1bb65acf
+
+scala> val empDF = sqlContext.read.json("file:/home/hduser/mydata01/employee4.json");
+empDF: org.apache.spark.sql.DataFrame = [age: string, id: string, name: string]
+
+scala> val sqc = new org.apache.spark.sql.sqlContext(sc)
+<console>:24: error: type sqlContext is not a member of package org.apache.spark.sql
+         val sqc = new org.apache.spark.sql.sqlContext(sc)
+                                            ^
+====================================================================================================
+select all columns:
+-------------------
+scala> empDF.select().show
+++
+||
+++
+||
+||
+||
+||
+||
+++
+
+scala> empDF.select(*).show
+<console>:29: error: not found: value *
+              empDF.select(*).show
+                           ^
+scala> empDF.select(all).show
+<console>:29: error: not found: value all
+              empDF.select(all).show
+
+scala> empDF.select(_).show
+<console>:29: error: missing parameter type for expanded function ((x$1) => empDF.select(x$1).show)
+              empDF.select(_).show
+                           ^
+
+scala> empDF.show
++---+----+-------+
+|age|  id|   name|
++---+----+-------+
+| 25|1201| satish|
+| 28|1202|krishna|
+| 39|1203|  amith|
+| 23|1204|  javed|
+| 23|1205| prudvi|
++---+----+-------+
+
+scala> empDF.select("age").show()
++---+
+|age|
++---+
+| 25|
+| 28|
+| 39|
+| 23|
+| 23|
++---+
+
+scala> empDF.select($"*",current_timestamp).show
++------+--------+--------+-------+--------------------+
+|emp_id|emp_name| emp_sal|emp_org|  currenttimestamp()|
++------+--------+--------+-------+--------------------+
+|     1|  Deepak| 82000.0|      1|2016-09-29 23:09:...|
+|     2|  Farooq| 70000.0|      1|2016-09-29 23:09:...|
+|     3| Kathick| 96000.0|      1|2016-09-29 23:09:...|
+|     4|    Hari| 90000.0|      2|2016-09-29 23:09:...|
+|     5| Vadivel|100000.0|      3|2016-09-29 23:09:...|
+|     6|    Mani| 75000.0|      4|2016-09-29 23:09:...|
+|     7| Vignesh| 75000.0|      2|2016-09-29 23:09:...|
++------+--------+--------+-------+--------------------+
+
+scala> empDF.select($"*",current_timestamp.cast("long")).show
++------+--------+--------+-------+----------------------------------+
+|emp_id|emp_name| emp_sal|emp_org|cast(currenttimestamp() as bigint)|
++------+--------+--------+-------+----------------------------------+
+|     1|  Deepak| 82000.0|      1|                        1475170854|
+|     2|  Farooq| 70000.0|      1|                        1475170854|
+|     3| Kathick| 96000.0|      1|                        1475170854|
+|     4|    Hari| 90000.0|      2|                        1475170854|
+|     5| Vadivel|100000.0|      3|                        1475170854|
+|     6|    Mani| 75000.0|      4|                        1475170854|
+|     7| Vignesh| 75000.0|      2|                        1475170854|
++------+--------+--------+-------+----------------------------------+
+
+scala> empDF.selectExpr("*","current_timestamp as curr_ts").show
+org.apache.spark.sql.AnalysisException: cannot resolve 'current_timestamp' given input columns emp_id, emp_name, emp_sal, emp_org;
+====================================================================================================
+scala> empDF.write("file:/home/hduser/mydata01/empDF.txt")
+<console>:29: error: org.apache.spark.sql.DataFrameWriter does not take parameters
+              empDF.write("file:/home/hduser/mydata01/empDF.txt")
+                         ^
+scala> empDF.write.format("com.databricks.spark.csv").save("file:/home/hduser/spark_op/empDF.csv")
+java.lang.ClassNotFoundException: Failed to find data source: com.databricks.spark.csv. Please find packages at http://spark-packages.org
+Caused by: java.lang.ClassNotFoundException: com.databricks.spark.csv.DefaultSource
+scala> exit
+====================================================================================================
+Save as csv file:
+-----------------
+1. Go to the SPARK_HOME directory
+2. Create or open conf/spark-defaults.conf
+3.Add spark.jars.packages property with a list of required packages separated by comma. For example:
+spark.jars.packages com.databricks:spark-csv_2.10:1.3.0,com.databricks:spark-xml_2.10:0.3.
+------------------
+
+[hduser@Inceptez ~]$ locate spark-def
+/usr/local/spark/conf/spark-defaults.conf.template
+[hduser@Inceptez ~]$ cd /usr/local/spark/conf/
+
+[hduser@Inceptez conf]$ cp spark-defaults.conf.template spark-defaults.conf
+[hduser@Inceptez conf]$ vi spark-defaults.conf
+spark.jars.packages com.databricks:spark-csv_2.10:1.3.0
+
+[hduser@Inceptez conf]$ spark-shell
+Ivy Default Cache set to: /home/hduser/.ivy2/cache
+The jars for the packages stored in: /home/hduser/.ivy2/jars
+:: loading settings :: url = jar:file:/usr/local/spark/lib/spark-assembly-1.6.0-hadoop2.6.0.jar!/org/apache/ivy/core/settings/ivysettings.xml
+com.databricks#spark-csv_2.10 added as a dependency
+:: resolving dependencies :: org.apache.spark#spark-submit-parent;1.0
+        confs: [default]
+        found com.databricks#spark-csv_2.10;1.3.0 in central
+        found org.apache.commons#commons-csv;1.1 in central
+        found com.univocity#univocity-parsers;1.5.1 in central
+:: resolution report :: resolve 747ms :: artifacts dl 41ms
+        :: modules in use:
+        com.databricks#spark-csv_2.10;1.3.0 from central in [default]
+        com.univocity#univocity-parsers;1.5.1 from central in [default]
+        org.apache.commons#commons-csv;1.1 from central in [default]
+        ---------------------------------------------------------------------
+        |                  |            modules            ||   artifacts   |
+        |       conf       | number| search|dwnlded|evicted|| number|dwnlded|
+        ---------------------------------------------------------------------
+        |      default     |   3   |   0   |   0   |   0   ||   3   |   0   |
+        ---------------------------------------------------------------------
+:: retrieving :: org.apache.spark#spark-submit-parent
+        confs: [default]
+        0 artifacts copied, 3 already retrieved (0kB/19ms)
+
+
+scala> import org.apache.spark.sql._
+import org.apache.spark.sql._
+
+scala> val sqlContext = new org.apache.spark.sql.SQLContext(sc)
+sqlContext: org.apache.spark.sql.SQLContext = org.apache.spark.sql.SQLContext@5455b0b
+
+scala> val empDF = sqlContext.read.json("file:/home/hduser/mydata01/employee4.json");
+empDF: org.apache.spark.sql.DataFrame = [age: string, id: string, name: string]
+
+scala> empDF.write.format("com.databricks.spark.csv").save("file:/home/hduser/spark_op/empDF.csv")
+16/09/29 21:03:54 INFO storage.MemoryStore: Block broadcast_2 stored as values in memory (estimated size 86.5 KB, free 342.1 KB)
+16/09/29 21:03:54 INFO storage.MemoryStore: Block broadcast_2_piece0 stored as bytes in memory (estimated size 19.6 KB, free 361.6 KB)
+16/09/29 21:03:54 INFO storage.BlockManagerInfo: Added broadcast_2_piece0 in memory on localhost:55085 (size: 19.6 KB, free: 517.4 MB)
+16/09/29 21:03:54 INFO spark.SparkContext: Created broadcast 2 from rdd at package.scala:150
+16/09/29 21:03:55 INFO storage.BlockManagerInfo: Removed broadcast_0_piece0 on localhost:55085 in memory (size: 19.6 KB, free: 517.4 MB)
+16/09/29 21:03:55 INFO storage.BlockManagerInfo: Removed broadcast_1_piece0 on localhost:55085 in memory (size: 2.4 KB, free: 517.4 MB)
+16/09/29 21:03:55 INFO spark.ContextCleaner: Cleaned accumulator 1
+16/09/29 21:03:55 INFO storage.MemoryStore: Block broadcast_3 stored as values in memory (estimated size 229.2 KB, free 335.2 KB)
+16/09/29 21:03:55 INFO storage.MemoryStore: Block broadcast_3_piece0 stored as bytes in memory (estimated size 19.6 KB, free 354.9 KB)
+16/09/29 21:03:55 INFO storage.BlockManagerInfo: Added broadcast_3_piece0 in memory on localhost:55085 (size: 19.6 KB, free: 517.4 MB)
+16/09/29 21:03:55 INFO spark.SparkContext: Created broadcast 3 from rdd at package.scala:150
+16/09/29 21:03:55 INFO mapred.FileInputFormat: Total input paths to process : 1
+16/09/29 21:03:55 INFO spark.SparkContext: Starting job: saveAsTextFile at package.scala:180
+16/09/29 21:03:55 INFO scheduler.DAGScheduler: Got job 1 (saveAsTextFile at package.scala:180) with 1 output partitions
+16/09/29 21:03:55 INFO scheduler.DAGScheduler: Final stage: ResultStage 1 (saveAsTextFile at package.scala:180)
+16/09/29 21:03:55 INFO scheduler.DAGScheduler: Parents of final stage: List()
+16/09/29 21:03:55 INFO scheduler.DAGScheduler: Missing parents: List()
+16/09/29 21:03:55 INFO scheduler.DAGScheduler: Submitting ResultStage 1 (MapPartitionsRDD[10] at saveAsTextFile at package.scala:180), which has no missing parents
+16/09/29 21:03:55 INFO storage.MemoryStore: Block broadcast_4 stored as values in memory (estimated size 66.8 KB, free 421.7 KB)
+16/09/29 21:03:55 INFO storage.MemoryStore: Block broadcast_4_piece0 stored as bytes in memory (estimated size 23.8 KB, free 445.5 KB)
+16/09/29 21:03:55 INFO storage.BlockManagerInfo: Added broadcast_4_piece0 in memory on localhost:55085 (size: 23.8 KB, free: 517.3 MB)
+16/09/29 21:03:55 INFO spark.SparkContext: Created broadcast 4 from broadcast at DAGScheduler.scala:1006
+16/09/29 21:03:55 INFO scheduler.DAGScheduler: Submitting 1 missing tasks from ResultStage 1 (MapPartitionsRDD[10] at saveAsTextFile at package.scala:180)
+16/09/29 21:03:55 INFO scheduler.TaskSchedulerImpl: Adding task set 1.0 with 1 tasks
+16/09/29 21:03:55 INFO scheduler.TaskSetManager: Starting task 0.0 in stage 1.0 (TID 1, localhost, partition 0,PROCESS_LOCAL, 2393 bytes)
+16/09/29 21:03:55 INFO executor.Executor: Running task 0.0 in stage 1.0 (TID 1)
+16/09/29 21:03:55 INFO rdd.HadoopRDD: Input split: file:/home/hduser/mydata01/employee4.json:0+244
+16/09/29 21:03:55 INFO codegen.GenerateUnsafeProjection: Code generated in 144.75749 ms
+16/09/29 21:03:56 INFO output.FileOutputCommitter: Saved output of task 'attempt_201609292103_0001_m_000000_1' to file:/home/hduser/spark_op/empDF.csv/_temporary/0/task_201609292103_0001_m_000000
+16/09/29 21:03:56 INFO mapred.SparkHadoopMapRedUtil: attempt_201609292103_0001_m_000000_1: Committed
+16/09/29 21:03:56 INFO executor.Executor: Finished task 0.0 in stage 1.0 (TID 1). 2337 bytes result sent to driver
+16/09/29 21:03:56 INFO scheduler.DAGScheduler: ResultStage 1 (saveAsTextFile at package.scala:180) finished in 0.449 s
+16/09/29 21:03:56 INFO scheduler.DAGScheduler: Job 1 finished: saveAsTextFile at package.scala:180, took 0.527511 s
+16/09/29 21:03:56 INFO scheduler.TaskSetManager: Finished task 0.0 in stage 1.0 (TID 1) in 454 ms on localhost (1/1)
+16/09/29 21:03:56 INFO scheduler.TaskSchedulerImpl: Removed TaskSet 1.0, whose tasks have all completed, from pool
+
+[hduser@Inceptez spark_op]$ ls -l
+total 8
+drwxrwxr-x 2 hduser hduser 4096 Sep 29 21:03 empDF.csv
+drwxrwxr-x 2 hduser hduser 4096 Sep 22 21:02 empDF.parquet
+[hduser@Inceptez spark_op]$ cd empDF.csv
+[hduser@Inceptez empDF.csv]$ ls -l
+total 4
+-rw-r--r-- 1 hduser hduser 74 Sep 29 21:03 part-00000
+-rw-r--r-- 1 hduser hduser  0 Sep 29 21:03 _SUCCESS
+[hduser@Inceptez empDF.csv]$ cat part-00000
+25,1201,satish
+28,1202,krishna
+39,1203,amith
+23,1204,javed
+23,1205,prudvi
+====================================================================================================
+save as a json file:
+--------------------
+
+scala> empDF.write.toJson("file:/home/hduser/mydata01/empDF.json")
+<console>:29: error: value toJson is not a member of org.apache.spark.sql.DataFrameWriter
+              empDF.write.toJson("file:/home/hduser/mydata01/empDF.json")
+                          ^
+scala> empDF.toJson
+<console>:29: error: value toJson is not a member of org.apache.spark.sql.DataFrame
+              empDF.toJson
+                    ^
+scala> empDF.write.json("file:/home/hduser/spark_op/empDF.json")
+16/09/29 21:17:20 INFO storage.MemoryStore: Block broadcast_8 stored as values in memory (estimated size 228.9 KB, free 1260.6 KB)
+16/09/29 21:17:20 INFO storage.MemoryStore: Block broadcast_8_piece0 stored as bytes in memory (estimated size 19.6 KB, free 1280.1 KB)
+16/09/29 21:17:20 INFO storage.BlockManagerInfo: Added broadcast_8_piece0 in memory on localhost:55085 (size: 19.6 KB, free: 517.3 MB)
+16/09/29 21:17:20 INFO spark.SparkContext: Created broadcast 8 from json at <console>:29
+16/09/29 21:17:20 INFO storage.MemoryStore: Block broadcast_9 stored as values in memory (estimated size 229.2 KB, free 1509.3 KB)
+16/09/29 21:17:20 INFO storage.MemoryStore: Block broadcast_9_piece0 stored as bytes in memory (estimated size 19.6 KB, free 1529.0 KB)
+16/09/29 21:17:20 INFO storage.BlockManagerInfo: Added broadcast_9_piece0 in memory on localhost:55085 (size: 19.6 KB, free: 517.2 MB)
+16/09/29 21:17:20 INFO spark.SparkContext: Created broadcast 9 from json at <console>:29
+16/09/29 21:17:20 INFO datasources.DefaultWriterContainer: Using output committer class org.apache.hadoop.mapreduce.lib.output.FileOutputCommitter
+16/09/29 21:17:20 INFO mapred.FileInputFormat: Total input paths to process : 1
+16/09/29 21:17:20 INFO spark.SparkContext: Starting job: json at <console>:29
+16/09/29 21:17:20 INFO scheduler.DAGScheduler: Got job 3 (json at <console>:29) with 1 output partitions
+16/09/29 21:17:20 INFO scheduler.DAGScheduler: Final stage: ResultStage 3 (json at <console>:29)
+16/09/29 21:17:20 INFO scheduler.DAGScheduler: Parents of final stage: List()
+16/09/29 21:17:20 INFO scheduler.DAGScheduler: Missing parents: List()
+16/09/29 21:17:20 INFO scheduler.DAGScheduler: Submitting ResultStage 3 (MapPartitionsRDD[19] at json at <console>:29), which has no missing parents
+16/09/29 21:17:20 INFO storage.MemoryStore: Block broadcast_10 stored as values in memory (estimated size 65.7 KB, free 1594.7 KB)
+16/09/29 21:17:21 INFO storage.MemoryStore: Block broadcast_10_piece0 stored as bytes in memory (estimated size 23.3 KB, free 1618.0 KB)
+16/09/29 21:17:21 INFO storage.BlockManagerInfo: Added broadcast_10_piece0 in memory on localhost:55085 (size: 23.3 KB, free: 517.2 MB)
+16/09/29 21:17:21 INFO spark.SparkContext: Created broadcast 10 from broadcast at DAGScheduler.scala:1006
+16/09/29 21:17:21 INFO scheduler.DAGScheduler: Submitting 1 missing tasks from ResultStage 3 (MapPartitionsRDD[19] at json at <console>:29)
+16/09/29 21:17:21 INFO scheduler.TaskSchedulerImpl: Adding task set 3.0 with 1 tasks
+16/09/29 21:17:21 INFO scheduler.TaskSetManager: Starting task 0.0 in stage 3.0 (TID 3, localhost, partition 0,PROCESS_LOCAL, 2393 bytes)
+16/09/29 21:17:21 INFO executor.Executor: Running task 0.0 in stage 3.0 (TID 3)
+16/09/29 21:17:21 INFO rdd.HadoopRDD: Input split: file:/home/hduser/mydata01/employee4.json:0+244
+16/09/29 21:17:21 INFO datasources.DefaultWriterContainer: Using output committer class org.apache.hadoop.mapreduce.lib.output.FileOutputCommitter
+16/09/29 21:17:21 INFO output.FileOutputCommitter: Saved output of task 'attempt_201609292117_0003_m_000000_0' to file:/home/hduser/spark_op/empDF.json/_temporary/0/task_201609292117_0003_m_000000
+16/09/29 21:17:21 INFO mapred.SparkHadoopMapRedUtil: attempt_201609292117_0003_m_000000_0: Committed
+16/09/29 21:17:21 INFO executor.Executor: Finished task 0.0 in stage 3.0 (TID 3). 2044 bytes result sent to driver
+16/09/29 21:17:21 INFO scheduler.DAGScheduler: ResultStage 3 (json at <console>:29) finished in 0.145 s
+16/09/29 21:17:21 INFO scheduler.DAGScheduler: Job 3 finished: json at <console>:29, took 0.264100 s
+16/09/29 21:17:21 INFO scheduler.TaskSetManager: Finished task 0.0 in stage 3.0 (TID 3) in 146 ms on localhost (1/1)
+16/09/29 21:17:21 INFO scheduler.TaskSchedulerImpl: Removed TaskSet 3.0, whose tasks have all completed, from pool
+16/09/29 21:17:21 INFO datasources.DefaultWriterContainer: Job job_201609292117_0000 committed.
+16/09/29 21:17:21 INFO json.JSONRelation: Listing file:/home/hduser/spark_op/empDF.json on driver
+16/09/29 21:17:21 INFO json.JSONRelation: Listing file:/home/hduser/spark_op/empDF.json on driver
+
+[hduser@Inceptez spark_op]$ ls -l
+total 12
+drwxrwxr-x 2 hduser hduser 4096 Sep 29 21:03 empDF.csv
+drwxrwxr-x 2 hduser hduser 4096 Sep 29 21:17 empDF.json
+drwxrwxr-x 2 hduser hduser 4096 Sep 22 21:02 empDF.parquet
+[hduser@Inceptez spark_op]$ cd empDF.json
+[hduser@Inceptez empDF.json]$ ls -l
+total 4
+-rw-r--r-- 1 hduser hduser 204 Sep 29 21:17 part-r-00000-fee8fe27-65a5-471b-a2ae-3f8d6a7ef697
+-rw-r--r-- 1 hduser hduser   0 Sep 29 21:17 _SUCCESS
+[hduser@Inceptez empDF.json]$ cat part-r-00000-fee8fe27-65a5-471b-a2ae-3f8d6a7ef697
+{"age":"25","id":"1201","name":"satish"}
+{"age":"28","id":"1202","name":"krishna"}
+{"age":"39","id":"1203","name":"amith"}
+{"age":"23","id":"1204","name":"javed"}
+{"age":"23","id":"1205","name":"prudvi"}
+====================================================================================================
+convert DF as JSON:
+-------------------
+scala> val empDFjs = empDF.toJSON
+empDFjs: org.apache.spark.rdd.RDD[String] = MapPartitionsRDD[24] at toJSON at <console>:28
+
+scala> empDFjs.foreach(println)
+16/09/29 21:21:34 INFO spark.SparkContext: Starting job: foreach at <console>:31
+16/09/29 21:21:34 INFO scheduler.DAGScheduler: Got job 6 (foreach at <console>:31) with 1 output partitions
+16/09/29 21:21:34 INFO scheduler.DAGScheduler: Final stage: ResultStage 6 (foreach at <console>:31)
+16/09/29 21:21:34 INFO scheduler.DAGScheduler: Parents of final stage: List()
+16/09/29 21:21:34 INFO scheduler.DAGScheduler: Missing parents: List()
+16/09/29 21:21:34 INFO scheduler.DAGScheduler: Submitting ResultStage 6 (MapPartitionsRDD[24] at toJSON at <console>:28), which has no missing parents
+16/09/29 21:21:34 INFO storage.MemoryStore: Block broadcast_13 stored as values in memory (estimated size 4.6 KB, free 1636.9 KB)
+16/09/29 21:21:35 INFO storage.MemoryStore: Block broadcast_13_piece0 stored as bytes in memory (estimated size 2.6 KB, free 1639.5 KB)
+16/09/29 21:21:35 INFO storage.BlockManagerInfo: Added broadcast_13_piece0 in memory on localhost:55085 (size: 2.6 KB, free: 517.2 MB)
+16/09/29 21:21:35 INFO spark.SparkContext: Created broadcast 13 from broadcast at DAGScheduler.scala:1006
+16/09/29 21:21:35 INFO scheduler.DAGScheduler: Submitting 1 missing tasks from ResultStage 6 (MapPartitionsRDD[24] at toJSON at <console>:28)
+16/09/29 21:21:35 INFO scheduler.TaskSchedulerImpl: Adding task set 6.0 with 1 tasks
+16/09/29 21:21:35 INFO scheduler.TaskSetManager: Starting task 0.0 in stage 6.0 (TID 6, localhost, partition 0,PROCESS_LOCAL, 2393 bytes)
+16/09/29 21:21:35 INFO executor.Executor: Running task 0.0 in stage 6.0 (TID 6)
+16/09/29 21:21:35 INFO rdd.HadoopRDD: Input split: file:/home/hduser/mydata01/employee4.json:0+244
+{"age":"25","id":"1201","name":"satish"}
+{"age":"28","id":"1202","name":"krishna"}
+{"age":"39","id":"1203","name":"amith"}
+{"age":"23","id":"1204","name":"javed"}
+{"age":"23","id":"1205","name":"prudvi"}
+16/09/29 21:21:35 INFO executor.Executor: Finished task 0.0 in stage 6.0 (TID 6). 2044 bytes result sent to driver
+16/09/29 21:21:35 INFO scheduler.DAGScheduler: ResultStage 6 (foreach at <console>:31) finished in 0.021 s
+16/09/29 21:21:35 INFO scheduler.DAGScheduler: Job 6 finished: foreach at <console>:31, took 0.426890 s
+====================================================================================================
+Create DF from textFile:
+------------------------
+scala> val emp = sc.textFile("file:/home/hduser/mydata01/employee.data1");
+emp: org.apache.spark.rdd.RDD[String] = MapPartitionsRDD[26] at textFile at <console>:24
+
+scala> val emp = sc.textFile("file:/home/hduser/mydata01/employee.data1").map(_.split(","));
+emp: org.apache.spark.rdd.RDD[Array[String]] = MapPartitionsRDD[32] at map at <console>:24
+
+scala> case class Emp (emp_id: Integer, emp_name: String, emp_sal: Float, emp_org: Integer)
+defined class Emp
+
+scala> val emp = sc.textFile("file:/home/hduser/mydata01/employee.data1").map(x => Emp( x(0).toInt, x(1), x(2).toFloat, x(3).toInt));
+<console>:26: error: type mismatch;
+ found   : Char
+ required: String
+         val emp = sc.textFile("file:/home/hduser/mydata01/employee.data1").map(x => Emp( x(0).toInt, x(1), x(2).toFloat, x(3).toInt));
+
+scala> val emp = sc.textFile("file:/home/hduser/mydata01/employee.data1").map(_.split(",")).map(x => Emp( x(0).toInt, x(1).toString, x(2).toFloat, x(3).toInt));
+emp: org.apache.spark.rdd.RDD[Emp] = MapPartitionsRDD[36] at map at <console>:26
+
+scala> emp.take(3)
+res12: Array[Emp] = Array(Emp(1,Deepak,82000.0,1), Emp(2,Farooq,70000.0,1), Emp(3,Kathick,96000.0,1))
+
+
+scala> case class Orgz(org_id: Integer, org_name: String);
+defined class Orgz
+
+scala> val orgz = sc.textFile("file:/home/hduser/mydata01/org.data1").map(_.split(",")).map(x => Orgz( x(0).toInt, x(1).toString));
+orgz: org.apache.spark.rdd.RDD[Orgz] = MapPartitionsRDD[40] at map at <console>:26
+
+scala> orgz.take(4)
+res13: Array[Orgz] = Array(Orgz(1,RBS), Orgz(2,CTS), Orgz(3,VDSI), Orgz(4,HCL))
+
+
+scala> val empDF = emp.toDF
+<console>:28: error: value toDF is not a member of org.apache.spark.rdd.RDD[Emp]
+         val empDF = emp.toDF
+                         ^
+
+scala> val empDF = emp.toDF()
+<console>:28: error: value toDF is not a member of org.apache.spark.rdd.RDD[Emp]
+         val empDF = emp.toDF()
+                         ^
+
+>>> import implicits
+
+scala> import sqlContext.implicits._
+import sqlContext.implicits._
+
+scala> val empDF = emp.toDF()
+empDF: org.apache.spark.sql.DataFrame = [emp_id: int, emp_name: string, emp_sal: float, emp_org: int]
+
+scala> val orgDF = orgz.toDF()
+orgDF: org.apache.spark.sql.DataFrame = [org_id: int, org_name: string]
+
+scala> empDF.show()
++------+--------+--------+-------+
+|emp_id|emp_name| emp_sal|emp_org|
++------+--------+--------+-------+
+|     1|  Deepak| 82000.0|      1|
+|     2|  Farooq| 70000.0|      1|
+|     3| Kathick| 96000.0|      1|
+|     4|    Hari| 90000.0|      2|
+|     5| Vadivel|100000.0|      3|
+|     6|    Mani| 75000.0|      4|
+|     7| Vignesh| 75000.0|      2|
++------+--------+--------+-------+
+
+scala> orgDF.show()
++------+--------+
+|org_id|org_name|
++------+--------+
+|     1|     RBS|
+|     2|     CTS|
+|     3|    VDSI|
+|     4|     HCL|
++------+--------+
+====================================================================================================

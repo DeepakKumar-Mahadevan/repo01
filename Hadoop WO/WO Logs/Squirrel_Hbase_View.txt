@@ -1,0 +1,32 @@
+--select * from "PigDataHTable";
+
+--create 't1', {NAME => 'f1', VERSIONS => 5}
+--CREATE VIEW "t1" ( pk VARCHAR PRIMARY KEY, "f1".val VARCHAR )
+
+--create 'PigDataHTable','UserColFamily'
+--create view "PigDataHTable" ( User_id varchar primary key, "UserColFamily".user_det varchar);
+--select * from "PigDataHTable";
+/*
+user_01	<null>
+user_02	<null>
+user_03	<null>
+user_04	<null>
+*/
+--drop view "PigDataHTable";
+--create view "PigDataHTable" ( User_id varchar primary key, "UserColFamily".id varchar,"UserColFamily".name varchar,"UserColFamily".age varchar,"UserColFamily".place varchar);
+--create view "PigDataHTable" ( User_id varchar primary key, "UserColFamily"."id" varchar,"UserColFamily"."name" varchar,"UserColFamily"."age" varchar,"UserColFamily"."place" varchar);
+--select * from "PigDataHTable";
+/*
+user_01	Arun	30	Chennai	<null>
+user_02	Bala	40	Madurai	<null>
+user_03	Devi	50	Trichy	<null>
+user_04	Faizal	60	Chennai	<null>
+*/
+--create view "PigDataHTable" ( User_id varchar primary key, "UserColFamily"."name" varchar,"UserColFamily"."age" varchar,"UserColFamily"."place" varchar);
+select * from "PigDataHTable";
+/*
+user_01	Arun	30	Chennai
+user_02	Bala	40	Madurai
+user_03	Devi	50	Trichy
+user_04	Faizal	60	Chennai
+*/

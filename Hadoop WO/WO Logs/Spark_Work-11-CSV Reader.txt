@@ -1,0 +1,431 @@
+[hduser@Inceptez ~]$ spark-shell --packages com.databricks:spark-csv_2.10:1.0.3
+Ivy Default Cache set to: /home/hduser/.ivy2/cache
+The jars for the packages stored in: /home/hduser/.ivy2/jars
+:: loading settings :: url = jar:file:/usr/local/spark/lib/spark-assembly-1.6.0-hadoop2.6.0.jar!/org/apache/ivy/core/settings/ivysettings.xml
+com.databricks#spark-csv_2.10 added as a dependency
+:: resolving dependencies :: org.apache.spark#spark-submit-parent;1.0
+        confs: [default]
+        found com.databricks#spark-csv_2.10;1.0.3 in central
+        found org.apache.commons#commons-csv;1.1 in central
+downloading https://repo1.maven.org/maven2/com/databricks/spark-csv_2.10/1.0.3/spark-csv_2.10-1.0.3.jar ...
+        [SUCCESSFUL ] com.databricks#spark-csv_2.10;1.0.3!spark-csv_2.10.jar (1832ms)
+downloading https://repo1.maven.org/maven2/org/apache/commons/commons-csv/1.1/commons-csv-1.1.jar ...
+        [SUCCESSFUL ] org.apache.commons#commons-csv;1.1!commons-csv.jar (1545ms)
+:: resolution report :: resolve 17096ms :: artifacts dl 3394ms
+        :: modules in use:
+        com.databricks#spark-csv_2.10;1.0.3 from central in [default]
+        org.apache.commons#commons-csv;1.1 from central in [default]
+        ---------------------------------------------------------------------
+        |                  |            modules            ||   artifacts   |
+        |       conf       | number| search|dwnlded|evicted|| number|dwnlded|
+        ---------------------------------------------------------------------
+        |      default     |   2   |   2   |   2   |   0   ||   2   |   2   |
+        ---------------------------------------------------------------------
+:: retrieving :: org.apache.spark#spark-submit-parent
+        confs: [default]
+        2 artifacts copied, 0 already retrieved (90kB/19ms)
+16/09/14 21:04:51 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+16/09/14 21:04:51 INFO spark.SecurityManager: Changing view acls to: hduser
+16/09/14 21:04:51 INFO spark.SecurityManager: Changing modify acls to: hduser
+16/09/14 21:04:51 INFO spark.SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users with view permissions: Set(hduser); users with modify permissions: Set(hduser)
+16/09/14 21:04:51 INFO spark.HttpServer: Starting HTTP Server
+16/09/14 21:04:51 INFO server.Server: jetty-8.y.z-SNAPSHOT
+16/09/14 21:04:51 INFO server.AbstractConnector: Started SocketConnector@0.0.0.0:59605
+16/09/14 21:04:51 INFO util.Utils: Successfully started service 'HTTP class server' on port 59605.
+Welcome to
+      ____              __
+     / __/__  ___ _____/ /__
+    _\ \/ _ \/ _ `/ __/  '_/
+   /___/ .__/\_,_/_/ /_/\_\   version 1.6.0
+      /_/
+
+Using Scala version 2.10.5 (OpenJDK 64-Bit Server VM, Java 1.7.0_85)
+Type in expressions to have them evaluated.
+Type :help for more information.
+16/09/14 21:04:58 WARN util.Utils: Your hostname, Inceptez resolves to a loopback address: 127.0.0.1; using 192.168.107.134 instead (on interface eth0)
+16/09/14 21:04:58 WARN util.Utils: Set SPARK_LOCAL_IP if you need to bind to another address
+16/09/14 21:04:58 INFO spark.SparkContext: Running Spark version 1.6.0
+16/09/14 21:04:58 INFO spark.SecurityManager: Changing view acls to: hduser
+16/09/14 21:04:58 INFO spark.SecurityManager: Changing modify acls to: hduser
+16/09/14 21:04:58 INFO spark.SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users with view permissions: Set(hduser); users with modify permissions: Set(hduser)
+16/09/14 21:04:58 INFO util.Utils: Successfully started service 'sparkDriver' on port 44038.
+16/09/14 21:04:59 INFO slf4j.Slf4jLogger: Slf4jLogger started
+16/09/14 21:04:59 INFO Remoting: Starting remoting
+16/09/14 21:05:00 INFO Remoting: Remoting started; listening on addresses :[akka.tcp://sparkDriverActorSystem@192.168.107.134:36594]
+16/09/14 21:05:00 INFO util.Utils: Successfully started service 'sparkDriverActorSystem' on port 36594.
+16/09/14 21:05:00 INFO spark.SparkEnv: Registering MapOutputTracker
+16/09/14 21:05:00 INFO spark.SparkEnv: Registering BlockManagerMaster
+16/09/14 21:05:00 INFO storage.DiskBlockManager: Created local directory at /tmp/blockmgr-b1a7c8b4-6c03-4685-8666-2cce1f3edf4b
+16/09/14 21:05:00 INFO storage.MemoryStore: MemoryStore started with capacity 517.4 MB
+16/09/14 21:05:00 INFO spark.SparkEnv: Registering OutputCommitCoordinator
+16/09/14 21:05:05 INFO server.Server: jetty-8.y.z-SNAPSHOT
+16/09/14 21:05:05 INFO server.AbstractConnector: Started SelectChannelConnector@0.0.0.0:4040
+16/09/14 21:05:05 INFO util.Utils: Successfully started service 'SparkUI' on port 4040.
+16/09/14 21:05:05 INFO ui.SparkUI: Started SparkUI at http://192.168.107.134:4040
+16/09/14 21:05:05 INFO spark.HttpFileServer: HTTP File server directory is /tmp/spark-851aeaa4-354d-48d8-9585-4ff0d6d4a76a/httpd-6e607435-2c5a-4e6d-b2d7-d694e983f1f9
+16/09/14 21:05:05 INFO spark.HttpServer: Starting HTTP Server
+16/09/14 21:05:05 INFO server.Server: jetty-8.y.z-SNAPSHOT
+16/09/14 21:05:05 INFO server.AbstractConnector: Started SocketConnector@0.0.0.0:40240
+16/09/14 21:05:05 INFO util.Utils: Successfully started service 'HTTP file server' on port 40240.
+16/09/14 21:05:05 INFO spark.SparkContext: Added JAR file:/home/hduser/.ivy2/jars/com.databricks_spark-csv_2.10-1.0.3.jar at http://192.168.107.134:40240/jars/com.databricks_spark-csv_2.10-1.0.3.jar with timestamp 1473867305604
+16/09/14 21:05:05 INFO spark.SparkContext: Added JAR file:/home/hduser/.ivy2/jars/org.apache.commons_commons-csv-1.1.jar at http://192.168.107.134:40240/jars/org.apache.commons_commons-csv-1.1.jar with timestamp 1473867305605
+16/09/14 21:05:05 INFO executor.Executor: Starting executor ID driver on host localhost
+16/09/14 21:05:05 INFO executor.Executor: Using REPL class URI: http://192.168.107.134:59605
+16/09/14 21:05:05 INFO util.Utils: Successfully started service 'org.apache.spark.network.netty.NettyBlockTransferService' on port 43523.
+16/09/14 21:05:05 INFO netty.NettyBlockTransferService: Server created on 43523
+16/09/14 21:05:05 INFO storage.BlockManagerMaster: Trying to register BlockManager
+16/09/14 21:05:05 INFO storage.BlockManagerMasterEndpoint: Registering block manager localhost:43523 with 517.4 MB RAM, BlockManagerId(driver, localhost, 43523)
+16/09/14 21:05:05 INFO storage.BlockManagerMaster: Registered BlockManager
+16/09/14 21:05:06 INFO repl.SparkILoop: Created spark context..
+Spark context available as sc.
+====================================================================================================
+scala> val sfpdDF = sc.load("com.databricks.spark.csv", Map("path" -> "file:///home/hduser/Desktop/Work/Sample_Data/SFPD_Incidents.csv", "header" -> "true")
+     | )
+<console>:21: error: value load is not a member of org.apache.spark.SparkContext
+         val sfpdDF = sc.load("com.databricks.spark.csv", Map("path" -> "file:///home/hduser/Desktop/Work/Sample_Data/SFPD_Incidents.csv", "header" -> "true")
+                         ^
+
+scala> import sqlContext.implicits._
+<console>:19: error: not found: value sqlContext
+         import sqlContext.implicits._
+                ^
+
+scala> import sc.implicits._
+<console>:21: error: value implicits is not a member of org.apache.spark.SparkContext
+         import sc.implicits._
+                   ^
+
+scala> val sqlc = new org.apache.spark.sql.SQLContext(sc)
+sqlc: org.apache.spark.sql.SQLContext = org.apache.spark.sql.SQLContext@32edf8e9
+
+scala> import sqlc.implicits._
+import sqlc.implicits._
+
+scala> val sfpdDF = sc.load("com.databricks.spark.csv", Map("path" -> "file:///home/hduser/Desktop/Work/Sample_Data/SFPD_Incidents.csv", "header" -> "true"))
+<console>:26: error: value load is not a member of org.apache.spark.SparkContext
+         val sfpdDF = sc.load("com.databricks.spark.csv", Map("path" -> "file:///home/hduser/Desktop/Work/Sample_Data/SFPD_Incidents.csv", "header" -> "true"))
+                         ^
+
+scala> import org.apache.spark.sql._
+import org.apache.spark.sql._
+
+scala> val sfpdDF = sc.load("com.databricks.spark.csv", Map("path" -> "file:///home/hduser/Desktop/Work/Sample_Data/SFPD_Incidents.csv", "header" -> "true"))
+<console>:29: error: value load is not a member of org.apache.spark.SparkContext
+         val sfpdDF = sc.load("com.databricks.spark.csv", Map("path" -> "file:///home/hduser/Desktop/Work/Sample_Data/SFPD_Incidents.csv", "header" -> "true"))
+                         ^
+
+scala> val sfpdDF = sqlc.load("com.databricks.spark.csv", Map("path" -> "file:///home/hduser/Desktop/Work/Sample_Data/SFPD_Incidents.csv", "header" -> "true"))
+warning: there were 1 deprecation warning(s); re-run with -deprecation for details
+16/09/14 21:17:49 INFO storage.MemoryStore: Block broadcast_0 stored as values in memory (estimated size 86.5 KB, free 86.5 KB)
+16/09/14 21:17:49 INFO storage.MemoryStore: Block broadcast_0_piece0 stored as bytes in memory (estimated size 19.6 KB, free 106.0 KB)
+16/09/14 21:17:49 INFO storage.BlockManagerInfo: Added broadcast_0_piece0 in memory on localhost:43523 (size: 19.6 KB, free: 517.4 MB)
+16/09/14 21:17:50 INFO spark.SparkContext: Created broadcast 0 from textFile at CsvRelation.scala:114
+16/09/14 21:17:50 INFO mapred.FileInputFormat: Total input paths to process : 1
+16/09/14 21:17:50 INFO spark.SparkContext: Starting job: first at CsvRelation.scala:114
+16/09/14 21:17:50 INFO scheduler.DAGScheduler: Got job 0 (first at CsvRelation.scala:114) with 1 output partitions
+16/09/14 21:17:50 INFO scheduler.DAGScheduler: Final stage: ResultStage 0 (first at CsvRelation.scala:114)
+16/09/14 21:17:50 INFO scheduler.DAGScheduler: Parents of final stage: List()
+16/09/14 21:17:50 INFO scheduler.DAGScheduler: Missing parents: List()
+16/09/14 21:17:51 INFO scheduler.DAGScheduler: Submitting ResultStage 0 (MapPartitionsRDD[1] at textFile at CsvRelation.scala:114), which has no missing parents
+16/09/14 21:17:51 INFO storage.MemoryStore: Block broadcast_1 stored as values in memory (estimated size 3.1 KB, free 109.1 KB)
+16/09/14 21:17:51 INFO storage.MemoryStore: Block broadcast_1_piece0 stored as bytes in memory (estimated size 1861.0 B, free 110.9 KB)
+16/09/14 21:17:51 INFO storage.BlockManagerInfo: Added broadcast_1_piece0 in memory on localhost:43523 (size: 1861.0 B, free: 517.4 MB)
+16/09/14 21:17:51 INFO spark.SparkContext: Created broadcast 1 from broadcast at DAGScheduler.scala:1006
+16/09/14 21:17:51 INFO scheduler.DAGScheduler: Submitting 1 missing tasks from ResultStage 0 (MapPartitionsRDD[1] at textFile at CsvRelation.scala:114)
+16/09/14 21:17:51 INFO scheduler.TaskSchedulerImpl: Adding task set 0.0 with 1 tasks
+16/09/14 21:17:51 INFO scheduler.TaskSetManager: Starting task 0.0 in stage 0.0 (TID 0, localhost, partition 0,PROCESS_LOCAL, 2328 bytes)
+16/09/14 21:17:51 INFO executor.Executor: Running task 0.0 in stage 0.0 (TID 0)
+16/09/14 21:17:51 INFO executor.Executor: Fetching http://192.168.107.134:40240/jars/com.databricks_spark-csv_2.10-1.0.3.jar with timestamp 1473867305604
+16/09/14 21:17:51 INFO util.Utils: Fetching http://192.168.107.134:40240/jars/com.databricks_spark-csv_2.10-1.0.3.jar to /tmp/spark-851aeaa4-354d-48d8-9585-4ff0d6d4a76a/userFiles-fbc88d96-180b-456b-bd31-89adfe262eca/fetchFileTemp6961851559300201318.tmp
+16/09/14 21:17:51 INFO executor.Executor: Adding file:/tmp/spark-851aeaa4-354d-48d8-9585-4ff0d6d4a76a/userFiles-fbc88d96-180b-456b-bd31-89adfe262eca/com.databricks_spark-csv_2.10-1.0.3.jar to class loader
+16/09/14 21:17:51 INFO executor.Executor: Fetching http://192.168.107.134:40240/jars/org.apache.commons_commons-csv-1.1.jar with timestamp 1473867305605
+16/09/14 21:17:51 INFO util.Utils: Fetching http://192.168.107.134:40240/jars/org.apache.commons_commons-csv-1.1.jar to /tmp/spark-851aeaa4-354d-48d8-9585-4ff0d6d4a76a/userFiles-fbc88d96-180b-456b-bd31-89adfe262eca/fetchFileTemp5139231401643710877.tmp
+16/09/14 21:17:51 INFO executor.Executor: Adding file:/tmp/spark-851aeaa4-354d-48d8-9585-4ff0d6d4a76a/userFiles-fbc88d96-180b-456b-bd31-89adfe262eca/org.apache.commons_commons-csv-1.1.jar to class loader
+16/09/14 21:17:51 INFO rdd.HadoopRDD: Input split: file:/home/hduser/Desktop/Work/Sample_Data/SFPD_Incidents.csv:0+2033332
+16/09/14 21:17:51 INFO Configuration.deprecation: mapred.tip.id is deprecated. Instead, use mapreduce.task.id
+16/09/14 21:17:51 INFO Configuration.deprecation: mapred.task.id is deprecated. Instead, use mapreduce.task.attempt.id
+16/09/14 21:17:51 INFO Configuration.deprecation: mapred.task.is.map is deprecated. Instead, use mapreduce.task.ismap
+16/09/14 21:17:51 INFO Configuration.deprecation: mapred.task.partition is deprecated. Instead, use mapreduce.task.partition
+16/09/14 21:17:51 INFO Configuration.deprecation: mapred.job.id is deprecated. Instead, use mapreduce.job.id
+16/09/14 21:17:52 INFO executor.Executor: Finished task 0.0 in stage 0.0 (TID 0). 2143 bytes result sent to driver
+16/09/14 21:17:52 INFO scheduler.DAGScheduler: ResultStage 0 (first at CsvRelation.scala:114) finished in 0.682 s
+16/09/14 21:17:52 INFO scheduler.TaskSetManager: Finished task 0.0 in stage 0.0 (TID 0) in 661 ms on localhost (1/1)
+16/09/14 21:17:52 INFO scheduler.TaskSchedulerImpl: Removed TaskSet 0.0, whose tasks have all completed, from pool
+16/09/14 21:17:52 INFO scheduler.DAGScheduler: Job 0 finished: first at CsvRelation.scala:114, took 1.439886 s
+sfpdDF: org.apache.spark.sql.DataFrame = [IncidntNum: string, Category: string, Descript: string, DayOfWeek: string, Date: string, Time: string, PdDistrict: string, Resolution: string, Address: string, X: string, Y: string, Location: string, PdId: string]
+
+scala> sfpdDF.printSchema()
+root
+ |-- IncidntNum: string (nullable = true)
+ |-- Category: string (nullable = true)
+ |-- Descript: string (nullable = true)
+ |-- DayOfWeek: string (nullable = true)
+ |-- Date: string (nullable = true)
+ |-- Time: string (nullable = true)
+ |-- PdDistrict: string (nullable = true)
+ |-- Resolution: string (nullable = true)
+ |-- Address: string (nullable = true)
+ |-- X: string (nullable = true)
+ |-- Y: string (nullable = true)
+ |-- Location: string (nullable = true)
+ |-- PdId: string (nullable = true)
+
+scala> sfpdDF.take(3)
+16/09/14 21:25:01 ERROR csv.CsvRelation$: Exception while parsing line: 150639193,DRUG/NARCOTIC,POSSESSION OF NARCOTICS PARAPHERNALIA,Thursday,07/23/2015,01:16,SOUTHERN,"ARREST, BOOKED",800 Block of MARKET ST,-122.406520987144,37.7850629421661,"(37.7850629421661, -122.406520987144)",15063919316710.
+java.lang.ClassCastException: java.lang.String cannot be cast to org.apache.spark.unsafe.types.UTF8String
+====================================================================================================
+Solved by myself 
+ used 
+ spark-shell --packages com.databricks:spark-csv_2.10:1.0.3
+ instead of
+ spark-shell --packages com.databricks:spark-csv_2.10:1.3.0
+ 
+[hduser@Inceptez ~]$ spark-shell --packages com.databricks:spark-csv_2.10:1.3.0
+Ivy Default Cache set to: /home/hduser/.ivy2/cache
+The jars for the packages stored in: /home/hduser/.ivy2/jars
+:: loading settings :: url = jar:file:/usr/local/spark/lib/spark-assembly-1.6.0-hadoop2.6.0.jar!/org/apache/ivy/core/settings/ivysettings.xml
+com.databricks#spark-csv_2.10 added as a dependency
+:: resolving dependencies :: org.apache.spark#spark-submit-parent;1.0
+        confs: [default]
+        found com.databricks#spark-csv_2.10;1.3.0 in central
+        found org.apache.commons#commons-csv;1.1 in central
+        found com.univocity#univocity-parsers;1.5.1 in central
+downloading https://repo1.maven.org/maven2/com/databricks/spark-csv_2.10/1.3.0/spark-csv_2.10-1.3.0.jar ...
+        [SUCCESSFUL ] com.databricks#spark-csv_2.10;1.3.0!spark-csv_2.10.jar (1597ms)
+downloading https://repo1.maven.org/maven2/com/univocity/univocity-parsers/1.5.1/univocity-parsers-1.5.1.jar ...
+        [SUCCESSFUL ] com.univocity#univocity-parsers;1.5.1!univocity-parsers.jar (1083ms)
+:: resolution report :: resolve 9385ms :: artifacts dl 2717ms
+        :: modules in use:
+        com.databricks#spark-csv_2.10;1.3.0 from central in [default]
+        com.univocity#univocity-parsers;1.5.1 from central in [default]
+        org.apache.commons#commons-csv;1.1 from central in [default]
+        ---------------------------------------------------------------------
+        |                  |            modules            ||   artifacts   |
+        |       conf       | number| search|dwnlded|evicted|| number|dwnlded|
+        ---------------------------------------------------------------------
+        |      default     |   3   |   2   |   2   |   0   ||   3   |   2   |
+        ---------------------------------------------------------------------
+:: retrieving :: org.apache.spark#spark-submit-parent
+        confs: [default]
+        2 artifacts copied, 1 already retrieved (281kB/25ms)
+16/09/14 21:29:27 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+16/09/14 21:29:27 INFO spark.SecurityManager: Changing view acls to: hduser
+16/09/14 21:29:27 INFO spark.SecurityManager: Changing modify acls to: hduser
+16/09/14 21:29:27 INFO spark.SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users with view permissions: Set(hduser); users with modify permissions: Set(hduser)
+16/09/14 21:29:27 INFO spark.HttpServer: Starting HTTP Server
+16/09/14 21:29:27 INFO server.Server: jetty-8.y.z-SNAPSHOT
+16/09/14 21:29:27 INFO server.AbstractConnector: Started SocketConnector@0.0.0.0:51828
+16/09/14 21:29:27 INFO util.Utils: Successfully started service 'HTTP class server' on port 51828.
+Welcome to
+      ____              __
+     / __/__  ___ _____/ /__
+    _\ \/ _ \/ _ `/ __/  '_/
+   /___/ .__/\_,_/_/ /_/\_\   version 1.6.0
+      /_/
+
+Using Scala version 2.10.5 (OpenJDK 64-Bit Server VM, Java 1.7.0_85)
+Type in expressions to have them evaluated.
+Type :help for more information.
+16/09/14 21:29:34 WARN util.Utils: Your hostname, Inceptez resolves to a loopback address: 127.0.0.1; using 192.168.107.134 instead (on interface eth0)
+16/09/14 21:29:34 WARN util.Utils: Set SPARK_LOCAL_IP if you need to bind to another address
+16/09/14 21:29:34 INFO spark.SparkContext: Running Spark version 1.6.0
+16/09/14 21:29:34 INFO spark.SecurityManager: Changing view acls to: hduser
+16/09/14 21:29:34 INFO spark.SecurityManager: Changing modify acls to: hduser
+16/09/14 21:29:34 INFO spark.SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users with view permissions: Set(hduser); users with modify permissions: Set(hduser)
+16/09/14 21:29:35 INFO util.Utils: Successfully started service 'sparkDriver' on port 56333.
+16/09/14 21:29:35 INFO slf4j.Slf4jLogger: Slf4jLogger started
+16/09/14 21:29:35 INFO Remoting: Starting remoting
+16/09/14 21:29:36 INFO Remoting: Remoting started; listening on addresses :[akka.tcp://sparkDriverActorSystem@192.168.107.134:57764]
+16/09/14 21:29:36 INFO util.Utils: Successfully started service 'sparkDriverActorSystem' on port 57764.
+16/09/14 21:29:36 INFO spark.SparkEnv: Registering MapOutputTracker
+16/09/14 21:29:36 INFO spark.SparkEnv: Registering BlockManagerMaster
+16/09/14 21:29:36 INFO storage.DiskBlockManager: Created local directory at /tmp/blockmgr-cd185a5d-f48a-47d1-b184-72c97eb4f257
+16/09/14 21:29:36 INFO storage.MemoryStore: MemoryStore started with capacity 517.4 MB
+16/09/14 21:29:36 INFO spark.SparkEnv: Registering OutputCommitCoordinator
+16/09/14 21:29:39 INFO server.Server: jetty-8.y.z-SNAPSHOT
+16/09/14 21:29:39 INFO server.AbstractConnector: Started SelectChannelConnector@0.0.0.0:4040
+16/09/14 21:29:39 INFO util.Utils: Successfully started service 'SparkUI' on port 4040.
+16/09/14 21:29:39 INFO ui.SparkUI: Started SparkUI at http://192.168.107.134:4040
+16/09/14 21:29:39 INFO spark.HttpFileServer: HTTP File server directory is /tmp/spark-3b9d5afd-22da-42d3-b8cc-c3933976750a/httpd-2715def8-ce09-4b20-92a8-301114fd3fc5
+16/09/14 21:29:39 INFO spark.HttpServer: Starting HTTP Server
+16/09/14 21:29:39 INFO server.Server: jetty-8.y.z-SNAPSHOT
+16/09/14 21:29:39 INFO server.AbstractConnector: Started SocketConnector@0.0.0.0:51506
+16/09/14 21:29:39 INFO util.Utils: Successfully started service 'HTTP file server' on port 51506.
+16/09/14 21:29:39 INFO spark.SparkContext: Added JAR file:/home/hduser/.ivy2/jars/com.databricks_spark-csv_2.10-1.3.0.jar at http://192.168.107.134:51506/jars/com.databricks_spark-csv_2.10-1.3.0.jar with timestamp 1473868779315
+16/09/14 21:29:39 INFO spark.SparkContext: Added JAR file:/home/hduser/.ivy2/jars/org.apache.commons_commons-csv-1.1.jar at http://192.168.107.134:51506/jars/org.apache.commons_commons-csv-1.1.jar with timestamp 1473868779332
+16/09/14 21:29:39 INFO spark.SparkContext: Added JAR file:/home/hduser/.ivy2/jars/com.univocity_univocity-parsers-1.5.1.jar at http://192.168.107.134:51506/jars/com.univocity_univocity-parsers-1.5.1.jar with timestamp 1473868779333
+16/09/14 21:29:39 INFO executor.Executor: Starting executor ID driver on host localhost
+16/09/14 21:29:39 INFO executor.Executor: Using REPL class URI: http://192.168.107.134:51828
+16/09/14 21:29:39 INFO util.Utils: Successfully started service 'org.apache.spark.network.netty.NettyBlockTransferService' on port 47854.
+16/09/14 21:29:39 INFO netty.NettyBlockTransferService: Server created on 47854
+16/09/14 21:29:39 INFO storage.BlockManagerMaster: Trying to register BlockManager
+16/09/14 21:29:39 INFO storage.BlockManagerMasterEndpoint: Registering block manager localhost:47854 with 517.4 MB RAM, BlockManagerId(driver, localhost, 47854)
+16/09/14 21:29:39 INFO storage.BlockManagerMaster: Registered BlockManager
+16/09/14 21:29:40 INFO repl.SparkILoop: Created spark context..
+Spark context available as sc.
+====================================================================================================
+scala> val sqlc = new org.apache.spark.sql.SQLContext(sc)
+sqlc: org.apache.spark.sql.SQLContext = org.apache.spark.sql.SQLContext@5087e89b
+
+scala> import sqlc.implicits._
+import sqlc.implicits._
+
+scala> import org.apache.spark.sql._
+import org.apache.spark.sql._
+
+scala> val sfpdDF = sqlc.load("com.databricks.spark.csv", Map("path" -> "file:///home/hduser/Desktop/Work/Sample_Data/SFPD_Incidents_10.csv", "header" -> "true"))
+warning: there were 1 deprecation warning(s); re-run with -deprecation for details
+16/09/14 21:32:52 INFO storage.MemoryStore: Block broadcast_0 stored as values in memory (estimated size 86.5 KB, free 86.5 KB)
+16/09/14 21:32:52 INFO storage.MemoryStore: Block broadcast_0_piece0 stored as bytes in memory (estimated size 19.6 KB, free 106.0 KB)
+16/09/14 21:32:52 INFO storage.BlockManagerInfo: Added broadcast_0_piece0 in memory on localhost:47854 (size: 19.6 KB, free: 517.4 MB)
+16/09/14 21:32:52 INFO spark.SparkContext: Created broadcast 0 from textFile at TextFile.scala:30
+16/09/14 21:32:52 INFO mapred.FileInputFormat: Total input paths to process : 1
+16/09/14 21:32:52 INFO spark.SparkContext: Starting job: take at CsvRelation.scala:249
+16/09/14 21:32:52 INFO scheduler.DAGScheduler: Got job 0 (take at CsvRelation.scala:249) with 1 output partitions
+16/09/14 21:32:52 INFO scheduler.DAGScheduler: Final stage: ResultStage 0 (take at CsvRelation.scala:249)
+16/09/14 21:32:52 INFO scheduler.DAGScheduler: Parents of final stage: List()
+16/09/14 21:32:52 INFO scheduler.DAGScheduler: Missing parents: List()
+16/09/14 21:32:52 INFO scheduler.DAGScheduler: Submitting ResultStage 0 (MapPartitionsRDD[1] at textFile at TextFile.scala:30), which has no missing parents
+16/09/14 21:32:52 INFO storage.MemoryStore: Block broadcast_1 stored as values in memory (estimated size 3.1 KB, free 109.1 KB)
+16/09/14 21:32:53 INFO storage.MemoryStore: Block broadcast_1_piece0 stored as bytes in memory (estimated size 1869.0 B, free 111.0 KB)
+16/09/14 21:32:53 INFO storage.BlockManagerInfo: Added broadcast_1_piece0 in memory on localhost:47854 (size: 1869.0 B, free: 517.4 MB)
+16/09/14 21:32:53 INFO spark.SparkContext: Created broadcast 1 from broadcast at DAGScheduler.scala:1006
+16/09/14 21:32:53 INFO scheduler.DAGScheduler: Submitting 1 missing tasks from ResultStage 0 (MapPartitionsRDD[1] at textFile at TextFile.scala:30)
+16/09/14 21:32:53 INFO scheduler.TaskSchedulerImpl: Adding task set 0.0 with 1 tasks
+16/09/14 21:32:53 INFO scheduler.TaskSetManager: Starting task 0.0 in stage 0.0 (TID 0, localhost, partition 0,PROCESS_LOCAL, 2416 bytes)
+16/09/14 21:32:53 INFO executor.Executor: Running task 0.0 in stage 0.0 (TID 0)
+16/09/14 21:32:53 INFO executor.Executor: Fetching http://192.168.107.134:51506/jars/org.apache.commons_commons-csv-1.1.jar with timestamp 1473868779332
+16/09/14 21:32:53 INFO util.Utils: Fetching http://192.168.107.134:51506/jars/org.apache.commons_commons-csv-1.1.jar to /tmp/spark-3b9d5afd-22da-42d3-b8cc-c3933976750a/userFiles-0b940edb-ee26-45c4-a50b-a2773014ef2a/fetchFileTemp9148606997893848866.tmp
+16/09/14 21:32:53 INFO executor.Executor: Adding file:/tmp/spark-3b9d5afd-22da-42d3-b8cc-c3933976750a/userFiles-0b940edb-ee26-45c4-a50b-a2773014ef2a/org.apache.commons_commons-csv-1.1.jar to class loader
+16/09/14 21:32:53 INFO executor.Executor: Fetching http://192.168.107.134:51506/jars/com.databricks_spark-csv_2.10-1.3.0.jar with timestamp 1473868779315
+16/09/14 21:32:53 INFO util.Utils: Fetching http://192.168.107.134:51506/jars/com.databricks_spark-csv_2.10-1.3.0.jar to /tmp/spark-3b9d5afd-22da-42d3-b8cc-c3933976750a/userFiles-0b940edb-ee26-45c4-a50b-a2773014ef2a/fetchFileTemp3914469052254429783.tmp
+16/09/14 21:32:53 INFO executor.Executor: Adding file:/tmp/spark-3b9d5afd-22da-42d3-b8cc-c3933976750a/userFiles-0b940edb-ee26-45c4-a50b-a2773014ef2a/com.databricks_spark-csv_2.10-1.3.0.jar to class loader
+16/09/14 21:32:53 INFO executor.Executor: Fetching http://192.168.107.134:51506/jars/com.univocity_univocity-parsers-1.5.1.jar with timestamp 1473868779333
+16/09/14 21:32:53 INFO util.Utils: Fetching http://192.168.107.134:51506/jars/com.univocity_univocity-parsers-1.5.1.jar to /tmp/spark-3b9d5afd-22da-42d3-b8cc-c3933976750a/userFiles-0b940edb-ee26-45c4-a50b-a2773014ef2a/fetchFileTemp9126621748266484164.tmp
+16/09/14 21:32:53 INFO executor.Executor: Adding file:/tmp/spark-3b9d5afd-22da-42d3-b8cc-c3933976750a/userFiles-0b940edb-ee26-45c4-a50b-a2773014ef2a/com.univocity_univocity-parsers-1.5.1.jar to class loader
+16/09/14 21:32:53 INFO rdd.HadoopRDD: Input split: file:/home/hduser/Desktop/Work/Sample_Data/SFPD_Incidents_10.csv:0+2143
+16/09/14 21:32:53 INFO Configuration.deprecation: mapred.tip.id is deprecated. Instead, use mapreduce.task.id
+16/09/14 21:32:53 INFO Configuration.deprecation: mapred.task.id is deprecated. Instead, use mapreduce.task.attempt.id
+16/09/14 21:32:53 INFO Configuration.deprecation: mapred.task.is.map is deprecated. Instead, use mapreduce.task.ismap
+16/09/14 21:32:53 INFO Configuration.deprecation: mapred.task.partition is deprecated. Instead, use mapreduce.task.partition
+16/09/14 21:32:53 INFO Configuration.deprecation: mapred.job.id is deprecated. Instead, use mapreduce.job.id
+16/09/14 21:32:53 INFO executor.Executor: Finished task 0.0 in stage 0.0 (TID 0). 4000 bytes result sent to driver
+16/09/14 21:32:53 INFO scheduler.DAGScheduler: ResultStage 0 (take at CsvRelation.scala:249) finished in 0.279 s
+16/09/14 21:32:53 INFO scheduler.TaskSetManager: Finished task 0.0 in stage 0.0 (TID 0) in 262 ms on localhost (1/1)
+16/09/14 21:32:53 INFO scheduler.TaskSchedulerImpl: Removed TaskSet 0.0, whose tasks have all completed, from pool
+16/09/14 21:32:53 INFO scheduler.DAGScheduler: Job 0 finished: take at CsvRelation.scala:249, took 0.379318 s
+sfpdDF: org.apache.spark.sql.DataFrame = [IncidntNum: string, Category: string, Descript: string, DayOfWeek: string, Date: string, Time: string, PdDistrict: string, Resolution: string, Address: string, X: string, Y: string, Location: string, PdId: string]
+
+scala> sfpdDF.take(1)
+16/09/14 21:33:14 INFO storage.MemoryStore: Block broadcast_2 stored as values in memory (estimated size 228.9 KB, free 228.9 KB)
+16/09/14 21:33:14 INFO storage.MemoryStore: Block broadcast_2_piece0 stored as bytes in memory (estimated size 19.6 KB, free 248.4 KB)
+16/09/14 21:33:14 INFO storage.BlockManagerInfo: Added broadcast_2_piece0 in memory on localhost:47854 (size: 19.6 KB, free: 517.4 MB)
+16/09/14 21:33:14 INFO spark.SparkContext: Created broadcast 2 from textFile at TextFile.scala:30
+16/09/14 21:33:14 INFO mapred.FileInputFormat: Total input paths to process : 1
+16/09/14 21:33:14 INFO spark.SparkContext: Starting job: take at <console>:32
+16/09/14 21:33:14 INFO scheduler.DAGScheduler: Got job 1 (take at <console>:32) with 1 output partitions
+16/09/14 21:33:14 INFO scheduler.DAGScheduler: Final stage: ResultStage 1 (take at <console>:32)
+16/09/14 21:33:14 INFO scheduler.DAGScheduler: Parents of final stage: List()
+16/09/14 21:33:14 INFO scheduler.DAGScheduler: Missing parents: List()
+16/09/14 21:33:14 INFO scheduler.DAGScheduler: Submitting ResultStage 1 (MapPartitionsRDD[7] at take at <console>:32), which has no missing parents
+16/09/14 21:33:14 INFO storage.MemoryStore: Block broadcast_3 stored as values in memory (estimated size 7.3 KB, free 255.7 KB)
+16/09/14 21:33:14 INFO storage.MemoryStore: Block broadcast_3_piece0 stored as bytes in memory (estimated size 4.1 KB, free 259.8 KB)
+16/09/14 21:33:14 INFO storage.BlockManagerInfo: Added broadcast_3_piece0 in memory on localhost:47854 (size: 4.1 KB, free: 517.4 MB)
+16/09/14 21:33:14 INFO spark.SparkContext: Created broadcast 3 from broadcast at DAGScheduler.scala:1006
+16/09/14 21:33:14 INFO scheduler.DAGScheduler: Submitting 1 missing tasks from ResultStage 1 (MapPartitionsRDD[7] at take at <console>:32)
+16/09/14 21:33:14 INFO scheduler.TaskSchedulerImpl: Adding task set 1.0 with 1 tasks
+16/09/14 21:33:14 INFO scheduler.TaskSetManager: Starting task 0.0 in stage 1.0 (TID 1, localhost, partition 0,PROCESS_LOCAL, 2416 bytes)
+16/09/14 21:33:14 INFO executor.Executor: Running task 0.0 in stage 1.0 (TID 1)
+16/09/14 21:33:14 INFO rdd.HadoopRDD: Input split: file:/home/hduser/Desktop/Work/Sample_Data/SFPD_Incidents_10.csv:0+2143
+16/09/14 21:33:14 INFO executor.Executor: Finished task 0.0 in stage 1.0 (TID 1). 2706 bytes result sent to driver
+16/09/14 21:33:14 INFO scheduler.DAGScheduler: ResultStage 1 (take at <console>:32) finished in 0.048 s
+16/09/14 21:33:14 INFO scheduler.DAGScheduler: Job 1 finished: take at <console>:32, took 0.077550 s
+16/09/14 21:33:14 INFO scheduler.TaskSetManager: Finished task 0.0 in stage 1.0 (TID 1) in 54 ms on localhost (1/1)
+16/09/14 21:33:14 INFO scheduler.TaskSchedulerImpl: Removed TaskSet 1.0, whose tasks have all completed, from pool
+res0: Array[org.apache.spark.sql.Row] = Array([150639193,DRUG/NARCOTIC,POSSESSION OF NARCOTICS PARAPHERNALIA,Thursday,07/23/2015,01:16,SOUTHERN,ARREST, BOOKED,800 Block of MARKET ST,-122.406520987144,37.7850629421661,(37.7850629421661, -122.406520987144),15063919316710])
+====================================================================================================
+scala> sfpdDF.show()
++----------+---------------+--------------------+---------+----------+-----+----------+--------------+--------------------+-----------------+----------------+--------------------+--------------+
+|IncidntNum|       Category|            Descript|DayOfWeek|      Date| Time|PdDistrict|    Resolution|             Address|                X|               Y|            Location|          PdId|
++----------+---------------+--------------------+---------+----------+-----+----------+--------------+--------------------+-----------------+----------------+--------------------+--------------+
+| 150639193|  DRUG/NARCOTIC|POSSESSION OF NAR...| Thursday|07/23/2015|01:16|  SOUTHERN|ARREST, BOOKED|800 Block of MARK...|-122.406520987144|37.7850629421661|(37.7850629421661...|15063919316710|
+| 150639193|       WARRANTS|      WARRANT ARREST| Thursday|07/23/2015|01:16|  SOUTHERN|ARREST, BOOKED|800 Block of MARK...|-122.406520987144|37.7850629421661|(37.7850629421661...|15063919363010|
+| 150654599|       TRESPASS|         TRESPASSING|   Monday|07/27/2015|21:00|  SOUTHERN|          NONE|800 Block of BRYA...|-122.403404791479| 37.775420706711|(37.775420706711,...|15065459927195|
+| 150659141|SECONDARY CODES|   ATM RELATED CRIME|Wednesday|07/29/2015|10:00| INGLESIDE|          NONE|2800 Block of DIA...|-122.434066094698| 37.734086514355|(37.734086514355,...|15065914115400|
+| 150661378| OTHER OFFENSES|POSSESSION OF BUR...|Wednesday|07/29/2015|22:45|  NORTHERN|ARREST, BOOKED|UNION ST / WEBSTE...|-122.433850462737|37.7972979491885|(37.7972979491885...|15066137827130|
+| 150662859| OTHER OFFENSES|   FALSE PERSONATION|   Monday|07/20/2015|00:01|   TARAVAL|          NONE|1400 Block of 46T...|-122.505792141869|37.7594771529851|(37.7594771529851...|15066285909027|
+| 150611442| SUSPICIOUS OCC|SUSPICIOUS OCCURR...|   Monday|07/13/2015|15:00|   CENTRAL|          NONE|2100 Block of TAY...|-122.414520235774|37.8021725258528|(37.8021725258528...|15061144264070|
+| 150611464|       BURGLARY|BURGLARY OF HOTEL...|   Monday|07/13/2015|14:00|  SOUTHERN|          NONE|   0 Block of 4TH ST|-122.404956956375|37.7851178563953|(37.7851178563953...|15061146405033|
+| 150591167|        ASSAULT|INFLICT INJURY ON...|  Tuesday|07/07/2015|14:12|  RICHMOND|ARREST, BOOKED|2100 Block of BAL...|-122.481788955267|37.7763690162121|(37.7763690162121...|15059116715040|
+| 150620910|       BURGLARY|BURGLARY, VEHICLE...|   Friday|07/17/2015|01:56|  NORTHERN|ARREST, BOOKED|OLIVE ST / VANNES...|-122.421096796936|37.7842937802977|(37.7842937802977...|15062091005014|
++----------+---------------+--------------------+---------+----------+-----+----------+--------------+--------------------+-----------------+----------------+--------------------+--------------+
+
+scala> sfpdDF.select("Category").distinct.count()
+res2: Long = 8
+
+====================================================================================================
+scala> sfpdDF.registerTempTable("sfpd_tbl")
+
+scala> sqlc.sql("select * from sfpdDF")
+org.apache.spark.sql.AnalysisException: Table not found: sfpdDF;
+
+scala> sqlc.sql("select * from sfpd_tbl")
+res5: org.apache.spark.sql.DataFrame = [IncidntNum: string, Category: string, Descript: string, DayOfWeek: string, Date: string, Time: string, PdDistrict: string, Resolution: string, Address: string, X: string, Y: string, Location: string, PdId: string]
+
+scala> sqlc.sql("select * from sfpd_tbl").collect()
+res6: Array[org.apache.spark.sql.Row] = Array([150639193,DRUG/NARCOTIC,POSSESSION OF NARCOTICS PARAPHERNALIA,Thursday,07/23/2015,01:16,SOUTHERN,ARREST, BOOKED,800 Block of MARKET ST,-122.406520987144,37.7850629421661,(37.7850629421661, -122.406520987144),15063919316710], [150639193,WARRANTS,WARRANT ARREST,Thursday,07/23/2015,01:16,SOUTHERN,ARREST, BOOKED,800 Block of MARKET ST,-122.406520987144,37.7850629421661,(37.7850629421661, -122.406520987144),15063919363010], [150654599,TRESPASS,TRESPASSING,Monday,07/27/2015,21:00,SOUTHERN,NONE,800 Block of BRYANT ST,-122.403404791479,37.775420706711,(37.775420706711, -122.403404791479),15065459927195], [150659141,SECONDARY CODES,ATM RELATED CRIME,Wednesday,07/29/2015,10:00,INGLESIDE,NONE,2800 Block of DIAMOND ST,-122.434066094698,37.734086514355,...
+
+scala> sqlc.sql("select PdDistrict, count(PdDistrict) as noi_by_dist from sfpd_tbl group by PdDistrict order by 2 desc").collect().foreach(println)
+[INGLESIDE,1]
+[RICHMOND,1]
+[NORTHERN,2]
+[TARAVAL,1]
+[CENTRAL,1]
+[SOUTHERN,4]
+scala> sqlc.sql("select PdDistrict, count(PdDistrict) as noi_by_dist from sfpd_tbl group by PdDistrict order by 1 desc").collect().foreach(println)
+[INGLESIDE,1]
+[RICHMOND,1]
+[NORTHERN,2]
+[TARAVAL,1]
+[CENTRAL,1]
+[SOUTHERN,4]
+scala> sqlc.sql("select PdDistrict, count(PdDistrict) as noi_by_dist from sfpd_tbl group by PdDistrict order by noi_by_dist desc").collect().foreach(println)
+[SOUTHERN,4]
+[NORTHERN,2]
+[INGLESIDE,1]
+[RICHMOND,1]
+[TARAVAL,1]
+[CENTRAL,1]
+====================================================================================================
+scala> sqlc.sql("select PdDistrict, count(PdDistrict) as noi_by_dist from sfpd_tbl group by PdDistrict order by noi_by_dist desc").collect().foreach(println).explain
+<console>:30: error: value explain is not a member of Unit
+              sqlc.sql("select PdDistrict, count(PdDistrict) as noi_by_dist from sfpd_tbl group by PdDistrict order by noi_by_dist desc").collect().foreach(println).explain
+                                                                                                                                                                     ^
+
+scala> sqlc.sql("select PdDistrict, count(PdDistrict) as noi_by_dist from sfpd_tbl group by PdDistrict order by noi_by_dist desc").collect().foreach(println).explain()
+<console>:30: error: value explain is not a member of Unit
+              sqlc.sql("select PdDistrict, count(PdDistrict) as noi_by_dist from sfpd_tbl group by PdDistrict order by noi_by_dist desc").collect().foreach(println).explain()
+
+scala> sqlc.sql("select PdDistrict, count(PdDistrict) as noi_by_dist from sfpd_tbl group by PdDistrict order by noi_by_dist desc").explain()
+== Physical Plan ==
+Sort [noi_by_dist#39L DESC], true, 0
++- ConvertToUnsafe
+   +- Exchange rangepartitioning(noi_by_dist#39L DESC,200), None
+      +- ConvertToSafe
+         +- TungstenAggregate(key=[PdDistrict#6], functions=[(count(PdDistrict#6),mode=Final,isDistinct=false)], output=[PdDistrict#6,noi_by_dist#39L])
+            +- TungstenExchange hashpartitioning(PdDistrict#6,200), None
+               +- TungstenAggregate(key=[PdDistrict#6], functions=[(count(PdDistrict#6),mode=Partial,isDistinct=false)], output=[PdDistrict#6,count#45L])
+                  +- Scan CsvRelation(<function0>,Some(file:///home/hduser/Desktop/Work/Sample_Data/SFPD_Incidents_10.csv),true,,,",null,#,PERMISSIVE,COMMONS,false,false,false,null,false,null)[PdDistrict#6]
+
+scala> sqlc.sql("select PdDistrict, count(PdDistrict) as noi_by_dist from sfpd_tbl group by PdDistrict order by 2 desc").explain()
+== Physical Plan ==
+Sort [2 DESC], true, 0
++- ConvertToUnsafe
+   +- Exchange rangepartitioning(2 DESC,200), None
+      +- ConvertToSafe
+         +- TungstenAggregate(key=[PdDistrict#6], functions=[(count(PdDistrict#6),mode=Final,isDistinct=false)], output=[PdDistrict#6,noi_by_dist#46L])
+            +- TungstenExchange hashpartitioning(PdDistrict#6,200), None
+               +- TungstenAggregate(key=[PdDistrict#6], functions=[(count(PdDistrict#6),mode=Partial,isDistinct=false)], output=[PdDistrict#6,count#50L])
+                  +- Scan CsvRelation(<function0>,Some(file:///home/hduser/Desktop/Work/Sample_Data/SFPD_Incidents_10.csv),true,,,",null,#,PERMISSIVE,COMMONS,false,false,false,null,false,null)[PdDistrict#6]
+
+====================================================================================================

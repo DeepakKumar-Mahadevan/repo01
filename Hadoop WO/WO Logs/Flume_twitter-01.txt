@@ -1,0 +1,53 @@
+DKM_Twitter_App01
+This is a sample Twitter application
+http://dkmtwitterapp01.com
+
+Application Settings
+Keep the "Consumer Secret" a secret. This key should never be human-readable in your application.
+Consumer Key (API Key) Z6ZNPyDA6deV8KYMskIhEM4Ze 
+Consumer Secret (API Secret) SNtknAEpzEnYv4wMebQF1PseaGlqUq58kUHvdOc8IZN45miP93 
+Access Level Read and write (modify app permissions)  
+Owner DeepakManUtd 
+Owner ID 145580641
+
+Your Access Token
+This access token can be used to make API requests on your own account's behalf. Do not share your access token secret with anyone. 
+Access Token 145580641-rpfUsxXoSfnadFdTdX9BNTcJ9YHthVwumkGuaDR2 
+Access Token Secret VPV2gzkgN4xXqsutBj0WPuILazG9b3GTkqviuQXfI6SlU 
+Access Level Read and write 
+Owner DeepakManUtd 
+Owner ID 145580641
+
+
+OAuth Tool
+OAuth Settings
+
+Consumer key: *
+Z6ZNPyDA6deV8KYMskIhEM4Ze
+
+Consumer secret: *
+SNtknAEpzEnYv4wMebQF1PseaGlqUq58kUHvdOc8IZN45miP93
+Remember this should not be shared.
+
+Access token: 
+145580641-rpfUsxXoSfnadFdTdX9BNTcJ9YHthVwumkGuaDR2
+
+Access token secret: 
+VPV2gzkgN4xXqsutBj0WPuILazG9b3GTkqviuQXfI6SlU
+
+Request Settings
+Request type: *
+GET (*)
+POST 
+DELETE 
+PUT 
+HEAD 
+
+Request URI: *
+https://api.twitter.com/1.1/
+
+The full URI, without parameters. For example: https://api.twitter.com/1.1/statuses/home_timeline.json
+
+Request query: 
+
+The parameters for your request. For example: include_entities=true&page=2. Note these parameters will be sent on the querystring for GET requests, and in the request body for POST requests.

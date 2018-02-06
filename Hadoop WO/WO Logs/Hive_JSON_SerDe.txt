@@ -1,0 +1,500 @@
+hive> CREATE TABLE clickstr (a string, c string, nk int, tz string, gr string, g string, h string,l string, hh string, r string, u string, t int, hc int, cy string, al string) ROW FORMAT SERDE 'com.cloudera.hive.serde.JSONSerDe';
+OK
+Time taken: 0.849 seconds
+
+hive (default)> show create table clickstr;
+OK
+createtab_stmt
+CREATE TABLE `clickstr`(
+  `a` string COMMENT 'from deserializer',
+  `c` string COMMENT 'from deserializer',
+  `nk` int COMMENT 'from deserializer',
+  `tz` string COMMENT 'from deserializer',
+  `gr` string COMMENT 'from deserializer',
+  `g` string COMMENT 'from deserializer',
+  `h` string COMMENT 'from deserializer',
+  `l` string COMMENT 'from deserializer',
+  `hh` string COMMENT 'from deserializer',
+  `r` string COMMENT 'from deserializer',
+  `u` string COMMENT 'from deserializer',
+  `t` int COMMENT 'from deserializer',
+  `hc` int COMMENT 'from deserializer',
+  `cy` string COMMENT 'from deserializer',
+  `al` string COMMENT 'from deserializer')
+ROW FORMAT SERDE
+  'com.cloudera.hive.serde.JSONSerDe'
+STORED AS INPUTFORMAT
+  'org.apache.hadoop.mapred.TextInputFormat'
+OUTPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION
+  'hdfs://localhost:54310/user/hive/warehouse/clickstr'
+TBLPROPERTIES (
+  'transient_lastDdlTime'='1469722576')
+Time taken: 0.379 seconds, Fetched: 26 row(s)
+
+LOAD DATA LOCAL INPATH '/home/hduser/mydata01/UsaGovData.txt' OVERWRITE INTO TABLE clickstr;
+hive (default)> LOAD DATA LOCAL INPATH '/home/hduser/mydata01/UsaGovData.txt' OVERWRITE INTO TABLE clickstr;
+Loading data to table default.clickstr
+Table default.clickstr stats: [numFiles=1, numRows=0, totalSize=832181, rawDataSize=0]
+OK
+Time taken: 1.555 seconds
+
+CREATE EXTERNAL TABLE IF NOT EXISTS clickstrpart (a string, nk int,g string, h string,l string,hh string, r string ,u string, t bigint,gr string, cy string, tz string,hc bigint,al string) \
+          PARTITIONED BY (c string) \
+          ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t';
+hive (default)> CREATE EXTERNAL TABLE IF NOT EXISTS clickstrpart (a string, nk int,g string, h string,l string,hh string, r string ,u string, t bigint,gr string, cy string, tz string,hc bigint,al string) \
+              > PARTITIONED BY (c string) \
+              > ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t';
+FAILED: ParseException line 1:188 character '\' not supported here
+line 2:26 character '\' not supported here
+hive (default)> CREATE EXTERNAL TABLE IF NOT EXISTS clickstrpart (a string, nk int,g string, h string,l string,hh string, r string ,u string, t bigint,gr string, cy string, tz string,hc bigint,al string)
+              > PARTITIONED BY (c string)                                                                                                                                             > ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t';                                                                                                         OK
+Time taken: 0.13 seconds
+
+hive (default)> show create table clickstrpart;
+OK
+createtab_stmt
+CREATE EXTERNAL TABLE `clickstrpart`(
+  `a` string,
+  `nk` int,
+  `g` string,
+  `h` string,
+  `l` string,
+  `hh` string,
+  `r` string,
+  `u` string,
+  `t` bigint,
+  `gr` string,
+  `cy` string,
+  `tz` string,
+  `hc` bigint,
+  `al` string)
+PARTITIONED BY (
+  `c` string)
+ROW FORMAT DELIMITED
+  FIELDS TERMINATED BY '\t'
+STORED AS INPUTFORMAT
+  'org.apache.hadoop.mapred.TextInputFormat'
+OUTPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION
+  'hdfs://localhost:54310/user/hive/warehouse/clickstrpart'
+TBLPROPERTIES (
+  'transient_lastDdlTime'='1469723018')
+Time taken: 0.109 seconds, Fetched: 27 row(s)
+
+[hduser@Inceptez ~]$ hdfs dfs -ls /user/hive/warehouse
+drwxr-xr-x   - hduser supergroup          0 2016-07-28 21:50 /user/hive/warehouse/clickstr
+drwxr-xr-x   - hduser supergroup          0 2016-07-28 21:53 /user/hive/warehouse/clickstrpart
+[hduser@Inceptez ~]$ hdfs dfs -ls -R /user/hive/warehouse/click*
+-rw-r--r--   1 hduser supergroup     832181 2016-07-28 21:50 /user/hive/warehouse/clickstr/UsaGovData.txt
+
+hive (default)> SET hive.exec.dynamic.partition=true;
+hive (default)> set hive.exec.dynamic.partition.mode=nonstrict;
+
+hive (default)> INSERT OVERWRITE TABLE clickstrpart PARTITION(c) SELECT a,nk,g,h,l,hh,r,u,t,gr,cy,tz,hc,al,c FROM clickstr;
+FAILED: Execution Error, return code 2 from org.apache.hadoop.hive.ql.exec.mr.MapRedTask
+MapReduce Jobs Launched:
+Stage-Stage-1: Map: 1   HDFS Read: 0 HDFS Write: 0 FAIL
+
+hive (default)> list jars;
+hive (default)> add jar /usr/local/hive/lib/hive-serdes-1.0-SNAPSHOT.jar;
+Added [/usr/local/hive/lib/hive-serdes-1.0-SNAPSHOT.jar] to class path
+Added resources: [/usr/local/hive/lib/hive-serdes-1.0-SNAPSHOT.jar]
+hive (default)> list jars;
+/usr/local/hive/lib/hive-serdes-1.0-SNAPSHOT.jar
+
+hive (default)> INSERT OVERWRITE TABLE clickstrpart PARTITION(c) SELECT a,nk,g,h,l,hh,r,u,t,gr,cy,tz,hc,al,c FROM clickstr;
+Query ID = hduser_20160728220505_466c8e8b-5f0f-49c6-9656-6f4425f55c68
+Total jobs = 3
+Launching Job 1 out of 3
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_1469721949131_0002, Tracking URL = http://Inceptez:8088/proxy/application_1469721949131_0002/
+Kill Command = /usr/local/hadoop/bin/hadoop job  -kill job_1469721949131_0002
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 0
+2016-07-28 22:05:25,762 Stage-1 map = 0%,  reduce = 0%
+2016-07-28 22:05:41,028 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 6.02 sec
+MapReduce Total cumulative CPU time: 6 seconds 20 msec
+Ended Job = job_1469721949131_0002
+Stage-4 is selected by condition resolver.
+Stage-3 is filtered out by condition resolver.
+Stage-5 is filtered out by condition resolver.
+Moving data to: hdfs://localhost:54310/tmp/hive/hduser/fe420d0b-0e3d-475e-9fda-7f98735631f1/hive_2016-07-28_22-05-16_040_7042250175168852544-1/-ext-10000
+Loading data to table default.clickstrpart partition (c=null)
+         Time taken for load dynamic partitions : 5490
+        Loading partition {c=US}
+        Loading partition {c=RU}
+        Loading partition {c=BH}
+        Loading partition {c=LT}
+        Loading partition {c=SA}
+        Loading partition {c=MT}
+        Loading partition {c=TH}
+        Loading partition {c=PT}
+        Loading partition {c=AW}
+        Loading partition {c=MA}
+        Loading partition {c=ID}
+        Loading partition {c=TR}
+        Loading partition {c=CL}
+        Loading partition {c=FR}
+        Loading partition {c=HK}
+        Loading partition {c=AR}
+        Loading partition {c=PR}
+        Loading partition {c=IL}
+        Loading partition {c=PH}
+        Loading partition {c=RS}
+        Loading partition {c=HU}
+        Loading partition {c=SE}
+        Loading partition {c=ES}
+        Loading partition {c=EG}
+        Loading partition {c=DE}
+        Loading partition {c=IN}
+        Loading partition {c=__HIVE_DEFAULT_PARTITION__}
+        Loading partition {c=BO}
+        Loading partition {c=PE}
+        Loading partition {c=GR}
+        Loading partition {c=NL}
+        Loading partition {c=GT}
+        Loading partition {c=AU}
+        Loading partition {c=SG}
+        Loading partition {c=VE}
+        Loading partition {c=GB}
+        Loading partition {c=JP}
+        Loading partition {c=IE}
+        Loading partition {c=UY}
+        Loading partition {c=BG}
+        Loading partition {c=NZ}
+        Loading partition {c=BE}
+        Loading partition {c=IT}
+        Loading partition {c=CO}
+        Loading partition {c=JO}
+        Loading partition {c=KR}
+        Loading partition {c=MX}
+        Loading partition {c=LV}
+        Loading partition {c=FI}
+        Loading partition {c=CW}
+        Loading partition {c=NO}
+        Loading partition {c=PL}
+        Loading partition {c=VN}
+        Loading partition {c=MY}
+        Loading partition {c=CA}
+        Loading partition {c=CN}
+        Loading partition {c=EC}
+        Loading partition {c=BR}
+        Loading partition {c=ZA}
+         Time taken for adding to write entity : 24
+[Error 30017]: Skipping stats aggregation by error org.apache.hadoop.hive.ql.metadata.HiveException: [Error 30001]: StatsPublisher cannot be initialized. There was a error in the initialization of StatsPublisher, and retrying might help. If you dont want the query to fail because accurate statistics could not be collected, set hive.stats.reliable=false
+Partition default.clickstrpart{c=AR} stats: [numFiles=1, numRows=-1, totalSize=2596, rawDataSize=-1]
+Partition default.clickstrpart{c=AU} stats: [numFiles=1, numRows=-1, totalSize=7596, rawDataSize=-1]
+Partition default.clickstrpart{c=AW} stats: [numFiles=1, numRows=-1, totalSize=313, rawDataSize=-1]
+Partition default.clickstrpart{c=BE} stats: [numFiles=1, numRows=-1, totalSize=1146, rawDataSize=-1]
+Partition default.clickstrpart{c=BG} stats: [numFiles=1, numRows=-1, totalSize=570, rawDataSize=-1]
+Partition default.clickstrpart{c=BH} stats: [numFiles=1, numRows=-1, totalSize=315, rawDataSize=-1]
+Partition default.clickstrpart{c=BO} stats: [numFiles=1, numRows=-1, totalSize=310, rawDataSize=-1]
+Partition default.clickstrpart{c=BR} stats: [numFiles=1, numRows=-1, totalSize=597, rawDataSize=-1]
+Partition default.clickstrpart{c=CA} stats: [numFiles=1, numRows=-1, totalSize=14297, rawDataSize=-1]
+Partition default.clickstrpart{c=CL} stats: [numFiles=1, numRows=-1, totalSize=532, rawDataSize=-1]
+Partition default.clickstrpart{c=CN} stats: [numFiles=1, numRows=-1, totalSize=1944, rawDataSize=-1]
+Partition default.clickstrpart{c=CO} stats: [numFiles=1, numRows=-1, totalSize=2597, rawDataSize=-1]
+Partition default.clickstrpart{c=CW} stats: [numFiles=1, numRows=-1, totalSize=275, rawDataSize=-1]
+Partition default.clickstrpart{c=DE} stats: [numFiles=1, numRows=-1, totalSize=3133, rawDataSize=-1]
+Partition default.clickstrpart{c=EC} stats: [numFiles=1, numRows=-1, totalSize=2172, rawDataSize=-1]
+Partition default.clickstrpart{c=EG} stats: [numFiles=1, numRows=-1, totalSize=305, rawDataSize=-1]
+Partition default.clickstrpart{c=ES} stats: [numFiles=1, numRows=-1, totalSize=6016, rawDataSize=-1]
+Partition default.clickstrpart{c=FI} stats: [numFiles=1, numRows=-1, totalSize=791, rawDataSize=-1]
+Partition default.clickstrpart{c=FR} stats: [numFiles=1, numRows=-1, totalSize=1782, rawDataSize=-1]
+Partition default.clickstrpart{c=GB} stats: [numFiles=1, numRows=-1, totalSize=30938, rawDataSize=-1]
+Partition default.clickstrpart{c=GR} stats: [numFiles=1, numRows=-1, totalSize=294, rawDataSize=-1]
+Partition default.clickstrpart{c=GT} stats: [numFiles=1, numRows=-1, totalSize=842, rawDataSize=-1]
+Partition default.clickstrpart{c=HK} stats: [numFiles=1, numRows=-1, totalSize=619, rawDataSize=-1]
+Partition default.clickstrpart{c=HU} stats: [numFiles=1, numRows=-1, totalSize=682, rawDataSize=-1]
+Partition default.clickstrpart{c=ID} stats: [numFiles=1, numRows=-1, totalSize=269, rawDataSize=-1]
+Partition default.clickstrpart{c=IE} stats: [numFiles=1, numRows=-1, totalSize=2398, rawDataSize=-1]
+Partition default.clickstrpart{c=IL} stats: [numFiles=1, numRows=-1, totalSize=154, rawDataSize=-1]
+Partition default.clickstrpart{c=IN} stats: [numFiles=1, numRows=-1, totalSize=2550, rawDataSize=-1]
+Partition default.clickstrpart{c=IT} stats: [numFiles=1, numRows=-1, totalSize=2278, rawDataSize=-1]
+Partition default.clickstrpart{c=JO} stats: [numFiles=1, numRows=-1, totalSize=298, rawDataSize=-1]
+Partition default.clickstrpart{c=JP} stats: [numFiles=1, numRows=-1, totalSize=6478, rawDataSize=-1]
+Partition default.clickstrpart{c=KR} stats: [numFiles=1, numRows=-1, totalSize=2556, rawDataSize=-1]
+Partition default.clickstrpart{c=LT} stats: [numFiles=1, numRows=-1, totalSize=346, rawDataSize=-1]
+Partition default.clickstrpart{c=LV} stats: [numFiles=1, numRows=-1, totalSize=367, rawDataSize=-1]
+Partition default.clickstrpart{c=MA} stats: [numFiles=1, numRows=-1, totalSize=323, rawDataSize=-1]
+Partition default.clickstrpart{c=MT} stats: [numFiles=1, numRows=-1, totalSize=347, rawDataSize=-1]
+Partition default.clickstrpart{c=MX} stats: [numFiles=1, numRows=-1, totalSize=10857, rawDataSize=-1]
+Partition default.clickstrpart{c=MY} stats: [numFiles=1, numRows=-1, totalSize=691, rawDataSize=-1]
+Partition default.clickstrpart{c=NL} stats: [numFiles=1, numRows=-1, totalSize=3111, rawDataSize=-1]
+Partition default.clickstrpart{c=NO} stats: [numFiles=1, numRows=-1, totalSize=614, rawDataSize=-1]
+Partition default.clickstrpart{c=NZ} stats: [numFiles=1, numRows=-1, totalSize=308, rawDataSize=-1]
+Partition default.clickstrpart{c=PE} stats: [numFiles=1, numRows=-1, totalSize=1628, rawDataSize=-1]
+Partition default.clickstrpart{c=PH} stats: [numFiles=1, numRows=-1, totalSize=776, rawDataSize=-1]
+Partition default.clickstrpart{c=PL} stats: [numFiles=1, numRows=-1, totalSize=296, rawDataSize=-1]
+Partition default.clickstrpart{c=PR} stats: [numFiles=1, numRows=-1, totalSize=641, rawDataSize=-1]
+Partition default.clickstrpart{c=PT} stats: [numFiles=1, numRows=-1, totalSize=798, rawDataSize=-1]
+Partition default.clickstrpart{c=RS} stats: [numFiles=1, numRows=-1, totalSize=351, rawDataSize=-1]
+Partition default.clickstrpart{c=RU} stats: [numFiles=1, numRows=-1, totalSize=309, rawDataSize=-1]
+Partition default.clickstrpart{c=SA} stats: [numFiles=1, numRows=-1, totalSize=2145, rawDataSize=-1]
+Partition default.clickstrpart{c=SE} stats: [numFiles=1, numRows=-1, totalSize=1295, rawDataSize=-1]
+Partition default.clickstrpart{c=SG} stats: [numFiles=1, numRows=-1, totalSize=657, rawDataSize=-1]
+Partition default.clickstrpart{c=TH} stats: [numFiles=1, numRows=-1, totalSize=338, rawDataSize=-1]
+Partition default.clickstrpart{c=TR} stats: [numFiles=1, numRows=-1, totalSize=797, rawDataSize=-1]
+Partition default.clickstrpart{c=US} stats: [numFiles=1, numRows=-1, totalSize=338584, rawDataSize=-1]
+Partition default.clickstrpart{c=UY} stats: [numFiles=1, numRows=-1, totalSize=305, rawDataSize=-1]
+Partition default.clickstrpart{c=VE} stats: [numFiles=1, numRows=-1, totalSize=288, rawDataSize=-1]
+Partition default.clickstrpart{c=VN} stats: [numFiles=1, numRows=-1, totalSize=1082, rawDataSize=-1]
+Partition default.clickstrpart{c=ZA} stats: [numFiles=1, numRows=-1, totalSize=1006, rawDataSize=-1]
+Partition default.clickstrpart{c=__HIVE_DEFAULT_PARTITION__} stats: [numFiles=1, numRows=-1, totalSize=88981, rawDataSize=-1]
+MapReduce Jobs Launched:
+Stage-Stage-1: Map: 1   Cumulative CPU: 6.02 sec   HDFS Read: 832401 HDFS Write: 554884 SUCCESS
+Total MapReduce CPU Time Spent: 6 seconds 20 msec
+OK
+_col0   _col1   _col2   _col3   _col4   _col5   _col6   _col7   _col8   _col9   _col10  _col11  _col12  _col13  _col14
+Time taken: 36.0 seconds
+
+[hduser@Inceptez ~]$ hdfs dfs -ls -R /user/hive/warehouse/click*
+16/07/28 22:06:57 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+-rw-r--r--   1 hduser supergroup     832181 2016-07-28 21:50 /user/hive/warehouse/clickstr/UsaGovData.txt
+drwxr-xr-x   - hduser supergroup          0 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=AR
+-rw-r--r--   1 hduser supergroup       2596 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=AR/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=AU
+-rw-r--r--   1 hduser supergroup       7596 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=AU/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=AW
+-rw-r--r--   1 hduser supergroup        313 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=AW/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=BE
+-rw-r--r--   1 hduser supergroup       1146 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=BE/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=BG
+-rw-r--r--   1 hduser supergroup        570 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=BG/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=BH
+-rw-r--r--   1 hduser supergroup        315 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=BH/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=BO
+-rw-r--r--   1 hduser supergroup        310 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=BO/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=BR
+-rw-r--r--   1 hduser supergroup        597 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=BR/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=CA
+-rw-r--r--   1 hduser supergroup      14297 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=CA/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=CL
+-rw-r--r--   1 hduser supergroup        532 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=CL/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=CN
+-rw-r--r--   1 hduser supergroup       1944 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=CN/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=CO
+-rw-r--r--   1 hduser supergroup       2597 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=CO/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=CW
+-rw-r--r--   1 hduser supergroup        275 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=CW/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=DE
+-rw-r--r--   1 hduser supergroup       3133 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=DE/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=EC
+-rw-r--r--   1 hduser supergroup       2172 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=EC/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=EG
+-rw-r--r--   1 hduser supergroup        305 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=EG/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=ES
+-rw-r--r--   1 hduser supergroup       6016 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=ES/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=FI
+-rw-r--r--   1 hduser supergroup        791 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=FI/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=FR
+-rw-r--r--   1 hduser supergroup       1782 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=FR/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=GB
+-rw-r--r--   1 hduser supergroup      30938 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=GB/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=GR
+-rw-r--r--   1 hduser supergroup        294 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=GR/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=GT
+-rw-r--r--   1 hduser supergroup        842 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=GT/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=HK
+-rw-r--r--   1 hduser supergroup        619 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=HK/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=HU
+-rw-r--r--   1 hduser supergroup        682 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=HU/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=ID
+-rw-r--r--   1 hduser supergroup        269 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=ID/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=IE
+-rw-r--r--   1 hduser supergroup       2398 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=IE/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=IL
+-rw-r--r--   1 hduser supergroup        154 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=IL/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=IN
+-rw-r--r--   1 hduser supergroup       2550 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=IN/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=IT
+-rw-r--r--   1 hduser supergroup       2278 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=IT/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=JO
+-rw-r--r--   1 hduser supergroup        298 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=JO/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=JP
+-rw-r--r--   1 hduser supergroup       6478 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=JP/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=KR
+-rw-r--r--   1 hduser supergroup       2556 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=KR/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=LT
+-rw-r--r--   1 hduser supergroup        346 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=LT/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=LV
+-rw-r--r--   1 hduser supergroup        367 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=LV/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=MA
+-rw-r--r--   1 hduser supergroup        323 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=MA/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=MT
+-rw-r--r--   1 hduser supergroup        347 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=MT/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=MX
+-rw-r--r--   1 hduser supergroup      10857 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=MX/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=MY
+-rw-r--r--   1 hduser supergroup        691 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=MY/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=NL
+-rw-r--r--   1 hduser supergroup       3111 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=NL/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=NO
+-rw-r--r--   1 hduser supergroup        614 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=NO/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=NZ
+-rw-r--r--   1 hduser supergroup        308 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=NZ/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=PE
+-rw-r--r--   1 hduser supergroup       1628 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=PE/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=PH
+-rw-r--r--   1 hduser supergroup        776 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=PH/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=PL
+-rw-r--r--   1 hduser supergroup        296 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=PL/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=PR
+-rw-r--r--   1 hduser supergroup        641 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=PR/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=PT
+-rw-r--r--   1 hduser supergroup        798 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=PT/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=RS
+-rw-r--r--   1 hduser supergroup        351 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=RS/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=RU
+-rw-r--r--   1 hduser supergroup        309 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=RU/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=SA
+-rw-r--r--   1 hduser supergroup       2145 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=SA/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=SE
+-rw-r--r--   1 hduser supergroup       1295 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=SE/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=SG
+-rw-r--r--   1 hduser supergroup        657 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=SG/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=TH
+-rw-r--r--   1 hduser supergroup        338 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=TH/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=TR
+-rw-r--r--   1 hduser supergroup        797 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=TR/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=US
+-rw-r--r--   1 hduser supergroup     338584 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=US/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=UY
+-rw-r--r--   1 hduser supergroup        305 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=UY/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=VE
+-rw-r--r--   1 hduser supergroup        288 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=VE/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=VN
+-rw-r--r--   1 hduser supergroup       1082 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=VN/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=ZA
+-rw-r--r--   1 hduser supergroup       1006 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=ZA/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=__HIVE_DEFAULT_PARTITION__
+-rw-r--r--   1 hduser supergroup      88981 2016-07-28 22:05 /user/hive/warehouse/clickstrpart/c=__HIVE_DEFAULT_PARTITION__/000000_0
+
+hive (default)> SELECT c,u,count(*) as cnt from clickstrpart GROUP BY c,u ORDER BY cnt DESC LIMIT 10;
+Query ID = hduser_20160728220808_53b10ce1-401b-4baa-9e19-9c8de314bd4f
+Total jobs = 2
+Launching Job 1 out of 2
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1469721949131_0003, Tracking URL = http://Inceptez:8088/proxy/application_1469721949131_0003/
+Kill Command = /usr/local/hadoop/bin/hadoop job  -kill job_1469721949131_0003
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2016-07-28 22:08:35,843 Stage-1 map = 0%,  reduce = 0%
+2016-07-28 22:08:44,610 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.78 sec
+2016-07-28 22:08:55,354 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 3.29 sec
+MapReduce Total cumulative CPU time: 3 seconds 290 msec
+Ended Job = job_1469721949131_0003
+Launching Job 2 out of 2
+Number of reduce tasks determined at compile time: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1469721949131_0004, Tracking URL = http://Inceptez:8088/proxy/application_1469721949131_0004/
+Kill Command = /usr/local/hadoop/bin/hadoop job  -kill job_1469721949131_0004
+Hadoop job information for Stage-2: number of mappers: 1; number of reducers: 1
+2016-07-28 22:09:09,968 Stage-2 map = 0%,  reduce = 0%
+2016-07-28 22:09:18,692 Stage-2 map = 100%,  reduce = 0%, Cumulative CPU 1.12 sec
+2016-07-28 22:09:27,285 Stage-2 map = 100%,  reduce = 100%, Cumulative CPU 2.38 sec
+MapReduce Total cumulative CPU time: 2 seconds 380 msec
+Ended Job = job_1469721949131_0004
+MapReduce Jobs Launched:
+Stage-Stage-1: Map: 1  Reduce: 1   Cumulative CPU: 3.29 sec   HDFS Read: 560119 HDFS Write: 76040 SUCCESS
+Stage-Stage-2: Map: 1  Reduce: 1   Cumulative CPU: 2.38 sec   HDFS Read: 76444 HDFS Write: 897 SUCCESS
+Total MapReduce CPU Time Spent: 5 seconds 670 msec
+OK
+c       u       cnt
+__HIVE_DEFAULT_PARTITION__      NULL    120
+US      http://www.cpc.ncep.noaa.gov/products/predictions/long_range/seasonal.php?lead=1        87
+US      http://bachmann.house.gov/press-release/bachmann-introduces-legislation-rescind-congressional-pay-raise 81
+US      http://www.nasa.gov/mission_pages/station/expeditions/expedition34/newyear.html 77
+__HIVE_DEFAULT_PARTITION__      http://www.nasa.gov/mission_pages/station/expeditions/expedition34/newyear.html 53
+GB      http://www.nasa.gov/mission_pages/station/expeditions/expedition34/newyear.html 52
+US      http://paul.house.gov/index.php?option=com_content&view=article&id=2038:new-years-resolutions-for-congress&catid=64:2012-texas-straight-talk&Itemid=69  51
+US      http://www.nasa.gov/multimedia/imagegallery/image_feature_2419.html     31
+US      http://studentaid.ed.gov/fafsa/filling-out#documents    31
+US      http://www.speaker.gov/press-release/boehner-president-obama-should-lead-not-cast-blame 17
+Time taken: 62.9 seconds, Fetched: 10 row(s)
+
+hive (default)> SELECT u,count(*) as cnt from clickstrpart GROUP BY u ORDER BY cnt DESC LIMIT 10;
+Query ID = hduser_20160728221010_f16bef35-98c3-403f-bd2f-023709fe2e69
+Total jobs = 2
+Launching Job 1 out of 2
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1469721949131_0005, Tracking URL = http://Inceptez:8088/proxy/application_1469721949131_0005/
+Kill Command = /usr/local/hadoop/bin/hadoop job  -kill job_1469721949131_0005
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2016-07-28 22:11:02,912 Stage-1 map = 0%,  reduce = 0%
+2016-07-28 22:11:11,493 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.51 sec
+2016-07-28 22:11:20,072 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 2.82 sec
+MapReduce Total cumulative CPU time: 2 seconds 820 msec
+Ended Job = job_1469721949131_0005
+Launching Job 2 out of 2
+Number of reduce tasks determined at compile time: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1469721949131_0006, Tracking URL = http://Inceptez:8088/proxy/application_1469721949131_0006/
+Kill Command = /usr/local/hadoop/bin/hadoop job  -kill job_1469721949131_0006
+Hadoop job information for Stage-2: number of mappers: 1; number of reducers: 1
+2016-07-28 22:11:34,233 Stage-2 map = 0%,  reduce = 0%
+2016-07-28 22:11:41,801 Stage-2 map = 100%,  reduce = 0%, Cumulative CPU 0.95 sec
+2016-07-28 22:11:50,480 Stage-2 map = 100%,  reduce = 100%, Cumulative CPU 2.24 sec
+MapReduce Total cumulative CPU time: 2 seconds 240 msec
+Ended Job = job_1469721949131_0006
+MapReduce Jobs Launched:
+Stage-Stage-1: Map: 1  Reduce: 1   Cumulative CPU: 2.82 sec   HDFS Read: 560119 HDFS Write: 50366 SUCCESS
+Stage-Stage-2: Map: 1  Reduce: 1   Cumulative CPU: 2.24 sec   HDFS Read: 50770 HDFS Write: 788 SUCCESS
+Total MapReduce CPU Time Spent: 5 seconds 60 msec
+OK
+u       cnt
+http://www.nasa.gov/mission_pages/station/expeditions/expedition34/newyear.html 295
+NULL    120
+http://www.cpc.ncep.noaa.gov/products/predictions/long_range/seasonal.php?lead=1        105
+http://bachmann.house.gov/press-release/bachmann-introduces-legislation-rescind-congressional-pay-raise 98
+http://www.nasa.gov/multimedia/imagegallery/image_feature_2419.html     72
+http://paul.house.gov/index.php?option=com_content&view=article&id=2038:new-years-resolutions-for-congress&catid=64:2012-texas-straight-talk&Itemid=69  59
+http://studentaid.ed.gov/fafsa/filling-out#documents    37
+http://earthobservatory.nasa.gov/NaturalHazards/view.php?id=80052&src=twitter-nh        22
+http://www.nasa.gov/news/whats_next_2013.html   20
+http://www.speaker.gov/press-release/boehner-president-obama-should-lead-not-cast-blame 20
+Time taken: 57.932 seconds, Fetched: 10 row(s)
+
+hive (default)> insert overwrite local directory '/home/hduser/hive2local_data' row format delimited fields terminated by '|' select * from clickstrpart;
+Query ID = hduser_20160728221919_17d2b609-fccf-4dba-af5e-426c99953e66
+Total jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_1469721949131_0007, Tracking URL = http://Inceptez:8088/proxy/application_1469721949131_0007/
+Kill Command = /usr/local/hadoop/bin/hadoop job  -kill job_1469721949131_0007
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 0
+2016-07-28 22:19:17,699 Stage-1 map = 0%,  reduce = 0%
+2016-07-28 22:19:27,342 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 2.17 sec
+MapReduce Total cumulative CPU time: 2 seconds 170 msec
+Ended Job = job_1469721949131_0007
+Copying data to local directory /home/hduser/hive2local_data
+Copying data to local directory /home/hduser/hive2local_data
+MapReduce Jobs Launched:
+Stage-Stage-1: Map: 1   Cumulative CPU: 2.17 sec   HDFS Read: 560119 HDFS Write: 569902 SUCCESS
+Total MapReduce CPU Time Spent: 2 seconds 170 msec
+OK
+clickstrpart.a  clickstrpart.nk clickstrpart.g  clickstrpart.h  clickstrpart.l  clickstrpart.hh clickstrpart.r  clickstrpart.u  clickstrpart.t  clickstrpart.gr clickstrpart.cy clickstrpart.tz clickstrpart.hc clickstrpart.al clickstrpart.c
+Time taken: 21.252 seconds

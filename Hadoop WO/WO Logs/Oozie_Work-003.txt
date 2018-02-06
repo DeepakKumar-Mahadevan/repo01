@@ -1,0 +1,151 @@
+<workflow-app name="DKM-Shell-WF-001" xmlns="uri:oozie:workflow:0.4">
+    <start to="DKM-Shell-WF-001a"/>
+    <action name="DKM-Shell-WF-001a">
+        <shell xmlns="uri:oozie:shell-action:0.1">
+            <job-tracker>sandbox.hortonworks.com:8050</job-tracker>
+            <name-node>hdfs://sandbox.hortonworks.com:8020</name-node>
+            <exec>check_file_exists.sh</exec>
+              <argument>/user/root/emp.pig</argument>
+            <file>/user/root/check_file_exists.sh</file>
+        </shell>
+        <ok to="end"/>
+        <error to="kill"/>
+    </action>
+    <kill name="kill">
+        <message>Action failed, error message[${wf:errorMessage(wf:lastErrorNode())}]</message>
+    </kill>
+    <end name="end"/>
+</workflow-app>
+
+Log Type: stderr
+
+Log Length: 39
+File /user/root/emp.pig does not exist
+====================================================================================================
+OOZIE CLI:
+----------
+
+[root@sandbox ~]# oozie job -submit DKM-Shell-WF-001
+java.lang.IllegalArgumentException: Oozie URL is not available neither in command option or in the environment
+        at org.apache.oozie.cli.OozieCLI.getOozieUrl(OozieCLI.java:549)
+        at org.apache.oozie.cli.OozieCLI.createXOozieClient(OozieCLI.java:721)
+        at org.apache.oozie.cli.OozieCLI.jobCommand(OozieCLI.java:749)
+        at org.apache.oozie.cli.OozieCLI.processCommand(OozieCLI.java:514)
+        at org.apache.oozie.cli.OozieCLI.run(OozieCLI.java:487)
+        at org.apache.oozie.cli.OozieCLI.main(OozieCLI.java:184)
+Oozie URL is not available neither in command option or in the environment
+
+[root@sandbox ~]# oozie job -oozie http://192.168.107.132:8000/ -submit DKM-Shell-WF-001
+java.io.IOException: configuration file not specified
+        at org.apache.oozie.cli.OozieCLI.getConfiguration(OozieCLI.java:638)
+        at org.apache.oozie.cli.OozieCLI.jobCommand(OozieCLI.java:758)
+        at org.apache.oozie.cli.OozieCLI.processCommand(OozieCLI.java:514)
+        at org.apache.oozie.cli.OozieCLI.run(OozieCLI.java:487)
+        at org.apache.oozie.cli.OozieCLI.main(OozieCLI.java:184)
+configuration file not specified
+
+[root@sandbox myooziejobs]# oozie job -oozie http://192.168.107.132:8000/oozie -config test_oozie_job -submit
+java.lang.IllegalArgumentException: configuration must be a '.properties' or a '.xml' file
+        at org.apache.oozie.cli.OozieCLI.getConfiguration(OozieCLI.java:652)
+        at org.apache.oozie.cli.OozieCLI.jobCommand(OozieCLI.java:758)
+        at org.apache.oozie.cli.OozieCLI.processCommand(OozieCLI.java:514)
+        at org.apache.oozie.cli.OozieCLI.run(OozieCLI.java:487)
+        at org.apache.oozie.cli.OozieCLI.main(OozieCLI.java:184)
+configuration must be a '.properties' or a '.xml' file
+
+[root@sandbox myooziejobs]# oozie job -oozie http://192.168.107.132:8000/oozie -config test_oozie_job.properties -submit
+Error: AUTHENTICATION : Could not authenticate, Authentication failed, status: 404, message: NOT FOUND
+
+[root@sandbox myooziejobs]# hdfs dfsadmin -report
+Configured Capacity: 48162021376 (44.85 GB)
+Present Capacity: 42187718656 (39.29 GB)
+DFS Remaining: 41822732288 (38.95 GB)
+DFS Used: 364986368 (348.08 MB)
+DFS Used%: 0.87%
+Under replicated blocks: 625
+Blocks with corrupt replicas: 0
+Missing blocks: 0
+
+-------------------------------------------------
+Datanodes available: 1 (1 total, 0 dead)
+
+Live datanodes:
+Name: 192.168.107.132:50010 (sandbox.hortonworks.com)
+Hostname: sandbox.hortonworks.com
+Decommission Status : Normal
+Configured Capacity: 48162021376 (44.85 GB)
+DFS Used: 364986368 (348.08 MB)
+Non DFS Used: 5974302720 (5.56 GB)
+DFS Remaining: 41822732288 (38.95 GB)
+DFS Used%: 0.76%
+DFS Remaining%: 86.84%
+Last contact: Fri Aug 19 04:34:04 IST 2016
+
+
+[root@sandbox myooziejobs]# cat /etc/oozie/conf.dist/oozie-site.xml
+  </property>
+    <property>
+    <name>oozie.base.url</name>
+    <value>http://sandbox.hortonworks.com:11000/oozie</value>
+  </property>
+
+[root@sandbox myooziejobs]# oozie job -oozie http://sandbox.hortonworks.com:11000/oozie -config test_oozie_job.properties -submit
+Error: E0405 : E0405: Submission request doesn't have any application or lib path  
+
+[root@sandbox myooziejobs]# oozie job -oozie http://sandbox.hortonworks.com:11000/oozie -config test_oozie_job.properties -run
+Error: E0405 : E0405: Submission request doesn't have any application or lib path
+
+[root@sandbox myooziejobs]# cat test_oozie_job.properties
+<workflow-app name="DKM-Shell-WF-001" xmlns="uri:oozie:workflow:0.4">
+    <start to="DKM-Shell-WF-001a"/>
+    <action name="DKM-Shell-WF-001a">
+        <shell xmlns="uri:oozie:shell-action:0.1">
+            <job-tracker>sandbox.hortonworks.com:8050</job-tracker>
+            <name-node>hdfs://sandbox.hortonworks.com:8020</name-node>
+            <exec>check_file_exists.sh</exec>
+              <argument>/user/root/emp.pig</argument>
+            <file>/user/root/check_file_exists.sh</file>
+        </shell>
+        <ok to="end"/>
+        <error to="kill"/>
+    </action>
+    <kill name="kill">
+        <message>Action failed, error message[${wf:errorMessage(wf:lastErrorNode())}]</message>
+    </kill>
+    <end name="end"/>
+</workflow-app>
+
+[root@sandbox myooziejobs]# hdfs dfs -put test_oozie_job.properties
+
+[root@sandbox myooziejobs]# vi test_run.xml
+[root@sandbox myooziejobs]# cat test_run.xml
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<configuration>
+<property>
+        <name>nameNode</name>
+        <value>hdfs://sandbox.hortonworks.com:8020</value>
+</property>
+<property>
+        <name>jobTracker</name>
+        <value>sandbox.hortonworks.com:8050</value>
+</property>
+<property>
+        <name>oozie.wf.application.path</name>
+        <value>/user/root/test_oozie_job.properties</value>
+</property>
+</configuration>
+
+Success !!!!
+[root@sandbox myooziejobs]# oozie job -oozie http://sandbox.hortonworks.com:11000/oozie -config test_run.xml -run
+job: 0000005-160819022044815-oozie-oozi-W
+
+[root@sandbox myooziejobs]# oozie job -config test_oozie_job.properties -run
+java.lang.IllegalArgumentException: Oozie URL is not available neither in command option or in the environment
+        at org.apache.oozie.cli.OozieCLI.getOozieUrl(OozieCLI.java:549)
+        at org.apache.oozie.cli.OozieCLI.createXOozieClient(OozieCLI.java:721)
+        at org.apache.oozie.cli.OozieCLI.jobCommand(OozieCLI.java:749)
+        at org.apache.oozie.cli.OozieCLI.processCommand(OozieCLI.java:514)
+        at org.apache.oozie.cli.OozieCLI.run(OozieCLI.java:487)
+        at org.apache.oozie.cli.OozieCLI.main(OozieCLI.java:184)
+Oozie URL is not available neither in command option or in the environment
+====================================================================================================================

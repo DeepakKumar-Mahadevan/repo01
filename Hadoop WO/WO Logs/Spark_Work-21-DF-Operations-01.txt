@@ -1,0 +1,223 @@
+scala> val cols = list("emp_id","emp_name");
+<console>:29: error: not found: value list
+         val cols = list("emp_id","emp_name");
+                    ^
+scala> val cols = List("emp_id","emp_name","emp_org");
+cols: List[String] = List(emp_id, emp_name, emp_org)
+
+scala> cols.head
+res19: String = emp_id
+
+scala> cols.tail
+res20: List[String] = List(emp_name, emp_org)
+
+scala> empDF.select(cols.head, cols.tail).show()
+<console>:38: error: overloaded method value select with alternatives:
+  (col: String,cols: String*)org.apache.spark.sql.DataFrame <and>
+  (cols: org.apache.spark.sql.Column*)org.apache.spark.sql.DataFrame
+ cannot be applied to (String, List[String])
+              empDF.select(cols.head, cols.tail).show()
+                    ^
+
+scala> empDF.select(cols.head, cols.tail: _*).show()
+16/09/29 22:21:57 INFO spark.SparkContext: Starting job: show at <console>:38
+16/09/29 22:21:57 INFO scheduler.DAGScheduler: Got job 12 (show at <console>:38) with 1 output partitions
+16/09/29 22:21:57 INFO scheduler.DAGScheduler: Final stage: ResultStage 12 (show at <console>:38)
+16/09/29 22:21:57 INFO scheduler.DAGScheduler: Parents of final stage: List()
+16/09/29 22:21:57 INFO scheduler.DAGScheduler: Missing parents: List()
+16/09/29 22:21:57 INFO scheduler.DAGScheduler: Submitting ResultStage 12 (MapPartitionsRDD[47] at show at <console>:38), which has no missing parents
+16/09/29 22:21:57 INFO storage.MemoryStore: Block broadcast_24 stored as values in memory (estimated size 7.0 KB, free 1515.9 KB)
+16/09/29 22:21:57 INFO storage.MemoryStore: Block broadcast_24_piece0 stored as bytes in memory (estimated size 3.7 KB, free 1519.5 KB)
+16/09/29 22:21:57 INFO storage.BlockManagerInfo: Added broadcast_24_piece0 in memory on localhost:55085 (size: 3.7 KB, free: 517.3 MB)
+16/09/29 22:21:57 INFO spark.SparkContext: Created broadcast 24 from broadcast at DAGScheduler.scala:1006
+16/09/29 22:21:57 INFO scheduler.DAGScheduler: Submitting 1 missing tasks from ResultStage 12 (MapPartitionsRDD[47] at show at <console>:38)
+16/09/29 22:21:57 INFO scheduler.TaskSchedulerImpl: Adding task set 12.0 with 1 tasks
+16/09/29 22:21:57 INFO scheduler.TaskSetManager: Starting task 0.0 in stage 12.0 (TID 12, localhost, partition 0,PROCESS_LOCAL, 2393 bytes)
+16/09/29 22:21:57 INFO executor.Executor: Running task 0.0 in stage 12.0 (TID 12)
+16/09/29 22:21:57 INFO rdd.HadoopRDD: Input split: file:/home/hduser/mydata01/employee.data1:0+119
+16/09/29 22:21:57 INFO codegen.GenerateUnsafeProjection: Code generated in 73.697009 ms
+16/09/29 22:21:57 INFO codegen.GenerateSafeProjection: Code generated in 32.06937 ms
+16/09/29 22:21:57 INFO executor.Executor: Finished task 0.0 in stage 12.0 (TID 12). 2872 bytes result sent to driver
+16/09/29 22:21:57 INFO scheduler.DAGScheduler: ResultStage 12 (show at <console>:38) finished in 0.254 s
+16/09/29 22:21:57 INFO scheduler.TaskSetManager: Finished task 0.0 in stage 12.0 (TID 12) in 254 ms on localhost (1/1)
+16/09/29 22:21:57 INFO scheduler.TaskSchedulerImpl: Removed TaskSet 12.0, whose tasks have all completed, from pool
+16/09/29 22:21:57 INFO scheduler.DAGScheduler: Job 12 finished: show at <console>:38, took 0.346952 s
++------+--------+-------+
+|emp_id|emp_name|emp_org|
++------+--------+-------+
+|     1|  Deepak|      1|
+|     2|  Farooq|      1|
+|     3| Kathick|      1|
+|     4|    Hari|      2|
+|     5| Vadivel|      3|
+|     6|    Mani|      4|
+|     7| Vignesh|      2|
++------+--------+-------+
+
+scala> cols.tail: _*
+<console>:32: error: no `: _*' annotation allowed here
+(such annotations are only allowed in arguments to *-parameters)
+              cols.tail: _*
+                       ^
+====================================================================================================
+scala> empDF.select("emp_name","emp_sal").show()
+16/09/29 22:26:10 INFO spark.SparkContext: Starting job: show at <console>:36
+16/09/29 22:26:10 INFO scheduler.DAGScheduler: Got job 13 (show at <console>:36) with 1 output partitions
+16/09/29 22:26:10 INFO scheduler.DAGScheduler: Final stage: ResultStage 13 (show at <console>:36)
+16/09/29 22:26:10 INFO scheduler.DAGScheduler: Parents of final stage: List()
+16/09/29 22:26:10 INFO scheduler.DAGScheduler: Missing parents: List()
+16/09/29 22:26:10 INFO scheduler.DAGScheduler: Submitting ResultStage 13 (MapPartitionsRDD[50] at show at <console>:36), which has no missing parents
+16/09/29 22:26:10 INFO storage.MemoryStore: Block broadcast_25 stored as values in memory (estimated size 7.1 KB, free 1526.7 KB)
+16/09/29 22:26:10 INFO storage.MemoryStore: Block broadcast_25_piece0 stored as bytes in memory (estimated size 3.7 KB, free 1530.4 KB)
+16/09/29 22:26:10 INFO storage.BlockManagerInfo: Added broadcast_25_piece0 in memory on localhost:55085 (size: 3.7 KB, free: 517.3 MB)
+16/09/29 22:26:10 INFO spark.SparkContext: Created broadcast 25 from broadcast at DAGScheduler.scala:1006
+16/09/29 22:26:10 INFO scheduler.DAGScheduler: Submitting 1 missing tasks from ResultStage 13 (MapPartitionsRDD[50] at show at <console>:36)
+16/09/29 22:26:10 INFO scheduler.TaskSchedulerImpl: Adding task set 13.0 with 1 tasks
+16/09/29 22:26:10 INFO scheduler.TaskSetManager: Starting task 0.0 in stage 13.0 (TID 13, localhost, partition 0,PROCESS_LOCAL, 2393 bytes)
+16/09/29 22:26:10 INFO executor.Executor: Running task 0.0 in stage 13.0 (TID 13)
+16/09/29 22:26:10 INFO rdd.HadoopRDD: Input split: file:/home/hduser/mydata01/employee.data1:0+119
+16/09/29 22:26:10 INFO codegen.GenerateUnsafeProjection: Code generated in 48.439225 ms
+16/09/29 22:26:10 INFO codegen.GenerateSafeProjection: Code generated in 237.940202 ms
+16/09/29 22:26:10 INFO executor.Executor: Finished task 0.0 in stage 13.0 (TID 13). 2835 bytes result sent to driver
+16/09/29 22:26:10 INFO scheduler.DAGScheduler: ResultStage 13 (show at <console>:36) finished in 0.369 s
+16/09/29 22:26:10 INFO scheduler.DAGScheduler: Job 13 finished: show at <console>:36, took 0.513646 s
++--------+--------+
+|emp_name| emp_sal|
++--------+--------+
+|  Deepak| 82000.0|
+|  Farooq| 70000.0|
+| Kathick| 96000.0|
+|    Hari| 90000.0|
+| Vadivel|100000.0|
+|    Mani| 75000.0|
+| Vignesh| 75000.0|
++--------+--------+
+
+scala> empDF.select("emp_name","emp_sal",$"emp_sal" + 3000).show()
+<console>:36: error: overloaded method value select with alternatives:
+  (col: String,cols: String*)org.apache.spark.sql.DataFrame <and>
+  (cols: org.apache.spark.sql.Column*)org.apache.spark.sql.DataFrame
+ cannot be applied to (String, String, org.apache.spark.sql.Column)
+              empDF.select("emp_name","emp_sal",$"emp_sal" + 3000).show()
+                    ^
+
+scala> empDF.select($"emp_name",$"emp_sal",$"emp_sal" + 3000).show()
++--------+--------+----------------+
+|emp_name| emp_sal|(emp_sal + 3000)|
++--------+--------+----------------+
+|  Deepak| 82000.0|         85000.0|
+|  Farooq| 70000.0|         73000.0|
+| Kathick| 96000.0|         99000.0|
+|    Hari| 90000.0|         93000.0|
+| Vadivel|100000.0|        103000.0|
+|    Mani| 75000.0|         78000.0|
+| Vignesh| 75000.0|         78000.0|
++--------+--------+----------------+
+
+scala> empDF.select("emp_name","emp_sal","emp_sal + 3000").show()
+org.apache.spark.sql.AnalysisException: cannot resolve 'emp_sal + 3000' given input columns emp_id, emp_name, emp_sal, emp_org;
+
+====================================================================================================
+scala> empDF.filter("emp_sal" > 75000).show()
+<console>:36: error: type mismatch;
+ found   : Int(75000)
+ required: String
+              empDF.filter("emp_sal" > 75000).show()
+                                       ^
+scala> empDF.filter($"emp_sal" > 75000).show()
++------+--------+--------+-------+
+|emp_id|emp_name| emp_sal|emp_org|
++------+--------+--------+-------+
+|     1|  Deepak| 82000.0|      1|
+|     3| Kathick| 96000.0|      1|
+|     4|    Hari| 90000.0|      2|
+|     5| Vadivel|100000.0|      3|
++------+--------+--------+-------+
+
+scala> empDF.filter("emp_sal > 75000").show()
++------+--------+--------+-------+
+|emp_id|emp_name| emp_sal|emp_org|
++------+--------+--------+-------+
+|     1|  Deepak| 82000.0|      1|
+|     3| Kathick| 96000.0|      1|
+|     4|    Hari| 90000.0|      2|
+|     5| Vadivel|100000.0|      3|
++------+--------+--------+-------+
+
+====================================================================================================
+scala> empDF.groupBy("emp_org").count().show()
++-------+-----+
+|emp_org|count|
++-------+-----+
+|      1|    3|
+|      2|    2|
+|      3|    1|
+|      4|    1|
++-------+-----+
+====================================================================================================
+scala> empDF.join(orgDF,"emp_org" = "org_id").show()
+<console>:1: error: ')' expected but '=' found.
+       empDF.join(orgDF,"emp_org" = "org_id").show()
+                                  ^
+scala> empDF.join(orgDF,"emp_org" === "org_id").show()
+<console>:42: error: value === is not a member of String
+              empDF.join(orgDF,"emp_org" === "org_id").show()
+                                         ^
+scala> empDF.join(orgDF,empDF("emp_org") = orgDF("org_id")).show()
+<console>:42: error: value update is not a member of org.apache.spark.sql.DataFrame
+              empDF.join(orgDF,empDF("emp_org") = orgDF("org_id")).show()
+                               ^
+
+scala> empDF.join(orgDF,empDF("emp_org") === orgDF("org_id")).show()
++------+--------+--------+-------+------+--------+
+|emp_id|emp_name| emp_sal|emp_org|org_id|org_name|
++------+--------+--------+-------+------+--------+
+|     1|  Deepak| 82000.0|      1|     1|     RBS|
+|     2|  Farooq| 70000.0|      1|     1|     RBS|
+|     3| Kathick| 96000.0|      1|     1|     RBS|
+|     4|    Hari| 90000.0|      2|     2|     CTS|
+|     7| Vignesh| 75000.0|      2|     2|     CTS|
+|     5| Vadivel|100000.0|      3|     3|    VDSI|
+|     6|    Mani| 75000.0|      4|     4|     HCL|
++------+--------+--------+-------+------+--------+
+
+scala> empDF.join(orgDF,empDF("emp_org") === orgDF("org_id")).select("emp_name","emp_sal","org_name").show()
++--------+--------+--------+
+|emp_name| emp_sal|org_name|
++--------+--------+--------+
+|  Deepak| 82000.0|     RBS|
+|  Farooq| 70000.0|     RBS|
+| Kathick| 96000.0|     RBS|
+|    Hari| 90000.0|     CTS|
+| Vignesh| 75000.0|     CTS|
+| Vadivel|100000.0|    VDSI|
+|    Mani| 75000.0|     HCL|
++--------+--------+--------+
+
+====================================================================================================
+scala> empDF.join(orgDF,empDF("emp_org") === orgDF("org_id")).groupBy("org_name").count().show()
++--------+-----+
+|org_name|count|
++--------+-----+
+|     CTS|    2|
+|     RBS|    3|
+|     HCL|    1|
+|    VDSI|    1|
++--------+-----+
+
+====================================================================================================
+scala> empDF.join(orgDF,empDF("emp_org") === orgDF("org_id")).drop("org_id").show()
++------+--------+--------+-------+--------+
+|emp_id|emp_name| emp_sal|emp_org|org_name|
++------+--------+--------+-------+--------+
+|     1|  Deepak| 82000.0|      1|     RBS|
+|     2|  Farooq| 70000.0|      1|     RBS|
+|     3| Kathick| 96000.0|      1|     RBS|
+|     4|    Hari| 90000.0|      2|     CTS|
+|     7| Vignesh| 75000.0|      2|     CTS|
+|     5| Vadivel|100000.0|      3|    VDSI|
+|     6|    Mani| 75000.0|      4|     HCL|
++------+--------+--------+-------+--------+
+
+====================================================================================================
+====================================================================================================

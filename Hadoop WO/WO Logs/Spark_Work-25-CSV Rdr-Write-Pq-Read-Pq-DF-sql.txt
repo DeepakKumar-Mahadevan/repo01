@@ -1,0 +1,194 @@
+clickstreamRaw = sqlContext.read \
+  .format("com.databricks.spark.csv") \
+  .options(header="true", delimiter="\t", mode="PERMISSIVE", inferSchema="true") \
+  .load("dbfs:///databricks-datasets/wikipedia-datasets/data-001/clickstream/raw-uncompressed")
+  
+scala> val clickstreamRaw = sqlContext.read.format("com.databricks.spark.csv").options(header="true", delimiter="\t", mode="PERMISSIVE", inferSchema="true").load("dbfs:///databricks-datasets/wikipedia-datasets/data-001/clickstream/raw-uncompressed")
+<console>:27: error: overloaded method value options with alternatives:
+  (options: java.util.Map[String,String])org.apache.spark.sql.DataFrameReader <and>
+  (options: scala.collection.Map[String,String])org.apache.spark.sql.DataFrameReader
+ cannot be applied to (header: String, delimiter: String, mode: String, inferSchema: String)
+         val clickstreamRaw = sqlContext.read.format("com.databricks.spark.csv").options(header="true", delimiter="\t", mode="PERMISSIVE", inferSchema="true").load("dbfs:///databricks-datasets/wikipedia-datasets/data-001/clickstream/raw-uncompressed")
+                                                                                 ^
+scala> val clickstreamRaw = sqlContext.read.format("com.databricks.spark.csv").option("header","true").option("delimiter","\\t").option("mode","PERMISSIVE").option("inferSchema","true").load("dbfs:///databricks-datasets/wikipedia-datasets/data-001/clickstream/raw-uncompressed")
+17/02/20 22:50:27 INFO storage.MemoryStore: Block broadcast_0 stored as values in memory (estimated size 86.5 KB, free 86.5 KB)
+17/02/20 22:50:27 INFO storage.MemoryStore: Block broadcast_0_piece0 stored as bytes in memory (estimated size 19.6 KB, free 106.0 KB)
+17/02/20 22:50:27 INFO storage.BlockManagerInfo: Added broadcast_0_piece0 in memory on localhost:37567 (size: 19.6 KB, free: 517.4 MB)
+17/02/20 22:50:27 INFO spark.SparkContext: Created broadcast 0 from textFile at TextFile.scala:30
+java.io.IOException: No FileSystem for scheme: dbfs
+
+scala> val clickstreamRaw = sqlContext.read.format("com.databricks.spark.csv").option("header","true").option("delimiter","\\t").option("mode","PERMISSIVE").option("inferSchema","true").load("file://home/hduser/mydata01/ManUtdPlayers2.csv")
+17/02/20 23:04:09 INFO storage.MemoryStore: Block broadcast_1 stored as values in memory (estimated size 228.9 KB, free 334.9 KB)
+17/02/20 23:04:09 INFO storage.MemoryStore: Block broadcast_1_piece0 stored as bytes in memory (estimated size 19.6 KB, free 354.4 KB)
+17/02/20 23:04:09 INFO storage.BlockManagerInfo: Added broadcast_1_piece0 in memory on localhost:37567 (size: 19.6 KB, free: 517.4 MB)
+17/02/20 23:04:09 INFO spark.SparkContext: Created broadcast 1 from textFile at TextFile.scala:30
+java.lang.IllegalArgumentException: Wrong FS: file://home/hduser/mydata01/ManUtdPlayers2.csv, expected: file:///
+
+scala> val clickstreamRaw = sqlContext.read.format("com.databricks.spark.csv").option("header","true").option("delimiter","\\t").option("mode","PERMISSIVE").option("inferSchema","true").load("file:///home/hduser/mydata01/ManUtdPlayers2.csv")
+clickstreamRaw: org.apache.spark.sql.DataFrame = [Peter Abbott,England,Forward,1953-10-01: string]
+
+scala> clickstreamRaw.printSchema()
+root
+ |-- Peter Abbott,England,Forward,1953-10-01: string (nullable = true)
+
+scala> val clickstreamRaw = sqlContext.read.format("com.databricks.spark.csv").option("header","true").option("delimiter","\\t").option("mode","PERMISSIVE").option("inferSchema","true").load("file:///home/hduser/mydata01/CanEmp.csv")
+scala> clickstreamRaw.printSchema()
+root
+ |-- id,name,addr,city,zip,country,phone,salary,org_id: string (nullable = true)
+
+scala> clickstreamRaw.show(5)
++-------------------------------------------------+
+|id,name,addr,city,zip,country,phone,salary,org_id|
++-------------------------------------------------+
+|                             1730,Isaac Mack,"...|
+|                             5257,Barrett Herr...|
+|                             1305,Louis Sharp,...|
+|                             2393,Samson Ramir...|
+|                             1138,Griffith Per...|
++-------------------------------------------------+
+only showing top 5 rows
+
+scala> val clickstreamRaw = sqlContext.read.format("com.databricks.spark.csv").option("header","true").option("delimiter",",").option("mode","PERMISSIVE").option("inferSchema","true").load("file:///home/hduser/mydata01/CanEmp.csv")
+
+clickstreamRaw: org.apache.spark.sql.DataFrame = [id: int, name: string, addr: string, city: string, zip: string, country: string, phone: string, salary: double, org_id: int]
+
+scala> clickstreamRaw.printSchema()
+root
+ |-- id: integer (nullable = true)
+ |-- name: string (nullable = true)
+ |-- addr: string (nullable = true)
+ |-- city: string (nullable = true)
+ |-- zip: string (nullable = true)
+ |-- country: string (nullable = true)
+ |-- phone: string (nullable = true)
+ |-- salary: double (nullable = true)
+ |-- org_id: integer (nullable = true)
+
+
+scala> clickstreamRaw.show(5)
++----+----------------+--------------------+----------------+-------+-------+--------------+---------+------+
+|  id|            name|                addr|            city|    zip|country|         phone|   salary|org_id|
++----+----------------+--------------------+----------------+-------+-------+--------------+---------+------+
+|1730|      Isaac Mack|P.O. Box 248, 741...|         Mundare|P1H 2A1| Canada|(666) 753-5715| 11380.73|    13|
+|5257| Barrett Herrera|Ap #682-4918 Lore...|            Daly|A3V 5R5| Canada|(232) 932-3742|117146.97|    11|
+|1305|     Louis Sharp|P.O. Box 512, 404...|      Valleyview|E7X 2P8| Canada|(453) 117-5523|244760.14|    23|
+|2393|  Samson Ramirez|          2795 A St.|Isle-aux-Coudres|E0X 4B3| Canada|(172) 805-2137| 86177.41|    13|
+|1138|Griffith Perkins|        9452 A, Road|       Flin Flon|P5X 7J4| Canada|(136) 964-5830|438969.41|    11|
++----+----------------+--------------------+----------------+-------+-------+--------------+---------+------+
+only showing top 5 rows
+
+scala> clickstreamRaw.write.mode("overwrite").format("parquet").save("file:///home/hduser/mydata01/CanEmp.pq")
+17/02/20 23:18:03 INFO parquet.CatalystWriteSupport: Initialized Parquet WriteSupport with Catalyst schema:
+{
+  "type" : "struct",
+  "fields" : [ {
+    "name" : "id",
+    "type" : "integer",
+    "nullable" : true,
+    "metadata" : { }
+  }, {
+    "name" : "name",
+    "type" : "string",
+    "nullable" : true,
+    "metadata" : { }
+  }, {
+    "name" : "addr",
+    "type" : "string",
+    "nullable" : true,
+    "metadata" : { }
+  }, {
+    "name" : "city",
+    "type" : "string",
+    "nullable" : true,
+    "metadata" : { }
+  }, {
+    "name" : "zip",
+    "type" : "string",
+    "nullable" : true,
+    "metadata" : { }
+  }, {
+    "name" : "country",
+    "type" : "string",
+    "nullable" : true,
+    "metadata" : { }
+  }, {
+    "name" : "phone",
+    "type" : "string",
+    "nullable" : true,
+    "metadata" : { }
+  }, {
+    "name" : "salary",
+    "type" : "double",
+    "nullable" : true,
+    "metadata" : { }
+  }, {
+    "name" : "org_id",
+    "type" : "integer",
+    "nullable" : true,
+    "metadata" : { }
+  } ]
+}
+and corresponding Parquet message type:
+message spark_schema {
+  optional int32 id;
+  optional binary name (UTF8);
+  optional binary addr (UTF8);
+  optional binary city (UTF8);
+  optional binary zip (UTF8);
+  optional binary country (UTF8);
+  optional binary phone (UTF8);
+  optional double salary;
+  optional int32 org_id;
+}
+17/02/20 23:18:06 INFO output.FileOutputCommitter: Saved output of task 'attempt_201702202318_0008_m_000000_0' to file:/home/hduser/mydata01/CanEmp.pq/_temporary/0/task_201702202318_0008_m_000000
+17/02/20 23:18:06 INFO parquet.ParquetRelation: Listing file:/home/hduser/mydata01/CanEmp.pq on driver
+17/02/20 23:18:06 INFO parquet.ParquetRelation: Listing file:/home/hduser/mydata01/CanEmp.pq on driver
+
+[hduser@Inceptez mydata01]$ ls
+BPL2.csv      CanEmp.csv  coursedetails.txt  employee.data1      main.csv            org.data1        sub.csv       UsaGovData.txt
+BPL.csv       CanEmp.pq   cutip.txt          Hello_Deepak_2.txt  ManUtdPlayers2.csv  sampledata.txt   testdata.dat  wcip.txt
+CanEmp10.csv  cmp_op.txt  employee4.json     Hello_Deepak.txt    org.csv             spark_input.txt  Training.txt
+[hduser@Inceptez mydata01]$ cat CanEmp.pq
+cat: CanEmp.pq: Is a directory
+[hduser@Inceptez mydata01]$ cd CanEmp.pq
+[hduser@Inceptez CanEmp.pq]$ ls
+_common_metadata  _metadata  part-r-00000-91f0c409-92a1-41e2-a5ad-604664da4bd6.gz.parquet  _SUCCESS
+
+scala> val CanEmpDF = sqlContext.read.parquet("file:///home/hduser/mydata01/CanEmp.pq")
+CanEmpDF: org.apache.spark.sql.DataFrame = [id: int, name: string, addr: string, city: string, zip: string, country: string, phone: string, salary: double, org_id: int]
+
+scala> val org_10 = CanEmpDF.where("org_id = 10")
+org_10: org.apache.spark.sql.DataFrame = [id: int, name: string, addr: string, city: string, zip: string, country: string, phone: string, salary: double, org_id: int]
+
+scala> org_10.show(3)
++----+-------------+--------------------+----------+-------+-------+--------------+---------+------+
+|  id|         name|                addr|      city|    zip|country|         phone|   salary|org_id|
++----+-------------+--------------------+----------+-------+-------+--------------+---------+------+
+|8055|Curran George|P.O. Box 649, 855...|Assiniboia|H3R 4E4| Canada|(130) 767-3216|411495.38|    10|
+|8911|  Ezra Murray|Ap #449-4084 Orna...|   Rigolet|T3W 4H3| Canada|(535) 641-0928| 444188.3|    10|
+|3393|  Mark Mosley|      8920 Amet, Ave|      Hope|Y1P 2H2| Canada|(138) 804-0566|427341.47|    10|
++----+-------------+--------------------+----------+-------+-------+--------------+---------+------+
+only showing top 3 rows
+
+scala> sqlContext.sql("Select org_id, count(org_id), sum(salary) as tot_sal from CanEmp group by org_id order by org_id")
+res16: org.apache.spark.sql.DataFrame = [org_id: int, _c1: bigint, tot_sal: double]
+
+scala> sqlContext.sql("Select org_id, count(org_id), sum(salary) as tot_sal from CanEmp group by org_id order by org_id").show
++------+---+------------------+
+|org_id|_c1|           tot_sal|
++------+---+------------------+
+|    10|  9|3199428.5500000003|
+|    11|  8|2092527.3199999998|
+|    12|  6|1640594.8699999999|
+|    13|  9|1559902.7699999998|
+|    14|  8|        1146634.24|
+|    15|  7|        1293049.18|
+|    16|  4|         603488.07|
+|    17|  5|        1155922.29|
+|    18|  6| 938722.2699999999|
+|    19|  7|1676035.5099999998|
+|    20|  8|1659473.7400000002|
+|    21|  7|        1606197.03|
+|    22|  7|2423398.2399999998|
+|    23|  9|        2666736.87|
++------+---+------------------+

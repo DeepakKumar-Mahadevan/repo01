@@ -1,0 +1,88 @@
+grunt> cust = LOAD '/home/hduser/pigdata/custs' using PigStorage(',') AS (custid:chararray,firstname:chararray, lastname:chararray, age:long, profession:chararray);
+grunt> custs_10 = limit cust 10;
+
+grunt> custs_n = custs_10;
+grunt> dump custs_10;
+(4000001,Kristina,Chung,55,Pilot)
+(4000002,Paige,Chen,74,Teacher)
+(4000003,Sherri,Melton,34,Firefighter)
+(4000004,Gretchen,Hill,66,Computer hardware engineer)
+(4000005,Karen,Puckett,74,Lawyer)
+(4000006,Patrick,Song,42,Veterinarian)
+(4000007,Elsie,Hamilton,43,Pilot)
+(4000008,Hazel,Bender,63,Carpenter)
+(4000009,Malcolm,Wagner,39,Artist)
+(4000010,Dolores,McLaughlin,60,Writer)
+grunt> dump custs_n;
+(4000001,Kristina,Chung,55,Pilot)
+(4000002,Paige,Chen,74,Teacher)
+(4000003,Sherri,Melton,34,Firefighter)
+(4000004,Gretchen,Hill,66,Computer hardware engineer)
+(4000005,Karen,Puckett,74,Lawyer)
+(4000006,Patrick,Song,42,Veterinarian)
+(4000007,Elsie,Hamilton,43,Pilot)
+(4000008,Hazel,Bender,63,Carpenter)
+(4000009,Malcolm,Wagner,39,Artist)
+(4000010,Dolores,McLaughlin,60,Writer)
+
+grunt> custs_n = limit custs_n 3; 
+grunt> dump custs_n;             
+(4000001,Kristina,Chung,55,Pilot)
+(4000002,Paige,Chen,74,Teacher)
+(4000003,Sherri,Melton,34,Firefighter)
+
+grunt> groupbyprofession = GROUP custs_10 BY profession;
+grunt> dump;
+(Pilot,{(4000007,Elsie,Hamilton,43,Pilot),(4000001,Kristina,Chung,55,Pilot)})
+(Artist,{(4000009,Malcolm,Wagner,39,Artist)})
+(Lawyer,{(4000005,Karen,Puckett,74,Lawyer)})
+(Writer,{(4000010,Dolores,McLaughlin,60,Writer)})
+(Teacher,{(4000002,Paige,Chen,74,Teacher)})
+(Carpenter,{(4000008,Hazel,Bender,63,Carpenter)})
+(Firefighter,{(4000003,Sherri,Melton,34,Firefighter)})
+(Veterinarian,{(4000006,Patrick,Song,42,Veterinarian)})
+(Computer hardware engineer,{(4000004,Gretchen,Hill,66,Computer hardware engineer)})
+
+grunt> groupbyprofession = limit groupbyprofession 3;   
+grunt> dump groupbyprofession; 
+(Pilot,{(4000007,Elsie,Hamilton,43,Pilot),(4000001,Kristina,Chung,55,Pilot)})
+(Artist,{(4000009,Malcolm,Wagner,39,Artist)})
+(Lawyer,{(4000005,Karen,Puckett,74,Lawyer)})
+====================================================================================================
+/user/root/sqoop_imp01/employee/part-m-00000
+[root@sandbox ~]# hdfs dfs -cat /user/root/sqoop_imp01/employee/p*
+1,Deepak,1,82000.00
+2,Farooq,1,75000.00
+3,Karthick,1,100000.00
+
+grunt> emp = load '/user/root/sqoop_imp01/employee/part-m-00000' using PigStorage (',') as (id:int, name:chararray, org:int, sal:float);
+grunt> dump
+(1,Deepak,1,82000.0)
+(2,Farooq,1,75000.0)
+(3,Karthick,1,100000.0)
+grunt> STORE emp INTO '/user/root/pig_out01/emp';
+Input(s):
+Successfully read 3 records (461 bytes) from: "/user/root/sqoop_imp01/employee/part-m-00000"
+
+Output(s):
+Successfully stored 3 records (60 bytes) in: "/user/root/pig_out01/emp"
+
+Counters:
+Total records written : 3
+Total bytes written : 60
+Spillable Memory Manager spill count : 0
+Total bags proactively spilled: 0
+Total records proactively spilled: 0
+
+[root@sandbox ~]# hdfs dfs -ls -R /user/root/pig_out01
+drwxr-xr-x   - root hdfs          0 2016-07-26 03:37 /user/root/pig_out01/emp
+-rw-r--r--   3 root hdfs          0 2016-07-26 03:37 /user/root/pig_out01/emp/_SUCCESS
+-rw-r--r--   3 root hdfs         60 2016-07-26 03:37 /user/root/pig_out01/emp/part-m-00000
+[root@sandbox ~]# hdfs dfs -cat /user/root/pig_out01/emp/part-m-00000
+1       Deepak  1       82000.0
+2       Farooq  1       75000.0
+3       Karthick        1       100000.0
+====================================================================================================
+====================================================================================================
+====================================================================================================
+====================================================================================================

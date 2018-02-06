@@ -1,0 +1,565 @@
+insert into customer values(7,'Deepak Kumar','Mahadevan','chennai',27,'2016-06-12',100000);
+delete from customer where custid = 6 and firstname = 'Deepak Kumar';
+
+sqoop list-tables \
+--connect jdbc:mysql://localhost/test \
+--username root \
+--password root;
+
+sqoop import --connect jdbc:mysql://localhost/test --username root --password root -table customer -m 1 ;
+sqoop import --connect jdbc:mysql://localhost/test --username root --password root -table customer -m 1 -target-dir /sqoopdb/customer_sqoop;
+
+16/06/12 09:41:29 INFO mapreduce.Job: The url to track the job: http://Inceptez:8088/proxy/application_1465701138414_0001/
+16/06/12 09:41:29 INFO mapreduce.Job: Running job: job_1465701138414_0001
+16/06/12 09:41:47 INFO mapreduce.Job: Job job_1465701138414_0001 running in uber mode : false
+16/06/12 09:41:47 INFO mapreduce.Job:  map 0% reduce 0%
+16/06/12 09:41:58 INFO mapreduce.Job:  map 100% reduce 0%
+16/06/12 09:41:58 INFO mapreduce.Job: Job job_1465701138414_0001 completed successfully
+
+16/06/12 09:48:09 INFO mapreduce.Job: The url to track the job: http://Inceptez:8088/proxy/application_1465701138414_0002/
+16/06/12 09:48:09 INFO mapreduce.Job: Running job: job_1465701138414_0002
+16/06/12 09:48:18 INFO mapreduce.Job: Job job_1465701138414_0002 running in uber mode : false
+16/06/12 09:48:18 INFO mapreduce.Job:  map 0% reduce 0%
+16/06/12 09:48:27 INFO mapreduce.Job:  map 100% reduce 0%
+16/06/12 09:48:27 INFO mapreduce.Job: Job job_1465701138414_0002 completed successfully
+
+16/06/12 09:54:40 ERROR tool.ImportTool: Error during import: No primary key could be found for table customer. Please specify one with --split-by or perform a sequential import with '-m 1'.
+
+[hduser@Inceptez ~]$ sqoop import --connect jdbc:mysql://localhost/test --username root --password root -table customer -m 1 --direct;
+Warning: /usr/local/sqoop/../hbase does not exist! HBase imports will fail.
+Please set $HBASE_HOME to the root of your HBase installation.
+Warning: /usr/local/sqoop/../hcatalog does not exist! HCatalog jobs will fail.
+Please set $HCAT_HOME to the root of your HCatalog installation.
+Warning: /usr/local/sqoop/../accumulo does not exist! Accumulo imports will fail.
+Please set $ACCUMULO_HOME to the root of your Accumulo installation.
+Warning: /usr/local/sqoop/../zookeeper does not exist! Accumulo imports will fail.
+Please set $ZOOKEEPER_HOME to the root of your Zookeeper installation.
+16/06/12 15:33:02 INFO sqoop.Sqoop: Running Sqoop version: 1.4.5
+16/06/12 15:33:02 WARN tool.BaseSqoopTool: Setting your password on the command-line is insecure. Consider using -P instead.
+16/06/12 15:33:02 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
+16/06/12 15:33:02 INFO tool.CodeGenTool: Beginning code generation
+16/06/12 15:33:02 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `customer` AS t LIMIT 1
+16/06/12 15:33:02 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `customer` AS t LIMIT 1
+16/06/12 15:33:02 INFO orm.CompilationManager: HADOOP_MAPRED_HOME is /usr/local/hadoop
+Note: /tmp/sqoop-hduser/compile/63ff5435ddc78beeaf16ccd0f73ac576/customer.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+16/06/12 15:33:05 INFO orm.CompilationManager: Writing jar file: /tmp/sqoop-hduser/compile/63ff5435ddc78beeaf16ccd0f73ac576/customer.jar
+16/06/12 15:33:05 INFO manager.DirectMySQLManager: Beginning mysqldump fast path import
+16/06/12 15:33:05 INFO mapreduce.ImportJobBase: Beginning import of customer
+16/06/12 15:33:06 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+16/06/12 15:33:06 INFO Configuration.deprecation: mapred.jar is deprecated. Instead, use mapreduce.job.jar
+16/06/12 15:33:07 INFO Configuration.deprecation: mapred.map.tasks is deprecated. Instead, use mapreduce.job.maps
+16/06/12 15:33:07 INFO client.RMProxy: Connecting to ResourceManager at /0.0.0.0:8032
+16/06/12 15:33:09 INFO db.DBInputFormat: Using read commited transaction isolation
+16/06/12 15:33:09 INFO mapreduce.JobSubmitter: number of splits:1
+16/06/12 15:33:10 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1465722805809_0001
+16/06/12 15:33:11 INFO impl.YarnClientImpl: Submitted application application_1465722805809_0001
+16/06/12 15:33:11 INFO mapreduce.Job: The url to track the job: http://Inceptez:8088/proxy/application_1465722805809_0001/
+16/06/12 15:33:11 INFO mapreduce.Job: Running job: job_1465722805809_0001
+16/06/12 15:33:26 INFO mapreduce.Job: Job job_1465722805809_0001 running in uber mode : false
+16/06/12 15:33:26 INFO mapreduce.Job:  map 0% reduce 0%
+16/06/12 15:33:36 INFO mapreduce.Job:  map 100% reduce 0%
+16/06/12 15:33:36 INFO mapreduce.Job: Job job_1465722805809_0001 completed successfully
+16/06/12 15:33:36 INFO mapreduce.Job: Counters: 30
+	File System Counters
+		FILE: Number of bytes read=0
+		FILE: Number of bytes written=114818
+		FILE: Number of read operations=0
+		FILE: Number of large read operations=0
+		FILE: Number of write operations=0
+		HDFS: Number of bytes read=87
+		HDFS: Number of bytes written=312
+		HDFS: Number of read operations=4
+		HDFS: Number of large read operations=0
+		HDFS: Number of write operations=2
+	Job Counters 
+		Launched map tasks=1
+		Other local map tasks=1
+		Total time spent by all maps in occupied slots (ms)=7671
+		Total time spent by all reduces in occupied slots (ms)=0
+		Total time spent by all map tasks (ms)=7671
+		Total vcore-seconds taken by all map tasks=7671
+		Total megabyte-seconds taken by all map tasks=7855104
+	Map-Reduce Framework
+		Map input records=1
+		Map output records=7
+		Input split bytes=87
+		Spilled Records=0
+		Failed Shuffles=0
+		Merged Map outputs=0
+		GC time elapsed (ms)=213
+		CPU time spent (ms)=1160
+		Physical memory (bytes) snapshot=101912576
+		Virtual memory (bytes) snapshot=976515072
+		Total committed heap usage (bytes)=23855104
+	File Input Format Counters 
+		Bytes Read=0
+	File Output Format Counters 
+		Bytes Written=312
+16/06/12 15:33:36 INFO mapreduce.ImportJobBase: Transferred 312 bytes in 29.5679 seconds (10.552 bytes/sec)
+16/06/12 15:33:36 INFO mapreduce.ImportJobBase: Retrieved 7 records.
+====================================================================================================
+[hduser@Inceptez ~]$ sqoop import --connect jdbc:mysql://localhost/test --username root --password root -table customer -m 1 --direct --target-dir sqoopdb/customer_sqoop --incremental append --check-column city --last-value 'Pune';
+Warning: /usr/local/sqoop/../hbase does not exist! HBase imports will fail.
+Please set $HBASE_HOME to the root of your HBase installation.
+Warning: /usr/local/sqoop/../hcatalog does not exist! HCatalog jobs will fail.
+Please set $HCAT_HOME to the root of your HCatalog installation.
+Warning: /usr/local/sqoop/../accumulo does not exist! Accumulo imports will fail.
+Please set $ACCUMULO_HOME to the root of your Accumulo installation.
+Warning: /usr/local/sqoop/../zookeeper does not exist! Accumulo imports will fail.
+Please set $ZOOKEEPER_HOME to the root of your Zookeeper installation.
+16/06/13 16:31:40 INFO sqoop.Sqoop: Running Sqoop version: 1.4.5
+16/06/13 16:31:40 WARN tool.BaseSqoopTool: Setting your password on the command-line is insecure. Consider using -P instead.
+16/06/13 16:31:41 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
+16/06/13 16:31:41 INFO tool.CodeGenTool: Beginning code generation
+16/06/13 16:31:42 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `customer` AS t LIMIT 1
+16/06/13 16:31:42 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `customer` AS t LIMIT 1
+16/06/13 16:31:42 INFO orm.CompilationManager: HADOOP_MAPRED_HOME is /usr/local/hadoop
+Note: /tmp/sqoop-hduser/compile/b632266244d74fc7722c3254779a0e02/customer.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+16/06/13 16:31:47 INFO orm.CompilationManager: Writing jar file: /tmp/sqoop-hduser/compile/b632266244d74fc7722c3254779a0e02/customer.jar
+16/06/13 16:31:48 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+16/06/13 16:31:51 INFO tool.ImportTool: Maximal id query for free form incremental import: SELECT MAX(`city`) FROM customer
+16/06/13 16:31:51 ERROR tool.ImportTool: Error during import: Character column (city) can not be used to determine which rows to incrementally import.
+====================================================================================================
+[hduser@Inceptez ~]$ sqoop import --connect jdbc:mysql://localhost/test --username root --password root -table customer -m 1 --direct --target-dir sqoopdb/customer_sqoop --incremental append --check-column city --last-value 'chennai';
+Warning: /usr/local/sqoop/../hbase does not exist! HBase imports will fail.
+Please set $HBASE_HOME to the root of your HBase installation.
+Warning: /usr/local/sqoop/../hcatalog does not exist! HCatalog jobs will fail.
+Please set $HCAT_HOME to the root of your HCatalog installation.
+Warning: /usr/local/sqoop/../accumulo does not exist! Accumulo imports will fail.
+Please set $ACCUMULO_HOME to the root of your Accumulo installation.
+Warning: /usr/local/sqoop/../zookeeper does not exist! Accumulo imports will fail.
+Please set $ZOOKEEPER_HOME to the root of your Zookeeper installation.
+16/06/13 16:41:44 INFO sqoop.Sqoop: Running Sqoop version: 1.4.5
+16/06/13 16:41:44 WARN tool.BaseSqoopTool: Setting your password on the command-line is insecure. Consider using -P instead.
+16/06/13 16:41:46 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
+16/06/13 16:41:46 INFO tool.CodeGenTool: Beginning code generation
+16/06/13 16:41:46 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `customer` AS t LIMIT 1
+16/06/13 16:41:46 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `customer` AS t LIMIT 1
+16/06/13 16:41:47 INFO orm.CompilationManager: HADOOP_MAPRED_HOME is /usr/local/hadoop
+Note: /tmp/sqoop-hduser/compile/1ef482a8ab24a23419d74adf94f876ee/customer.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+16/06/13 16:41:53 INFO orm.CompilationManager: Writing jar file: /tmp/sqoop-hduser/compile/1ef482a8ab24a23419d74adf94f876ee/customer.jar
+16/06/13 16:41:54 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+16/06/13 16:41:56 INFO tool.ImportTool: Maximal id query for free form incremental import: SELECT MAX(`city`) FROM customer
+16/06/13 16:41:56 ERROR tool.ImportTool: Error during import: Character column (city) can not be used to determine which rows to incrementally import.
+====================================================================================================
+[hduser@Inceptez ~]$ sqoop import --connect jdbc:mysql://localhost/test --username root --password root -table customer -m 1 --direct --target-dir sqoopdb/customer_sqoop --incremental append --check-column custid --last-value 7;
+...
+16/06/13 16:44:00 INFO mapreduce.ImportJobBase: Transferred 97 bytes in 44.7025 seconds (2.1699 bytes/sec)
+16/06/13 16:44:00 INFO mapreduce.ImportJobBase: Retrieved 2 records.
+16/06/13 16:44:00 INFO util.AppendUtils: Appending to directory customer_sqoop
+16/06/13 16:44:00 INFO util.AppendUtils: Using found partition 1
+16/06/13 16:44:00 INFO tool.ImportTool: Incremental import complete! To run another incremental import of all data following this import, supply the following arguments:
+16/06/13 16:44:00 INFO tool.ImportTool:  --incremental append
+16/06/13 16:44:00 INFO tool.ImportTool:   --check-column custid
+16/06/13 16:44:00 INFO tool.ImportTool:   --last-value 9
+16/06/13 16:44:00 INFO tool.ImportTool: (Consider saving this with 'sqoop job --create')
+
+[hduser@Inceptez ~]$ hadoop fs -cat sqoopdb/customer_sqoop/part-m-0000016/06/13 16:44:14 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+1,Arun,Kumar,chennai,33,2015-09-20,100000
+2,srini,vasan,chennai,33,2015-09-21,10000
+3,vasu,devan,banglore,39,2015-09-23,90000
+4,mohamed,imran,hyderabad,33,2015-09-24,1000
+5,arun,basker,chennai,23,2015-09-20,200000
+6,ramesh,babu,manglore,39,2015-09-21,100000
+7,Deepak Kumar,Mahadevan,chennai,27,2016-06-12,100000
+[hduser@Inceptez ~]$ hadoop fs -cat sqoopdb/customer_sqoop/part-m-00001
+16/06/13 16:44:27 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+8,Lionel,Messi,Barcelona,28,2016-06-13,1000000
+9,Christiano,Ronaldo,Madrid,31,2016-06-13,1050000
+====================================================================================================
+mysql> create table test.Employee (Emp_id int, Emp_Name varchar(25), Emp_sal decimal(11,2), Row_ts timestamp);
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> select * from test.Employee;
+Empty set (0.00 sec)
+
+mysql> desc test.Employee;
++----------+---------------+------+-----+-------------------+-----------------------------+
+| Field    | Type          | Null | Key | Default           | Extra                       |
++----------+---------------+------+-----+-------------------+-----------------------------+
+| Emp_id   | int(11)       | YES  |     | NULL              |                             |
+| Emp_Name | varchar(25)   | YES  |     | NULL              |                             |
+| Emp_sal  | decimal(11,2) | YES  |     | NULL              |                             |
+| Row_ts   | timestamp     | NO   |     | CURRENT_TIMESTAMP | on update CURRENT_TIMESTAMP |
++----------+---------------+------+-----+-------------------+-----------------------------+
+4 rows in set (0.00 sec)
+mysql> insert into test.Employee values (1,'Deepak',75000);
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> insert into test.Employee values (1,'Deepak',75000,timestamp);
+ERROR 1054 (42S22): Unknown column 'timestamp' in 'field list'
+mysql> insert into test.Employee values (1,'Deepak',75000,CURRENT_TIMESTAMP);
+Query OK, 1 row affected (0.00 sec)
+====================================================================================================
+[hduser@Inceptez ~]$ sqoop job --create myjob1 --import --connect jdbc:mysql://localhost/test --username root --password root --table Employee --m 1 --target-dir sqoopdb/Employee;
+16/06/13 17:31:11 INFO sqoop.Sqoop: Running Sqoop version: 1.4.5
+16/06/13 17:31:11 ERROR tool.BaseSqoopTool: Error parsing arguments for job:
+16/06/13 17:31:11 ERROR tool.BaseSqoopTool: Unrecognized argument: --import
+16/06/13 17:31:11 ERROR tool.BaseSqoopTool: Unrecognized argument: --connect
+16/06/13 17:31:11 ERROR tool.BaseSqoopTool: Unrecognized argument: jdbc:mysql://localhost/test
+16/06/13 17:31:11 ERROR tool.BaseSqoopTool: Unrecognized argument: --username
+16/06/13 17:31:11 ERROR tool.BaseSqoopTool: Unrecognized argument: root
+16/06/13 17:31:11 ERROR tool.BaseSqoopTool: Unrecognized argument: --password
+16/06/13 17:31:11 ERROR tool.BaseSqoopTool: Unrecognized argument: root
+16/06/13 17:31:11 ERROR tool.BaseSqoopTool: Unrecognized argument: --table
+16/06/13 17:31:11 ERROR tool.BaseSqoopTool: Unrecognized argument: Employee
+16/06/13 17:31:11 ERROR tool.BaseSqoopTool: Unrecognized argument: --m
+16/06/13 17:31:11 ERROR tool.BaseSqoopTool: Unrecognized argument: 1
+16/06/13 17:31:11 ERROR tool.BaseSqoopTool: Unrecognized argument: --target-dir
+16/06/13 17:31:11 ERROR tool.BaseSqoopTool: Unrecognized argument: sqoopdb/Employee
+Try --help for usage instructions.
+
+[hduser@Inceptez ~]$ sqoop job --create myjob1 -- import --connect jdbc:mysql://localhost/test --username root --password root --table Employee --m 1 --target-dir sqoopdb/Employee;
+[hduser@Inceptez ~]$ sqoop job -list
+Available jobs:
+  myjob1
+[hduser@Inceptez ~]$ sqoop job --exec myjob1;
+Enter password:
+16/06/13 17:34:08 INFO mapreduce.ImportJobBase: Transferred 123 bytes in 21.0415 seconds (5.8456 bytes/sec)
+16/06/13 17:34:08 INFO mapreduce.ImportJobBase: Retrieved 3 records.
+
+[hduser@Inceptez ~]$ hdfs dfs -ls -R sqoopdb/Employee
+	16/06/13 17:35:53 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+-rw-r--r--   1 hduser supergroup          0 2016-06-13 17:34 sqoopdb/Employee/_SUCCESS
+-rw-r--r--   1 hduser supergroup        123 2016-06-13 17:34 sqoopdb/Employee/part-m-00000
+
+[hduser@Inceptez ~]$ hdfs dfs -cat sqoopdb/Employee/part*
+16/06/13 17:36:45 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+1,Deepak,75000.00,2016-06-13 17:06:27.0
+2,Sachin,1500000.00,2016-06-13 17:07:51.0
+3,Messi,2500000.00,2016-06-13 17:08:04.0
+====================================================================================================
+[hduser@Inceptez ~]$ sqoop job --create myjob2 -- import --connect jdbc:mysql://localhost/test --username root --password root --table Employee --m 1 --direct --target-dir sqoopdb/Employee_new --incremental append --check-column Emp_id --last-value 0;
+
+[hduser@Inceptez ~]$ sqoop job --exec myjob2
+Enter password:
+16/06/13 17:44:29 INFO tool.ImportTool: Maximal id query for free form incremental import: SELECT MAX(`Emp_id`) FROM Employee
+16/06/13 17:44:29 INFO tool.ImportTool: Incremental import based on column `Emp_id`
+16/06/13 17:44:29 INFO tool.ImportTool: Lower bound value: 0
+16/06/13 17:44:29 INFO tool.ImportTool: Upper bound value: 3
+...
+16/06/13 17:44:48 INFO mapreduce.ImportJobBase: Transferred 117 bytes in 19.8325 seconds (5.8994 bytes/sec)
+16/06/13 17:44:48 INFO mapreduce.ImportJobBase: Retrieved 3 records.
+16/06/13 17:44:48 INFO util.AppendUtils: Creating missing output directory - Employee_new
+16/06/13 17:44:48 INFO tool.ImportTool: Saving incremental import state to the metastore
+16/06/13 17:44:49 INFO tool.ImportTool: Updated data for job: myjob2
+
+[hduser@Inceptez ~]$ sqoop job --show myjob2
+Enter password: 
+Job: myjob2
+Tool: import
+Options:
+----------------------------
+verbose = false
+incremental.last.value = 3
+db.connect.string = jdbc:mysql://localhost/test
+codegen.output.delimiters.escape = 0
+codegen.output.delimiters.enclose.required = false
+codegen.input.delimiters.field = 0
+hbase.create.table = false
+db.require.password = true
+hdfs.append.dir = true
+db.table = Employee
+codegen.input.delimiters.escape = 0
+import.fetch.size = null
+accumulo.create.table = false
+codegen.input.delimiters.enclose.required = false
+db.username = root
+codegen.output.delimiters.record = 10
+import.max.inline.lob.size = 16777216
+hbase.bulk.load.enabled = false
+hcatalog.create.table = false
+db.clear.staging.table = false
+incremental.col = Emp_id
+codegen.input.delimiters.record = 0
+enable.compression = false
+hive.overwrite.table = false
+hive.import = false
+codegen.input.delimiters.enclose = 0
+accumulo.batch.size = 10240000
+hive.drop.delims = false
+codegen.output.delimiters.enclose = 0
+hdfs.delete-target.dir = false
+codegen.output.dir = .
+codegen.auto.compile.dir = true
+relaxed.isolation = false
+mapreduce.num.mappers = 1
+accumulo.max.latency = 5000
+import.direct.split.size = 0
+codegen.output.delimiters.field = 44
+export.new.update = UpdateOnly
+incremental.mode = AppendRows
+hdfs.file.format = TextFile
+codegen.compile.dir = /tmp/sqoop-hduser/compile/0dd84acf0dbfc65d959b8f7f81c4dad4
+direct.import = true
+hdfs.target.dir = sqoopdb/Employee_new
+hive.fail.table.exists = false
+db.batch = false
+
+[hduser@Inceptez ~]$ hdfs dfs -cat sqoopdb/Employee_new/part*
+16/06/13 17:49:45 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+1,Deepak,75000.00,2016-06-13 11:36:27
+2,Sachin,1500000.00,2016-06-13 11:37:51
+3,Messi,2500000.00,2016-06-13 11:38:04
+
+====================================================================================================
+mysql> insert into test.Employee values (4,'Federer',2000000,CURRENT_TIMESTAMP);
+Query OK, 1 row affected (0.00 sec)
+
++--------+----------+------------+---------------------+
+| Emp_id | Emp_Name | Emp_sal    | Row_ts              |
++--------+----------+------------+---------------------+
+|      1 | Deepak   |   75000.00 | 2016-06-13 17:06:27 |
+|      2 | Sachin   | 1500000.00 | 2016-06-13 17:07:51 |
+|      3 | Messi    | 2500000.00 | 2016-06-13 17:08:04 |
+|      4 | Federer  | 2000000.00 | 2016-06-13 17:48:19 |
++--------+----------+------------+---------------------+
+4 rows in set (0.00 sec)
+
+[hduser@Inceptez ~]$ sqoop job --exec myjob2
+
+16/06/13 17:50:58 INFO tool.ImportTool: Maximal id query for free form incremental import: SELECT MAX(`Emp_id`) FROM Employee
+16/06/13 17:50:58 INFO tool.ImportTool: Incremental import based on column `Emp_id`
+16/06/13 17:50:58 INFO tool.ImportTool: Lower bound value: 3
+16/06/13 17:50:58 INFO tool.ImportTool: Upper bound value: 4
+...
+16/06/13 17:50:58 INFO tool.ImportTool: Maximal id query for free form incremental import: SELECT MAX(`Emp_id`) FROM Employee
+16/06/13 17:50:58 INFO tool.ImportTool: Incremental import based on column `Emp_id`
+16/06/13 17:50:58 INFO tool.ImportTool: Lower bound value: 3
+16/06/13 17:50:58 INFO tool.ImportTool: Upper bound value: 4
+
+[hduser@Inceptez ~]$ sqoop job --show myjob2
+Job: myjob2
+Tool: import
+Options:
+----------------------------
+verbose = false
+incremental.last.value = 4
+db.connect.string = jdbc:mysql://localhost/test
+codegen.output.delimiters.escape = 0
+codegen.output.delimiters.enclose.required = false
+codegen.input.delimiters.field = 0
+hbase.create.table = false
+db.require.password = true
+hdfs.append.dir = true
+db.table = Employee
+codegen.input.delimiters.escape = 0
+import.fetch.size = null
+accumulo.create.table = false
+codegen.input.delimiters.enclose.required = false
+db.username = root
+codegen.output.delimiters.record = 10
+import.max.inline.lob.size = 16777216
+hbase.bulk.load.enabled = false
+hcatalog.create.table = false
+db.clear.staging.table = false
+incremental.col = Emp_id
+codegen.input.delimiters.record = 0
+enable.compression = false
+hive.overwrite.table = false
+hive.import = false
+codegen.input.delimiters.enclose = 0
+accumulo.batch.size = 10240000
+hive.drop.delims = false
+codegen.output.delimiters.enclose = 0
+hdfs.delete-target.dir = false
+codegen.output.dir = .
+codegen.auto.compile.dir = true
+relaxed.isolation = false
+mapreduce.num.mappers = 1
+accumulo.max.latency = 5000
+import.direct.split.size = 0
+codegen.output.delimiters.field = 44
+export.new.update = UpdateOnly
+incremental.mode = AppendRows
+hdfs.file.format = TextFile
+codegen.compile.dir = /tmp/sqoop-hduser/compile/db74ec0867c74bf9a1cb6df5937bb79a
+direct.import = true
+hdfs.target.dir = sqoopdb/Employee_new
+hive.fail.table.exists = false
+db.batch = false
+
+[hduser@Inceptez ~]$ hdfs dfs -ls sqoopdb/Employee_new
+16/06/13 17:53:44 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Found 2 items
+-rw-r--r--   1 hduser supergroup        117 2016-06-13 17:44 sqoopdb/Employee_new/part-m-00000
+-rw-r--r--   1 hduser supergroup         41 2016-06-13 17:51 sqoopdb/Employee_new/part-m-00001
+
+[hduser@Inceptez ~]$ hdfs dfs -cat sqoopdb/Employee_new/part*00000
+16/06/13 17:54:15 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+1,Deepak,75000.00,2016-06-13 11:36:27
+2,Sachin,1500000.00,2016-06-13 11:37:51
+3,Messi,2500000.00,2016-06-13 11:38:04
+[hduser@Inceptez ~]$ hdfs dfs -cat sqoopdb/Employee_new/part*00001
+16/06/13 17:54:22 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+4,Federer,2000000.00,2016-06-13 12:18:19
+====================================================================================================
+[hduser@Inceptez ~]$ sqoop export --connect jdbc:mysql://localhost/test --username root --password root --table Employee_exp --export-dir myjob2;
+
+16/06/16 19:11:03 ERROR tool.ExportTool: Encountered IOException running export job: org.apache.hadoop.mapreduce.lib.input.InvalidInputException: Input path does not exist: hdfs://localhost:54310/user/hduser/myjob2
+
+
+[hduser@Inceptez ~]$ sqoop export --connect jdbc:mysql://localhost/test --username root --password root --table Employee_exp --export-dir sqoopdb/Employee_new;
+Warning: /usr/local/sqoop/../hbase does not exist! HBase imports will fail.
+Please set $HBASE_HOME to the root of your HBase installation.
+Warning: /usr/local/sqoop/../hcatalog does not exist! HCatalog jobs will fail.
+Please set $HCAT_HOME to the root of your HCatalog installation.
+Warning: /usr/local/sqoop/../accumulo does not exist! Accumulo imports will fail.
+Please set $ACCUMULO_HOME to the root of your Accumulo installation.
+Warning: /usr/local/sqoop/../zookeeper does not exist! Accumulo imports will fail.
+Please set $ZOOKEEPER_HOME to the root of your Zookeeper installation.
+16/06/16 19:15:08 INFO sqoop.Sqoop: Running Sqoop version: 1.4.5
+16/06/16 19:15:08 WARN tool.BaseSqoopTool: Setting your password on the command-line is insecure. Consider using -P instead.
+16/06/16 19:15:09 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
+16/06/16 19:15:09 INFO tool.CodeGenTool: Beginning code generation
+16/06/16 19:15:10 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `Employee_exp` AS t LIMIT 1
+16/06/16 19:15:10 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `Employee_exp` AS t LIMIT 1
+16/06/16 19:15:10 INFO orm.CompilationManager: HADOOP_MAPRED_HOME is /usr/local/hadoop
+Note: /tmp/sqoop-hduser/compile/c663b7c8906f6e4c313520b09a1c489b/Employee_exp.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+16/06/16 19:15:16 INFO orm.CompilationManager: Writing jar file: /tmp/sqoop-hduser/compile/c663b7c8906f6e4c313520b09a1c489b/Employee_exp.jar
+16/06/16 19:15:16 INFO mapreduce.ExportJobBase: Beginning export of Employee_exp
+16/06/16 19:15:18 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+16/06/16 19:15:18 INFO Configuration.deprecation: mapred.jar is deprecated. Instead, use mapreduce.job.jar
+16/06/16 19:15:21 INFO Configuration.deprecation: mapred.reduce.tasks.speculative.execution is deprecated. Instead, use mapreduce.reduce.speculative
+16/06/16 19:15:21 INFO Configuration.deprecation: mapred.map.tasks.speculative.execution is deprecated. Instead, use mapreduce.map.speculative
+16/06/16 19:15:21 INFO Configuration.deprecation: mapred.map.tasks is deprecated. Instead, use mapreduce.job.maps
+16/06/16 19:15:21 INFO client.RMProxy: Connecting to ResourceManager at /0.0.0.0:8032
+16/06/16 19:15:24 INFO input.FileInputFormat: Total input paths to process : 2
+16/06/16 19:15:24 INFO input.FileInputFormat: Total input paths to process : 2
+16/06/16 19:15:25 INFO mapreduce.JobSubmitter: number of splits:4
+16/06/16 19:15:25 INFO Configuration.deprecation: mapred.map.tasks.speculative.execution is deprecated. Instead, use mapreduce.map.speculative
+16/06/16 19:15:26 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1466084108175_0002
+16/06/16 19:15:27 INFO impl.YarnClientImpl: Submitted application application_1466084108175_0002
+16/06/16 19:15:27 INFO mapreduce.Job: The url to track the job: http://Inceptez:8088/proxy/application_1466084108175_0002/
+16/06/16 19:15:27 INFO mapreduce.Job: Running job: job_1466084108175_0002
+16/06/16 19:16:01 INFO mapreduce.Job: Job job_1466084108175_0002 running in uber mode : false
+16/06/16 19:16:01 INFO mapreduce.Job:  map 0% reduce 0%
+16/06/16 19:17:18 INFO mapreduce.Job:  map 25% reduce 0%
+16/06/16 19:17:21 INFO mapreduce.Job:  map 100% reduce 0%
+16/06/16 19:17:22 INFO mapreduce.Job: Job job_1466084108175_0002 completed successfully
+16/06/16 19:17:22 INFO mapreduce.Job: Counters: 30
+	File System Counters
+		FILE: Number of bytes read=0
+		FILE: Number of bytes written=457096
+		FILE: Number of read operations=0
+		FILE: Number of large read operations=0
+		FILE: Number of write operations=0
+		HDFS: Number of bytes read=992
+		HDFS: Number of bytes written=0
+		HDFS: Number of read operations=19
+		HDFS: Number of large read operations=0
+		HDFS: Number of write operations=0
+	Job Counters 
+		Launched map tasks=4
+		Data-local map tasks=4
+		Total time spent by all maps in occupied slots (ms)=299875
+		Total time spent by all reduces in occupied slots (ms)=0
+		Total time spent by all map tasks (ms)=299875
+		Total vcore-seconds taken by all map tasks=299875
+		Total megabyte-seconds taken by all map tasks=307072000
+	Map-Reduce Framework
+		Map input records=4
+		Map output records=4
+		Input split bytes=681
+		Spilled Records=0
+		Failed Shuffles=0
+		Merged Map outputs=0
+		GC time elapsed (ms)=1334
+		CPU time spent (ms)=8530
+		Physical memory (bytes) snapshot=371490816
+		Virtual memory (bytes) snapshot=3893895168
+		Total committed heap usage (bytes)=95158272
+	File Input Format Counters 
+		Bytes Read=0
+	File Output Format Counters 
+		Bytes Written=0
+16/06/16 19:17:22 INFO mapreduce.ExportJobBase: Transferred 992 bytes in 121.2816 seconds (8.1793 bytes/sec)
+16/06/16 19:17:22 INFO mapreduce.ExportJobBase: Exported 4 records.
+====================================================================================================
+mysql> insert into test.Employee values (3,'Dupe Messi',2000000,CURRENT_TIMESTAMP);
+Query OK, 1 row affected (0.11 sec)
+
+mysql> select * from test.Employee;
++--------+------------+------------+---------------------+
+| Emp_id | Emp_Name   | Emp_sal    | Row_ts              |
++--------+------------+------------+---------------------+
+|      1 | Deepak     |   75000.00 | 2016-06-13 17:06:27 |
+|      2 | Sachin     | 1500000.00 | 2016-06-13 17:07:51 |
+|      3 | Messi      | 2500000.00 | 2016-06-13 17:08:04 |
+|      4 | Federer    | 2000000.00 | 2016-06-13 17:48:19 |
+|      3 | Dupe Messi | 2000000.00 | 2016-06-18 08:19:25 |
++--------+------------+------------+---------------------+
+5 rows in set (0.00 sec)
+
+[hduser@Inceptez ~]$ sqoop job --exec myjob2
+Enter password: 
+16/06/18 08:24:46 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
+16/06/18 08:24:46 INFO tool.CodeGenTool: Beginning code generation
+16/06/18 08:24:47 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `Employee` AS t LIMIT 1
+16/06/18 08:24:47 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `Employee` AS t LIMIT 1
+16/06/18 08:24:47 INFO orm.CompilationManager: HADOOP_MAPRED_HOME is /usr/local/hadoop
+Note: /tmp/sqoop-hduser/compile/dec78181e97fb8ebec3a2a0e585666ab/Employee.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+16/06/18 08:24:51 INFO orm.CompilationManager: Writing jar file: /tmp/sqoop-hduser/compile/dec78181e97fb8ebec3a2a0e585666ab/Employee.jar
+16/06/18 08:24:51 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+16/06/18 08:24:52 INFO tool.ImportTool: Maximal id query for free form incremental import: SELECT MAX(`Emp_id`) FROM Employee
+16/06/18 08:24:52 INFO tool.ImportTool: Incremental import based on column `Emp_id`
+16/06/18 08:24:52 INFO tool.ImportTool: No new rows detected since last import.
+[hduser@Inceptez ~]$ 
+
+mysql> update test.Employee set Emp_id = 5, Emp_name = 'Ronaldo', Emp_sal = 27500000.00 where Emp_name = 'Dupe Messi';
+Query OK, 1 row affected (0.00 sec)
+mysql> update test.Employee set Emp_sal = 2750000.00 where Emp_name = 'Ronaldo';
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from test.Employee;
++--------+----------+------------+---------------------+
+| Emp_id | Emp_Name | Emp_sal    | Row_ts              |
++--------+----------+------------+---------------------+
+|      1 | Deepak   |   75000.00 | 2016-06-13 17:06:27 |
+|      2 | Sachin   | 1500000.00 | 2016-06-13 17:07:51 |
+|      3 | Messi    | 2500000.00 | 2016-06-13 17:08:04 |
+|      4 | Federer  | 2000000.00 | 2016-06-13 17:48:19 |
+|      5 | Ronaldo  | 2750000.00 | 2016-06-18 08:28:31 |
++--------+----------+------------+---------------------+
+5 rows in set (0.00 sec)
+
+[hduser@Inceptez ~]$ sqoop job --exec myjob2
+Enter password: 
+16/06/18 08:29:39 INFO tool.ImportTool: Maximal id query for free form incremental import: SELECT MAX(`Emp_id`) FROM Employee
+16/06/18 08:29:39 INFO tool.ImportTool: Incremental import based on column `Emp_id`
+16/06/18 08:29:39 INFO tool.ImportTool: Lower bound value: 4
+16/06/18 08:29:39 INFO tool.ImportTool: Upper bound value: 5
+16/06/18 08:29:42 INFO mapreduce.JobSubmitter: number of splits:1
+16/06/18 08:29:43 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1466218079650_0001
+16/06/18 08:29:43 INFO impl.YarnClientImpl: Submitted application application_1466218079650_0001
+16/06/18 08:29:44 INFO mapreduce.Job: The url to track the job: http://Inceptez:8088/proxy/application_1466218079650_0001/
+16/06/18 08:29:44 INFO mapreduce.Job: Running job: job_1466218079650_0001
+16/06/18 08:29:56 INFO mapreduce.Job: Job job_1466218079650_0001 running in uber mode : false
+16/06/18 08:29:56 INFO mapreduce.Job:  map 0% reduce 0%
+16/06/18 08:30:08 INFO mapreduce.Job:  map 100% reduce 0%
+16/06/18 08:30:08 INFO mapreduce.Job: Job job_1466218079650_0001 completed successfully
+16/06/18 08:30:08 INFO mapreduce.Job: Counters: 30
+...
+16/06/18 08:30:08 INFO mapreduce.ImportJobBase: Transferred 41 bytes in 28.2924 seconds (1.4492 bytes/sec)
+16/06/18 08:30:08 INFO mapreduce.ImportJobBase: Retrieved 1 records.
+16/06/18 08:30:08 INFO util.AppendUtils: Appending to directory Employee_new
+16/06/18 08:30:08 INFO util.AppendUtils: Using found partition 2
+16/06/18 08:30:08 INFO tool.ImportTool: Saving incremental import state to the metastore
+16/06/18 08:30:08 INFO tool.ImportTool: Updated data for job: myjob2
+
+[hduser@Inceptez ~]$ hdfs dfs -ls sqoopdb/Employee_new/
+Found 3 items
+-rw-r--r--   1 hduser supergroup        117 2016-06-13 17:44 sqoopdb/Employee_new/part-m-00000
+-rw-r--r--   1 hduser supergroup         41 2016-06-13 17:51 sqoopdb/Employee_new/part-m-00001
+-rw-r--r--   1 hduser supergroup         41 2016-06-18 08:30 sqoopdb/Employee_new/part-m-00002
+[hduser@Inceptez ~]$ hdfs dfs -cat sqoopdb/Employee_new/*
+1,Deepak,75000.00,2016-06-13 11:36:27
+2,Sachin,1500000.00,2016-06-13 11:37:51
+3,Messi,2500000.00,2016-06-13 11:38:04
+4,Federer,2000000.00,2016-06-13 12:18:19
+5,Ronaldo,2750000.00,2016-06-18 02:58:31
+====================================================================================================

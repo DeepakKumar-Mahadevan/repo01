@@ -1,0 +1,219 @@
+mysql> create database dkmdb01;
+Query OK, 1 row affected (0.09 sec)
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| dkmdb01            |
+| hive               |
+| mysql              |
+| test               |
++--------------------+
+5 rows in set (0.04 sec)
+
+mysql> use dkmdb01;
+Database changed
+mysql> create table employee (emp_id int(5) not null, emp_name varchar(30) not null, emp_org int(3) not null, emp_sal decimal(9,2) not null);
+Query OK, 0 rows affected (0.21 sec)
+
+mysql> desc employee;
++----------+--------------+------+-----+---------+-------+
+| Field    | Type         | Null | Key | Default | Extra |
++----------+--------------+------+-----+---------+-------+
+| emp_id   | int(5)       | NO   |     | NULL    |       |
+| emp_name | varchar(30)  | NO   |     | NULL    |       |
+| emp_org  | int(3)       | NO   |     | NULL    |       |
+| emp_sal  | decimal(9,2) | NO   |     | NULL    |       |
++----------+--------------+------+-----+---------+-------+
+4 rows in set (0.05 sec)
+
+mysql> insert into employee values (1,'Deepak',1,82000);
+Query OK, 1 row affected (0.09 sec)
+
+mysql> insert into employee values (2,'Farooq',1,75000);
+Query OK, 1 row affected (0.07 sec)
+
+mysql> insert into employee values (3,'Karthick',1,100000);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from employee;
++--------+----------+---------+-----------+
+| emp_id | emp_name | emp_org | emp_sal   |
++--------+----------+---------+-----------+
+|      1 | Deepak   |       1 |  82000.00 |
+|      2 | Farooq   |       1 |  75000.00 |
+|      3 | Karthick |       1 | 100000.00 |
++--------+----------+---------+-----------+
+3 rows in set (0.13 sec)
+
+[root@sandbox ~]# hadoop fs -ls
+Found 1 items
+drwx------   - root hdfs          0 2015-12-30 04:43 .staging
+[root@sandbox ~]# hadoop fs -mkdir sqoop_imp01
+[root@sandbox ~]# hadoop fs -ls
+Found 2 items
+drwx------   - root hdfs          0 2015-12-30 04:43 .staging
+drwxr-xr-x   - root hdfs          0 2016-07-26 01:37 sqoop_imp01
+
+[root@sandbox ~]# sqoop import --connect jdbc:mysql://localhost/dkmdb01 --username root --password hadoop --direct --table employee --m 1 --target-dir sqoop_imp01/employee
+16/07/26 01:39:48 INFO sqoop.Sqoop: Running Sqoop version: 1.4.4.2.0.6.0-76
+16/07/26 01:39:48 WARN tool.BaseSqoopTool: Setting your password on the command-line is insecure. Consider using -P instead.
+16/07/26 01:39:49 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
+16/07/26 01:39:49 INFO tool.CodeGenTool: Beginning code generation
+16/07/26 01:39:50 ERROR manager.SqlManager: Error executing statement: java.sql.SQLException: Access denied for user 'root'@'localhost' (using password: YES)
+java.sql.SQLException: Access denied for user 'root'@'localhost' (using password: YES)
+        at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:1073)
+        at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3597)
+        at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3529)
+        at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:935)
+        at com.mysql.jdbc.MysqlIO.secureAuth411(MysqlIO.java:4101)
+        at com.mysql.jdbc.MysqlIO.doHandshake(MysqlIO.java:1300)
+        at com.mysql.jdbc.ConnectionImpl.coreConnect(ConnectionImpl.java:2337)
+        at com.mysql.jdbc.ConnectionImpl.connectOneTryOnly(ConnectionImpl.java:2370)
+        at com.mysql.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:2154)
+        at com.mysql.jdbc.ConnectionImpl.<init>(ConnectionImpl.java:792)
+        at com.mysql.jdbc.JDBC4Connection.<init>(JDBC4Connection.java:49)
+        at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+        at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:39)
+        at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:27)
+        at java.lang.reflect.Constructor.newInstance(Constructor.java:513)
+        at com.mysql.jdbc.Util.handleNewInstance(Util.java:411)
+        at com.mysql.jdbc.ConnectionImpl.getInstance(ConnectionImpl.java:381)
+        at com.mysql.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:305)
+        at java.sql.DriverManager.getConnection(DriverManager.java:582)
+        at java.sql.DriverManager.getConnection(DriverManager.java:185)
+        at org.apache.sqoop.manager.SqlManager.makeConnection(SqlManager.java:801)
+        at org.apache.sqoop.manager.GenericJdbcManager.getConnection(GenericJdbcManager.java:52)
+        at org.apache.sqoop.manager.SqlManager.execute(SqlManager.java:660)
+        at org.apache.sqoop.manager.SqlManager.execute(SqlManager.java:683)
+        at org.apache.sqoop.manager.SqlManager.getColumnTypesForRawQuery(SqlManager.java:240)
+        at org.apache.sqoop.manager.SqlManager.getColumnTypes(SqlManager.java:223)
+        at org.apache.sqoop.manager.ConnManager.getColumnTypes(ConnManager.java:347)
+        at org.apache.sqoop.orm.ClassWriter.getColumnTypes(ClassWriter.java:1298)
+        at org.apache.sqoop.orm.ClassWriter.generate(ClassWriter.java:1110)
+        at org.apache.sqoop.tool.CodeGenTool.generateORM(CodeGenTool.java:96)
+        at org.apache.sqoop.tool.ImportTool.importTable(ImportTool.java:396)
+        at org.apache.sqoop.tool.ImportTool.run(ImportTool.java:502)
+        at org.apache.sqoop.Sqoop.run(Sqoop.java:147)
+        at org.apache.hadoop.util.ToolRunner.run(ToolRunner.java:70)
+        at org.apache.sqoop.Sqoop.runSqoop(Sqoop.java:183)
+        at org.apache.sqoop.Sqoop.runTool(Sqoop.java:222)
+        at org.apache.sqoop.Sqoop.runTool(Sqoop.java:231)
+        at org.apache.sqoop.Sqoop.main(Sqoop.java:240)
+16/07/26 01:39:50 ERROR tool.ImportTool: Encountered IOException running import job: java.io.IOException: No columns to generate for ClassWriter
+        at org.apache.sqoop.orm.ClassWriter.generate(ClassWriter.java:1116)
+        at org.apache.sqoop.tool.CodeGenTool.generateORM(CodeGenTool.java:96)
+        at org.apache.sqoop.tool.ImportTool.importTable(ImportTool.java:396)
+        at org.apache.sqoop.tool.ImportTool.run(ImportTool.java:502)
+        at org.apache.sqoop.Sqoop.run(Sqoop.java:147)
+        at org.apache.hadoop.util.ToolRunner.run(ToolRunner.java:70)
+        at org.apache.sqoop.Sqoop.runSqoop(Sqoop.java:183)
+        at org.apache.sqoop.Sqoop.runTool(Sqoop.java:222)
+        at org.apache.sqoop.Sqoop.runTool(Sqoop.java:231)
+        at org.apache.sqoop.Sqoop.main(Sqoop.java:240)
+
+mysql> select host,user,password from mysql.user;
++-------------------------+------+-------------------------------------------+
+| host                    | user | password                                  |
++-------------------------+------+-------------------------------------------+
+| localhost               | root |                                           |
+| sandbox.hortonworks.com | root | *81F5E21E35407D884A6CD4A731AEBFB6AF209E1B |
+| 127.0.0.1               | root |                                           |
+| localhost               |      |                                           |
+| sandbox.hortonworks.com |      |                                           |
+| sandbox.hortonworks.com | hive | *4DF1D66463C18D44E3B001A8FB1BBFBEA13E27FC |
+| localhost               | hive | *4DF1D66463C18D44E3B001A8FB1BBFBEA13E27FC |
++-------------------------+------+-------------------------------------------+
+7 rows in set (0.08 sec)
+
+[root@sandbox ~]# sqoop import --connect jdbc:mysql://localhost/dkmdb01 --username root --direct --table employee --m 1 --target-dir sqoop_imp01/employee               16/07/26 01:43:13 INFO sqoop.Sqoop: Running Sqoop version: 1.4.4.2.0.6.0-76
+16/07/26 01:43:13 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
+16/07/26 01:43:13 INFO tool.CodeGenTool: Beginning code generation
+16/07/26 01:43:13 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `employee` AS t LIMIT 1
+16/07/26 01:43:14 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `employee` AS t LIMIT 1
+16/07/26 01:43:14 INFO orm.CompilationManager: HADOOP_MAPRED_HOME is /usr/lib/hadoop
+Note: /tmp/sqoop-root/compile/dbd0e78ff9bf082037db7bc31d3781fc/employee.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+16/07/26 01:43:16 INFO orm.CompilationManager: Writing jar file: /tmp/sqoop-root/compile/dbd0e78ff9bf082037db7bc31d3781fc/employee.jar
+16/07/26 01:43:16 INFO manager.DirectMySQLManager: Beginning mysqldump fast path import
+16/07/26 01:43:16 INFO mapreduce.ImportJobBase: Beginning import of employee
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/usr/lib/hadoop/lib/slf4j-log4j12-1.7.5.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/usr/lib/hive/lib/slf4j-log4j12-1.7.5.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.Log4jLoggerFactory]
+16/07/26 01:43:17 INFO Configuration.deprecation: mapred.jar is deprecated. Instead, use mapreduce.job.jar
+16/07/26 01:43:19 INFO Configuration.deprecation: mapred.map.tasks is deprecated. Instead, use mapreduce.job.maps
+16/07/26 01:43:20 INFO client.RMProxy: Connecting to ResourceManager at sandbox.hortonworks.com/192.168.107.132:8050
+16/07/26 01:43:24 INFO mapreduce.JobSubmitter: number of splits:1
+16/07/26 01:43:24 INFO Configuration.deprecation: mapred.job.classpath.files is deprecated. Instead, use mapreduce.job.classpath.files
+16/07/26 01:43:24 INFO Configuration.deprecation: user.name is deprecated. Instead, use mapreduce.job.user.name
+16/07/26 01:43:24 INFO Configuration.deprecation: mapred.cache.files.filesizes is deprecated. Instead, use mapreduce.job.cache.files.filesizes
+16/07/26 01:43:24 INFO Configuration.deprecation: mapred.cache.files is deprecated. Instead, use mapreduce.job.cache.files
+16/07/26 01:43:24 INFO Configuration.deprecation: mapred.reduce.tasks is deprecated. Instead, use mapreduce.job.reduces
+16/07/26 01:43:24 INFO Configuration.deprecation: mapred.output.value.class is deprecated. Instead, use mapreduce.job.output.value.class
+16/07/26 01:43:24 INFO Configuration.deprecation: mapreduce.map.class is deprecated. Instead, use mapreduce.job.map.class
+16/07/26 01:43:24 INFO Configuration.deprecation: mapred.job.name is deprecated. Instead, use mapreduce.job.name
+16/07/26 01:43:24 INFO Configuration.deprecation: mapreduce.inputformat.class is deprecated. Instead, use mapreduce.job.inputformat.class
+16/07/26 01:43:24 INFO Configuration.deprecation: mapred.output.dir is deprecated. Instead, use mapreduce.output.fileoutputformat.outputdir
+16/07/26 01:43:24 INFO Configuration.deprecation: mapreduce.outputformat.class is deprecated. Instead, use mapreduce.job.outputformat.class
+16/07/26 01:43:24 INFO Configuration.deprecation: mapred.cache.files.timestamps is deprecated. Instead, use mapreduce.job.cache.files.timestamps
+16/07/26 01:43:24 INFO Configuration.deprecation: mapred.output.key.class is deprecated. Instead, use mapreduce.job.output.key.class
+16/07/26 01:43:24 INFO Configuration.deprecation: mapred.working.dir is deprecated. Instead, use mapreduce.job.working.dir
+16/07/26 01:43:24 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1469475278738_0001
+16/07/26 01:43:26 INFO impl.YarnClientImpl: Submitted application application_1469475278738_0001 to ResourceManager at sandbox.hortonworks.com/192.168.107.132:8050
+16/07/26 01:43:26 INFO mapreduce.Job: The url to track the job: http://sandbox.hortonworks.com:8088/proxy/application_1469475278738_0001/
+16/07/26 01:43:26 INFO mapreduce.Job: Running job: job_1469475278738_0001
+16/07/26 01:44:29 INFO mapreduce.Job: Job job_1469475278738_0001 running in uber mode : false
+16/07/26 01:44:29 INFO mapreduce.Job:  map 0% reduce 0%
+16/07/26 01:45:27 INFO mapreduce.Job:  map 100% reduce 0%
+16/07/26 01:45:37 INFO mapreduce.Job: Job job_1469475278738_0001 completed successfully
+16/07/26 01:45:37 INFO mapreduce.Job: Counters: 27
+        File System Counters
+                FILE: Number of bytes read=0
+                FILE: Number of bytes written=93951
+                FILE: Number of read operations=0
+                FILE: Number of large read operations=0
+                FILE: Number of write operations=0
+                HDFS: Number of bytes read=87
+                HDFS: Number of bytes written=63
+                HDFS: Number of read operations=4
+                HDFS: Number of large read operations=0
+                HDFS: Number of write operations=2
+        Job Counters
+                Launched map tasks=1
+                Other local map tasks=1
+                Total time spent by all maps in occupied slots (ms)=501344
+                Total time spent by all reduces in occupied slots (ms)=0
+        Map-Reduce Framework
+                Map input records=1
+                Map output records=3
+                Input split bytes=87
+                Spilled Records=0
+                Failed Shuffles=0
+                Merged Map outputs=0
+                GC time elapsed (ms)=30
+                CPU time spent (ms)=1440
+                Physical memory (bytes) snapshot=117362688
+                Virtual memory (bytes) snapshot=1192214528
+                Total committed heap usage (bytes)=41943040
+        File Input Format Counters
+                Bytes Read=0
+        File Output Format Counters
+                Bytes Written=63
+16/07/26 01:45:38 INFO mapreduce.ImportJobBase: Transferred 63 bytes in 138.1635 seconds (0.456 bytes/sec)
+16/07/26 01:45:38 INFO mapreduce.ImportJobBase: Retrieved 3 records.
+
+[root@sandbox ~]# hdfs dfs -ls sqoop_imp01
+Found 1 items
+drwxr-xr-x   - root hdfs          0 2016-07-26 01:45 sqoop_imp01/employee
+[root@sandbox ~]# hdfs dfs -ls -R sqoop_imp01
+drwxr-xr-x   - root hdfs          0 2016-07-26 01:45 sqoop_imp01/employee
+-rw-r--r--   3 root hdfs          0 2016-07-26 01:45 sqoop_imp01/employee/_SUCCESS
+-rw-r--r--   3 root hdfs         63 2016-07-26 01:45 sqoop_imp01/employee/part-m-00000
+[root@sandbox ~]# hdfs dfs -cat sqoop_imp01/employee/p*
+1,Deepak,1,82000.00
+2,Farooq,1,75000.00
+3,Karthick,1,100000.00

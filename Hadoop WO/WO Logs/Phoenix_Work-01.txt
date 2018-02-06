@@ -1,0 +1,96 @@
+cd /usr/local/zookeeper/bin/
+./zkServer.sh stop
+
+cd /usr/local/zookeeper/bin/
+./zkServer.sh start
+start-hbase.sh
+
+[hduser@Inceptez ~]$ sqlline.py localhost
+Setting property: [isolation, TRANSACTION_READ_COMMITTED]
+issuing: !connect jdbc:phoenix:localhost none none org.apache.phoenix.jdbc.PhoenixDriver
+Connecting to jdbc:phoenix:localhost
+16/07/23 12:20:12 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+16/07/23 12:20:16 WARN impl.MetricsConfig: Cannot locate configuration: tried hadoop-metrics2-phoenix.properties,hadoop-metrics2.properties
+Connected to: Phoenix (version 4.6)
+Driver: PhoenixEmbeddedDriver (version 4.6)
+Autocommit status: true
+Transaction isolation: TRANSACTION_READ_COMMITTED
+Building list of tables and columns for tab-completion (set fastconnect to true to skip)...
+85/85 (100%) Done
+Done
+sqlline version 1.1.8
+0: jdbc:phoenix:localhost> 
+
+[hduser@Inceptez ~]$ sqlline.py localhost
+Setting property: [isolation, TRANSACTION_READ_COMMITTED]
+issuing: !connect jdbc:phoenix:localhost none none org.apache.phoenix.jdbc.PhoenixDriver
+Connecting to jdbc:phoenix:localhost
+16/07/23 12:20:12 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+16/07/23 12:20:16 WARN impl.MetricsConfig: Cannot locate configuration: tried hadoop-metrics2-phoenix.properties,hadoop-metrics2.properties
+Connected to: Phoenix (version 4.6)
+Driver: PhoenixEmbeddedDriver (version 4.6)
+Autocommit status: true
+Transaction isolation: TRANSACTION_READ_COMMITTED
+Building list of tables and columns for tab-completion (set fastconnect to true to skip)...
+85/85 (100%) Done
+Done
+sqlline version 1.1.8
+0: jdbc:phoenix:localhost> 
+====================================================================================================
+0: jdbc:phoenix:localhost> CREATE TABLE TEST(id integer primary key,NAME varchar(100),age integer);
+No rows affected (0.713 seconds)
+
+0: jdbc:phoenix:localhost> !tables
++------------------------------------------+------------------------------------------+------------------------------------------+--------------------------+
+|                TABLE_CAT                 |               TABLE_SCHEM                |                TABLE_NAME                |                TABLE_TYP |
++------------------------------------------+------------------------------------------+------------------------------------------+--------------------------+
+|                                          | SYSTEM                                   | CATALOG                                  | SYSTEM TABLE             |
+|                                          | SYSTEM                                   | FUNCTION                                 | SYSTEM TABLE             |
+|                                          | SYSTEM                                   | SEQUENCE                                 | SYSTEM TABLE             |
+|                                          | SYSTEM                                   | STATS                                    | SYSTEM TABLE             |
+|                                          |                                          | TEST                                     | TABLE                    |
++------------------------------------------+------------------------------------------+------------------------------------------+--------------------------+
+
+0: jdbc:phoenix:localhost> select * from TEST;
++------------------------------------------+------------------------------------------------------------------------------------------------------+---------+
+|                    ID                    |                                                 NAME                                                 |         |
++------------------------------------------+------------------------------------------------------------------------------------------------------+---------+
+| 1                                        | Arun                                                                                                 | 33      |
+| 2                                        | Vijay                                                                                                | 33      |
+| 3                                        | Kumar                                                                                                | 33      |
++------------------------------------------+------------------------------------------------------------------------------------------------------+---------+
+3 rows selected (0.205 seconds)
+
+0: jdbc:phoenix:localhost> UPDATE STATISTICS TEST;
+No rows affected (0.205 seconds)
+0: jdbc:phoenix:localhost> CREATE TABLE TEST1(id integer primary key,NAME varchar(100),age integer);
+No rows affected (0.476 seconds)
+0: jdbc:phoenix:localhost> !tables
++------------------------------------------+------------------------------------------+------------------------------------------+--------------------------+
+|                TABLE_CAT                 |               TABLE_SCHEM                |                TABLE_NAME                |                TABLE_TYP |
++------------------------------------------+------------------------------------------+------------------------------------------+--------------------------+
+|                                          | SYSTEM                                   | CATALOG                                  | SYSTEM TABLE             |
+|                                          | SYSTEM                                   | FUNCTION                                 | SYSTEM TABLE             |
+|                                          | SYSTEM                                   | SEQUENCE                                 | SYSTEM TABLE             |
+|                                          | SYSTEM                                   | STATS                                    | SYSTEM TABLE             |
+|                                          |                                          | TEST                                     | TABLE                    |
+|                                          |                                          | TEST1                                    | TABLE                    |
++------------------------------------------+------------------------------------------+------------------------------------------+--------------------------+
+0: jdbc:phoenix:localhost> UPSERT INTO test1 SELECT * FROM test;
+3 rows affected (0.067 seconds)
+0: jdbc:phoenix:localhost> select a.age,b.age from test as a inner join test1 as b on a.id=b.id;
++------------------------------------------+------------------------------------------+
+|                  A.AGE                   |                  B.AGE                   |
++------------------------------------------+------------------------------------------+
+| 33                                       | 33                                       |
+| 33                                       | 33                                       |
+| 33                                       | 33                                       |
++------------------------------------------+------------------------------------------+
+3 rows selected (0.322 seconds)
+====================================================================================================
+====================================================================================================
+====================================================================================================
+====================================================================================================
+====================================================================================================
+====================================================================================================
+

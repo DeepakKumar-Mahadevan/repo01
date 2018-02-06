@@ -1,0 +1,44 @@
+hive> select to_date("2016-07-13 20:43:13" timestamp) from dkmdb01.emloyee1 limit 1;
+FAILED: ParseException line 1:37 extraneous input 'timestamp' expecting ) near '<EOF>'
+
+hive> select to_date("2016-07-13 20:43:13") from dkmdb01.emloyee1 limit 1;
+FAILED: SemanticException [Error 10001]: Line 1:43 Table not found 'emloyee1'
+
+hive> select to_date("2016-07-13 20:43:13") from dkmdb01.employee1 limit 1;
+OK
+2016-07-13
+Time taken: 2.334 seconds, Fetched: 1 row(s)
+
+hive> select datediff((to_date("2016-10-07 20:43:13"),(to_date("2016-07-13 20:43:13")) from dkmdb01.employee1 limit 1;
+FAILED: ParseException line 1:47 missing ) at ',' near '<EOF>'
+
+hive> select datediff(to_date("2016-10-07 20:43:13",to_date("2016-07-13 20:43:13")) from dkmdb01.empl	oyee1 limit 1;
+FAILED: ParseException line 1:78 missing ) at 'from' near '<EOF>'
+
+hive> select datediff("2016-10-06","2016-08-30") from dkmdb01.employee1 limit 1;
+OK
+37
+Time taken: 0.38 seconds, Fetched: 1 row(s)
+====================================================================================================
+hive> select case WHEN datediff("2016-10-06","2016-08-30") < 30 then 'A'
+    > WHEN datediff("2016-10-06","2016-08-30") > 30 then 'B'
+    > ELSE 'C'
+    > END
+    >  from dkmdb01.employee1 limit 1;
+OK
+B
+Time taken: 0.612 seconds, Fetched: 1 row(s)
+
+hive> select "CASE EXAMPLE", case WHEN datediff("2016-10-06","2016-08-30") < 30 then 'A'
+    > WHEN datediff("2016-10-06","2016-08-30") > 30 then 'B'
+    > ELSE 'C'
+    > END
+    >  from dkmdb01.employee1 limit 1;
+OK
+CASE EXAMPLE    B
+Time taken: 0.215 seconds, Fetched: 1 row(s)
+
+====================================================================================================
+====================================================================================================
+====================================================================================================
+====================================================================================================

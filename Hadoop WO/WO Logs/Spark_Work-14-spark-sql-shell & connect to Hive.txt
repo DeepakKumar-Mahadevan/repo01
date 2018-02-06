@@ -1,0 +1,734 @@
+Connecting to Hive Derby metastore
+----------------------------------
+[hduser@Inceptez ~]$ spark-sql
+16/09/19 21:15:57 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+16/09/19 21:15:58 INFO metastore.HiveMetaStore: 0: Opening raw store with implemenation class:org.apache.hadoop.hive.metastore.ObjectStore
+16/09/19 21:15:58 INFO metastore.ObjectStore: ObjectStore, initialize called
+16/09/19 21:15:59 INFO DataNucleus.Persistence: Property datanucleus.cache.level2 unknown - will be ignored
+16/09/19 21:15:59 INFO DataNucleus.Persistence: Property hive.metastore.integral.jdo.pushdown unknown - will be ignored
+16/09/19 21:15:59 WARN DataNucleus.Connection: BoneCP specified but not present in CLASSPATH (or one of dependencies)
+16/09/19 21:16:00 WARN DataNucleus.Connection: BoneCP specified but not present in CLASSPATH (or one of dependencies)
+16/09/19 21:16:07 INFO metastore.ObjectStore: Setting MetaStore object pin classes with hive.metastore.cache.pinobjtypes="Table,StorageDescriptor,SerDeInfo,Partition,Database,Type,FieldSchema,Order"
+16/09/19 21:16:10 INFO DataNucleus.Datastore: The class "org.apache.hadoop.hive.metastore.model.MFieldSchema" is tagged as "embedded-only" so does not have its own datastore table.
+16/09/19 21:16:10 INFO DataNucleus.Datastore: The class "org.apache.hadoop.hive.metastore.model.MOrder" is tagged as "embedded-only" so does not have its own datastore table.
+16/09/19 21:16:15 INFO DataNucleus.Datastore: The class "org.apache.hadoop.hive.metastore.model.MFieldSchema" is tagged as "embedded-only" so does not have its own datastore table.
+16/09/19 21:16:15 INFO DataNucleus.Datastore: The class "org.apache.hadoop.hive.metastore.model.MOrder" is tagged as "embedded-only" so does not have its own datastore table.
+16/09/19 21:16:16 INFO metastore.MetaStoreDirectSql: Using direct SQL, underlying DB is DERBY
+16/09/19 21:16:16 INFO metastore.ObjectStore: Initialized ObjectStore
+16/09/19 21:16:17 WARN metastore.ObjectStore: Version information not found in metastore. hive.metastore.schema.verification is not enabled so recording the schema version 1.2.0
+16/09/19 21:16:18 WARN metastore.ObjectStore: Failed to get database default, returning NoSuchObjectException
+16/09/19 21:16:23 INFO metastore.HiveMetaStore: Added admin role in metastore
+16/09/19 21:16:23 INFO metastore.HiveMetaStore: Added public role in metastore
+16/09/19 21:16:23 INFO metastore.HiveMetaStore: No user is added in admin role, since config is empty
+16/09/19 21:16:24 INFO metastore.HiveMetaStore: 0: get_all_databases
+16/09/19 21:16:24 INFO HiveMetaStore.audit: ugi=hduser  ip=unknown-ip-addr      cmd=get_all_databases
+16/09/19 21:16:24 INFO metastore.HiveMetaStore: 0: get_functions: db=default pat=*
+16/09/19 21:16:24 INFO HiveMetaStore.audit: ugi=hduser  ip=unknown-ip-addr      cmd=get_functions: db=default pat=*
+16/09/19 21:16:24 INFO DataNucleus.Datastore: The class "org.apache.hadoop.hive.metastore.model.MResourceUri" is tagged as "embedded-only" so does not have its own datastore table.
+16/09/19 21:16:26 INFO session.SessionState: Created local directory: /tmp/78a971b6-c7fc-432b-8030-30a2ef58a11d_resources
+16/09/19 21:16:26 INFO session.SessionState: Created HDFS directory: /tmp/hive/hduser/78a971b6-c7fc-432b-8030-30a2ef58a11d
+16/09/19 21:16:26 INFO session.SessionState: Created local directory: /tmp/hduser/78a971b6-c7fc-432b-8030-30a2ef58a11d
+16/09/19 21:16:26 INFO session.SessionState: Created HDFS directory: /tmp/hive/hduser/78a971b6-c7fc-432b-8030-30a2ef58a11d/_tmp_space.db
+16/09/19 21:16:27 WARN util.Utils: Your hostname, Inceptez resolves to a loopback address: 127.0.0.1; using 192.168.107.134 instead (on interface eth0)
+16/09/19 21:16:27 WARN util.Utils: Set SPARK_LOCAL_IP if you need to bind to another address
+16/09/19 21:16:27 INFO spark.SparkContext: Running Spark version 1.6.0
+16/09/19 21:16:27 INFO spark.SecurityManager: Changing view acls to: hduser
+16/09/19 21:16:27 INFO spark.SecurityManager: Changing modify acls to: hduser
+16/09/19 21:16:27 INFO spark.SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users with view permissions: Set(hduser); users with modify permissions: Set(hduser)
+16/09/19 21:16:29 INFO util.Utils: Successfully started service 'sparkDriver' on port 58704.
+16/09/19 21:16:30 INFO slf4j.Slf4jLogger: Slf4jLogger started
+16/09/19 21:16:30 INFO Remoting: Starting remoting
+16/09/19 21:16:31 INFO Remoting: Remoting started; listening on addresses :[akka.tcp://sparkDriverActorSystem@192.168.107.134:37620]
+16/09/19 21:16:31 INFO util.Utils: Successfully started service 'sparkDriverActorSystem' on port 37620.
+16/09/19 21:16:31 INFO spark.SparkEnv: Registering MapOutputTracker
+16/09/19 21:16:31 INFO spark.SparkEnv: Registering BlockManagerMaster
+16/09/19 21:16:31 INFO storage.DiskBlockManager: Created local directory at /tmp/blockmgr-719fa6c6-3626-4b7f-90cf-34b15348ff66
+16/09/19 21:16:31 INFO storage.MemoryStore: MemoryStore started with capacity 511.5 MB
+16/09/19 21:16:32 INFO spark.SparkEnv: Registering OutputCommitCoordinator
+16/09/19 21:16:34 INFO server.Server: jetty-8.y.z-SNAPSHOT
+16/09/19 21:16:34 INFO server.AbstractConnector: Started SelectChannelConnector@0.0.0.0:4040
+16/09/19 21:16:34 INFO util.Utils: Successfully started service 'SparkUI' on port 4040.
+16/09/19 21:16:34 INFO ui.SparkUI: Started SparkUI at http://192.168.107.134:4040
+16/09/19 21:16:35 INFO executor.Executor: Starting executor ID driver on host localhost
+16/09/19 21:16:35 INFO util.Utils: Successfully started service 'org.apache.spark.network.netty.NettyBlockTransferService' on port 44277.
+16/09/19 21:16:35 INFO netty.NettyBlockTransferService: Server created on 44277
+16/09/19 21:16:35 INFO storage.BlockManagerMaster: Trying to register BlockManager
+16/09/19 21:16:35 INFO storage.BlockManagerMasterEndpoint: Registering block manager localhost:44277 with 511.5 MB RAM, BlockManagerId(driver, localhost, 44277)
+16/09/19 21:16:35 INFO storage.BlockManagerMaster: Registered BlockManager
+16/09/19 21:16:38 INFO hive.HiveContext: Initializing execution hive, version 1.2.1
+16/09/19 21:16:38 INFO client.ClientWrapper: Inspected Hadoop version: 2.6.0
+16/09/19 21:16:38 INFO client.ClientWrapper: Loaded org.apache.hadoop.hive.shims.Hadoop23Shims for Hadoop version 2.6.0
+16/09/19 21:16:38 INFO hive.metastore: Mestastore configuration hive.metastore.warehouse.dir changed from file:/tmp/spark-50bfc783-b4b6-4b7f-956e-0f048cdefbc6/metastore to file:/tmp/spark-cbd93718-c59f-4aac-98c7-93864268d631/metastore
+16/09/19 21:16:38 INFO hive.metastore: Mestastore configuration javax.jdo.option.ConnectionURL changed from jdbc:derby:;databaseName=/tmp/spark-50bfc783-b4b6-4b7f-956e-0f048cdefbc6/metastore;create=true to jdbc:derby:;databaseName=/tmp/spark-cbd93718-c59f-4aac-98c7-93864268d631/metastore;create=true
+16/09/19 21:16:38 INFO metastore.HiveMetaStore: 0: Shutting down the object store...
+16/09/19 21:16:38 INFO HiveMetaStore.audit: ugi=hduser  ip=unknown-ip-addr      cmd=Shutting down the object store...
+16/09/19 21:16:38 INFO metastore.HiveMetaStore: 0: Metastore shutdown complete.
+16/09/19 21:16:38 INFO HiveMetaStore.audit: ugi=hduser  ip=unknown-ip-addr      cmd=Metastore shutdown complete.
+16/09/19 21:16:38 INFO metastore.HiveMetaStore: 0: Opening raw store with implemenation class:org.apache.hadoop.hive.metastore.ObjectStore
+16/09/19 21:16:38 INFO metastore.ObjectStore: ObjectStore, initialize called
+16/09/19 21:16:38 INFO DataNucleus.Persistence: Property datanucleus.cache.level2 unknown - will be ignored
+16/09/19 21:16:38 INFO DataNucleus.Persistence: Property hive.metastore.integral.jdo.pushdown unknown - will be ignored
+16/09/19 21:16:39 WARN DataNucleus.Connection: BoneCP specified but not present in CLASSPATH (or one of dependencies)
+16/09/19 21:16:39 WARN DataNucleus.Connection: BoneCP specified but not present in CLASSPATH (or one of dependencies)
+16/09/19 21:16:40 INFO metastore.ObjectStore: Setting MetaStore object pin classes with hive.metastore.cache.pinobjtypes="Table,StorageDescriptor,SerDeInfo,Partition,Database,Type,FieldSchema,Order"
+16/09/19 21:16:41 INFO DataNucleus.Datastore: The class "org.apache.hadoop.hive.metastore.model.MFieldSchema" is tagged as "embedded-only" so does not have its own datastore table.
+16/09/19 21:16:41 INFO DataNucleus.Datastore: The class "org.apache.hadoop.hive.metastore.model.MOrder" is tagged as "embedded-only" so does not have its own datastore table.
+16/09/19 21:16:45 INFO DataNucleus.Datastore: The class "org.apache.hadoop.hive.metastore.model.MFieldSchema" is tagged as "embedded-only" so does not have its own datastore table.
+16/09/19 21:16:45 INFO DataNucleus.Datastore: The class "org.apache.hadoop.hive.metastore.model.MOrder" is tagged as "embedded-only" so does not have its own datastore table.
+16/09/19 21:16:46 INFO metastore.MetaStoreDirectSql: Using direct SQL, underlying DB is DERBY
+16/09/19 21:16:46 INFO metastore.ObjectStore: Initialized ObjectStore
+16/09/19 21:16:46 WARN metastore.ObjectStore: Failed to get database default, returning NoSuchObjectException
+16/09/19 21:16:46 INFO metastore.HiveMetaStore: Added admin role in metastore
+16/09/19 21:16:46 INFO metastore.HiveMetaStore: Added public role in metastore
+16/09/19 21:16:46 INFO metastore.HiveMetaStore: No user is added in admin role, since config is empty
+16/09/19 21:16:47 INFO session.SessionState: Created local directory: /tmp/6ea45099-65df-4b73-bf18-d2b13034629f_resources
+16/09/19 21:16:47 INFO session.SessionState: Created HDFS directory: /tmp/hive/hduser/6ea45099-65df-4b73-bf18-d2b13034629f
+16/09/19 21:16:47 INFO session.SessionState: Created local directory: /tmp/hduser/6ea45099-65df-4b73-bf18-d2b13034629f
+16/09/19 21:16:47 INFO session.SessionState: Created HDFS directory: /tmp/hive/hduser/6ea45099-65df-4b73-bf18-d2b13034629f/_tmp_space.db
+16/09/19 21:16:47 INFO hive.HiveContext: default warehouse location is /user/hive/warehouse
+16/09/19 21:16:47 INFO hive.HiveContext: Initializing HiveMetastoreConnection version 1.2.1 using Spark classes.
+16/09/19 21:16:47 INFO client.ClientWrapper: Inspected Hadoop version: 2.6.0
+16/09/19 21:16:47 INFO client.ClientWrapper: Loaded org.apache.hadoop.hive.shims.Hadoop23Shims for Hadoop version 2.6.0
+16/09/19 21:16:50 INFO metastore.HiveMetaStore: 0: Opening raw store with implemenation class:org.apache.hadoop.hive.metastore.ObjectStore
+16/09/19 21:16:50 INFO metastore.ObjectStore: ObjectStore, initialize called
+16/09/19 21:16:50 INFO DataNucleus.Persistence: Property datanucleus.cache.level2 unknown - will be ignored
+16/09/19 21:16:50 INFO DataNucleus.Persistence: Property hive.metastore.integral.jdo.pushdown unknown - will be ignored
+16/09/19 21:16:51 WARN DataNucleus.Connection: BoneCP specified but not present in CLASSPATH (or one of dependencies)
+16/09/19 21:16:51 WARN DataNucleus.Connection: BoneCP specified but not present in CLASSPATH (or one of dependencies)
+16/09/19 21:16:54 INFO metastore.ObjectStore: Setting MetaStore object pin classes with hive.metastore.cache.pinobjtypes="Table,StorageDescriptor,SerDeInfo,Partition,Database,Type,FieldSchema,Order"
+16/09/19 21:16:56 INFO DataNucleus.Datastore: The class "org.apache.hadoop.hive.metastore.model.MFieldSchema" is tagged as "embedded-only" so does not have its own datastore table.
+16/09/19 21:16:56 INFO DataNucleus.Datastore: The class "org.apache.hadoop.hive.metastore.model.MOrder" is tagged as "embedded-only" so does not have its own datastore table.
+16/09/19 21:16:57 INFO DataNucleus.Datastore: The class "org.apache.hadoop.hive.metastore.model.MFieldSchema" is tagged as "embedded-only" so does not have its own datastore table.
+16/09/19 21:16:57 INFO DataNucleus.Datastore: The class "org.apache.hadoop.hive.metastore.model.MOrder" is tagged as "embedded-only" so does not have its own datastore table.
+16/09/19 21:16:58 INFO DataNucleus.Query: Reading in results for query "org.datanucleus.store.rdbms.query.SQLQuery@0" since the connection used is closing
+16/09/19 21:16:58 INFO metastore.MetaStoreDirectSql: Using direct SQL, underlying DB is DERBY
+16/09/19 21:16:58 INFO metastore.ObjectStore: Initialized ObjectStore
+16/09/19 21:16:59 INFO metastore.HiveMetaStore: Added admin role in metastore
+16/09/19 21:16:59 INFO metastore.HiveMetaStore: Added public role in metastore
+16/09/19 21:16:59 INFO metastore.HiveMetaStore: No user is added in admin role, since config is empty
+16/09/19 21:16:59 INFO metastore.HiveMetaStore: 0: get_all_databases
+16/09/19 21:16:59 INFO HiveMetaStore.audit: ugi=hduser  ip=unknown-ip-addr      cmd=get_all_databases
+16/09/19 21:16:59 INFO metastore.HiveMetaStore: 0: get_functions: db=default pat=*
+16/09/19 21:16:59 INFO HiveMetaStore.audit: ugi=hduser  ip=unknown-ip-addr      cmd=get_functions: db=default pat=*
+16/09/19 21:17:00 INFO DataNucleus.Datastore: The class "org.apache.hadoop.hive.metastore.model.MResourceUri" is tagged as "embedded-only" so does not have its own datastore table.
+16/09/19 21:17:00 INFO metastore.HiveMetaStore: 0: get_functions: db=dkmdb01 pat=*
+16/09/19 21:17:00 INFO HiveMetaStore.audit: ugi=hduser  ip=unknown-ip-addr      cmd=get_functions: db=dkmdb01 pat=*
+16/09/19 21:17:00 INFO metastore.HiveMetaStore: 0: get_functions: db=retail pat=*
+16/09/19 21:17:00 INFO HiveMetaStore.audit: ugi=hduser  ip=unknown-ip-addr      cmd=get_functions: db=retail pat=*
+16/09/19 21:17:00 INFO session.SessionState: Created local directory: /tmp/4ae36261-755e-48a9-9eaa-0ef5fc0b1934_resources
+16/09/19 21:17:00 INFO session.SessionState: Created HDFS directory: /tmp/hive/hduser/4ae36261-755e-48a9-9eaa-0ef5fc0b1934
+16/09/19 21:17:00 INFO session.SessionState: Created local directory: /tmp/hduser/4ae36261-755e-48a9-9eaa-0ef5fc0b1934
+16/09/19 21:17:00 INFO session.SessionState: Created HDFS directory: /tmp/hive/hduser/4ae36261-755e-48a9-9eaa-0ef5fc0b1934/_tmp_space.db
+SET spark.sql.hive.version=1.2.1
+====================================================================================================
+spark-sql> sqlContext.sql("select * from dkmdb02.manutdplayers1 limit 10;")
+         > ;
+16/09/19 21:21:41 INFO parse.ParseDriver: Parsing command: sqlContext.sql("select * from dkmdb02.manutdplayers1 limit 10
+NoViableAltException(26@[])
+        at org.apache.hadoop.hive.ql.parse.HiveParser.statement(HiveParser.java:1071)
+        at org.apache.hadoop.hive.ql.parse.ParseDriver.parse(ParseDriver.java:202)
+        at org.apache.hadoop.hive.ql.parse.ParseDriver.parse(ParseDriver.java:166)
+        at org.apache.spark.sql.hive.HiveQl$.getAst(HiveQl.scala:276)
+        at org.apache.spark.sql.hive.HiveQl$.createPlan(HiveQl.scala:303)
+        at org.apache.spark.sql.hive.ExtendedHiveQlParser$$anonfun$hiveQl$1.apply(ExtendedHiveQlParser.scala:41)
+        at org.apache.spark.sql.hive.ExtendedHiveQlParser$$anonfun$hiveQl$1.apply(ExtendedHiveQlParser.scala:40)
+        at scala.util.parsing.combinator.Parsers$Success.map(Parsers.scala:136)
+        at scala.util.parsing.combinator.Parsers$Success.map(Parsers.scala:135)
+        at scala.util.parsing.combinator.Parsers$Parser$$anonfun$map$1.apply(Parsers.scala:242)
+        at scala.util.parsing.combinator.Parsers$Parser$$anonfun$map$1.apply(Parsers.scala:242)
+        at scala.util.parsing.combinator.Parsers$$anon$3.apply(Parsers.scala:222)
+        at scala.util.parsing.combinator.Parsers$Parser$$anonfun$append$1$$anonfun$apply$2.apply(Parsers.scala:254)
+        at scala.util.parsing.combinator.Parsers$Parser$$anonfun$append$1$$anonfun$apply$2.apply(Parsers.scala:254)
+        at scala.util.parsing.combinator.Parsers$Failure.append(Parsers.scala:202)
+        at scala.util.parsing.combinator.Parsers$Parser$$anonfun$append$1.apply(Parsers.scala:254)
+        at scala.util.parsing.combinator.Parsers$Parser$$anonfun$append$1.apply(Parsers.scala:254)
+        at scala.util.parsing.combinator.Parsers$$anon$3.apply(Parsers.scala:222)
+        at scala.util.parsing.combinator.Parsers$$anon$2$$anonfun$apply$14.apply(Parsers.scala:891)
+        at scala.util.parsing.combinator.Parsers$$anon$2$$anonfun$apply$14.apply(Parsers.scala:891)
+        at scala.util.DynamicVariable.withValue(DynamicVariable.scala:57)
+        at scala.util.parsing.combinator.Parsers$$anon$2.apply(Parsers.scala:890)
+        at scala.util.parsing.combinator.PackratParsers$$anon$1.apply(PackratParsers.scala:110)
+        at org.apache.spark.sql.catalyst.AbstractSparkSQLParser.parse(AbstractSparkSQLParser.scala:34)
+        at org.apache.spark.sql.hive.HiveQl$.parseSql(HiveQl.scala:295)
+        at org.apache.spark.sql.hive.HiveQLDialect$$anonfun$parse$1.apply(HiveContext.scala:66)
+        at org.apache.spark.sql.hive.HiveQLDialect$$anonfun$parse$1.apply(HiveContext.scala:66)
+        at org.apache.spark.sql.hive.client.ClientWrapper$$anonfun$withHiveState$1.apply(ClientWrapper.scala:279)
+        at org.apache.spark.sql.hive.client.ClientWrapper.liftedTree1$1(ClientWrapper.scala:226)
+        at org.apache.spark.sql.hive.client.ClientWrapper.retryLocked(ClientWrapper.scala:225)
+        at org.apache.spark.sql.hive.client.ClientWrapper.withHiveState(ClientWrapper.scala:268)
+        at org.apache.spark.sql.hive.HiveQLDialect.parse(HiveContext.scala:65)
+        at org.apache.spark.sql.SQLContext$$anonfun$2.apply(SQLContext.scala:211)
+        at org.apache.spark.sql.SQLContext$$anonfun$2.apply(SQLContext.scala:211)
+        at org.apache.spark.sql.execution.SparkSQLParser$$anonfun$org$apache$spark$sql$execution$SparkSQLParser$$others$1.apply(SparkSQLParser.scala:114)
+        at org.apache.spark.sql.execution.SparkSQLParser$$anonfun$org$apache$spark$sql$execution$SparkSQLParser$$others$1.apply(SparkSQLParser.scala:113)
+        at scala.util.parsing.combinator.Parsers$Success.map(Parsers.scala:136)
+        at scala.util.parsing.combinator.Parsers$Success.map(Parsers.scala:135)
+        at scala.util.parsing.combinator.Parsers$Parser$$anonfun$map$1.apply(Parsers.scala:242)
+        at scala.util.parsing.combinator.Parsers$Parser$$anonfun$map$1.apply(Parsers.scala:242)
+        at scala.util.parsing.combinator.Parsers$$anon$3.apply(Parsers.scala:222)
+        at scala.util.parsing.combinator.Parsers$Parser$$anonfun$append$1$$anonfun$apply$2.apply(Parsers.scala:254)
+        at scala.util.parsing.combinator.Parsers$Parser$$anonfun$append$1$$anonfun$apply$2.apply(Parsers.scala:254)
+        at scala.util.parsing.combinator.Parsers$Failure.append(Parsers.scala:202)
+        at scala.util.parsing.combinator.Parsers$Parser$$anonfun$append$1.apply(Parsers.scala:254)
+        at scala.util.parsing.combinator.Parsers$Parser$$anonfun$append$1.apply(Parsers.scala:254)
+        at scala.util.parsing.combinator.Parsers$$anon$3.apply(Parsers.scala:222)
+        at scala.util.parsing.combinator.Parsers$$anon$2$$anonfun$apply$14.apply(Parsers.scala:891)
+        at scala.util.parsing.combinator.Parsers$$anon$2$$anonfun$apply$14.apply(Parsers.scala:891)
+        at scala.util.DynamicVariable.withValue(DynamicVariable.scala:57)
+        at scala.util.parsing.combinator.Parsers$$anon$2.apply(Parsers.scala:890)
+        at scala.util.parsing.combinator.PackratParsers$$anon$1.apply(PackratParsers.scala:110)
+        at org.apache.spark.sql.catalyst.AbstractSparkSQLParser.parse(AbstractSparkSQLParser.scala:34)
+        at org.apache.spark.sql.SQLContext$$anonfun$1.apply(SQLContext.scala:208)
+        at org.apache.spark.sql.SQLContext$$anonfun$1.apply(SQLContext.scala:208)
+        at org.apache.spark.sql.execution.datasources.DDLParser.parse(DDLParser.scala:43)
+        at org.apache.spark.sql.SQLContext.parseSql(SQLContext.scala:231)
+        at org.apache.spark.sql.hive.HiveContext.parseSql(HiveContext.scala:331)
+        at org.apache.spark.sql.SQLContext.sql(SQLContext.scala:817)
+        at org.apache.spark.sql.hive.thriftserver.SparkSQLDriver.run(SparkSQLDriver.scala:63)
+        at org.apache.spark.sql.hive.thriftserver.SparkSQLCLIDriver.processCmd(SparkSQLCLIDriver.scala:308)
+        at org.apache.hadoop.hive.cli.CliDriver.processLine(CliDriver.java:376)
+        at org.apache.spark.sql.hive.thriftserver.SparkSQLCLIDriver$.main(SparkSQLCLIDriver.scala:226)
+        at org.apache.spark.sql.hive.thriftserver.SparkSQLCLIDriver.main(SparkSQLCLIDriver.scala)
+        at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+        at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+        at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+        at java.lang.reflect.Method.invoke(Method.java:606)
+        at org.apache.spark.deploy.SparkSubmit$.org$apache$spark$deploy$SparkSubmit$$runMain(SparkSubmit.scala:731)
+        at org.apache.spark.deploy.SparkSubmit$.doRunMain$1(SparkSubmit.scala:181)
+        at org.apache.spark.deploy.SparkSubmit$.submit(SparkSubmit.scala:206)
+        at org.apache.spark.deploy.SparkSubmit$.main(SparkSubmit.scala:121)
+        at org.apache.spark.deploy.SparkSubmit.main(SparkSubmit.scala)
+Error in query: cannot recognize input near 'sqlContext' '.' 'sql'; line 1 pos 0
+--------------------------------------------------
+spark-sql> select * from dkmdb02.manutdplayers1 limit 10;
+16/09/19 21:21:54 INFO parse.ParseDriver: Parsing command: select * from dkmdb02.manutdplayers1 limit 10
+16/09/19 21:21:54 INFO parse.ParseDriver: Parse Completed
+16/09/19 21:21:54 INFO metastore.HiveMetaStore: 0: get_table : db=dkmdb02 tbl=manutdplayers1
+16/09/19 21:21:54 INFO HiveMetaStore.audit: ugi=hduser  ip=unknown-ip-addr      cmd=get_table : db=dkmdb02 tbl=manutdplayers1
+Error in query: Table not found: `dkmdb02`.`manutdplayers1`; line 1 pos 22
+--------------------------------------------------
+spark-sql> show databases;
+16/09/19 21:24:10 INFO parse.ParseDriver: Parsing command: show databases
+16/09/19 21:24:10 INFO parse.ParseDriver: Parse Completed
+16/09/19 21:24:11 INFO log.PerfLogger: <PERFLOG method=Driver.run from=org.apache.hadoop.hive.ql.Driver>
+16/09/19 21:24:11 INFO log.PerfLogger: <PERFLOG method=TimeToSubmit from=org.apache.hadoop.hive.ql.Driver>
+16/09/19 21:24:11 INFO log.PerfLogger: <PERFLOG method=compile from=org.apache.hadoop.hive.ql.Driver>
+16/09/19 21:24:11 INFO log.PerfLogger: <PERFLOG method=parse from=org.apache.hadoop.hive.ql.Driver>
+16/09/19 21:24:11 INFO parse.ParseDriver: Parsing command: show databases
+16/09/19 21:24:14 INFO parse.ParseDriver: Parse Completed
+16/09/19 21:24:14 INFO log.PerfLogger: </PERFLOG method=parse start=1474300451811 end=1474300454143 duration=2332 from=org.apache.hadoop.hive.ql.Driver>
+16/09/19 21:24:14 INFO log.PerfLogger: <PERFLOG method=semanticAnalyze from=org.apache.hadoop.hive.ql.Driver>
+16/09/19 21:24:14 INFO ql.Driver: Semantic Analysis Completed
+16/09/19 21:24:14 INFO log.PerfLogger: </PERFLOG method=semanticAnalyze start=1474300454151 end=1474300454329 duration=178 from=org.apache.hadoop.hive.ql.Driver>
+16/09/19 21:24:14 INFO exec.ListSinkOperator: Initializing operator OP[0]
+16/09/19 21:24:15 INFO exec.ListSinkOperator: Initialization Done 0 OP
+16/09/19 21:24:15 INFO exec.ListSinkOperator: Operator 0 OP initialized
+16/09/19 21:24:15 INFO ql.Driver: Returning Hive schema: Schema(fieldSchemas:[FieldSchema(name:database_name, type:string, comment:from deserializer)], properties:null)
+16/09/19 21:24:15 INFO log.PerfLogger: </PERFLOG method=compile start=1474300451641 end=1474300455023 duration=3382 from=org.apache.hadoop.hive.ql.Driver>
+16/09/19 21:24:15 INFO ql.Driver: Concurrency mode is disabled, not creating a lock manager
+16/09/19 21:24:15 INFO log.PerfLogger: <PERFLOG method=Driver.execute from=org.apache.hadoop.hive.ql.Driver>
+16/09/19 21:24:15 INFO ql.Driver: Starting command(queryId=hduser_20160919212411_cad0067a-0fc5-4e2f-9810-f82720850ae5): show databases
+16/09/19 21:24:15 INFO log.PerfLogger: </PERFLOG method=TimeToSubmit start=1474300451641 end=1474300455037 duration=3396 from=org.apache.hadoop.hive.ql.Driver>
+16/09/19 21:24:15 INFO log.PerfLogger: <PERFLOG method=runTasks from=org.apache.hadoop.hive.ql.Driver>
+16/09/19 21:24:15 INFO log.PerfLogger: <PERFLOG method=task.DDL.Stage-0 from=org.apache.hadoop.hive.ql.Driver>
+16/09/19 21:24:15 INFO ql.Driver: Starting task [Stage-0:DDL] in serial mode
+16/09/19 21:24:15 INFO metastore.HiveMetaStore: 0: get_all_databases
+16/09/19 21:24:15 INFO HiveMetaStore.audit: ugi=hduser  ip=unknown-ip-addr      cmd=get_all_databases
+16/09/19 21:24:15 INFO exec.DDLTask: results : 3
+16/09/19 21:24:15 INFO log.PerfLogger: </PERFLOG method=runTasks start=1474300455037 end=1474300455076 duration=39 from=org.apache.hadoop.hive.ql.Driver>
+16/09/19 21:24:15 INFO log.PerfLogger: </PERFLOG method=Driver.execute start=1474300455023 end=1474300455077 duration=54 from=org.apache.hadoop.hive.ql.Driver>
+OK
+16/09/19 21:24:15 INFO ql.Driver: OK
+16/09/19 21:24:15 INFO log.PerfLogger: <PERFLOG method=releaseLocks from=org.apache.hadoop.hive.ql.Driver>
+16/09/19 21:24:15 INFO log.PerfLogger: </PERFLOG method=releaseLocks start=1474300455146 end=1474300455146 duration=0 from=org.apache.hadoop.hive.ql.Driver>
+16/09/19 21:24:15 INFO log.PerfLogger: </PERFLOG method=Driver.run start=1474300451641 end=1474300455146 duration=3505 from=org.apache.hadoop.hive.ql.Driver>
+16/09/19 21:24:15 INFO Configuration.deprecation: mapred.input.dir is deprecated. Instead, use mapreduce.input.fileinputformat.inputdir
+16/09/19 21:24:15 INFO mapred.FileInputFormat: Total input paths to process : 1
+16/09/19 21:24:15 INFO exec.ListSinkOperator: 0 finished. closing...
+16/09/19 21:24:15 INFO exec.ListSinkOperator: 0 Close done
+16/09/19 21:24:15 INFO spark.SparkContext: Starting job: processCmd at CliDriver.java:376
+16/09/19 21:24:15 INFO scheduler.DAGScheduler: Got job 0 (processCmd at CliDriver.java:376) with 1 output partitions
+16/09/19 21:24:15 INFO scheduler.DAGScheduler: Final stage: ResultStage 0 (processCmd at CliDriver.java:376)
+16/09/19 21:24:15 INFO scheduler.DAGScheduler: Parents of final stage: List()
+16/09/19 21:24:15 INFO scheduler.DAGScheduler: Missing parents: List()
+16/09/19 21:24:16 INFO scheduler.DAGScheduler: Submitting ResultStage 0 (MapPartitionsRDD[1] at processCmd at CliDriver.java:376), which has no missing parents
+16/09/19 21:24:16 INFO storage.MemoryStore: Block broadcast_0 stored as values in memory (estimated size 1952.0 B, free 1952.0 B)
+16/09/19 21:24:16 INFO storage.MemoryStore: Block broadcast_0_piece0 stored as bytes in memory (estimated size 1203.0 B, free 3.1 KB)
+16/09/19 21:24:16 INFO storage.BlockManagerInfo: Added broadcast_0_piece0 in memory on localhost:44277 (size: 1203.0 B, free: 511.5 MB)
+16/09/19 21:24:16 INFO spark.SparkContext: Created broadcast 0 from broadcast at DAGScheduler.scala:1006
+16/09/19 21:24:16 INFO scheduler.DAGScheduler: Submitting 1 missing tasks from ResultStage 0 (MapPartitionsRDD[1] at processCmd at CliDriver.java:376)
+16/09/19 21:24:16 INFO scheduler.TaskSchedulerImpl: Adding task set 0.0 with 1 tasks
+16/09/19 21:24:16 INFO scheduler.TaskSetManager: Starting task 0.0 in stage 0.0 (TID 0, localhost, partition 0,PROCESS_LOCAL, 2234 bytes)
+16/09/19 21:24:17 INFO executor.Executor: Running task 0.0 in stage 0.0 (TID 0)
+16/09/19 21:24:17 INFO executor.Executor: Finished task 0.0 in stage 0.0 (TID 0). 1090 bytes result sent to driver
+16/09/19 21:24:17 INFO scheduler.TaskSetManager: Finished task 0.0 in stage 0.0 (TID 0) in 373 ms on localhost (1/1)
+16/09/19 21:24:17 INFO scheduler.TaskSchedulerImpl: Removed TaskSet 0.0, whose tasks have all completed, from pool
+16/09/19 21:24:17 INFO scheduler.DAGScheduler: ResultStage 0 (processCmd at CliDriver.java:376) finished in 0.421 s
+16/09/19 21:24:17 INFO scheduler.DAGScheduler: Job 0 finished: processCmd at CliDriver.java:376, took 1.390928 s
+default
+dkmdb01
+retail
+16/09/19 21:24:17 INFO CliDriver: Time taken: 6.499 seconds, Fetched 3 row(s)
+spark-sql> 16/09/19 21:24:17 INFO scheduler.StatsReportListener: Finished stage: org.apache.spark.scheduler.StageInfo@7678fa38
+16/09/19 21:24:17 INFO scheduler.StatsReportListener: task runtime:(count: 1, mean: 373.000000, stdev: 0.000000, max: 373.000000, min: 373.000000)
+16/09/19 21:24:17 INFO scheduler.StatsReportListener:   0%      5%      10%     25%     50%     75%     90%     95%     100%
+16/09/19 21:24:17 INFO scheduler.StatsReportListener:   373.0 ms        373.0 ms        373.0 ms        373.0 ms        373.0 ms        373.0 ms        373.0 ms       373.0 ms 373.0 ms
+16/09/19 21:24:17 INFO scheduler.StatsReportListener: task result size:(count: 1, mean: 1090.000000, stdev: 0.000000, max: 1090.000000, min: 1090.000000)
+16/09/19 21:24:17 INFO scheduler.StatsReportListener:   0%      5%      10%     25%     50%     75%     90%     95%     100%
+16/09/19 21:24:17 INFO scheduler.StatsReportListener:   1090.0 B        1090.0 B        1090.0 B        1090.0 B        1090.0 B        1090.0 B        1090.0 B       1090.0 B 1090.0 B
+16/09/19 21:24:17 INFO scheduler.StatsReportListener: executor (non-fetch) time pct: (count: 1, mean: 4.557641, stdev: 0.000000, max: 4.557641, min: 4.557641)
+16/09/19 21:24:17 INFO scheduler.StatsReportListener:   0%      5%      10%     25%     50%     75%     90%     95%     100%
+16/09/19 21:24:17 INFO scheduler.StatsReportListener:    5 %     5 %     5 %     5 %     5 %     5 %     5 %     5 %     5 %
+16/09/19 21:24:17 INFO scheduler.StatsReportListener: other time pct: (count: 1, mean: 95.442359, stdev: 0.000000, max: 95.442359, min: 95.442359)
+16/09/19 21:24:17 INFO scheduler.StatsReportListener:   0%      5%      10%     25%     50%     75%     90%     95%     100%
+16/09/19 21:24:17 INFO scheduler.StatsReportListener:   95 %    95 %    95 %    95 %    95 %    95 %    95 %    95 %    95 %
+
+         >
+         > ;
+====================================================================================================
+spark-sql> show tables in dkmdb01;
+16/09/19 21:27:37 INFO metastore.HiveMetaStore: 0: get_tables: db=dkmdb01 pat=.*
+16/09/19 21:27:37 INFO HiveMetaStore.audit: ugi=hduser  ip=unknown-ip-addr      cmd=get_tables: db=dkmdb01 pat=.*
+16/09/19 21:27:37 INFO spark.SparkContext: Starting job: processCmd at CliDriver.java:376
+16/09/19 21:27:37 INFO scheduler.DAGScheduler: Got job 1 (processCmd at CliDriver.java:376) with 1 output partitions
+16/09/19 21:27:37 INFO scheduler.DAGScheduler: Final stage: ResultStage 1 (processCmd at CliDriver.java:376)
+16/09/19 21:27:37 INFO scheduler.DAGScheduler: Parents of final stage: List()
+16/09/19 21:27:37 INFO scheduler.DAGScheduler: Missing parents: List()
+16/09/19 21:27:37 INFO scheduler.DAGScheduler: Submitting ResultStage 1 (MapPartitionsRDD[3] at processCmd at CliDriver.java:376), which has no missing parents
+16/09/19 21:27:37 INFO storage.MemoryStore: Block broadcast_1 stored as values in memory (estimated size 1952.0 B, free 5.0 KB)
+16/09/19 21:27:37 INFO storage.MemoryStore: Block broadcast_1_piece0 stored as bytes in memory (estimated size 1198.0 B, free 6.2 KB)
+16/09/19 21:27:37 INFO storage.BlockManagerInfo: Added broadcast_1_piece0 in memory on localhost:44277 (size: 1198.0 B, free: 511.5 MB)
+16/09/19 21:27:37 INFO spark.SparkContext: Created broadcast 1 from broadcast at DAGScheduler.scala:1006
+16/09/19 21:27:37 INFO scheduler.DAGScheduler: Submitting 1 missing tasks from ResultStage 1 (MapPartitionsRDD[3] at processCmd at CliDriver.java:376)
+16/09/19 21:27:37 INFO scheduler.TaskSchedulerImpl: Adding task set 1.0 with 1 tasks
+16/09/19 21:27:37 INFO scheduler.TaskSetManager: Starting task 0.0 in stage 1.0 (TID 1, localhost, partition 0,PROCESS_LOCAL, 2059 bytes)
+16/09/19 21:27:37 INFO executor.Executor: Running task 0.0 in stage 1.0 (TID 1)
+16/09/19 21:27:37 INFO executor.Executor: Finished task 0.0 in stage 1.0 (TID 1). 918 bytes result sent to driver
+16/09/19 21:27:37 INFO scheduler.DAGScheduler: ResultStage 1 (processCmd at CliDriver.java:376) finished in 0.101 s
+16/09/19 21:27:37 INFO scheduler.StatsReportListener: Finished stage: org.apache.spark.scheduler.StageInfo@24699625
+16/09/19 21:27:37 INFO scheduler.TaskSetManager: Finished task 0.0 in stage 1.0 (TID 1) in 100 ms on localhost (1/1)
+16/09/19 21:27:37 INFO scheduler.TaskSchedulerImpl: Removed TaskSet 1.0, whose tasks have all completed, from pool
+16/09/19 21:27:37 INFO scheduler.DAGScheduler: Job 1 finished: processCmd at CliDriver.java:376, took 0.155528 s
+16/09/19 21:27:37 INFO scheduler.StatsReportListener: task runtime:(count: 1, mean: 100.000000, stdev: 0.000000, max: 100.000000, min: 100.000000)
+16/09/19 21:27:37 INFO scheduler.StatsReportListener:   0%      5%      10%     25%     50%     75%     90%     95%     100%
+16/09/19 21:27:37 INFO scheduler.StatsReportListener:   100.0 ms        100.0 ms        100.0 ms        100.0 ms        100.0 ms        100.0 ms        100.0 ms       100.0 ms 100.0 ms
+16/09/19 21:27:37 INFO CliDriver: Time taken: 0.287 seconds
+spark-sql> 16/09/19 21:27:37 INFO scheduler.StatsReportListener: task result size:(count: 1, mean: 918.000000, stdev: 0.000000, max: 918.000000, min: 918.000000)
+16/09/19 21:27:37 INFO scheduler.StatsReportListener:   0%      5%      10%     25%     50%     75%     90%     95%     100%
+16/09/19 21:27:37 INFO scheduler.StatsReportListener:   918.0 B 918.0 B 918.0 B 918.0 B 918.0 B 918.0 B 918.0 B 918.0 B 918.0 B
+16/09/19 21:27:37 INFO scheduler.StatsReportListener: executor (non-fetch) time pct: (count: 1, mean: 1.000000, stdev: 0.000000, max: 1.000000, min: 1.000000)
+16/09/19 21:27:37 INFO scheduler.StatsReportListener:   0%      5%      10%     25%     50%     75%     90%     95%     100%
+16/09/19 21:27:37 INFO scheduler.StatsReportListener:    1 %     1 %     1 %     1 %     1 %     1 %     1 %     1 %     1 %
+16/09/19 21:27:37 INFO scheduler.StatsReportListener: other time pct: (count: 1, mean: 99.000000, stdev: 0.000000, max: 99.000000, min: 99.000000)
+16/09/19 21:27:37 INFO scheduler.StatsReportListener:   0%      5%      10%     25%     50%     75%     90%     95%     100%
+16/09/19 21:27:37 INFO scheduler.StatsReportListener:   99 %    99 %    99 %    99 %    99 %    99 %    99 %    99 %    99 %
+;
+spark-sql> show tables in retail;
+16/09/19 21:28:00 INFO metastore.HiveMetaStore: 0: get_tables: db=retail pat=.*
+16/09/19 21:28:00 INFO HiveMetaStore.audit: ugi=hduser  ip=unknown-ip-addr      cmd=get_tables: db=retail pat=.*
+16/09/19 21:28:00 INFO spark.SparkContext: Starting job: processCmd at CliDriver.java:376
+16/09/19 21:28:00 INFO scheduler.DAGScheduler: Got job 2 (processCmd at CliDriver.java:376) with 1 output partitions
+16/09/19 21:28:00 INFO scheduler.DAGScheduler: Final stage: ResultStage 2 (processCmd at CliDriver.java:376)
+16/09/19 21:28:00 INFO scheduler.DAGScheduler: Parents of final stage: List()
+16/09/19 21:28:00 INFO scheduler.DAGScheduler: Missing parents: List()
+16/09/19 21:28:00 INFO scheduler.DAGScheduler: Submitting ResultStage 2 (MapPartitionsRDD[5] at processCmd at CliDriver.java:376), which has no missing parents
+16/09/19 21:28:00 INFO storage.MemoryStore: Block broadcast_2 stored as values in memory (estimated size 1952.0 B, free 8.1 KB)
+16/09/19 21:28:00 INFO storage.MemoryStore: Block broadcast_2_piece0 stored as bytes in memory (estimated size 1196.0 B, free 9.2 KB)
+16/09/19 21:28:00 INFO storage.BlockManagerInfo: Added broadcast_2_piece0 in memory on localhost:44277 (size: 1196.0 B, free: 511.5 MB)
+16/09/19 21:28:00 INFO spark.SparkContext: Created broadcast 2 from broadcast at DAGScheduler.scala:1006
+16/09/19 21:28:00 INFO scheduler.DAGScheduler: Submitting 1 missing tasks from ResultStage 2 (MapPartitionsRDD[5] at processCmd at CliDriver.java:376)
+16/09/19 21:28:00 INFO scheduler.TaskSchedulerImpl: Adding task set 2.0 with 1 tasks
+16/09/19 21:28:00 INFO scheduler.TaskSetManager: Starting task 0.0 in stage 2.0 (TID 2, localhost, partition 0,PROCESS_LOCAL, 2292 bytes)
+16/09/19 21:28:00 INFO executor.Executor: Running task 0.0 in stage 2.0 (TID 2)
+16/09/19 21:28:00 INFO executor.Executor: Finished task 0.0 in stage 2.0 (TID 2). 1151 bytes result sent to driver
+16/09/19 21:28:00 INFO scheduler.TaskSetManager: Finished task 0.0 in stage 2.0 (TID 2) in 97 ms on localhost (1/1)
+16/09/19 21:28:00 INFO scheduler.DAGScheduler: ResultStage 2 (processCmd at CliDriver.java:376) finished in 0.099 s
+16/09/19 21:28:00 INFO scheduler.TaskSchedulerImpl: Removed TaskSet 2.0, whose tasks have all completed, from pool
+16/09/19 21:28:00 INFO scheduler.StatsReportListener: Finished stage: org.apache.spark.scheduler.StageInfo@6554419a
+16/09/19 21:28:00 INFO scheduler.DAGScheduler: Job 2 finished: processCmd at CliDriver.java:376, took 0.140209 s
+externaltxnrecords      false
+managedtxnrecsbycat     false
+txnrecords      false
+txnrecsbycat    false
+16/09/19 21:28:00 INFO CliDriver: Time taken: 0.21 seconds, Fetched 4 row(s)
+spark-sql> 16/09/19 21:28:00 INFO scheduler.StatsReportListener: task runtime:(count: 1, mean: 97.000000, stdev: 0.000000, max: 97.000000, min: 97.000000)
+16/09/19 21:28:00 INFO scheduler.StatsReportListener:   0%      5%      10%     25%     50%     75%     90%     95%     100%
+16/09/19 21:28:00 INFO scheduler.StatsReportListener:   97.0 ms 97.0 ms 97.0 ms 97.0 ms 97.0 ms 97.0 ms 97.0 ms 97.0 ms 97.0 ms
+16/09/19 21:28:00 INFO scheduler.StatsReportListener: task result size:(count: 1, mean: 1151.000000, stdev: 0.000000, max: 1151.000000, min: 1151.000000)
+16/09/19 21:28:00 INFO scheduler.StatsReportListener:   0%      5%      10%     25%     50%     75%     90%     95%     100%
+16/09/19 21:28:00 INFO scheduler.StatsReportListener:   1151.0 B        1151.0 B        1151.0 B        1151.0 B        1151.0 B        1151.0 B        1151.0 B       1151.0 B 1151.0 B
+16/09/19 21:28:00 INFO scheduler.StatsReportListener: executor (non-fetch) time pct: (count: 1, mean: 1.030928, stdev: 0.000000, max: 1.030928, min: 1.030928)
+16/09/19 21:28:00 INFO scheduler.StatsReportListener:   0%      5%      10%     25%     50%     75%     90%     95%     100%
+16/09/19 21:28:00 INFO scheduler.StatsReportListener:    1 %     1 %     1 %     1 %     1 %     1 %     1 %     1 %     1 %
+16/09/19 21:28:00 INFO scheduler.StatsReportListener: other time pct: (count: 1, mean: 98.969072, stdev: 0.000000, max: 98.969072, min: 98.969072)
+16/09/19 21:28:00 INFO scheduler.StatsReportListener:   0%      5%      10%     25%     50%     75%     90%     95%     100%
+16/09/19 21:28:00 INFO scheduler.StatsReportListener:   99 %    99 %    99 %    99 %    99 %    99 %    99 %    99 %    99 %
+;
+====================================================================================================
+spark-sql> select * from retail.txnrecords limit 10;
+16/09/19 21:30:15 INFO parse.ParseDriver: Parsing command: select * from retail.txnrecords limit 10
+16/09/19 21:30:15 INFO parse.ParseDriver: Parse Completed
+16/09/19 21:30:15 INFO metastore.HiveMetaStore: 0: get_table : db=retail tbl=txnrecords
+16/09/19 21:30:15 INFO HiveMetaStore.audit: ugi=hduser  ip=unknown-ip-addr      cmd=get_table : db=retail tbl=txnrecords
+16/09/19 21:30:17 INFO storage.MemoryStore: Block broadcast_3 stored as values in memory (estimated size 508.3 KB, free 517.6 KB)
+16/09/19 21:30:17 INFO storage.MemoryStore: Block broadcast_3_piece0 stored as bytes in memory (estimated size 41.8 KB, free 559.4 KB)
+16/09/19 21:30:17 INFO storage.BlockManagerInfo: Added broadcast_3_piece0 in memory on localhost:44277 (size: 41.8 KB, free: 511.5 MB)
+16/09/19 21:30:17 INFO spark.SparkContext: Created broadcast 3 from processCmd at CliDriver.java:376
+16/09/19 21:30:18 INFO mapred.FileInputFormat: Total input paths to process : 1
+16/09/19 21:30:18 INFO spark.SparkContext: Starting job: processCmd at CliDriver.java:376
+16/09/19 21:30:18 INFO scheduler.DAGScheduler: Got job 3 (processCmd at CliDriver.java:376) with 1 output partitions
+16/09/19 21:30:18 INFO scheduler.DAGScheduler: Final stage: ResultStage 3 (processCmd at CliDriver.java:376)
+16/09/19 21:30:18 INFO scheduler.DAGScheduler: Parents of final stage: List()
+16/09/19 21:30:18 INFO scheduler.DAGScheduler: Missing parents: List()
+16/09/19 21:30:18 INFO scheduler.DAGScheduler: Submitting ResultStage 3 (MapPartitionsRDD[9] at processCmd at CliDriver.java:376), which has no missing parents
+16/09/19 21:30:18 INFO storage.MemoryStore: Block broadcast_4 stored as values in memory (estimated size 7.1 KB, free 566.5 KB)
+16/09/19 21:30:18 INFO storage.MemoryStore: Block broadcast_4_piece0 stored as bytes in memory (estimated size 3.8 KB, free 570.3 KB)
+16/09/19 21:30:18 INFO storage.BlockManagerInfo: Added broadcast_4_piece0 in memory on localhost:44277 (size: 3.8 KB, free: 511.5 MB)
+16/09/19 21:30:18 INFO spark.SparkContext: Created broadcast 4 from broadcast at DAGScheduler.scala:1006
+16/09/19 21:30:18 INFO scheduler.DAGScheduler: Submitting 1 missing tasks from ResultStage 3 (MapPartitionsRDD[9] at processCmd at CliDriver.java:376)
+16/09/19 21:30:18 INFO scheduler.TaskSchedulerImpl: Adding task set 3.0 with 1 tasks
+16/09/19 21:30:18 INFO scheduler.TaskSetManager: Starting task 0.0 in stage 3.0 (TID 3, localhost, partition 0,ANY, 2170 bytes)
+16/09/19 21:30:18 INFO executor.Executor: Running task 0.0 in stage 3.0 (TID 3)
+16/09/19 21:30:18 INFO rdd.HadoopRDD: Input split: hdfs://localhost:54310/user/hive/warehouse/retail.db/txnrecords/txns:0+8472073
+16/09/19 21:30:18 INFO Configuration.deprecation: mapred.tip.id is deprecated. Instead, use mapreduce.task.id
+16/09/19 21:30:18 INFO Configuration.deprecation: mapred.task.id is deprecated. Instead, use mapreduce.task.attempt.id
+16/09/19 21:30:18 INFO Configuration.deprecation: mapred.task.is.map is deprecated. Instead, use mapreduce.task.ismap
+16/09/19 21:30:18 INFO Configuration.deprecation: mapred.task.partition is deprecated. Instead, use mapreduce.task.partition
+16/09/19 21:30:18 INFO Configuration.deprecation: mapred.job.id is deprecated. Instead, use mapreduce.job.id
+16/09/19 21:30:18 INFO executor.Executor: Finished task 0.0 in stage 3.0 (TID 3). 3413 bytes result sent to driver
+16/09/19 21:30:18 INFO scheduler.TaskSetManager: Finished task 0.0 in stage 3.0 (TID 3) in 472 ms on localhost (1/1)
+16/09/19 21:30:18 INFO scheduler.DAGScheduler: ResultStage 3 (processCmd at CliDriver.java:376) finished in 0.474 s
+16/09/19 21:30:18 INFO scheduler.DAGScheduler: Job 3 finished: processCmd at CliDriver.java:376, took 0.563785 s
+16/09/19 21:30:18 INFO scheduler.TaskSchedulerImpl: Removed TaskSet 3.0, whose tasks have all completed, from pool
+16/09/19 21:30:18 INFO scheduler.StatsReportListener: Finished stage: org.apache.spark.scheduler.StageInfo@a3c34fd
+16/09/19 21:30:18 INFO scheduler.StatsReportListener: task runtime:(count: 1, mean: 472.000000, stdev: 0.000000, max: 472.000000, min: 472.000000)
+16/09/19 21:30:18 INFO scheduler.StatsReportListener:   0%      5%      10%     25%     50%     75%     90%     95%     100%
+16/09/19 21:30:18 INFO scheduler.StatsReportListener:   472.0 ms        472.0 ms        472.0 ms        472.0 ms        472.0 ms        472.0 ms        472.0 ms       472.0 ms 472.0 ms
+0       06-26-2011      4007024 40.33   Exercise & Fitness      Cardio Machine Accessories      Clarksville     Tennessee       credit
+1       05-26-2011      4006742 198.44  Exercise & Fitness      Weightlifting Gloves    Long Beach      California      credit
+2       06-01-2011      4009775 5.58    Exercise & Fitness      Weightlifting Machine Accessories       Anaheim California      credit
+3       06-05-2011      4002199 198.19  Gymnastics      Gymnastics Rings        Milwaukee       Wisconsin       credit
+4       12-17-2011      4002613 98.81   Team Sports     Field Hockey    Nashville       Tennessee       credit
+5       02-14-2011      4007591 193.63  Outdoor Recreation      Camping & Backpacking & Hiking  Chicago Illinois        credit
+6       10-28-2011      4002190 27.89   Puzzles Jigsaw Puzzles  Charleston      South Carolina  credit
+7       07-14-2011      4002964 96.01   Outdoor Play Equipment  Sandboxes       Columbus        Ohio    credit
+8       01-17-2011      4007361 10.44   Winter Sports   Snowmobiling    Des Moines      Iowa    credit
+9       05-17-2011      4004798 152.46  Jumping Bungee Jumping  St. Petersburg  Florida credit
+16/09/19 21:30:18 INFO CliDriver: Time taken: 3.128 seconds, Fetched 10 row(s)
+spark-sql> 16/09/19 21:30:18 INFO scheduler.StatsReportListener: task result size:(count: 1, mean: 3413.000000, stdev: 0.000000, max: 3413.000000, min: 3413.000000)
+16/09/19 21:30:18 INFO scheduler.StatsReportListener:   0%      5%      10%     25%     50%     75%     90%     95%     100%
+16/09/19 21:30:18 INFO scheduler.StatsReportListener:   3.3 KB  3.3 KB  3.3 KB  3.3 KB  3.3 KB  3.3 KB  3.3 KB  3.3 KB  3.3 KB
+16/09/19 21:30:18 INFO scheduler.StatsReportListener: executor (non-fetch) time pct: (count: 1, mean: 72.881356, stdev: 0.000000, max: 72.881356, min: 72.881356)
+16/09/19 21:30:18 INFO scheduler.StatsReportListener:   0%      5%      10%     25%     50%     75%     90%     95%     100%
+16/09/19 21:30:18 INFO scheduler.StatsReportListener:   73 %    73 %    73 %    73 %    73 %    73 %    73 %    73 %    73 %
+16/09/19 21:30:18 INFO scheduler.StatsReportListener: other time pct: (count: 1, mean: 27.118644, stdev: 0.000000, max: 27.118644, min: 27.118644)
+16/09/19 21:30:18 INFO scheduler.StatsReportListener:   0%      5%      10%     25%     50%     75%     90%     95%     100%
+16/09/19 21:30:18 INFO scheduler.StatsReportListener:   27 %    27 %    27 %    27 %    27 %    27 %    27 %    27 %    27 %
+;
+spark-sql> exit;
+====================================================================================================
+Connecting to Hive Remote metastore
+>> Copied the hive site xml in spark conf directory and it worked !!!
+--------------------------------------------------
+[hduser@Inceptez ~]$ cd $SPARK_HOME
+[hduser@Inceptez spark]$ ls
+bin  CHANGES.txt  conf  data  ec2  examples  lib  LICENSE  licenses  NOTICE  python  R  README.md  RELEASE  sbin  zookeeper.out
+[hduser@Inceptez spark]$ cd conf/
+[hduser@Inceptez conf]$ ls
+docker.properties.template  log4j.properties.template    slaves.template               spark-env.sh.template
+fairscheduler.xml.template  metrics.properties.template  spark-defaults.conf.template
+[hduser@Inceptez conf]$ locate hive-site.xml
+/usr/local/hive/conf/hive-site.xml
+/usr/local/hive/hcatalog/etc/hcatalog/proto-hive-site.xml
+/usr/local/sqoop/testdata/hcatalog/conf/hive-site.xml
+[hduser@Inceptez conf]$ ls -l /usr/local/hive/conf/hive-site.xml
+-rwxr-xr-x 1 hduser hduser 144851 Jul  3 10:08 /usr/local/hive/conf/hive-site.xml
+[hduser@Inceptez conf]$ ls -l /usr/local/hive/hcatalog/etc/hcatalog/proto-hive-site.xml
+-rw-r--r-- 1 hduser hduser 4592 Nov  9  2014 /usr/local/hive/hcatalog/etc/hcatalog/proto-hive-site.xml
+[hduser@Inceptez conf]$ ls -l /usr/local/sqoop/testdata/hcatalog/conf/hive-site.xml
+-rwxr-xr-x 1 hduser hduser 756 Aug  1  2014 /usr/local/sqoop/testdata/hcatalog/conf/hive-site.xml
+[hduser@Inceptez conf]$ pwd
+/usr/local/spark/conf
+[hduser@Inceptez conf]$ cp /usr/local/hive/conf/hive-site.xml $PWD
+[hduser@Inceptez conf]$ ls
+docker.properties.template  hive-site.xml              metrics.properties.template  spark-defaults.conf.template
+fairscheduler.xml.template  log4j.properties.template  slaves.template              spark-env.sh.template
+
+[hduser@Inceptez conf]$ spark-sql
+16/09/19 21:50:16 WARN conf.HiveConf: HiveConf of name hive.server2.thrift.http.min.worker.threads does not exist
+16/09/19 21:50:16 WARN conf.HiveConf: HiveConf of name hive.mapjoin.optimized.keys does not exist
+16/09/19 21:50:16 WARN conf.HiveConf: HiveConf of name hive.mapjoin.lazy.hashtable does not exist
+16/09/19 21:50:16 WARN conf.HiveConf: HiveConf of name hive.server2.thrift.http.max.worker.threads does not exist
+16/09/19 21:50:16 WARN conf.HiveConf: HiveConf of name hive.server2.logging.operation.verbose does not exist
+16/09/19 21:50:16 WARN conf.HiveConf: HiveConf of name hive.optimize.multigroupby.common.distincts does not exist
+16/09/19 21:50:18 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+16/09/19 21:50:18 INFO metastore.HiveMetaStore: 0: Opening raw store with implemenation class:org.apache.hadoop.hive.metastore.ObjectStore
+16/09/19 21:50:18 INFO metastore.ObjectStore: ObjectStore, initialize called
+16/09/19 21:50:18 INFO DataNucleus.Persistence: Property datanucleus.cache.level2 unknown - will be ignored
+16/09/19 21:50:18 INFO DataNucleus.Persistence: Property hive.metastore.integral.jdo.pushdown unknown - will be ignored
+16/09/19 21:50:18 WARN DataNucleus.Connection: BoneCP specified but not present in CLASSPATH (or one of dependencies)
+16/09/19 21:50:18 WARN DataNucleus.Connection: BoneCP specified but not present in CLASSPATH (or one of dependencies)
+16/09/19 21:50:20 WARN conf.HiveConf: HiveConf of name hive.server2.thrift.http.min.worker.threads does not exist
+16/09/19 21:50:20 WARN conf.HiveConf: HiveConf of name hive.mapjoin.optimized.keys does not exist
+16/09/19 21:50:20 WARN conf.HiveConf: HiveConf of name hive.mapjoin.lazy.hashtable does not exist
+16/09/19 21:50:20 WARN conf.HiveConf: HiveConf of name hive.server2.thrift.http.max.worker.threads does not exist
+16/09/19 21:50:20 WARN conf.HiveConf: HiveConf of name hive.server2.logging.operation.verbose does not exist
+16/09/19 21:50:20 WARN conf.HiveConf: HiveConf of name hive.optimize.multigroupby.common.distincts does not exist
+16/09/19 21:50:20 INFO metastore.ObjectStore: Setting MetaStore object pin classes with hive.metastore.cache.pinobjtypes="Table,StorageDescriptor,SerDeInfo,Partition,Database,Type,FieldSchema,Order"
+16/09/19 21:50:21 INFO DataNucleus.Datastore: The class "org.apache.hadoop.hive.metastore.model.MFieldSchema" is tagged as "embedded-only" so does not have its own datastore table.
+16/09/19 21:50:21 INFO DataNucleus.Datastore: The class "org.apache.hadoop.hive.metastore.model.MOrder" is tagged as "embedded-only" so does not have its own datastore table.
+16/09/19 21:50:23 INFO DataNucleus.Datastore: The class "org.apache.hadoop.hive.metastore.model.MFieldSchema" is tagged as "embedded-only" so does not have its own datastore table.
+16/09/19 21:50:23 INFO DataNucleus.Datastore: The class "org.apache.hadoop.hive.metastore.model.MOrder" is tagged as "embedded-only" so does not have its own datastore table.
+16/09/19 21:50:23 INFO metastore.MetaStoreDirectSql: Using direct SQL, underlying DB is DERBY
+16/09/19 21:50:23 INFO metastore.ObjectStore: Initialized ObjectStore
+16/09/19 21:50:23 WARN metastore.ObjectStore: Version information not found in metastore. hive.metastore.schema.verification is not enabled so recording the schema version 1.2.0
+16/09/19 21:50:24 WARN metastore.ObjectStore: Failed to get database default, returning NoSuchObjectException
+16/09/19 21:50:26 INFO metastore.HiveMetaStore: Added admin role in metastore
+16/09/19 21:50:26 INFO metastore.HiveMetaStore: Added public role in metastore
+16/09/19 21:50:26 INFO metastore.HiveMetaStore: No user is added in admin role, since config is empty
+16/09/19 21:50:26 INFO metastore.HiveMetaStore: 0: get_all_databases
+16/09/19 21:50:26 INFO HiveMetaStore.audit: ugi=hduser  ip=unknown-ip-addr      cmd=get_all_databases
+16/09/19 21:50:26 INFO metastore.HiveMetaStore: 0: get_functions: db=default pat=*
+16/09/19 21:50:26 INFO HiveMetaStore.audit: ugi=hduser  ip=unknown-ip-addr      cmd=get_functions: db=default pat=*
+16/09/19 21:50:26 INFO DataNucleus.Datastore: The class "org.apache.hadoop.hive.metastore.model.MResourceUri" is tagged as "embedded-only" so does not have its own datastore table.
+16/09/19 21:50:27 INFO session.SessionState: Created local directory: /tmp/97bd98c9-b9f7-434f-a8fd-52f11075a5c4_resources
+16/09/19 21:50:27 INFO session.SessionState: Created HDFS directory: /tmp/hive/hduser/97bd98c9-b9f7-434f-a8fd-52f11075a5c4
+16/09/19 21:50:27 INFO session.SessionState: Created local directory: /tmp/hivelog/97bd98c9-b9f7-434f-a8fd-52f11075a5c4
+16/09/19 21:50:27 INFO session.SessionState: Created HDFS directory: /tmp/hive/hduser/97bd98c9-b9f7-434f-a8fd-52f11075a5c4/_tmp_space.db
+16/09/19 21:50:27 WARN util.Utils: Your hostname, Inceptez resolves to a loopback address: 127.0.0.1; using 192.168.107.134 instead (on interface eth0)
+16/09/19 21:50:27 WARN util.Utils: Set SPARK_LOCAL_IP if you need to bind to another address
+16/09/19 21:50:27 INFO spark.SparkContext: Running Spark version 1.6.0
+16/09/19 21:50:27 INFO spark.SecurityManager: Changing view acls to: hduser
+16/09/19 21:50:27 INFO spark.SecurityManager: Changing modify acls to: hduser
+16/09/19 21:50:27 INFO spark.SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users with view permissions: Set(hduser); users with modify permissions: Set(hduser)
+16/09/19 21:50:28 INFO util.Utils: Successfully started service 'sparkDriver' on port 42272.
+16/09/19 21:50:28 INFO slf4j.Slf4jLogger: Slf4jLogger started
+16/09/19 21:50:28 INFO Remoting: Starting remoting
+16/09/19 21:50:28 INFO Remoting: Remoting started; listening on addresses :[akka.tcp://sparkDriverActorSystem@192.168.107.134:37633]
+16/09/19 21:50:28 INFO util.Utils: Successfully started service 'sparkDriverActorSystem' on port 37633.
+16/09/19 21:50:28 INFO spark.SparkEnv: Registering MapOutputTracker
+16/09/19 21:50:28 INFO spark.SparkEnv: Registering BlockManagerMaster
+16/09/19 21:50:28 INFO storage.DiskBlockManager: Created local directory at /tmp/blockmgr-dbf3063f-cc25-46ae-b4cc-d7001fdcf4ec
+16/09/19 21:50:28 INFO storage.MemoryStore: MemoryStore started with capacity 511.5 MB
+16/09/19 21:50:28 INFO spark.SparkEnv: Registering OutputCommitCoordinator
+16/09/19 21:50:31 INFO server.Server: jetty-8.y.z-SNAPSHOT
+16/09/19 21:50:31 INFO server.AbstractConnector: Started SelectChannelConnector@0.0.0.0:4040
+16/09/19 21:50:31 INFO util.Utils: Successfully started service 'SparkUI' on port 4040.
+16/09/19 21:50:31 INFO ui.SparkUI: Started SparkUI at http://192.168.107.134:4040
+16/09/19 21:50:31 INFO executor.Executor: Starting executor ID driver on host localhost
+16/09/19 21:50:31 INFO util.Utils: Successfully started service 'org.apache.spark.network.netty.NettyBlockTransferService' on port 55514.
+16/09/19 21:50:31 INFO netty.NettyBlockTransferService: Server created on 55514
+16/09/19 21:50:31 INFO storage.BlockManagerMaster: Trying to register BlockManager
+16/09/19 21:50:31 INFO storage.BlockManagerMasterEndpoint: Registering block manager localhost:55514 with 511.5 MB RAM, BlockManagerId(driver, localhost, 55514)
+16/09/19 21:50:31 INFO storage.BlockManagerMaster: Registered BlockManager
+16/09/19 21:50:31 INFO hive.HiveContext: Initializing execution hive, version 1.2.1
+16/09/19 21:50:31 INFO client.ClientWrapper: Inspected Hadoop version: 2.6.0
+16/09/19 21:50:31 INFO client.ClientWrapper: Loaded org.apache.hadoop.hive.shims.Hadoop23Shims for Hadoop version 2.6.0
+16/09/19 21:50:31 WARN conf.HiveConf: HiveConf of name hive.server2.thrift.http.min.worker.threads does not exist
+16/09/19 21:50:31 WARN conf.HiveConf: HiveConf of name hive.mapjoin.optimized.keys does not exist
+16/09/19 21:50:31 WARN conf.HiveConf: HiveConf of name hive.mapjoin.lazy.hashtable does not exist
+16/09/19 21:50:31 WARN conf.HiveConf: HiveConf of name hive.server2.thrift.http.max.worker.threads does not exist
+16/09/19 21:50:31 WARN conf.HiveConf: HiveConf of name hive.server2.logging.operation.verbose does not exist
+16/09/19 21:50:31 WARN conf.HiveConf: HiveConf of name hive.optimize.multigroupby.common.distincts does not exist
+16/09/19 21:50:31 INFO hive.metastore: Mestastore configuration hive.metastore.warehouse.dir changed from file:/tmp/spark-789629eb-8be3-47f7-bdc6-b9a7f2c8baf8/metastore to file:/tmp/spark-ad1e9dc2-2c1f-48be-9b0b-8f39d7e5cf27/metastore
+16/09/19 21:50:31 INFO hive.metastore: Mestastore configuration javax.jdo.option.ConnectionURL changed from jdbc:derby:;databaseName=/tmp/spark-789629eb-8be3-47f7-bdc6-b9a7f2c8baf8/metastore;create=true to jdbc:derby:;databaseName=/tmp/spark-ad1e9dc2-2c1f-48be-9b0b-8f39d7e5cf27/metastore;create=true
+16/09/19 21:50:31 INFO metastore.HiveMetaStore: 0: Shutting down the object store...
+16/09/19 21:50:31 INFO HiveMetaStore.audit: ugi=hduser  ip=unknown-ip-addr      cmd=Shutting down the object store...
+16/09/19 21:50:31 INFO metastore.HiveMetaStore: 0: Metastore shutdown complete.
+16/09/19 21:50:31 INFO HiveMetaStore.audit: ugi=hduser  ip=unknown-ip-addr      cmd=Metastore shutdown complete.
+16/09/19 21:50:31 INFO metastore.HiveMetaStore: 0: Opening raw store with implemenation class:org.apache.hadoop.hive.metastore.ObjectStore
+16/09/19 21:50:31 INFO metastore.ObjectStore: ObjectStore, initialize called
+16/09/19 21:50:31 INFO DataNucleus.Persistence: Property datanucleus.cache.level2 unknown - will be ignored
+16/09/19 21:50:31 INFO DataNucleus.Persistence: Property hive.metastore.integral.jdo.pushdown unknown - will be ignored
+16/09/19 21:50:31 WARN DataNucleus.Connection: BoneCP specified but not present in CLASSPATH (or one of dependencies)
+16/09/19 21:50:31 WARN DataNucleus.Connection: BoneCP specified but not present in CLASSPATH (or one of dependencies)
+16/09/19 21:50:32 WARN conf.HiveConf: HiveConf of name hive.server2.thrift.http.min.worker.threads does not exist
+16/09/19 21:50:32 WARN conf.HiveConf: HiveConf of name hive.mapjoin.optimized.keys does not exist
+16/09/19 21:50:32 WARN conf.HiveConf: HiveConf of name hive.mapjoin.lazy.hashtable does not exist
+16/09/19 21:50:32 WARN conf.HiveConf: HiveConf of name hive.server2.thrift.http.max.worker.threads does not exist
+16/09/19 21:50:32 WARN conf.HiveConf: HiveConf of name hive.server2.logging.operation.verbose does not exist
+16/09/19 21:50:32 WARN conf.HiveConf: HiveConf of name hive.optimize.multigroupby.common.distincts does not exist
+16/09/19 21:50:32 INFO metastore.ObjectStore: Setting MetaStore object pin classes with hive.metastore.cache.pinobjtypes="Table,StorageDescriptor,SerDeInfo,Partition,Database,Type,FieldSchema,Order"
+16/09/19 21:50:32 INFO DataNucleus.Datastore: The class "org.apache.hadoop.hive.metastore.model.MFieldSchema" is tagged as "embedded-only" so does not have its own datastore table.
+16/09/19 21:50:32 INFO DataNucleus.Datastore: The class "org.apache.hadoop.hive.metastore.model.MOrder" is tagged as "embedded-only" so does not have its own datastore table.
+16/09/19 21:50:33 INFO DataNucleus.Datastore: The class "org.apache.hadoop.hive.metastore.model.MFieldSchema" is tagged as "embedded-only" so does not have its own datastore table.
+16/09/19 21:50:33 INFO DataNucleus.Datastore: The class "org.apache.hadoop.hive.metastore.model.MOrder" is tagged as "embedded-only" so does not have its own datastore table.
+16/09/19 21:50:34 INFO metastore.MetaStoreDirectSql: Using direct SQL, underlying DB is DERBY
+16/09/19 21:50:34 INFO metastore.ObjectStore: Initialized ObjectStore
+16/09/19 21:50:34 WARN metastore.ObjectStore: Failed to get database default, returning NoSuchObjectException
+16/09/19 21:50:34 INFO metastore.HiveMetaStore: Added admin role in metastore
+16/09/19 21:50:34 INFO metastore.HiveMetaStore: Added public role in metastore
+16/09/19 21:50:34 INFO metastore.HiveMetaStore: No user is added in admin role, since config is empty
+16/09/19 21:50:34 INFO session.SessionState: Created local directory: /tmp/3348c72d-5c0b-478e-a8c9-21de02d3517b_resources
+16/09/19 21:50:34 INFO session.SessionState: Created HDFS directory: /tmp/hive/hduser/3348c72d-5c0b-478e-a8c9-21de02d3517b
+16/09/19 21:50:34 INFO session.SessionState: Created local directory: /tmp/hivelog/3348c72d-5c0b-478e-a8c9-21de02d3517b
+16/09/19 21:50:34 INFO session.SessionState: Created HDFS directory: /tmp/hive/hduser/3348c72d-5c0b-478e-a8c9-21de02d3517b/_tmp_space.db
+16/09/19 21:50:34 WARN conf.HiveConf: HiveConf of name hive.server2.thrift.http.min.worker.threads does not exist
+16/09/19 21:50:34 WARN conf.HiveConf: HiveConf of name hive.mapjoin.optimized.keys does not exist
+16/09/19 21:50:34 WARN conf.HiveConf: HiveConf of name hive.mapjoin.lazy.hashtable does not exist
+16/09/19 21:50:34 WARN conf.HiveConf: HiveConf of name hive.server2.thrift.http.max.worker.threads does not exist
+16/09/19 21:50:34 WARN conf.HiveConf: HiveConf of name hive.server2.logging.operation.verbose does not exist
+16/09/19 21:50:34 WARN conf.HiveConf: HiveConf of name hive.optimize.multigroupby.common.distincts does not exist
+16/09/19 21:50:34 INFO hive.HiveContext: default warehouse location is /user/hive/warehouse
+16/09/19 21:50:34 INFO hive.HiveContext: Initializing HiveMetastoreConnection version 1.2.1 using Spark classes.
+16/09/19 21:50:34 INFO client.ClientWrapper: Inspected Hadoop version: 2.6.0
+16/09/19 21:50:34 INFO client.ClientWrapper: Loaded org.apache.hadoop.hive.shims.Hadoop23Shims for Hadoop version 2.6.0
+16/09/19 21:50:35 WARN conf.HiveConf: HiveConf of name hive.server2.thrift.http.min.worker.threads does not exist
+16/09/19 21:50:35 WARN conf.HiveConf: HiveConf of name hive.mapjoin.optimized.keys does not exist
+16/09/19 21:50:35 WARN conf.HiveConf: HiveConf of name hive.mapjoin.lazy.hashtable does not exist
+16/09/19 21:50:35 WARN conf.HiveConf: HiveConf of name hive.server2.thrift.http.max.worker.threads does not exist
+16/09/19 21:50:35 WARN conf.HiveConf: HiveConf of name hive.server2.logging.operation.verbose does not exist
+16/09/19 21:50:35 WARN conf.HiveConf: HiveConf of name hive.optimize.multigroupby.common.distincts does not exist
+16/09/19 21:50:35 INFO hive.metastore: Trying to connect to metastore with URI thrift://localhost:9083
+16/09/19 21:50:35 INFO hive.metastore: Connected to metastore.
+16/09/19 21:50:36 INFO session.SessionState: Created local directory: /tmp/aa414018-b3fa-4436-bc12-640511b50a1a_resources
+16/09/19 21:50:36 INFO session.SessionState: Created HDFS directory: /tmp/hive/hduser/aa414018-b3fa-4436-bc12-640511b50a1a
+16/09/19 21:50:36 INFO session.SessionState: Created local directory: /tmp/hivelog/aa414018-b3fa-4436-bc12-640511b50a1a
+16/09/19 21:50:36 INFO session.SessionState: Created HDFS directory: /tmp/hive/hduser/aa414018-b3fa-4436-bc12-640511b50a1a/_tmp_space.db
+SET spark.sql.hive.version=1.2.1
+spark-sql> show databases;
+16/09/19 21:50:43 INFO parse.ParseDriver: Parsing command: show databases
+16/09/19 21:50:43 INFO parse.ParseDriver: Parse Completed
+16/09/19 21:50:44 INFO log.PerfLogger: <PERFLOG method=Driver.run from=org.apache.hadoop.hive.ql.Driver>
+16/09/19 21:50:44 INFO log.PerfLogger: <PERFLOG method=TimeToSubmit from=org.apache.hadoop.hive.ql.Driver>
+16/09/19 21:50:44 INFO log.PerfLogger: <PERFLOG method=compile from=org.apache.hadoop.hive.ql.Driver>
+16/09/19 21:50:44 INFO log.PerfLogger: <PERFLOG method=parse from=org.apache.hadoop.hive.ql.Driver>
+16/09/19 21:50:44 INFO parse.ParseDriver: Parsing command: show databases
+16/09/19 21:50:45 INFO parse.ParseDriver: Parse Completed
+16/09/19 21:50:45 INFO log.PerfLogger: </PERFLOG method=parse start=1474302044368 end=1474302045189 duration=821 from=org.apache.hadoop.hive.ql.Driver>
+16/09/19 21:50:45 INFO log.PerfLogger: <PERFLOG method=semanticAnalyze from=org.apache.hadoop.hive.ql.Driver>
+16/09/19 21:50:45 INFO ql.Driver: Semantic Analysis Completed
+16/09/19 21:50:45 INFO log.PerfLogger: </PERFLOG method=semanticAnalyze start=1474302045289 end=1474302045355 duration=66 from=org.apache.hadoop.hive.ql.Driver>
+16/09/19 21:50:45 INFO exec.ListSinkOperator: Initializing operator OP[0]
+16/09/19 21:50:45 INFO exec.ListSinkOperator: Initialization Done 0 OP
+16/09/19 21:50:45 INFO exec.ListSinkOperator: Operator 0 OP initialized
+16/09/19 21:50:45 INFO ql.Driver: Returning Hive schema: Schema(fieldSchemas:[FieldSchema(name:database_name, type:string, comment:from deserializer)], properties:null)
+16/09/19 21:50:45 INFO log.PerfLogger: </PERFLOG method=compile start=1474302044331 end=1474302045567 duration=1236 from=org.apache.hadoop.hive.ql.Driver>
+16/09/19 21:50:45 INFO log.PerfLogger: <PERFLOG method=acquireReadWriteLocks from=org.apache.hadoop.hive.ql.Driver>
+16/09/19 21:50:45 INFO lockmgr.DbTxnManager: Setting lock request transaction to 0 for queryId=hduser_20160919215044_aaa0e3ae-5bcf-4c03-872a-f1f137715de1
+16/09/19 21:50:45 INFO log.PerfLogger: </PERFLOG method=acquireReadWriteLocks start=1474302045567 end=1474302045696 duration=129 from=org.apache.hadoop.hive.ql.Driver>
+16/09/19 21:50:45 INFO log.PerfLogger: <PERFLOG method=Driver.execute from=org.apache.hadoop.hive.ql.Driver>
+16/09/19 21:50:45 INFO ql.Driver: Starting command(queryId=hduser_20160919215044_aaa0e3ae-5bcf-4c03-872a-f1f137715de1): show databases
+16/09/19 21:50:45 INFO log.PerfLogger: </PERFLOG method=TimeToSubmit start=1474302044331 end=1474302045703 duration=1372 from=org.apache.hadoop.hive.ql.Driver>
+16/09/19 21:50:45 INFO log.PerfLogger: <PERFLOG method=runTasks from=org.apache.hadoop.hive.ql.Driver>
+16/09/19 21:50:45 INFO log.PerfLogger: <PERFLOG method=task.DDL.Stage-0 from=org.apache.hadoop.hive.ql.Driver>
+16/09/19 21:50:45 INFO ql.Driver: Starting task [Stage-0:DDL] in serial mode
+16/09/19 21:50:45 INFO exec.DDLTask: results : 3
+16/09/19 21:50:45 INFO log.PerfLogger: </PERFLOG method=runTasks start=1474302045703 end=1474302045745 duration=42 from=org.apache.hadoop.hive.ql.Driver>
+16/09/19 21:50:45 INFO log.PerfLogger: </PERFLOG method=Driver.execute start=1474302045696 end=1474302045745 duration=49 from=org.apache.hadoop.hive.ql.Driver>
+OK
+16/09/19 21:50:45 INFO ql.Driver: OK
+16/09/19 21:50:45 INFO log.PerfLogger: <PERFLOG method=releaseLocks from=org.apache.hadoop.hive.ql.Driver>
+16/09/19 21:50:45 INFO log.PerfLogger: </PERFLOG method=releaseLocks start=1474302045746 end=1474302045747 duration=1 from=org.apache.hadoop.hive.ql.Driver>
+16/09/19 21:50:45 INFO log.PerfLogger: </PERFLOG method=Driver.run start=1474302044331 end=1474302045747 duration=1416 from=org.apache.hadoop.hive.ql.Driver>
+16/09/19 21:50:45 INFO Configuration.deprecation: mapred.input.dir is deprecated. Instead, use mapreduce.input.fileinputformat.inputdir
+16/09/19 21:50:45 INFO mapred.FileInputFormat: Total input paths to process : 1
+16/09/19 21:50:45 INFO exec.ListSinkOperator: 0 finished. closing...
+16/09/19 21:50:45 INFO exec.ListSinkOperator: 0 Close done
+16/09/19 21:50:45 INFO spark.SparkContext: Starting job: processCmd at CliDriver.java:376
+16/09/19 21:50:45 INFO scheduler.DAGScheduler: Got job 0 (processCmd at CliDriver.java:376) with 1 output partitions
+16/09/19 21:50:45 INFO scheduler.DAGScheduler: Final stage: ResultStage 0 (processCmd at CliDriver.java:376)
+16/09/19 21:50:45 INFO scheduler.DAGScheduler: Parents of final stage: List()
+16/09/19 21:50:45 INFO scheduler.DAGScheduler: Missing parents: List()
+16/09/19 21:50:45 INFO scheduler.DAGScheduler: Submitting ResultStage 0 (MapPartitionsRDD[1] at processCmd at CliDriver.java:376), which has no missing parents
+16/09/19 21:50:46 INFO storage.MemoryStore: Block broadcast_0 stored as values in memory (estimated size 1952.0 B, free 1952.0 B)
+16/09/19 21:50:46 INFO storage.MemoryStore: Block broadcast_0_piece0 stored as bytes in memory (estimated size 1203.0 B, free 3.1 KB)
+16/09/19 21:50:46 INFO storage.BlockManagerInfo: Added broadcast_0_piece0 in memory on localhost:55514 (size: 1203.0 B, free: 511.5 MB)
+16/09/19 21:50:46 INFO spark.SparkContext: Created broadcast 0 from broadcast at DAGScheduler.scala:1006
+16/09/19 21:50:46 INFO scheduler.DAGScheduler: Submitting 1 missing tasks from ResultStage 0 (MapPartitionsRDD[1] at processCmd at CliDriver.java:376)
+16/09/19 21:50:46 INFO scheduler.TaskSchedulerImpl: Adding task set 0.0 with 1 tasks
+16/09/19 21:50:46 INFO scheduler.TaskSetManager: Starting task 0.0 in stage 0.0 (TID 0, localhost, partition 0,PROCESS_LOCAL, 2235 bytes)
+16/09/19 21:50:46 INFO executor.Executor: Running task 0.0 in stage 0.0 (TID 0)
+16/09/19 21:50:46 INFO executor.Executor: Finished task 0.0 in stage 0.0 (TID 0). 1091 bytes result sent to driver
+16/09/19 21:50:46 INFO scheduler.TaskSetManager: Finished task 0.0 in stage 0.0 (TID 0) in 104 ms on localhost (1/1)
+16/09/19 21:50:46 INFO scheduler.DAGScheduler: ResultStage 0 (processCmd at CliDriver.java:376) finished in 0.119 s
+16/09/19 21:50:46 INFO scheduler.TaskSchedulerImpl: Removed TaskSet 0.0, whose tasks have all completed, from pool
+16/09/19 21:50:46 INFO scheduler.DAGScheduler: Job 0 finished: processCmd at CliDriver.java:376, took 0.422532 s
+default
+dkmdb01
+dkmdb02
+16/09/19 21:50:46 INFO CliDriver: Time taken: 3.283 seconds, Fetched 3 row(s)
+spark-sql> 16/09/19 21:50:46 INFO scheduler.StatsReportListener: Finished stage: org.apache.spark.scheduler.StageInfo@46f22978
+16/09/19 21:50:46 INFO scheduler.StatsReportListener: task runtime:(count: 1, mean: 104.000000, stdev: 0.000000, max: 104.000000, min: 104.000000)
+16/09/19 21:50:46 INFO scheduler.StatsReportListener:   0%      5%      10%     25%     50%     75%     90%     95%     100%
+16/09/19 21:50:46 INFO scheduler.StatsReportListener:   104.0 ms        104.0 ms        104.0 ms        104.0 ms        104.0 ms        104.0 ms        104.0 ms       104.0 ms 104.0 ms
+16/09/19 21:50:46 INFO scheduler.StatsReportListener: task result size:(count: 1, mean: 1091.000000, stdev: 0.000000, max: 1091.000000, min: 1091.000000)
+16/09/19 21:50:46 INFO scheduler.StatsReportListener:   0%      5%      10%     25%     50%     75%     90%     95%     100%
+16/09/19 21:50:46 INFO scheduler.StatsReportListener:   1091.0 B        1091.0 B        1091.0 B        1091.0 B        1091.0 B        1091.0 B        1091.0 B       1091.0 B 1091.0 B
+16/09/19 21:50:46 INFO scheduler.StatsReportListener: executor (non-fetch) time pct: (count: 1, mean: 6.730769, stdev: 0.000000, max: 6.730769, min: 6.730769)
+16/09/19 21:50:46 INFO scheduler.StatsReportListener:   0%      5%      10%     25%     50%     75%     90%     95%     100%
+16/09/19 21:50:46 INFO scheduler.StatsReportListener:    7 %     7 %     7 %     7 %     7 %     7 %     7 %     7 %     7 %
+16/09/19 21:50:46 INFO scheduler.StatsReportListener: other time pct: (count: 1, mean: 93.269231, stdev: 0.000000, max: 93.269231, min: 93.269231)
+16/09/19 21:50:46 INFO scheduler.StatsReportListener:   0%      5%      10%     25%     50%     75%     90%     95%     100%
+16/09/19 21:50:46 INFO scheduler.StatsReportListener:   93 %    93 %    93 %    93 %    93 %    93 %    93 %    93 %    93 %
+;
+====================================================================================================
+;
+spark-sql> select * from dkmdb02.manutdplayers1 limit 10;
+16/09/19 21:58:10 INFO parse.ParseDriver: Parsing command: select * from dkmdb02.manutdplayers1 limit 10
+16/09/19 21:58:10 INFO parse.ParseDriver: Parse Completed
+16/09/19 21:58:11 INFO storage.BlockManagerInfo: Removed broadcast_0_piece0 on localhost:55514 in memory (size: 1203.0 B, free: 511.5 MB)
+16/09/19 21:58:11 INFO spark.ContextCleaner: Cleaned accumulator 1
+16/09/19 21:58:11 INFO storage.MemoryStore: Block broadcast_1 stored as values in memory (estimated size 514.1 KB, free 514.1 KB)
+16/09/19 21:58:11 INFO storage.MemoryStore: Block broadcast_1_piece0 stored as bytes in memory (estimated size 39.7 KB, free 553.7 KB)
+16/09/19 21:58:11 INFO storage.BlockManagerInfo: Added broadcast_1_piece0 in memory on localhost:55514 (size: 39.7 KB, free: 511.5 MB)
+16/09/19 21:58:11 INFO spark.SparkContext: Created broadcast 1 from processCmd at CliDriver.java:376
+16/09/19 21:58:11 INFO mapred.FileInputFormat: Total input paths to process : 1
+16/09/19 21:58:11 INFO mapred.FileInputFormat: Total input paths to process : 1
+16/09/19 21:58:11 INFO mapred.FileInputFormat: Total input paths to process : 1
+16/09/19 21:58:11 INFO mapred.FileInputFormat: Total input paths to process : 1
+16/09/19 21:58:11 INFO mapred.FileInputFormat: Total input paths to process : 1
+16/09/19 21:58:11 INFO mapred.FileInputFormat: Total input paths to process : 1
+16/09/19 21:58:11 INFO mapred.FileInputFormat: Total input paths to process : 1
+16/09/19 21:58:11 INFO spark.SparkContext: Starting job: processCmd at CliDriver.java:376
+16/09/19 21:58:11 INFO scheduler.DAGScheduler: Got job 1 (processCmd at CliDriver.java:376) with 1 output partitions
+16/09/19 21:58:11 INFO scheduler.DAGScheduler: Final stage: ResultStage 1 (processCmd at CliDriver.java:376)
+16/09/19 21:58:11 INFO scheduler.DAGScheduler: Parents of final stage: List()
+16/09/19 21:58:11 INFO scheduler.DAGScheduler: Missing parents: List()
+16/09/19 21:58:11 INFO scheduler.DAGScheduler: Submitting ResultStage 1 (MapPartitionsRDD[24] at processCmd at CliDriver.java:376), which has no missing parents
+16/09/19 21:58:11 INFO storage.MemoryStore: Block broadcast_2 stored as values in memory (estimated size 11.8 KB, free 565.6 KB)
+16/09/19 21:58:11 INFO storage.MemoryStore: Block broadcast_2_piece0 stored as bytes in memory (estimated size 4.7 KB, free 570.3 KB)
+16/09/19 21:58:11 INFO storage.BlockManagerInfo: Added broadcast_2_piece0 in memory on localhost:55514 (size: 4.7 KB, free: 511.5 MB)
+16/09/19 21:58:11 INFO spark.SparkContext: Created broadcast 2 from broadcast at DAGScheduler.scala:1006
+16/09/19 21:58:11 INFO scheduler.DAGScheduler: Submitting 1 missing tasks from ResultStage 1 (MapPartitionsRDD[24] at processCmd at CliDriver.java:376)
+16/09/19 21:58:11 INFO scheduler.TaskSchedulerImpl: Adding task set 1.0 with 1 tasks
+16/09/19 21:58:11 INFO scheduler.TaskSetManager: Starting task 0.0 in stage 1.0 (TID 1, localhost, partition 0,ANY, 2308 bytes)
+16/09/19 21:58:11 INFO executor.Executor: Running task 0.0 in stage 1.0 (TID 1)
+16/09/19 21:58:11 INFO rdd.HadoopRDD: Input split: hdfs://localhost:54310/user/hive/warehouse/dkmdb02.db/manutdplayers1/country=Netherlands/000000_0:0+404
+16/09/19 21:58:12 INFO Configuration.deprecation: mapred.tip.id is deprecated. Instead, use mapreduce.task.id
+16/09/19 21:58:12 INFO Configuration.deprecation: mapred.task.id is deprecated. Instead, use mapreduce.task.attempt.id
+16/09/19 21:58:12 INFO Configuration.deprecation: mapred.task.is.map is deprecated. Instead, use mapreduce.task.ismap
+16/09/19 21:58:12 INFO Configuration.deprecation: mapred.task.partition is deprecated. Instead, use mapreduce.task.partition
+16/09/19 21:58:12 INFO Configuration.deprecation: mapred.job.id is deprecated. Instead, use mapreduce.job.id
+16/09/19 21:58:12 INFO executor.Executor: Finished task 0.0 in stage 1.0 (TID 1). 2779 bytes result sent to driver
+16/09/19 21:58:12 INFO scheduler.DAGScheduler: ResultStage 1 (processCmd at CliDriver.java:376) finished in 0.338 s
+16/09/19 21:58:12 INFO scheduler.StatsReportListener: Finished stage: org.apache.spark.scheduler.StageInfo@6edebd9e
+16/09/19 21:58:12 INFO scheduler.DAGScheduler: Job 1 finished: processCmd at CliDriver.java:376, took 0.383907 s
+16/09/19 21:58:12 INFO scheduler.TaskSetManager: Finished task 0.0 in stage 1.0 (TID 1) in 338 ms on localhost (1/1)
+16/09/19 21:58:12 INFO scheduler.TaskSchedulerImpl: Removed TaskSet 1.0, whose tasks have all completed, from pool
+16/09/19 21:58:12 INFO scheduler.StatsReportListener: task runtime:(count: 1, mean: 338.000000, stdev: 0.000000, max: 338.000000, min: 338.000000)
+16/09/19 21:58:12 INFO scheduler.StatsReportListener:   0%      5%      10%     25%     50%     75%     90%     95%     100%
+16/09/19 21:58:12 INFO scheduler.StatsReportListener:   338.0 ms        338.0 ms        338.0 ms        338.0 ms        338.0 ms        338.0 ms        338.0 ms       338.0 ms 338.0 ms
+16/09/19 21:58:12 INFO scheduler.StatsReportListener: task result size:(count: 1, mean: 2779.000000, stdev: 0.000000, max: 2779.000000, min: 2779.000000)
+16/09/19 21:58:12 INFO scheduler.StatsReportListener:   0%      5%      10%     25%     50%     75%     90%     95%     100%
+16/09/19 21:58:12 INFO scheduler.StatsReportListener:   2.7 KB  2.7 KB  2.7 KB  2.7 KB  2.7 KB  2.7 KB  2.7 KB  2.7 KB  2.7 KB
+Daley Blind     Midfielder      1990-03-09      Netherlands
+Alexander B�ttner       Defender        1989-02-11      Netherlands
+Jordi Cruyff    Midfielder      1974-02-09      Netherlands
+Memphis Depay   Forward 1994-02-13      Netherlands
+Timothy Fosu-Mensah     Defender        1998-01-02      Netherlands
+Arnold M�       Midfielder      1951-06-02      Netherlands
+16/09/19 21:58:12 INFO scheduler.StatsReportListener: executor (non-fetch) time pct: (count: 1, mean: 79.881657, stdev: 0.000000, max: 79.881657, min: 79.881657)
+Jaap Stam       Defender        1972-07-17      Netherlands
+Raimond van der Gouw    Goalkeeper      1963-03-24      Netherlands
+Edwin van der Sar       Goalkeeper      1970-10-29      Netherlands
+16/09/19 21:58:12 INFO scheduler.StatsReportListener:   0%      5%      10%     25%     50%     75%     90%     95%     100%
+Ruud van Nistelrooy     Forward 1976-07-01      Netherlands
+16/09/19 21:58:12 INFO scheduler.StatsReportListener:   80 %    80 %    80 %    80 %    80 %    80 %    80 %    80 %    80 %
+16/09/19 21:58:12 INFO CliDriver: Time taken: 1.609 seconds, Fetched 10 row(s)
+spark-sql> 16/09/19 21:58:12 INFO scheduler.StatsReportListener: other time pct: (count: 1, mean: 20.118343, stdev: 0.000000, max: 20.118343, min: 20.118343)
+16/09/19 21:58:12 INFO scheduler.StatsReportListener:   0%      5%      10%     25%     50%     75%     90%     95%     100%
+16/09/19 21:58:12 INFO scheduler.StatsReportListener:   20 %    20 %    20 %    20 %    20 %    20 %    20 %    20 %    20 %
+;
+====================================================================================================
+====================================================================================================

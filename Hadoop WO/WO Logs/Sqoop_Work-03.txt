@@ -1,0 +1,1447 @@
+mysql> select * from customer;
++--------+--------------+-----------+-----------+------+-----------+---------------------+
+| custid | firstname    | lastname  | city      | age  | cust_bal  | row_ts              |
++--------+--------------+-----------+-----------+------+-----------+---------------------+
+|      1 | Arun         | Kumar     | chennai   |   33 |  75000.00 | 2016-06-18 22:50:29 |
+|      2 | srini        | vasan     | chennai   |   33 |  75000.00 | 2016-06-18 22:50:29 |
+|      3 | vasu         | devan     | banglore  |   39 |  65000.00 | 2016-06-18 22:50:54 |
+|      7 | Deepak Kumar | Mahadevan | chennai   |   27 |  75000.00 | 2016-06-18 22:50:29 |
+|      8 | Lionel       | Messi     | Barcelona |   28 | 275000.00 | 2016-06-18 22:52:03 |
+|      4 | mohamed      | imran     | hyderabad |   33 |  60000.00 | 2016-06-18 22:51:13 |
+|      5 | arun         | basker    | chennai   |   23 |  75000.00 | 2016-06-18 22:50:29 |
+|      6 | ramesh       | babu      | manglore  |   39 |  35000.00 | 2016-06-18 22:51:35 |
+|      9 | Christiano   | Ronaldo   | Madrid    |   31 | 300000.00 | 2016-06-18 22:52:18 |
+|     10 | Wayne        | Rooney    | ManUtd    |   30 | 225000.00 | 2016-06-18 22:52:32 |
++--------+--------------+-----------+-----------+------+-----------+---------------------+
+10 rows in set (0.11 sec)
+
+[hduser@Inceptez ~]$ sqoop import --connect jdbc:mysql://localhost/DKMDB01 --username root --P --table customer --split-by custid --m 1 --direct --target-dir inc_imp_lm;
+Enter password: 
+16/06/19 00:02:55 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `customer` AS t LIMIT 1
+16/06/19 00:02:56 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `customer` AS t LIMIT 1
+16/06/19 00:03:01 INFO db.DBInputFormat: Using read commited transaction isolation
+16/06/19 00:03:01 INFO mapreduce.JobSubmitter: number of splits:1
+16/06/19 00:03:01 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1466257336502_0009
+16/06/19 00:03:02 INFO impl.YarnClientImpl: Submitted application application_1466257336502_0009
+16/06/19 00:03:02 INFO mapreduce.Job: The url to track the job: http://Inceptez:8088/proxy/application_1466257336502_0009/
+16/06/19 00:03:02 INFO mapreduce.Job: Running job: job_1466257336502_0009
+16/06/19 00:03:11 INFO mapreduce.Job: Job job_1466257336502_0009 running in uber mode : false
+16/06/19 00:03:11 INFO mapreduce.Job:  map 0% reduce 0%
+16/06/19 00:03:19 INFO mapreduce.Job:  map 100% reduce 0%
+16/06/19 00:03:19 INFO mapreduce.Job: Job job_1466257336502_0009 completed successfully
+16/06/19 00:03:19 INFO mapreduce.Job: Counters: 30
+16/06/19 00:03:19 INFO mapreduce.ImportJobBase: Retrieved 10 records.
+
+[hduser@Inceptez ~]$ hdfs dfs -ls -R inc_imp_lm
+-rw-r--r--   1 hduser supergroup          0 2016-06-19 00:03 inc_imp_lm/_SUCCESS
+-rw-r--r--   1 hduser supergroup        568 2016-06-19 00:03 inc_imp_lm/part-m-00000
+[hduser@Inceptez ~]$ hdfs dfs -cat inc_imp_lm/p*
+1,Arun,Kumar,chennai,33,75000.00,2016-06-18 17:20:29
+2,srini,vasan,chennai,33,75000.00,2016-06-18 17:20:29
+3,vasu,devan,banglore,39,65000.00,2016-06-18 17:20:54
+7,Deepak Kumar,Mahadevan,chennai,27,75000.00,2016-06-18 17:20:29
+8,Lionel,Messi,Barcelona,28,275000.00,2016-06-18 17:22:03
+4,mohamed,imran,hyderabad,33,60000.00,2016-06-18 17:21:13
+5,arun,basker,chennai,23,75000.00,2016-06-18 17:20:29
+6,ramesh,babu,manglore,39,35000.00,2016-06-18 17:21:35
+9,Christiano,Ronaldo,Madrid,31,300000.00,2016-06-18 17:22:18
+10,Wayne,Rooney,ManUtd,30,225000.00,2016-06-18 17:22:32
+
+[hduser@Inceptez ~]$ sqoop import --connect jdbc:mysql://localhost/DKMDB01 --username root --P --table customer --m 1 --direct --target-dir inc_imp_lm --incremental append --check-column custid --last-value 9;
+Enter password: 
+16/06/19 00:08:11 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `customer` AS t LIMIT 1
+16/06/19 00:08:11 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `customer` AS t LIMIT 1
+16/06/19 00:08:15 INFO tool.ImportTool: Maximal id query for free form incremental import: SELECT MAX(`custid`) FROM customer
+16/06/19 00:08:15 INFO tool.ImportTool: Incremental import based on column `custid`
+16/06/19 00:08:15 INFO tool.ImportTool: Lower bound value: 9
+16/06/19 00:08:15 INFO tool.ImportTool: Upper bound value: 10
+16/06/19 00:08:16 INFO db.DBInputFormat: Using read commited transaction isolation
+16/06/19 00:08:16 INFO mapreduce.JobSubmitter: number of splits:1
+16/06/19 00:08:16 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1466257336502_0010
+16/06/19 00:08:17 INFO impl.YarnClientImpl: Submitted application application_1466257336502_0010
+16/06/19 00:08:17 INFO mapreduce.Job: The url to track the job: http://Inceptez:8088/proxy/application_1466257336502_0010/
+16/06/19 00:08:17 INFO mapreduce.Job: Running job: job_1466257336502_0010
+16/06/19 00:08:26 INFO mapreduce.Job: Job job_1466257336502_0010 running in uber mode : false
+16/06/19 00:08:26 INFO mapreduce.Job:  map 0% reduce 0%
+16/06/19 00:08:33 INFO mapreduce.Job:  map 100% reduce 0%
+16/06/19 00:08:34 INFO mapreduce.Job: Job job_1466257336502_0010 completed successfully
+16/06/19 00:08:34 INFO mapreduce.Job: Counters: 30
+16/06/19 00:08:34 INFO mapreduce.ImportJobBase: Retrieved 1 records.
+16/06/19 00:08:34 INFO util.AppendUtils: Appending to directory inc_imp_lm
+16/06/19 00:08:34 INFO util.AppendUtils: Using found partition 1
+16/06/19 00:08:34 INFO tool.ImportTool: Incremental import complete! To run another incremental import of all data following this import, supply the following arguments:
+16/06/19 00:08:34 INFO tool.ImportTool:  --incremental append
+16/06/19 00:08:34 INFO tool.ImportTool:   --check-column custid
+16/06/19 00:08:34 INFO tool.ImportTool:   --last-value 10
+16/06/19 00:08:34 INFO tool.ImportTool: (Consider saving this with 'sqoop job --create')
+
+[hduser@Inceptez ~]$ hdfs dfs -ls -R inc_imp_lm
+-rw-r--r--   1 hduser supergroup          0 2016-06-19 00:03 inc_imp_lm/_SUCCESS
+-rw-r--r--   1 hduser supergroup        568 2016-06-19 00:03 inc_imp_lm/part-m-00000
+-rw-r--r--   1 hduser supergroup         56 2016-06-19 00:08 inc_imp_lm/part-m-00001
+[hduser@Inceptez ~]$ hdfs dfs -cat inc_imp_lm/p*1
+10,Wayne,Rooney,ManUtd,30,225000.00,2016-06-18 17:22:32
+
+[hduser@Inceptez ~]$ sqoop import --connect jdbc:mysql://localhost/DKMDB01 --username root --P --table customer --m 1 --direct --target-dir inc_imp_lm --incremental append --check-column custid --last-value 10;
+Enter password: 
+16/06/19 00:11:49 INFO tool.ImportTool: Maximal id query for free form incremental import: SELECT MAX(`custid`) FROM customer
+16/06/19 00:11:49 INFO tool.ImportTool: Incremental import based on column `custid`
+16/06/19 00:11:49 INFO tool.ImportTool: No new rows detected since last import.
+
+[hduser@Inceptez ~]$ sqoop import --connect jdbc:mysql://localhost/DKMDB01 --username root --P --table customer --m 1 --direct --target-dir inc_imp_lm --incremental lastmodified --check-column row_ts --last-value '2016-06-18 22:52:00';
+Enter password: 
+16/06/19 00:14:22 ERROR tool.ImportTool: Error during import: --merge-key or --append is required when using --incremental lastmodified and the output directory exists.
+
+[hduser@Inceptez ~]$ sqoop import --connect jdbc:mysql://localhost/DKMDB01 --username root --password root --table customer --m 1 --direct --target-dir inc_imp_lm1 --incremental lastmodified --check-column row_ts --last-value '2016-06-18 22:52:00';
+16/06/19 00:17:29 WARN tool.BaseSqoopTool: Setting your password on the command-line is insecure. Consider using -P instead.
+16/06/19 00:17:34 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `customer` AS t LIMIT 1
+16/06/19 00:17:34 INFO tool.ImportTool: Incremental import based on column `row_ts`
+16/06/19 00:17:34 INFO tool.ImportTool: Lower bound value: '2016-06-18 22:52:00'
+16/06/19 00:17:34 INFO tool.ImportTool: Upper bound value: '2016-06-19 00:17:34.0'
+16/06/19 00:17:36 INFO db.DBInputFormat: Using read commited transaction isolation
+16/06/19 00:17:36 INFO mapreduce.JobSubmitter: number of splits:1
+16/06/19 00:17:36 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1466257336502_0011
+16/06/19 00:17:36 INFO impl.YarnClientImpl: Submitted application application_1466257336502_0011
+16/06/19 00:17:36 INFO mapreduce.Job: The url to track the job: http://Inceptez:8088/proxy/application_1466257336502_0011/
+16/06/19 00:17:36 INFO mapreduce.Job: Running job: job_1466257336502_0011
+16/06/19 00:17:46 INFO mapreduce.Job: Job job_1466257336502_0011 running in uber mode : false
+16/06/19 00:17:46 INFO mapreduce.Job:  map 0% reduce 0%
+16/06/19 00:17:54 INFO mapreduce.Job:  map 100% reduce 0%
+16/06/19 00:17:54 INFO mapreduce.Job: Job job_1466257336502_0011 completed successfully
+16/06/19 00:17:54 INFO mapreduce.Job: Counters: 30
+
+16/06/19 00:17:54 INFO mapreduce.ImportJobBase: Transferred 0 bytes in 20.1933 seconds (0 bytes/sec)
+16/06/19 00:17:54 INFO mapreduce.ImportJobBase: Retrieved 0 records.
+16/06/19 00:17:54 INFO tool.ImportTool: Incremental import complete! To run another incremental import of all data following this import, supply the following arguments:
+16/06/19 00:17:54 INFO tool.ImportTool:  --incremental lastmodified
+16/06/19 00:17:54 INFO tool.ImportTool:   --check-column row_ts
+16/06/19 00:17:54 INFO tool.ImportTool:   --last-value 2016-06-19 00:17:34.0
+16/06/19 00:17:54 INFO tool.ImportTool: (Consider saving this with 'sqoop job --create')
+
+[hduser@Inceptez ~]$ hdfs dfs -ls -R inc_imp_lm1
+16/06/19 00:20:35 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+-rw-r--r--   1 hduser supergroup          0 2016-06-19 00:17 inc_imp_lm1/_SUCCESS
+-rw-r--r--   1 hduser supergroup          0 2016-06-19 00:17 inc_imp_lm1/part-m-00000
+
+[hduser@Inceptez ~]$ sqoop import --connect jdbc:mysql://localhost/DKMDB01 --username root --password root --table customer --m 1 --direct --target-dir inc_imp_lm2 --incremental lastmodified --check-column row_ts --last-value '2016-06-18 22:52:00.0';
+16/06/19 00:21:54 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `customer` AS t LIMIT 1
+16/06/19 00:21:54 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `customer` AS t LIMIT 1
+16/06/19 00:21:58 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `customer` AS t LIMIT 1
+16/06/19 00:21:58 INFO tool.ImportTool: Incremental import based on column `row_ts`
+16/06/19 00:21:58 INFO tool.ImportTool: Lower bound value: '2016-06-18 22:52:00.0'
+16/06/19 00:21:58 INFO tool.ImportTool: Upper bound value: '2016-06-19 00:21:58.0'
+16/06/19 00:21:58 INFO manager.DirectMySQLManager: Beginning mysqldump fast path import
+16/06/19 00:21:58 INFO mapreduce.ImportJobBase: Beginning import of customer
+16/06/19 00:21:58 INFO Configuration.deprecation: mapred.jar is deprecated. Instead, use mapreduce.job.jar
+16/06/19 00:21:58 INFO Configuration.deprecation: mapred.map.tasks is deprecated. Instead, use mapreduce.job.maps
+16/06/19 00:21:58 INFO client.RMProxy: Connecting to ResourceManager at /0.0.0.0:8032
+16/06/19 00:22:00 INFO db.DBInputFormat: Using read commited transaction isolation
+16/06/19 00:22:00 INFO mapreduce.JobSubmitter: number of splits:1
+16/06/19 00:22:00 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1466257336502_0012
+16/06/19 00:22:00 INFO impl.YarnClientImpl: Submitted application application_1466257336502_0012
+16/06/19 00:22:00 INFO mapreduce.Job: The url to track the job: http://Inceptez:8088/proxy/application_1466257336502_0012/
+16/06/19 00:22:00 INFO mapreduce.Job: Running job: job_1466257336502_0012
+16/06/19 00:22:11 INFO mapreduce.Job: Job job_1466257336502_0012 running in uber mode : false
+16/06/19 00:22:11 INFO mapreduce.Job:  map 0% reduce 0%
+16/06/19 00:22:18 INFO mapreduce.Job:  map 100% reduce 0%
+16/06/19 00:22:18 INFO mapreduce.Job: Job job_1466257336502_0012 completed successfully
+16/06/19 00:22:18 INFO mapreduce.Job: Counters: 30
+
+16/06/19 00:22:18 INFO mapreduce.ImportJobBase: Transferred 0 bytes in 19.6672 seconds (0 bytes/sec)
+16/06/19 00:22:18 INFO mapreduce.ImportJobBase: Retrieved 0 records.
+16/06/19 00:22:18 INFO tool.ImportTool: Incremental import complete! To run another incremental import of all data following this import, supply the following arguments:
+16/06/19 00:22:18 INFO tool.ImportTool:  --incremental lastmodified
+16/06/19 00:22:18 INFO tool.ImportTool:   --check-column row_ts
+16/06/19 00:22:18 INFO tool.ImportTool:   --last-value 2016-06-19 00:21:58.0
+16/06/19 00:22:18 INFO tool.ImportTool: (Consider saving this with 'sqoop job --create')
+====================================================================================================
+[hduser@Inceptez ~]$ sqoop import --connect jdbc:mysql://localhost/DKMDB01 --username root --password root --table customer --m 1 --direct --target-dir inc_imp_lm3 --incremental lastmodified --check-column row_ts --last-value '0000-00-00 00:00:00.0' --merge-key custid --last-value 0;
+16/06/19 00:25:43 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `customer` AS t LIMIT 1
+16/06/19 00:25:43 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `customer` AS t LIMIT 1
+16/06/19 00:25:46 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `customer` AS t LIMIT 1
+16/06/19 00:25:46 INFO tool.ImportTool: Incremental import based on column `row_ts`
+16/06/19 00:25:46 INFO tool.ImportTool: Lower bound value: '0000-00-00 00:00:00.0'
+16/06/19 00:25:46 INFO tool.ImportTool: Upper bound value: '2016-06-19 00:25:46.0'
+16/06/19 00:25:46 INFO manager.DirectMySQLManager: Beginning mysqldump fast path import
+16/06/19 00:25:46 INFO mapreduce.ImportJobBase: Beginning import of customer
+16/06/19 00:25:46 INFO Configuration.deprecation: mapred.jar is deprecated. Instead, use mapreduce.job.jar
+16/06/19 00:25:46 INFO Configuration.deprecation: mapred.map.tasks is deprecated. Instead, use mapreduce.job.maps
+16/06/19 00:25:46 INFO client.RMProxy: Connecting to ResourceManager at /0.0.0.0:8032
+16/06/19 00:25:48 INFO db.DBInputFormat: Using read commited transaction isolation
+16/06/19 00:25:48 INFO mapreduce.JobSubmitter: number of splits:1
+16/06/19 00:25:48 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1466257336502_0013
+16/06/19 00:25:48 INFO impl.YarnClientImpl: Submitted application application_1466257336502_0013
+16/06/19 00:25:49 INFO mapreduce.Job: The url to track the job: http://Inceptez:8088/proxy/application_1466257336502_0013/
+16/06/19 00:25:49 INFO mapreduce.Job: Running job: job_1466257336502_0013
+16/06/19 00:25:58 INFO mapreduce.Job: Job job_1466257336502_0013 running in uber mode : false
+16/06/19 00:25:58 INFO mapreduce.Job:  map 0% reduce 0%
+16/06/19 00:26:06 INFO mapreduce.Job:  map 100% reduce 0%
+16/06/19 00:26:06 INFO mapreduce.Job: Job job_1466257336502_0013 completed successfully
+16/06/19 00:26:06 INFO mapreduce.Job: Counters: 30
+	File System Counters
+		FILE: Number of bytes read=0
+		FILE: Number of bytes written=115219
+		FILE: Number of read operations=0
+		FILE: Number of large read operations=0
+		FILE: Number of write operations=0
+		HDFS: Number of bytes read=87
+		HDFS: Number of bytes written=568
+		HDFS: Number of read operations=4
+		HDFS: Number of large read operations=0
+		HDFS: Number of write operations=2
+	Job Counters 
+		Launched map tasks=1
+		Other local map tasks=1
+		Total time spent by all maps in occupied slots (ms)=5697
+		Total time spent by all reduces in occupied slots (ms)=0
+		Total time spent by all map tasks (ms)=5697
+		Total vcore-seconds taken by all map tasks=5697
+		Total megabyte-seconds taken by all map tasks=5833728
+	Map-Reduce Framework
+		Map input records=1
+		Map output records=10
+		Input split bytes=87
+		Spilled Records=0
+		Failed Shuffles=0
+		Merged Map outputs=0
+		GC time elapsed (ms)=89
+		CPU time spent (ms)=1050
+		Physical memory (bytes) snapshot=103194624
+		Virtual memory (bytes) snapshot=976662528
+		Total committed heap usage (bytes)=23855104
+	File Input Format Counters 
+		Bytes Read=0
+	File Output Format Counters 
+		Bytes Written=568
+16/06/19 00:26:06 INFO mapreduce.ImportJobBase: Transferred 568 bytes in 19.8129 seconds (28.6682 bytes/sec)
+16/06/19 00:26:06 INFO mapreduce.ImportJobBase: Retrieved 10 records.
+16/06/19 00:26:06 INFO tool.ImportTool: Incremental import complete! To run another incremental import of all data following this import, supply the following arguments:
+16/06/19 00:26:06 INFO tool.ImportTool:  --incremental lastmodified
+16/06/19 00:26:06 INFO tool.ImportTool:   --check-column row_ts
+16/06/19 00:26:06 INFO tool.ImportTool:   --last-value 2016-06-19 00:25:46.0
+16/06/19 00:26:06 INFO tool.ImportTool: (Consider saving this with 'sqoop job --create')
+
+[hduser@Inceptez ~]$ hdfs dfs -ls -R inc_imp_lm3
+-rw-r--r--   1 hduser supergroup          0 2016-06-19 00:26 inc_imp_lm3/_SUCCESS
+-rw-r--r--   1 hduser supergroup        568 2016-06-19 00:26 inc_imp_lm3/part-m-00000
+[hduser@Inceptez ~]$ hdfs dfs -cat inc_imp_lm3/p*
+1,Arun,Kumar,chennai,33,75000.00,2016-06-18 17:20:29
+2,srini,vasan,chennai,33,75000.00,2016-06-18 17:20:29
+3,vasu,devan,banglore,39,65000.00,2016-06-18 17:20:54
+7,Deepak Kumar,Mahadevan,chennai,27,75000.00,2016-06-18 17:20:29
+8,Lionel,Messi,Barcelona,28,275000.00,2016-06-18 17:22:03
+4,mohamed,imran,hyderabad,33,60000.00,2016-06-18 17:21:13
+5,arun,basker,chennai,23,75000.00,2016-06-18 17:20:29
+6,ramesh,babu,manglore,39,35000.00,2016-06-18 17:21:35
+9,Christiano,Ronaldo,Madrid,31,300000.00,2016-06-18 17:22:18
+10,Wayne,Rooney,ManUtd,30,225000.00,2016-06-18 17:22:32
+
+====================================================================================================
+mysql> update customer set age = 34 where custid = 3;
+Query OK, 1 row affected (0.06 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from customer;
++--------+--------------+-----------+-----------+------+-----------+---------------------+
+| custid | firstname    | lastname  | city      | age  | cust_bal  | row_ts              |
++--------+--------------+-----------+-----------+------+-----------+---------------------+
+|      1 | Arun         | Kumar     | chennai   |   33 |  75000.00 | 2016-06-18 22:50:29 |
+|      2 | srini        | vasan     | chennai   |   33 |  75000.00 | 2016-06-18 22:50:29 |
+|      3 | vasu         | devan     | banglore  |   34 |  65000.00 | 2016-06-19 00:29:54 |
+|      7 | Deepak Kumar | Mahadevan | chennai   |   27 |  75000.00 | 2016-06-18 22:50:29 |
+|      8 | Lionel       | Messi     | Barcelona |   28 | 275000.00 | 2016-06-18 22:52:03 |
+|      4 | mohamed      | imran     | hyderabad |   33 |  60000.00 | 2016-06-18 22:51:13 |
+|      5 | arun         | basker    | chennai   |   23 |  75000.00 | 2016-06-18 22:50:29 |
+|      6 | ramesh       | babu      | manglore  |   39 |  35000.00 | 2016-06-18 22:51:35 |
+|      9 | Christiano   | Ronaldo   | Madrid    |   31 | 300000.00 | 2016-06-18 22:52:18 |
+|     10 | Wayne        | Rooney    | ManUtd    |   30 | 225000.00 | 2016-06-18 22:52:32 |
++--------+--------------+-----------+-----------+------+-----------+---------------------+
+10 rows in set (0.00 sec)
+
+[hduser@Inceptez ~]$ sqoop import --connect jdbc:mysql://localhost/DKMDB01 --username root --password root --table customer --m 1 --direct --target-dir inc_imp_lm3 --incremental lastmodified --check-column row_ts --last-value '2016-06-19 00:25:46.0' --merge-key custid --last-value 10;
+16/06/19 00:31:34 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `customer` AS t LIMIT 1
+16/06/19 00:31:34 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `customer` AS t LIMIT 1
+16/06/19 00:31:38 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `customer` AS t LIMIT 1
+16/06/19 00:31:38 INFO tool.ImportTool: Incremental import based on column `row_ts`
+16/06/19 00:31:38 INFO tool.ImportTool: Lower bound value: '2016-06-19 00:25:46.0'
+16/06/19 00:31:38 INFO tool.ImportTool: Upper bound value: '2016-06-19 00:31:38.0'
+16/06/19 00:31:39 INFO db.DBInputFormat: Using read commited transaction isolation
+16/06/19 00:31:39 INFO mapreduce.JobSubmitter: number of splits:1
+16/06/19 00:31:40 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1466257336502_0014
+16/06/19 00:31:40 INFO impl.YarnClientImpl: Submitted application application_1466257336502_0014
+16/06/19 00:31:40 INFO mapreduce.Job: The url to track the job: http://Inceptez:8088/proxy/application_1466257336502_0014/
+16/06/19 00:31:40 INFO mapreduce.Job: Running job: job_1466257336502_0014
+16/06/19 00:31:49 INFO mapreduce.Job: Job job_1466257336502_0014 running in uber mode : false
+16/06/19 00:31:49 INFO mapreduce.Job:  map 0% reduce 0%
+16/06/19 00:31:57 INFO mapreduce.Job:  map 100% reduce 0%
+16/06/19 00:31:57 INFO mapreduce.Job: Job job_1466257336502_0014 completed successfully
+16/06/19 00:31:58 INFO mapreduce.Job: Counters: 30
+	File System Counters
+		FILE: Number of bytes read=0
+		FILE: Number of bytes written=115219
+		FILE: Number of read operations=0
+		FILE: Number of large read operations=0
+		FILE: Number of write operations=0
+		HDFS: Number of bytes read=87
+		HDFS: Number of bytes written=0
+		HDFS: Number of read operations=4
+		HDFS: Number of large read operations=0
+		HDFS: Number of write operations=2
+	Job Counters 
+		Launched map tasks=1
+		Other local map tasks=1
+		Total time spent by all maps in occupied slots (ms)=5342
+		Total time spent by all reduces in occupied slots (ms)=0
+		Total time spent by all map tasks (ms)=5342
+		Total vcore-seconds taken by all map tasks=5342
+		Total megabyte-seconds taken by all map tasks=5470208
+	Map-Reduce Framework
+		Map input records=1
+		Map output records=0
+		Input split bytes=87
+		Spilled Records=0
+		Failed Shuffles=0
+		Merged Map outputs=0
+		GC time elapsed (ms)=46
+		CPU time spent (ms)=820
+		Physical memory (bytes) snapshot=107606016
+		Virtual memory (bytes) snapshot=976515072
+		Total committed heap usage (bytes)=23789568
+	File Input Format Counters 
+		Bytes Read=0
+	File Output Format Counters 
+		Bytes Written=0
+16/06/19 00:31:58 INFO mapreduce.ImportJobBase: Transferred 0 bytes in 19.8079 seconds (0 bytes/sec)
+16/06/19 00:31:58 INFO mapreduce.ImportJobBase: Retrieved 0 records.
+16/06/19 00:31:58 WARN mapreduce.ExportJobBase: IOException checking input file header: java.io.EOFException
+16/06/19 00:31:58 INFO Configuration.deprecation: mapred.output.key.class is deprecated. Instead, use mapreduce.job.output.key.class
+16/06/19 00:31:58 INFO client.RMProxy: Connecting to ResourceManager at /0.0.0.0:8032
+16/06/19 00:31:58 INFO input.FileInputFormat: Total input paths to process : 2
+16/06/19 00:31:58 INFO mapreduce.JobSubmitter: number of splits:2
+16/06/19 00:31:59 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1466257336502_0015
+16/06/19 00:31:59 INFO impl.YarnClientImpl: Submitted application application_1466257336502_0015
+16/06/19 00:31:59 INFO mapreduce.Job: The url to track the job: http://Inceptez:8088/proxy/application_1466257336502_0015/
+16/06/19 00:31:59 INFO mapreduce.Job: Running job: job_1466257336502_0015
+16/06/19 00:32:11 INFO mapreduce.Job: Job job_1466257336502_0015 running in uber mode : false
+16/06/19 00:32:11 INFO mapreduce.Job:  map 0% reduce 0%
+16/06/19 00:32:26 INFO mapreduce.Job:  map 100% reduce 0%
+16/06/19 00:32:43 INFO mapreduce.Job:  map 100% reduce 100%
+16/06/19 00:32:44 INFO mapreduce.Job: Job job_1466257336502_0015 completed successfully
+16/06/19 00:32:44 INFO mapreduce.Job: Counters: 50
+	File System Counters
+		FILE: Number of bytes read=771
+		FILE: Number of bytes written=344576
+		FILE: Number of read operations=0
+		FILE: Number of large read operations=0
+		FILE: Number of write operations=0
+		HDFS: Number of bytes read=853
+		HDFS: Number of bytes written=588
+		HDFS: Number of read operations=9
+		HDFS: Number of large read operations=0
+		HDFS: Number of write operations=2
+	Job Counters 
+		Launched map tasks=2
+		Launched reduce tasks=1
+		Other local map tasks=1
+		Data-local map tasks=1
+		Total time spent by all maps in occupied slots (ms)=27107
+		Total time spent by all reduces in occupied slots (ms)=13319
+		Total time spent by all map tasks (ms)=27107
+		Total time spent by all reduce tasks (ms)=13319
+		Total vcore-seconds taken by all map tasks=27107
+		Total vcore-seconds taken by all reduce tasks=13319
+		Total megabyte-seconds taken by all map tasks=27757568
+		Total megabyte-seconds taken by all reduce tasks=13638656
+	Map-Reduce Framework
+		Map input records=10
+		Map output records=10
+		Map output bytes=745
+		Map output materialized bytes=777
+		Input split bytes=285
+		Combine input records=0
+		Combine output records=0
+		Reduce input groups=10
+		Reduce shuffle bytes=777
+		Reduce input records=10
+		Reduce output records=10
+		Spilled Records=20
+		Shuffled Maps =2
+		Failed Shuffles=0
+		Merged Map outputs=2
+		GC time elapsed (ms)=253
+		CPU time spent (ms)=2900
+		Physical memory (bytes) snapshot=501268480
+		Virtual memory (bytes) snapshot=2923147264
+		Total committed heap usage (bytes)=281223168
+	Shuffle Errors
+		BAD_ID=0
+		CONNECTION=0
+		IO_ERROR=0
+		WRONG_LENGTH=0
+		WRONG_MAP=0
+		WRONG_REDUCE=0
+	File Input Format Counters 
+		Bytes Read=568
+	File Output Format Counters 
+		Bytes Written=588
+16/06/19 00:32:44 INFO tool.ImportTool: Incremental import complete! To run another incremental import of all data following this import, supply the following arguments:
+16/06/19 00:32:44 INFO tool.ImportTool:  --incremental lastmodified
+16/06/19 00:32:44 INFO tool.ImportTool:   --check-column row_ts
+16/06/19 00:32:44 INFO tool.ImportTool:   --last-value 2016-06-19 00:31:38.0
+16/06/19 00:32:44 INFO tool.ImportTool: (Consider saving this with 'sqoop job --create')
+[hduser@Inceptez ~]$ hdfs dfs -ls -R inc_imp_lm3
+-rw-r--r--   1 hduser supergroup          0 2016-06-19 00:32 inc_imp_lm3/_SUCCESS
+-rw-r--r--   1 hduser supergroup        588 2016-06-19 00:32 inc_imp_lm3/part-r-00000
+[hduser@Inceptez ~]$ hdfs dfs -cat inc_imp_lm3/p*
+1,Arun,Kumar,chennai,33,75000.00,2016-06-18 17:20:29.0
+10,Wayne,Rooney,ManUtd,30,225000.00,2016-06-18 17:22:32.0
+2,srini,vasan,chennai,33,75000.00,2016-06-18 17:20:29.0
+3,vasu,devan,banglore,39,65000.00,2016-06-18 17:20:54.0
+4,mohamed,imran,hyderabad,33,60000.00,2016-06-18 17:21:13.0
+5,arun,basker,chennai,23,75000.00,2016-06-18 17:20:29.0
+6,ramesh,babu,manglore,39,35000.00,2016-06-18 17:21:35.0
+7,Deepak Kumar,Mahadevan,chennai,27,75000.00,2016-06-18 17:20:29.0
+8,Lionel,Messi,Barcelona,28,275000.00,2016-06-18 17:22:03.0
+9,Christiano,Ronaldo,Madrid,31,300000.00,2016-06-18 17:22:18.0
+
+[hduser@Inceptez ~]$ sqoop import --connect jdbc:mysql://localhost/DKMDB01 --username root --password root --table customer --m 1 --direct --target-dir inc_imp_lm3 --incremental lastmodified --check-column row_ts --last-value '2016-06-19 00:25:46.0' --merge-key custid;
+16/06/19 00:36:46 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `customer` AS t LIMIT 1
+16/06/19 00:36:47 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `customer` AS t LIMIT 1
+16/06/19 00:36:51 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `customer` AS t LIMIT 1
+16/06/19 00:36:51 INFO tool.ImportTool: Incremental import based on column `row_ts`
+16/06/19 00:36:51 INFO tool.ImportTool: Lower bound value: '2016-06-19 00:25:46.0'
+16/06/19 00:36:51 INFO tool.ImportTool: Upper bound value: '2016-06-19 00:36:51.0'
+16/06/19 00:36:52 INFO db.DBInputFormat: Using read commited transaction isolation
+16/06/19 00:36:52 INFO mapreduce.JobSubmitter: number of splits:1
+16/06/19 00:36:53 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1466257336502_0016
+16/06/19 00:36:53 INFO impl.YarnClientImpl: Submitted application application_1466257336502_0016
+16/06/19 00:36:53 INFO mapreduce.Job: The url to track the job: http://Inceptez:8088/proxy/application_1466257336502_0016/
+16/06/19 00:36:53 INFO mapreduce.Job: Running job: job_1466257336502_0016
+16/06/19 00:37:02 INFO mapreduce.Job: Job job_1466257336502_0016 running in uber mode : false
+16/06/19 00:37:02 INFO mapreduce.Job:  map 0% reduce 0%
+16/06/19 00:37:11 INFO mapreduce.Job:  map 100% reduce 0%
+16/06/19 00:37:11 INFO mapreduce.Job: Job job_1466257336502_0016 completed successfully
+16/06/19 00:37:11 INFO mapreduce.Job: Counters: 30
+	File System Counters
+		FILE: Number of bytes read=0
+		FILE: Number of bytes written=115219
+		FILE: Number of read operations=0
+		FILE: Number of large read operations=0
+		FILE: Number of write operations=0
+		HDFS: Number of bytes read=87
+		HDFS: Number of bytes written=0
+		HDFS: Number of read operations=4
+		HDFS: Number of large read operations=0
+		HDFS: Number of write operations=2
+	Job Counters 
+		Launched map tasks=1
+		Other local map tasks=1
+		Total time spent by all maps in occupied slots (ms)=5561
+		Total time spent by all reduces in occupied slots (ms)=0
+		Total time spent by all map tasks (ms)=5561
+		Total vcore-seconds taken by all map tasks=5561
+		Total megabyte-seconds taken by all map tasks=5694464
+	Map-Reduce Framework
+		Map input records=1
+		Map output records=0
+		Input split bytes=87
+		Spilled Records=0
+		Failed Shuffles=0
+		Merged Map outputs=0
+		GC time elapsed (ms)=42
+		CPU time spent (ms)=800
+		Physical memory (bytes) snapshot=99274752
+		Virtual memory (bytes) snapshot=976515072
+		Total committed heap usage (bytes)=23789568
+	File Input Format Counters 
+		Bytes Read=0
+	File Output Format Counters 
+		Bytes Written=0
+16/06/19 00:37:11 INFO mapreduce.ImportJobBase: Transferred 0 bytes in 20.1302 seconds (0 bytes/sec)
+16/06/19 00:37:11 INFO mapreduce.ImportJobBase: Retrieved 0 records.
+16/06/19 00:37:11 WARN mapreduce.ExportJobBase: IOException checking input file header: java.io.EOFException
+16/06/19 00:37:11 INFO Configuration.deprecation: mapred.output.key.class is deprecated. Instead, use mapreduce.job.output.key.class
+16/06/19 00:37:11 INFO client.RMProxy: Connecting to ResourceManager at /0.0.0.0:8032
+16/06/19 00:37:11 INFO input.FileInputFormat: Total input paths to process : 2
+16/06/19 00:37:11 INFO mapreduce.JobSubmitter: number of splits:2
+16/06/19 00:37:12 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1466257336502_0017
+16/06/19 00:37:12 INFO impl.YarnClientImpl: Submitted application application_1466257336502_0017
+16/06/19 00:37:12 INFO mapreduce.Job: The url to track the job: http://Inceptez:8088/proxy/application_1466257336502_0017/
+16/06/19 00:37:12 INFO mapreduce.Job: Running job: job_1466257336502_0017
+16/06/19 00:37:26 INFO mapreduce.Job: Job job_1466257336502_0017 running in uber mode : false
+16/06/19 00:37:26 INFO mapreduce.Job:  map 0% reduce 0%
+16/06/19 00:37:39 INFO mapreduce.Job:  map 100% reduce 0%
+16/06/19 00:37:48 INFO mapreduce.Job:  map 100% reduce 100%
+16/06/19 00:37:48 INFO mapreduce.Job: Job job_1466257336502_0017 completed successfully
+16/06/19 00:37:48 INFO mapreduce.Job: Counters: 50
+	File System Counters
+		FILE: Number of bytes read=771
+		FILE: Number of bytes written=344576
+		FILE: Number of read operations=0
+		FILE: Number of large read operations=0
+		FILE: Number of write operations=0
+		HDFS: Number of bytes read=873
+		HDFS: Number of bytes written=588
+		HDFS: Number of read operations=9
+		HDFS: Number of large read operations=0
+		HDFS: Number of write operations=2
+	Job Counters 
+		Launched map tasks=2
+		Launched reduce tasks=1
+		Other local map tasks=1
+		Data-local map tasks=1
+		Total time spent by all maps in occupied slots (ms)=21942
+		Total time spent by all reduces in occupied slots (ms)=6565
+		Total time spent by all map tasks (ms)=21942
+		Total time spent by all reduce tasks (ms)=6565
+		Total vcore-seconds taken by all map tasks=21942
+		Total vcore-seconds taken by all reduce tasks=6565
+		Total megabyte-seconds taken by all map tasks=22468608
+		Total megabyte-seconds taken by all reduce tasks=6722560
+	Map-Reduce Framework
+		Map input records=10
+		Map output records=10
+		Map output bytes=745
+		Map output materialized bytes=777
+		Input split bytes=285
+		Combine input records=0
+		Combine output records=0
+		Reduce input groups=10
+		Reduce shuffle bytes=777
+		Reduce input records=10
+		Reduce output records=10
+		Spilled Records=20
+		Shuffled Maps =2
+		Failed Shuffles=0
+		Merged Map outputs=2
+		GC time elapsed (ms)=278
+		CPU time spent (ms)=1940
+		Physical memory (bytes) snapshot=505413632
+		Virtual memory (bytes) snapshot=2923282432
+		Total committed heap usage (bytes)=281223168
+	Shuffle Errors
+		BAD_ID=0
+		CONNECTION=0
+		IO_ERROR=0
+		WRONG_LENGTH=0
+		WRONG_MAP=0
+		WRONG_REDUCE=0
+	File Input Format Counters 
+		Bytes Read=588
+	File Output Format Counters 
+		Bytes Written=588
+16/06/19 00:37:48 INFO tool.ImportTool: Incremental import complete! To run another incremental import of all data following this import, supply the following arguments:
+16/06/19 00:37:48 INFO tool.ImportTool:  --incremental lastmodified
+16/06/19 00:37:48 INFO tool.ImportTool:   --check-column row_ts
+16/06/19 00:37:48 INFO tool.ImportTool:   --last-value 2016-06-19 00:36:51.0
+16/06/19 00:37:48 INFO tool.ImportTool: (Consider saving this with 'sqoop job --create')
+[hduser@Inceptez ~]$ hdfs dfs -ls -R inc_imp_lm3
+16/06/19 00:37:58 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+-rw-r--r--   1 hduser supergroup          0 2016-06-19 00:37 inc_imp_lm3/_SUCCESS
+-rw-r--r--   1 hduser supergroup        588 2016-06-19 00:37 inc_imp_lm3/part-r-00000
+[hduser@Inceptez ~]$ hdfs dfs -cat inc_imp_lm3/p*
+16/06/19 00:38:08 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+1,Arun,Kumar,chennai,33,75000.00,2016-06-18 17:20:29.0
+10,Wayne,Rooney,ManUtd,30,225000.00,2016-06-18 17:22:32.0
+2,srini,vasan,chennai,33,75000.00,2016-06-18 17:20:29.0
+3,vasu,devan,banglore,39,65000.00,2016-06-18 17:20:54.0
+4,mohamed,imran,hyderabad,33,60000.00,2016-06-18 17:21:13.0
+5,arun,basker,chennai,23,75000.00,2016-06-18 17:20:29.0
+6,ramesh,babu,manglore,39,35000.00,2016-06-18 17:21:35.0
+7,Deepak Kumar,Mahadevan,chennai,27,75000.00,2016-06-18 17:20:29.0
+8,Lionel,Messi,Barcelona,28,275000.00,2016-06-18 17:22:03.0
+9,Christiano,Ronaldo,Madrid,31,300000.00,2016-06-18 17:22:18.0
+====================================================================================================
+mysql> insert into customer select custid,firstname,lastname,city,age,transactamt,current_timestamp from test.customer;
+Query OK, 10 rows affected (0.00 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql> select * from customer;
++--------+--------------+-----------+-----------+------+------------+---------------------+
+| custid | firstname    | lastname  | city      | age  | cust_bal   | row_ts              |
++--------+--------------+-----------+-----------+------+------------+---------------------+
+|      1 | Arun         | Kumar     | chennai   |   33 |  100000.00 | 2016-06-19 01:19:56 |
+|      2 | srini        | vasan     | chennai   |   33 |   10000.00 | 2016-06-19 01:19:56 |
+|      3 | vasu         | devan     | banglore  |   39 |   90000.00 | 2016-06-19 01:19:56 |
+|      7 | Deepak Kumar | Mahadevan | chennai   |   27 |  100000.00 | 2016-06-19 01:19:56 |
+|      8 | Lionel       | Messi     | Barcelona |   28 | 1000000.00 | 2016-06-19 01:19:56 |
+|      4 | mohamed      | imran     | hyderabad |   33 |    1000.00 | 2016-06-19 01:19:56 |
+|      5 | arun         | basker    | chennai   |   23 |  200000.00 | 2016-06-19 01:19:56 |
+|      6 | ramesh       | babu      | manglore  |   39 |  100000.00 | 2016-06-19 01:19:56 |
+|      9 | Christiano   | Ronaldo   | Madrid    |   31 | 1100000.00 | 2016-06-19 01:19:56 |
+|     10 | Wayne        | Rooney    | ManUtd    |   30 |  900000.00 | 2016-06-19 01:19:56 |
++--------+--------------+-----------+-----------+------+------------+---------------------+
+10 rows in set (0.00 sec)
+
+[hduser@Inceptez ~]$ sqoop job --create inc_imp_lm -- import --connect jdbc:mysql://localhost/DKMDB01 --username root --password root --table customer --m 1 --direct --target-dir inc_imp_lm3_new --incremental lastmodified --check-column row_ts --merge-key custid;
+
+[hduser@Inceptez ~]$ sqoop job --exec inc_imp_lm
+Enter password: 
+16/06/19 01:23:38 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `customer` AS t LIMIT 1
+16/06/19 01:23:38 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `customer` AS t LIMIT 1
+16/06/19 01:23:47 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `customer` AS t LIMIT 1
+16/06/19 01:23:47 INFO tool.ImportTool: Incremental import based on column `row_ts`
+16/06/19 01:23:47 INFO tool.ImportTool: Upper bound value: '2016-06-19 01:23:47.0'
+16/06/19 01:23:51 INFO db.DBInputFormat: Using read commited transaction isolation
+16/06/19 01:23:51 INFO mapreduce.JobSubmitter: number of splits:1
+16/06/19 01:23:52 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1466257336502_0023
+16/06/19 01:23:53 INFO impl.YarnClientImpl: Submitted application application_1466257336502_0023
+16/06/19 01:23:53 INFO mapreduce.Job: The url to track the job: http://Inceptez:8088/proxy/application_1466257336502_0023/
+16/06/19 01:23:53 INFO mapreduce.Job: Running job: job_1466257336502_0023
+16/06/19 01:24:12 INFO mapreduce.Job: Job job_1466257336502_0023 running in uber mode : false
+16/06/19 01:24:12 INFO mapreduce.Job:  map 0% reduce 0%
+16/06/19 01:24:28 INFO mapreduce.Job:  map 100% reduce 0%
+16/06/19 01:24:29 INFO mapreduce.Job: Job job_1466257336502_0023 completed successfully
+16/06/19 01:24:29 INFO mapreduce.Job: Counters: 30
+	File System Counters
+		FILE: Number of bytes read=0
+		FILE: Number of bytes written=115428
+		FILE: Number of read operations=0
+		FILE: Number of large read operations=0
+		FILE: Number of write operations=0
+		HDFS: Number of bytes read=87
+		HDFS: Number of bytes written=573
+		HDFS: Number of read operations=4
+		HDFS: Number of large read operations=0
+		HDFS: Number of write operations=2
+	Job Counters 
+		Launched map tasks=1
+		Other local map tasks=1
+		Total time spent by all maps in occupied slots (ms)=13166
+		Total time spent by all reduces in occupied slots (ms)=0
+		Total time spent by all map tasks (ms)=13166
+		Total vcore-seconds taken by all map tasks=13166
+		Total megabyte-seconds taken by all map tasks=13481984
+	Map-Reduce Framework
+		Map input records=1
+		Map output records=10
+		Input split bytes=87
+		Spilled Records=0
+		Failed Shuffles=0
+		Merged Map outputs=0
+		GC time elapsed (ms)=186
+		CPU time spent (ms)=2120
+		Physical memory (bytes) snapshot=99495936
+		Virtual memory (bytes) snapshot=976515072
+		Total committed heap usage (bytes)=23855104
+	File Input Format Counters 
+		Bytes Read=0
+	File Output Format Counters 
+		Bytes Written=573
+16/06/19 01:24:29 INFO mapreduce.ImportJobBase: Transferred 573 bytes in 41.8247 seconds (13.7 bytes/sec)
+16/06/19 01:24:29 INFO mapreduce.ImportJobBase: Retrieved 10 records.
+16/06/19 01:24:29 INFO tool.ImportTool: Saving incremental import state to the metastore
+16/06/19 01:24:30 INFO tool.ImportTool: Updated data for job: inc_imp_lm
+
+[hduser@Inceptez ~]$ sqoop job --show inc_imp_lm
+Enter password: 
+Job: inc_imp_lm
+Tool: import
+Options:
+----------------------------
+verbose = false
+incremental.last.value = 2016-06-19 01:23:47.0
+db.connect.string = jdbc:mysql://localhost/DKMDB01
+codegen.output.delimiters.escape = 0
+codegen.output.delimiters.enclose.required = false
+codegen.input.delimiters.field = 0
+hbase.create.table = false
+db.require.password = true
+hdfs.append.dir = false
+db.table = customer
+codegen.input.delimiters.escape = 0
+import.fetch.size = null
+accumulo.create.table = false
+codegen.input.delimiters.enclose.required = false
+db.username = root
+codegen.output.delimiters.record = 10
+import.max.inline.lob.size = 16777216
+hbase.bulk.load.enabled = false
+hcatalog.create.table = false
+db.clear.staging.table = false
+incremental.col = row_ts
+codegen.input.delimiters.record = 0
+enable.compression = false
+hive.overwrite.table = false
+hive.import = false
+codegen.input.delimiters.enclose = 0
+accumulo.batch.size = 10240000
+hive.drop.delims = false
+codegen.output.delimiters.enclose = 0
+hdfs.delete-target.dir = false
+codegen.output.dir = .
+codegen.auto.compile.dir = true
+relaxed.isolation = false
+mapreduce.num.mappers = 1
+accumulo.max.latency = 5000
+import.direct.split.size = 0
+codegen.output.delimiters.field = 44
+export.new.update = UpdateOnly
+incremental.mode = DateLastModified
+hdfs.file.format = TextFile
+codegen.compile.dir = /tmp/sqoop-hduser/compile/c8d9f80a8eb4f71413f97903b7c9f7ce
+direct.import = true
+hdfs.target.dir = inc_imp_lm3_new
+hive.fail.table.exists = false
+merge.key.col = custid
+db.batch = false
+
+[hduser@Inceptez ~]$ hdfs dfs -ls -R inc_imp_lm3*
+-rw-r--r--   1 hduser supergroup          0 2016-06-19 01:24 inc_imp_lm3_new/_SUCCESS
+-rw-r--r--   1 hduser supergroup        573 2016-06-19 01:24 inc_imp_lm3_new/part-m-00000
+[hduser@Inceptez ~]$ hdfs dfs -cat inc_imp_lm3_new/p*
+1,Arun,Kumar,chennai,33,100000.00,2016-06-18 19:49:56
+2,srini,vasan,chennai,33,10000.00,2016-06-18 19:49:56
+3,vasu,devan,banglore,39,90000.00,2016-06-18 19:49:56
+7,Deepak Kumar,Mahadevan,chennai,27,100000.00,2016-06-18 19:49:56
+8,Lionel,Messi,Barcelona,28,1000000.00,2016-06-18 19:49:56
+4,mohamed,imran,hyderabad,33,1000.00,2016-06-18 19:49:56
+5,arun,basker,chennai,23,200000.00,2016-06-18 19:49:56
+6,ramesh,babu,manglore,39,100000.00,2016-06-18 19:49:56
+9,Christiano,Ronaldo,Madrid,31,1100000.00,2016-06-18 19:49:56
+10,Wayne,Rooney,ManUtd,30,900000.00,2016-06-18 19:49:56
+====================================================================================================
+mysql> insert into customer values (11,'Ryan','Giggs','ManUtd',40,125000,CURRENT_TIMESTAMP);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> update customer set age = 35 where custid = 3;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from customer;
++--------+--------------+-----------+-----------+------+------------+---------------------+
+| custid | firstname    | lastname  | city      | age  | cust_bal   | row_ts              |
++--------+--------------+-----------+-----------+------+------------+---------------------+
+|      1 | Arun         | Kumar     | chennai   |   33 |  100000.00 | 2016-06-19 01:19:56 |
+|      2 | srini        | vasan     | chennai   |   33 |   10000.00 | 2016-06-19 01:19:56 |
+|      3 | vasu         | devan     | banglore  |   35 |   90000.00 | 2016-06-19 01:29:23 |
+|      7 | Deepak Kumar | Mahadevan | chennai   |   27 |  100000.00 | 2016-06-19 01:19:56 |
+|      8 | Lionel       | Messi     | Barcelona |   28 | 1000000.00 | 2016-06-19 01:19:56 |
+|      4 | mohamed      | imran     | hyderabad |   33 |    1000.00 | 2016-06-19 01:19:56 |
+|      5 | arun         | basker    | chennai   |   23 |  200000.00 | 2016-06-19 01:19:56 |
+|      6 | ramesh       | babu      | manglore  |   39 |  100000.00 | 2016-06-19 01:19:56 |
+|      9 | Christiano   | Ronaldo   | Madrid    |   31 | 1100000.00 | 2016-06-19 01:19:56 |
+|     10 | Wayne        | Rooney    | ManUtd    |   30 |  900000.00 | 2016-06-19 01:19:56 |
+|     11 | Ryan         | Giggs     | ManUtd    |   40 |  125000.00 | 2016-06-19 01:29:13 |
++--------+--------------+-----------+-----------+------+------------+---------------------+
+11 rows in set (0.00 sec)
+
+[hduser@Inceptez ~]$ sqoop job --exec inc_imp_lm
+Enter password: 
+16/06/19 01:30:32 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `customer` AS t LIMIT 1
+16/06/19 01:30:32 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `customer` AS t LIMIT 1
+16/06/19 01:30:40 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `customer` AS t LIMIT 1
+16/06/19 01:30:40 INFO tool.ImportTool: Incremental import based on column `row_ts`
+16/06/19 01:30:40 INFO tool.ImportTool: Lower bound value: '2016-06-19 01:23:47.0'
+16/06/19 01:30:40 INFO tool.ImportTool: Upper bound value: '2016-06-19 01:30:40.0'
+16/06/19 01:30:44 INFO db.DBInputFormat: Using read commited transaction isolation
+16/06/19 01:30:44 INFO mapreduce.JobSubmitter: number of splits:1
+16/06/19 01:30:45 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1466257336502_0024
+16/06/19 01:30:45 INFO impl.YarnClientImpl: Submitted application application_1466257336502_0024
+16/06/19 01:30:45 INFO mapreduce.Job: The url to track the job: http://Inceptez:8088/proxy/application_1466257336502_0024/
+16/06/19 01:30:45 INFO mapreduce.Job: Running job: job_1466257336502_0024
+16/06/19 01:31:03 INFO mapreduce.Job: Job job_1466257336502_0024 running in uber mode : false
+16/06/19 01:31:03 INFO mapreduce.Job:  map 0% reduce 0%
+16/06/19 01:31:18 INFO mapreduce.Job:  map 100% reduce 0%
+16/06/19 01:31:19 INFO mapreduce.Job: Job job_1466257336502_0024 completed successfully
+16/06/19 01:31:19 INFO mapreduce.Job: Counters: 30
+	File System Counters
+		FILE: Number of bytes read=0
+		FILE: Number of bytes written=115471
+		FILE: Number of read operations=0
+		FILE: Number of large read operations=0
+		FILE: Number of write operations=0
+		HDFS: Number of bytes read=87
+		HDFS: Number of bytes written=0
+		HDFS: Number of read operations=4
+		HDFS: Number of large read operations=0
+		HDFS: Number of write operations=2
+	Job Counters 
+		Launched map tasks=1
+		Other local map tasks=1
+		Total time spent by all maps in occupied slots (ms)=12223
+		Total time spent by all reduces in occupied slots (ms)=0
+		Total time spent by all map tasks (ms)=12223
+		Total vcore-seconds taken by all map tasks=12223
+		Total megabyte-seconds taken by all map tasks=12516352
+	Map-Reduce Framework
+		Map input records=1
+		Map output records=0
+		Input split bytes=87
+		Spilled Records=0
+		Failed Shuffles=0
+		Merged Map outputs=0
+		GC time elapsed (ms)=93
+		CPU time spent (ms)=1740
+		Physical memory (bytes) snapshot=102846464
+		Virtual memory (bytes) snapshot=976515072
+		Total committed heap usage (bytes)=23789568
+	File Input Format Counters 
+		Bytes Read=0
+	File Output Format Counters 
+		Bytes Written=0
+16/06/19 01:31:19 INFO mapreduce.ImportJobBase: Transferred 0 bytes in 38.5656 seconds (0 bytes/sec)
+16/06/19 01:31:19 INFO mapreduce.ImportJobBase: Retrieved 0 records.
+16/06/19 01:31:19 WARN mapreduce.ExportJobBase: IOException checking input file header: java.io.EOFException
+16/06/19 01:31:19 INFO Configuration.deprecation: mapred.output.key.class is deprecated. Instead, use mapreduce.job.output.key.class
+16/06/19 01:31:19 INFO client.RMProxy: Connecting to ResourceManager at /0.0.0.0:8032
+16/06/19 01:31:20 INFO input.FileInputFormat: Total input paths to process : 2
+16/06/19 01:31:20 INFO mapreduce.JobSubmitter: number of splits:2
+16/06/19 01:31:20 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1466257336502_0025
+16/06/19 01:31:21 INFO impl.YarnClientImpl: Submitted application application_1466257336502_0025
+16/06/19 01:31:21 INFO mapreduce.Job: The url to track the job: http://Inceptez:8088/proxy/application_1466257336502_0025/
+16/06/19 01:31:21 INFO mapreduce.Job: Running job: job_1466257336502_0025
+16/06/19 01:31:42 INFO mapreduce.Job: Job job_1466257336502_0025 running in uber mode : false
+16/06/19 01:31:42 INFO mapreduce.Job:  map 0% reduce 0%
+16/06/19 01:32:11 INFO mapreduce.Job:  map 50% reduce 0%
+16/06/19 01:32:12 INFO mapreduce.Job:  map 100% reduce 0%
+16/06/19 01:32:30 INFO mapreduce.Job:  map 100% reduce 100%
+16/06/19 01:32:30 INFO mapreduce.Job: Job job_1466257336502_0025 completed successfully
+16/06/19 01:32:30 INFO mapreduce.Job: Counters: 50
+	File System Counters
+		FILE: Number of bytes read=771
+		FILE: Number of bytes written=345368
+		FILE: Number of read operations=0
+		FILE: Number of large read operations=0
+		FILE: Number of write operations=0
+		HDFS: Number of bytes read=862
+		HDFS: Number of bytes written=593
+		HDFS: Number of read operations=9
+		HDFS: Number of large read operations=0
+		HDFS: Number of write operations=2
+	Job Counters 
+		Launched map tasks=2
+		Launched reduce tasks=1
+		Other local map tasks=1
+		Data-local map tasks=1
+		Total time spent by all maps in occupied slots (ms)=52956
+		Total time spent by all reduces in occupied slots (ms)=14827
+		Total time spent by all map tasks (ms)=52956
+		Total time spent by all reduce tasks (ms)=14827
+		Total vcore-seconds taken by all map tasks=52956
+		Total vcore-seconds taken by all reduce tasks=14827
+		Total megabyte-seconds taken by all map tasks=54226944
+		Total megabyte-seconds taken by all reduce tasks=15182848
+	Map-Reduce Framework
+		Map input records=10
+		Map output records=10
+		Map output bytes=745
+		Map output materialized bytes=777
+		Input split bytes=289
+		Combine input records=0
+		Combine output records=0
+		Reduce input groups=10
+		Reduce shuffle bytes=777
+		Reduce input records=10
+		Reduce output records=10
+		Spilled Records=20
+		Shuffled Maps =2
+		Failed Shuffles=0
+		Merged Map outputs=2
+		GC time elapsed (ms)=656
+		CPU time spent (ms)=4300
+		Physical memory (bytes) snapshot=509526016
+		Virtual memory (bytes) snapshot=2925477888
+		Total committed heap usage (bytes)=281223168
+	Shuffle Errors
+		BAD_ID=0
+		CONNECTION=0
+		IO_ERROR=0
+		WRONG_LENGTH=0
+		WRONG_MAP=0
+		WRONG_REDUCE=0
+	File Input Format Counters 
+		Bytes Read=573
+	File Output Format Counters 
+		Bytes Written=593
+16/06/19 01:32:30 INFO tool.ImportTool: Saving incremental import state to the metastore
+16/06/19 01:32:31 INFO tool.ImportTool: Updated data for job: inc_imp_lm
+[hduser@Inceptez ~]$ hdfs dfs -ls -R inc_imp_lm3*
+-rw-r--r--   1 hduser supergroup          0 2016-06-19 01:32 inc_imp_lm3_new/_SUCCESS
+-rw-r--r--   1 hduser supergroup        593 2016-06-19 01:32 inc_imp_lm3_new/part-r-00000
+[hduser@Inceptez ~]$ hdfs dfs -cat inc_imp_lm3_new/p*
+1,Arun,Kumar,chennai,33,100000.00,2016-06-18 19:49:56.0
+10,Wayne,Rooney,ManUtd,30,900000.00,2016-06-18 19:49:56.0
+2,srini,vasan,chennai,33,10000.00,2016-06-18 19:49:56.0
+3,vasu,devan,banglore,39,90000.00,2016-06-18 19:49:56.0
+4,mohamed,imran,hyderabad,33,1000.00,2016-06-18 19:49:56.0
+5,arun,basker,chennai,23,200000.00,2016-06-18 19:49:56.0
+6,ramesh,babu,manglore,39,100000.00,2016-06-18 19:49:56.0
+7,Deepak Kumar,Mahadevan,chennai,27,100000.00,2016-06-18 19:49:56.0
+8,Lionel,Messi,Barcelona,28,1000000.00,2016-06-18 19:49:56.0
+9,Christiano,Ronaldo,Madrid,31,1100000.00,2016-06-18 19:49:56.0
+
+====================================================================================================
+sqoop import --connect jdbc:mysql://localhost/DKMDB01 --username root --password root --table customer --m 1 --direct --target-dir inc_imp_lm3_new --incremental lastmodified --check-column row_ts --merge-key custid --last-value '2016-06-18';
+
+[hduser@Inceptez ~]$ sqoop import --connect jdbc:mysql://localhost/DKMDB01 --username root --password root --table customer --m 1 --direct --target-dir inc_imp_lm3_new --incremental lastmodified --check-column row_ts --merge-key custid --last-value '2016-06-20';
+Warning: /usr/local/sqoop/../hbase does not exist! HBase imports will fail.
+Please set $HBASE_HOME to the root of your HBase installation.
+Warning: /usr/local/sqoop/../hcatalog does not exist! HCatalog jobs will fail.
+Please set $HCAT_HOME to the root of your HCatalog installation.
+Warning: /usr/local/sqoop/../accumulo does not exist! Accumulo imports will fail.
+Please set $ACCUMULO_HOME to the root of your Accumulo installation.
+Warning: /usr/local/sqoop/../zookeeper does not exist! Accumulo imports will fail.
+Please set $ZOOKEEPER_HOME to the root of your Zookeeper installation.
+16/06/19 13:25:53 INFO sqoop.Sqoop: Running Sqoop version: 1.4.5
+16/06/19 13:25:53 WARN tool.BaseSqoopTool: Setting your password on the command-line is insecure. Consider using -P instead.
+16/06/19 13:25:54 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
+16/06/19 13:25:54 INFO tool.CodeGenTool: Beginning code generation
+16/06/19 13:25:54 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `customer` AS t LIMIT 1
+16/06/19 13:25:55 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `customer` AS t LIMIT 1
+16/06/19 13:25:55 INFO orm.CompilationManager: HADOOP_MAPRED_HOME is /usr/local/hadoop
+Note: /tmp/sqoop-hduser/compile/b02622a34deeed2e2c12f5aaae6735d5/customer.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+16/06/19 13:26:01 INFO orm.CompilationManager: Writing jar file: /tmp/sqoop-hduser/compile/b02622a34deeed2e2c12f5aaae6735d5/customer.jar
+16/06/19 13:26:02 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+16/06/19 13:26:04 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `customer` AS t LIMIT 1
+16/06/19 13:26:04 INFO tool.ImportTool: Incremental import based on column `row_ts`
+16/06/19 13:26:04 INFO tool.ImportTool: Lower bound value: '2016-06-20'
+16/06/19 13:26:04 INFO tool.ImportTool: Upper bound value: '2016-06-19 13:26:04.0'
+16/06/19 13:26:04 INFO manager.DirectMySQLManager: Beginning mysqldump fast path import
+16/06/19 13:26:04 INFO mapreduce.ImportJobBase: Beginning import of customer
+16/06/19 13:26:04 INFO Configuration.deprecation: mapred.jar is deprecated. Instead, use mapreduce.job.jar
+16/06/19 13:26:04 INFO Configuration.deprecation: mapred.map.tasks is deprecated. Instead, use mapreduce.job.maps
+16/06/19 13:26:05 INFO client.RMProxy: Connecting to ResourceManager at /0.0.0.0:8032
+16/06/19 13:26:08 INFO db.DBInputFormat: Using read commited transaction isolation
+16/06/19 13:26:08 INFO mapreduce.JobSubmitter: number of splits:1
+16/06/19 13:26:09 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1466321602197_0002
+16/06/19 13:26:10 INFO impl.YarnClientImpl: Submitted application application_1466321602197_0002
+16/06/19 13:26:10 INFO mapreduce.Job: The url to track the job: http://Inceptez:8088/proxy/application_1466321602197_0002/
+16/06/19 13:26:10 INFO mapreduce.Job: Running job: job_1466321602197_0002
+16/06/19 13:26:34 INFO mapreduce.Job: Job job_1466321602197_0002 running in uber mode : false
+16/06/19 13:26:34 INFO mapreduce.Job:  map 0% reduce 0%
+16/06/19 13:26:52 INFO mapreduce.Job:  map 100% reduce 0%
+16/06/19 13:26:53 INFO mapreduce.Job: Job job_1466321602197_0002 completed successfully
+16/06/19 13:26:54 INFO mapreduce.Job: Counters: 30
+	File System Counters
+		FILE: Number of bytes read=0
+		FILE: Number of bytes written=115208
+		FILE: Number of read operations=0
+		FILE: Number of large read operations=0
+		FILE: Number of write operations=0
+		HDFS: Number of bytes read=87
+		HDFS: Number of bytes written=0
+		HDFS: Number of read operations=4
+		HDFS: Number of large read operations=0
+		HDFS: Number of write operations=2
+	Job Counters 
+		Launched map tasks=1
+		Other local map tasks=1
+		Total time spent by all maps in occupied slots (ms)=15361
+		Total time spent by all reduces in occupied slots (ms)=0
+		Total time spent by all map tasks (ms)=15361
+		Total vcore-seconds taken by all map tasks=15361
+		Total megabyte-seconds taken by all map tasks=15729664
+	Map-Reduce Framework
+		Map input records=1
+		Map output records=0
+		Input split bytes=87
+		Spilled Records=0
+		Failed Shuffles=0
+		Merged Map outputs=0
+		GC time elapsed (ms)=117
+		CPU time spent (ms)=1830
+		Physical memory (bytes) snapshot=100286464
+		Virtual memory (bytes) snapshot=987115520
+		Total committed heap usage (bytes)=23789568
+	File Input Format Counters 
+		Bytes Read=0
+	File Output Format Counters 
+		Bytes Written=0
+16/06/19 13:26:54 INFO mapreduce.ImportJobBase: Transferred 0 bytes in 49.1968 seconds (0 bytes/sec)
+16/06/19 13:26:54 INFO mapreduce.ImportJobBase: Retrieved 0 records.
+16/06/19 13:26:54 WARN mapreduce.ExportJobBase: IOException checking input file header: java.io.EOFException
+16/06/19 13:26:54 INFO Configuration.deprecation: mapred.output.key.class is deprecated. Instead, use mapreduce.job.output.key.class
+16/06/19 13:26:54 INFO client.RMProxy: Connecting to ResourceManager at /0.0.0.0:8032
+16/06/19 13:26:55 INFO input.FileInputFormat: Total input paths to process : 2
+16/06/19 13:26:55 INFO mapreduce.JobSubmitter: number of splits:2
+16/06/19 13:26:55 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1466321602197_0003
+16/06/19 13:26:56 INFO impl.YarnClientImpl: Submitted application application_1466321602197_0003
+16/06/19 13:26:56 INFO mapreduce.Job: The url to track the job: http://Inceptez:8088/proxy/application_1466321602197_0003/
+16/06/19 13:26:56 INFO mapreduce.Job: Running job: job_1466321602197_0003
+16/06/19 13:27:19 INFO mapreduce.Job: Job job_1466321602197_0003 running in uber mode : false
+16/06/19 13:27:19 INFO mapreduce.Job:  map 0% reduce 0%
+16/06/19 13:27:57 INFO mapreduce.Job:  map 100% reduce 0%
+16/06/19 13:28:24 INFO mapreduce.Job:  map 100% reduce 100%
+16/06/19 13:28:25 INFO mapreduce.Job: Job job_1466321602197_0003 completed successfully
+16/06/19 13:28:25 INFO mapreduce.Job: Counters: 50
+	File System Counters
+		FILE: Number of bytes read=844
+		FILE: Number of bytes written=344746
+		FILE: Number of read operations=0
+		FILE: Number of large read operations=0
+		FILE: Number of write operations=0
+		HDFS: Number of bytes read=916
+		HDFS: Number of bytes written=649
+		HDFS: Number of read operations=9
+		HDFS: Number of large read operations=0
+		HDFS: Number of write operations=2
+	Job Counters 
+		Launched map tasks=2
+		Launched reduce tasks=1
+		Other local map tasks=1
+		Data-local map tasks=1
+		Total time spent by all maps in occupied slots (ms)=69296
+		Total time spent by all reduces in occupied slots (ms)=23427
+		Total time spent by all map tasks (ms)=69296
+		Total time spent by all reduce tasks (ms)=23427
+		Total vcore-seconds taken by all map tasks=69296
+		Total vcore-seconds taken by all reduce tasks=23427
+		Total megabyte-seconds taken by all map tasks=70959104
+		Total megabyte-seconds taken by all reduce tasks=23989248
+	Map-Reduce Framework
+		Map input records=11
+		Map output records=11
+		Map output bytes=816
+		Map output materialized bytes=850
+		Input split bytes=289
+		Combine input records=0
+		Combine output records=0
+		Reduce input groups=11
+		Reduce shuffle bytes=850
+		Reduce input records=11
+		Reduce output records=11
+		Spilled Records=22
+		Shuffled Maps =2
+		Failed Shuffles=0
+		Merged Map outputs=2
+		GC time elapsed (ms)=1070
+		CPU time spent (ms)=8370
+		Physical memory (bytes) snapshot=493445120
+		Virtual memory (bytes) snapshot=2923286528
+		Total committed heap usage (bytes)=281223168
+	Shuffle Errors
+		BAD_ID=0
+		CONNECTION=0
+		IO_ERROR=0
+		WRONG_LENGTH=0
+		WRONG_MAP=0
+		WRONG_REDUCE=0
+	File Input Format Counters 
+		Bytes Read=627
+	File Output Format Counters 
+		Bytes Written=649
+16/06/19 13:28:25 INFO tool.ImportTool: Incremental import complete! To run another incremental import of all data following this import, supply the following arguments:
+16/06/19 13:28:25 INFO tool.ImportTool:  --incremental lastmodified
+16/06/19 13:28:25 INFO tool.ImportTool:   --check-column row_ts
+16/06/19 13:28:25 INFO tool.ImportTool:   --last-value 2016-06-19 13:26:04.0
+16/06/19 13:28:25 INFO tool.ImportTool: (Consider saving this with 'sqoop job --create')
+
+[hduser@Inceptez ~]$ hdfs dfs -ls -R inc_imp*
+16/06/19 13:28:52 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+-rw-r--r--   1 hduser supergroup          0 2016-06-19 00:03 inc_imp_lm/_SUCCESS
+-rw-r--r--   1 hduser supergroup        568 2016-06-19 00:03 inc_imp_lm/part-m-00000
+-rw-r--r--   1 hduser supergroup         56 2016-06-19 00:08 inc_imp_lm/part-m-00001
+-rw-r--r--   1 hduser supergroup          0 2016-06-19 00:17 inc_imp_lm1/_SUCCESS
+-rw-r--r--   1 hduser supergroup          0 2016-06-19 00:17 inc_imp_lm1/part-m-00000
+-rw-r--r--   1 hduser supergroup          0 2016-06-19 00:22 inc_imp_lm2/_SUCCESS
+-rw-r--r--   1 hduser supergroup          0 2016-06-19 00:22 inc_imp_lm2/part-m-00000
+-rw-r--r--   1 hduser supergroup          0 2016-06-19 13:28 inc_imp_lm3_new/_SUCCESS
+-rw-r--r--   1 hduser supergroup        649 2016-06-19 13:28 inc_imp_lm3_new/part-r-00000
+[hduser@Inceptez ~]$ hadoop fs -cat inc_imp_lm3_new/part-r-00000
+16/06/19 13:29:10 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+1,Arun,Kumar,chennai,33,100000.00,2016-06-18 19:49:56.0
+10,Wayne,Rooney,ManUtd,30,900000.00,2016-06-18 19:49:56.0
+11,Ryan,Giggs,ManUtd,40,125000.00,2016-06-18 19:59:13.0
+2,srini,vasan,chennai,33,10000.00,2016-06-18 19:49:56.0
+3,vasu,devan,banglore,35,90000.00,2016-06-18 19:59:23.0
+4,mohamed,imran,hyderabad,33,1000.00,2016-06-18 19:49:56.0
+5,arun,basker,chennai,23,200000.00,2016-06-18 19:49:56.0
+6,ramesh,babu,manglore,39,100000.00,2016-06-18 19:49:56.0
+7,Deepak Kumar,Mahadevan,chennai,27,100000.00,2016-06-18 19:49:56.0
+8,Lionel,Messi,Barcelona,28,1000000.00,2016-06-18 19:49:56.0
+9,Christiano,Ronaldo,Madrid,31,1100000.00,2016-06-18 19:49:56.0
+====================================================================================================
+[hduser@Inceptez ~]$ sqoop import --connect jdbc:mysql://localhost/DKMDB01 --username root --password root --table customer --m 1 --direct --target-dir inc_imp_lm3_new --incremental lastmodified --check-column row_ts --merge-key custid --last-value '2016-06-15';
+Warning: /usr/local/sqoop/../hbase does not exist! HBase imports will fail.
+Please set $HBASE_HOME to the root of your HBase installation.
+Warning: /usr/local/sqoop/../hcatalog does not exist! HCatalog jobs will fail.
+Please set $HCAT_HOME to the root of your HCatalog installation.
+Warning: /usr/local/sqoop/../accumulo does not exist! Accumulo imports will fail.
+Please set $ACCUMULO_HOME to the root of your Accumulo installation.
+Warning: /usr/local/sqoop/../zookeeper does not exist! Accumulo imports will fail.
+Please set $ZOOKEEPER_HOME to the root of your Zookeeper installation.
+16/06/19 13:30:50 INFO sqoop.Sqoop: Running Sqoop version: 1.4.5
+16/06/19 13:30:50 WARN tool.BaseSqoopTool: Setting your password on the command-line is insecure. Consider using -P instead.
+16/06/19 13:30:52 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
+16/06/19 13:30:52 INFO tool.CodeGenTool: Beginning code generation
+16/06/19 13:30:52 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `customer` AS t LIMIT 1
+16/06/19 13:30:53 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `customer` AS t LIMIT 1
+16/06/19 13:30:53 INFO orm.CompilationManager: HADOOP_MAPRED_HOME is /usr/local/hadoop
+Note: /tmp/sqoop-hduser/compile/935fff750e6fe8fcfa51df5ce26dbcc1/customer.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+16/06/19 13:31:01 INFO orm.CompilationManager: Writing jar file: /tmp/sqoop-hduser/compile/935fff750e6fe8fcfa51df5ce26dbcc1/customer.jar
+16/06/19 13:31:02 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+16/06/19 13:31:04 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `customer` AS t LIMIT 1
+16/06/19 13:31:04 INFO tool.ImportTool: Incremental import based on column `row_ts`
+16/06/19 13:31:04 INFO tool.ImportTool: Lower bound value: '2016-06-15'
+16/06/19 13:31:04 INFO tool.ImportTool: Upper bound value: '2016-06-19 13:31:04.0'
+16/06/19 13:31:04 INFO manager.DirectMySQLManager: Beginning mysqldump fast path import
+16/06/19 13:31:04 INFO mapreduce.ImportJobBase: Beginning import of customer
+16/06/19 13:31:04 INFO Configuration.deprecation: mapred.jar is deprecated. Instead, use mapreduce.job.jar
+16/06/19 13:31:04 INFO Configuration.deprecation: mapred.map.tasks is deprecated. Instead, use mapreduce.job.maps
+16/06/19 13:31:05 INFO client.RMProxy: Connecting to ResourceManager at /0.0.0.0:8032
+16/06/19 13:31:09 INFO db.DBInputFormat: Using read commited transaction isolation
+16/06/19 13:31:09 INFO mapreduce.JobSubmitter: number of splits:1
+16/06/19 13:31:10 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1466321602197_0004
+16/06/19 13:31:11 INFO impl.YarnClientImpl: Submitted application application_1466321602197_0004
+16/06/19 13:31:11 INFO mapreduce.Job: The url to track the job: http://Inceptez:8088/proxy/application_1466321602197_0004/
+16/06/19 13:31:11 INFO mapreduce.Job: Running job: job_1466321602197_0004
+16/06/19 13:31:33 INFO mapreduce.Job: Job job_1466321602197_0004 running in uber mode : false
+16/06/19 13:31:33 INFO mapreduce.Job:  map 0% reduce 0%
+16/06/19 13:31:56 INFO mapreduce.Job:  map 100% reduce 0%
+16/06/19 13:31:57 INFO mapreduce.Job: Job job_1466321602197_0004 completed successfully
+16/06/19 13:31:58 INFO mapreduce.Job: Counters: 30
+	File System Counters
+		FILE: Number of bytes read=0
+		FILE: Number of bytes written=115208
+		FILE: Number of read operations=0
+		FILE: Number of large read operations=0
+		FILE: Number of write operations=0
+		HDFS: Number of bytes read=87
+		HDFS: Number of bytes written=352
+		HDFS: Number of read operations=4
+		HDFS: Number of large read operations=0
+		HDFS: Number of write operations=2
+	Job Counters 
+		Launched map tasks=1
+		Other local map tasks=1
+		Total time spent by all maps in occupied slots (ms)=18914
+		Total time spent by all reduces in occupied slots (ms)=0
+		Total time spent by all map tasks (ms)=18914
+		Total vcore-seconds taken by all map tasks=18914
+		Total megabyte-seconds taken by all map tasks=19367936
+	Map-Reduce Framework
+		Map input records=1
+		Map output records=6
+		Input split bytes=87
+		Spilled Records=0
+		Failed Shuffles=0
+		Merged Map outputs=0
+		GC time elapsed (ms)=240
+		CPU time spent (ms)=2510
+		Physical memory (bytes) snapshot=110714880
+		Virtual memory (bytes) snapshot=976515072
+		Total committed heap usage (bytes)=23855104
+	File Input Format Counters 
+		Bytes Read=0
+	File Output Format Counters 
+		Bytes Written=352
+16/06/19 13:31:58 INFO mapreduce.ImportJobBase: Transferred 352 bytes in 53.2596 seconds (6.6091 bytes/sec)
+16/06/19 13:31:58 INFO mapreduce.ImportJobBase: Retrieved 6 records.
+16/06/19 13:31:58 INFO Configuration.deprecation: mapred.output.key.class is deprecated. Instead, use mapreduce.job.output.key.class
+16/06/19 13:31:58 INFO client.RMProxy: Connecting to ResourceManager at /0.0.0.0:8032
+16/06/19 13:31:59 INFO input.FileInputFormat: Total input paths to process : 2
+16/06/19 13:31:59 INFO mapreduce.JobSubmitter: number of splits:2
+16/06/19 13:31:59 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1466321602197_0005
+16/06/19 13:32:00 INFO impl.YarnClientImpl: Submitted application application_1466321602197_0005
+16/06/19 13:32:00 INFO mapreduce.Job: The url to track the job: http://Inceptez:8088/proxy/application_1466321602197_0005/
+16/06/19 13:32:00 INFO mapreduce.Job: Running job: job_1466321602197_0005
+16/06/19 13:32:22 INFO mapreduce.Job: Job job_1466321602197_0005 running in uber mode : false
+16/06/19 13:32:22 INFO mapreduce.Job:  map 0% reduce 0%
+16/06/19 13:32:51 INFO mapreduce.Job:  map 100% reduce 0%
+16/06/19 13:33:09 INFO mapreduce.Job:  map 100% reduce 100%
+16/06/19 13:33:10 INFO mapreduce.Job: Job job_1466321602197_0005 completed successfully
+16/06/19 13:33:10 INFO mapreduce.Job: Counters: 49
+	File System Counters
+		FILE: Number of bytes read=1308
+		FILE: Number of bytes written=345674
+		FILE: Number of read operations=0
+		FILE: Number of large read operations=0
+		FILE: Number of write operations=0
+		HDFS: Number of bytes read=1290
+		HDFS: Number of bytes written=649
+		HDFS: Number of read operations=9
+		HDFS: Number of large read operations=0
+		HDFS: Number of write operations=2
+	Job Counters 
+		Launched map tasks=2
+		Launched reduce tasks=1
+		Data-local map tasks=2
+		Total time spent by all maps in occupied slots (ms)=52920
+		Total time spent by all reduces in occupied slots (ms)=15175
+		Total time spent by all map tasks (ms)=52920
+		Total time spent by all reduce tasks (ms)=15175
+		Total vcore-seconds taken by all map tasks=52920
+		Total vcore-seconds taken by all reduce tasks=15175
+		Total megabyte-seconds taken by all map tasks=54190080
+		Total megabyte-seconds taken by all reduce tasks=15539200
+	Map-Reduce Framework
+		Map input records=17
+		Map output records=17
+		Map output bytes=1268
+		Map output materialized bytes=1314
+		Input split bytes=289
+		Combine input records=0
+		Combine output records=0
+		Reduce input groups=11
+		Reduce shuffle bytes=1314
+		Reduce input records=17
+		Reduce output records=11
+		Spilled Records=34
+		Shuffled Maps =2
+		Failed Shuffles=0
+		Merged Map outputs=2
+		GC time elapsed (ms)=710
+		CPU time spent (ms)=4690
+		Physical memory (bytes) snapshot=504049664
+		Virtual memory (bytes) snapshot=2923438080
+		Total committed heap usage (bytes)=281223168
+	Shuffle Errors
+		BAD_ID=0
+		CONNECTION=0
+		IO_ERROR=0
+		WRONG_LENGTH=0
+		WRONG_MAP=0
+		WRONG_REDUCE=0
+	File Input Format Counters 
+		Bytes Read=1001
+	File Output Format Counters 
+		Bytes Written=649
+16/06/19 13:33:10 INFO tool.ImportTool: Incremental import complete! To run another incremental import of all data following this import, supply the following arguments:
+16/06/19 13:33:10 INFO tool.ImportTool:  --incremental lastmodified
+16/06/19 13:33:10 INFO tool.ImportTool:   --check-column row_ts
+16/06/19 13:33:10 INFO tool.ImportTool:   --last-value 2016-06-19 13:31:04.0
+16/06/19 13:33:10 INFO tool.ImportTool: (Consider saving this with 'sqoop job --create')
+
+[hduser@Inceptez ~]$ hdfs dfs -ls -R inc_imp*
+16/06/19 13:36:43 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+-rw-r--r--   1 hduser supergroup          0 2016-06-19 00:03 inc_imp_lm/_SUCCESS
+-rw-r--r--   1 hduser supergroup        568 2016-06-19 00:03 inc_imp_lm/part-m-00000
+-rw-r--r--   1 hduser supergroup         56 2016-06-19 00:08 inc_imp_lm/part-m-00001
+-rw-r--r--   1 hduser supergroup          0 2016-06-19 00:17 inc_imp_lm1/_SUCCESS
+-rw-r--r--   1 hduser supergroup          0 2016-06-19 00:17 inc_imp_lm1/part-m-00000
+-rw-r--r--   1 hduser supergroup          0 2016-06-19 00:22 inc_imp_lm2/_SUCCESS
+-rw-r--r--   1 hduser supergroup          0 2016-06-19 00:22 inc_imp_lm2/part-m-00000
+-rw-r--r--   1 hduser supergroup          0 2016-06-19 13:33 inc_imp_lm3_new/_SUCCESS
+-rw-r--r--   1 hduser supergroup        649 2016-06-19 13:33 inc_imp_lm3_new/part-r-00000
+[hduser@Inceptez ~]$ hadoop fs -cat inc_imp_lm3_new/part-r-00000
+16/06/19 13:37:43 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+1,Arun,Kumar,chennai,33,100000.00,2016-06-18 19:49:56.0
+10,Wayne,Rooney,ManUtd,30,900000.00,2016-06-18 19:49:56.0
+11,Ryan,Giggs,ManUtd,40,125000.00,2016-06-18 19:59:13.0
+2,srini,vasan,chennai,33,10000.00,2016-06-18 19:49:56.0
+3,vasu,devan,banglore,35,90000.00,2016-06-18 19:59:23.0
+4,mohamed,imran,hyderabad,33,1000.00,2016-06-18 19:49:56.0
+5,arun,basker,chennai,23,200000.00,2016-06-18 19:49:56.0
+6,ramesh,babu,manglore,39,100000.00,2016-06-18 19:49:56.0
+7,Deepak Kumar,Mahadevan,chennai,27,100000.00,2016-06-18 19:49:56.0
+8,Lionel,Messi,Barcelona,28,1000000.00,2016-06-18 19:49:56.0
+9,Christiano,Ronaldo,Madrid,31,1100000.00,2016-06-18 19:49:56.0
+====================================================================================================
+mysql> select * from customer;
++--------+--------------+-----------+-----------+------+------------+---------------------+
+| custid | firstname    | lastname  | city      | age  | cust_bal   | row_ts              |
++--------+--------------+-----------+-----------+------+------------+---------------------+
+|      1 | Arun         | Kumar     | chennai   |   33 |  100000.00 | 2016-06-15 01:15:13 |
+|      2 | srini        | vasan     | chennai   |   33 |   10000.00 | 2016-06-15 01:15:13 |
+|      3 | vasu         | devan     | banglore  |   35 |   90000.00 | 2016-06-15 01:15:13 |
+|      7 | Deepak Kumar | Mahadevan | chennai   |   27 |  100000.00 | 2016-06-19 01:19:56 |
+|      8 | Lionel       | Messi     | Barcelona |   28 | 1000000.00 | 2016-06-19 01:19:56 |
+|      4 | mohamed      | imran     | hyderabad |   33 |    1000.00 | 2016-06-15 01:15:13 |
+|      5 | arun         | basker    | chennai   |   23 |  200000.00 | 2016-06-19 01:19:56 |
+|      6 | ramesh       | babu      | manglore  |   39 |  100000.00 | 2016-06-19 01:19:56 |
+|      9 | Christiano   | Ronaldo   | Madrid    |   31 | 1100000.00 | 2016-06-19 01:19:56 |
+|     10 | Wayne        | Rooney    | ManUtd    |   30 | 1000000.00 | 2016-06-20 01:15:13 |
+|     11 | Ryan         | Giggs     | ManUtd    |   40 |  125000.00 | 2016-06-19 01:29:13 |
+|     12 | Ricardo      | Kaka      | Brazil    |   35 |  100000.00 | 2016-06-20 01:29:13 |
++--------+--------------+-----------+-----------+------+------------+---------------------+
+12 rows in set (0.00 sec)
+
+mysql> update customer set age = 42 where custid = 11;
+Query OK, 1 row affected (0.10 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update customer set age = 34 where custid = 12;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from customer;
++--------+--------------+-----------+-----------+------+------------+---------------------+
+| custid | firstname    | lastname  | city      | age  | cust_bal   | row_ts              |
++--------+--------------+-----------+-----------+------+------------+---------------------+
+|      1 | Arun         | Kumar     | chennai   |   33 |  100000.00 | 2016-06-15 01:15:13 |
+|      2 | srini        | vasan     | chennai   |   33 |   10000.00 | 2016-06-15 01:15:13 |
+|      3 | vasu         | devan     | banglore  |   35 |   90000.00 | 2016-06-15 01:15:13 |
+|      7 | Deepak Kumar | Mahadevan | chennai   |   27 |  100000.00 | 2016-06-19 01:19:56 |
+|      8 | Lionel       | Messi     | Barcelona |   28 | 1000000.00 | 2016-06-19 01:19:56 |
+|      4 | mohamed      | imran     | hyderabad |   33 |    1000.00 | 2016-06-15 01:15:13 |
+|      5 | arun         | basker    | chennai   |   23 |  200000.00 | 2016-06-19 01:19:56 |
+|      6 | ramesh       | babu      | manglore  |   39 |  100000.00 | 2016-06-19 01:19:56 |
+|      9 | Christiano   | Ronaldo   | Madrid    |   31 | 1100000.00 | 2016-06-19 01:19:56 |
+|     10 | Wayne        | Rooney    | ManUtd    |   30 | 1000000.00 | 2016-06-20 01:15:13 |
+|     11 | Ryan         | Giggs     | ManUtd    |   42 |  125000.00 | 2016-06-21 21:17:44 |
+|     12 | Ricardo      | Kaka      | Brazil    |   34 |  100000.00 | 2016-06-21 21:17:50 |
++--------+--------------+-----------+-----------+------+------------+---------------------+
+12 rows in set (0.00 sec)
+====================================================================================================
+[hduser@Inceptez ~]$ sqoop import --connect jdbc:mysql://localhost/DKMDB01 --username root --password root --table customer --m 1 --direct --target-dir inc_imp_lm3_new --incremental lastmodified --check-column row_ts --merge-key custid --last-value '2016-06-19 13:31:04.0';
+Warning: /usr/local/sqoop/../hbase does not exist! HBase imports will fail.
+Please set $HBASE_HOME to the root of your HBase installation.
+Warning: /usr/local/sqoop/../hcatalog does not exist! HCatalog jobs will fail.
+Please set $HCAT_HOME to the root of your HCatalog installation.
+Warning: /usr/local/sqoop/../accumulo does not exist! Accumulo imports will fail.
+Please set $ACCUMULO_HOME to the root of your Accumulo installation.
+Warning: /usr/local/sqoop/../zookeeper does not exist! Accumulo imports will fail.
+Please set $ZOOKEEPER_HOME to the root of your Zookeeper installation.
+16/06/21 21:19:47 INFO sqoop.Sqoop: Running Sqoop version: 1.4.5
+16/06/21 21:19:47 WARN tool.BaseSqoopTool: Setting your password on the command-line is insecure. Consider using -P instead.
+16/06/21 21:19:47 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
+16/06/21 21:19:47 INFO tool.CodeGenTool: Beginning code generation
+16/06/21 21:19:48 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `customer` AS t LIMIT 1
+16/06/21 21:19:48 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `customer` AS t LIMIT 1
+16/06/21 21:19:48 INFO orm.CompilationManager: HADOOP_MAPRED_HOME is /usr/local/hadoop
+Note: /tmp/sqoop-hduser/compile/9fbabe0f1fd8e8c040aa7ea912023f77/customer.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+16/06/21 21:19:50 INFO orm.CompilationManager: Writing jar file: /tmp/sqoop-hduser/compile/9fbabe0f1fd8e8c040aa7ea912023f77/customer.jar
+16/06/21 21:19:51 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+16/06/21 21:19:52 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `customer` AS t LIMIT 1
+16/06/21 21:19:52 INFO tool.ImportTool: Incremental import based on column `row_ts`
+16/06/21 21:19:52 INFO tool.ImportTool: Lower bound value: '2016-06-19 13:31:04.0'
+16/06/21 21:19:52 INFO tool.ImportTool: Upper bound value: '2016-06-21 21:19:52.0'
+16/06/21 21:19:52 INFO manager.DirectMySQLManager: Beginning mysqldump fast path import
+16/06/21 21:19:52 INFO mapreduce.ImportJobBase: Beginning import of customer
+16/06/21 21:19:52 INFO Configuration.deprecation: mapred.jar is deprecated. Instead, use mapreduce.job.jar
+16/06/21 21:19:52 INFO Configuration.deprecation: mapred.map.tasks is deprecated. Instead, use mapreduce.job.maps
+16/06/21 21:19:52 INFO client.RMProxy: Connecting to ResourceManager at /0.0.0.0:8032
+16/06/21 21:19:53 INFO db.DBInputFormat: Using read commited transaction isolation
+16/06/21 21:19:53 INFO mapreduce.JobSubmitter: number of splits:1
+16/06/21 21:19:54 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1466518504658_0010
+16/06/21 21:19:54 INFO impl.YarnClientImpl: Submitted application application_1466518504658_0010
+16/06/21 21:19:54 INFO mapreduce.Job: The url to track the job: http://Inceptez:8088/proxy/application_1466518504658_0010/
+16/06/21 21:19:54 INFO mapreduce.Job: Running job: job_1466518504658_0010
+16/06/21 21:20:04 INFO mapreduce.Job: Job job_1466518504658_0010 running in uber mode : false
+16/06/21 21:20:04 INFO mapreduce.Job:  map 0% reduce 0%
+16/06/21 21:20:13 INFO mapreduce.Job:  map 100% reduce 0%
+16/06/21 21:20:13 INFO mapreduce.Job: Job job_1466518504658_0010 completed successfully
+16/06/21 21:20:13 INFO mapreduce.Job: Counters: 30
+	File System Counters
+		FILE: Number of bytes read=0
+		FILE: Number of bytes written=115219
+		FILE: Number of read operations=0
+		FILE: Number of large read operations=0
+		FILE: Number of write operations=0
+		HDFS: Number of bytes read=87
+		HDFS: Number of bytes written=167
+		HDFS: Number of read operations=4
+		HDFS: Number of large read operations=0
+		HDFS: Number of write operations=2
+	Job Counters 
+		Launched map tasks=1
+		Other local map tasks=1
+		Total time spent by all maps in occupied slots (ms)=6113
+		Total time spent by all reduces in occupied slots (ms)=0
+		Total time spent by all map tasks (ms)=6113
+		Total vcore-seconds taken by all map tasks=6113
+		Total megabyte-seconds taken by all map tasks=6259712
+	Map-Reduce Framework
+		Map input records=1
+		Map output records=3
+		Input split bytes=87
+		Spilled Records=0
+		Failed Shuffles=0
+		Merged Map outputs=0
+		GC time elapsed (ms)=106
+		CPU time spent (ms)=1020
+		Physical memory (bytes) snapshot=98664448
+		Virtual memory (bytes) snapshot=976515072
+		Total committed heap usage (bytes)=23855104
+	File Input Format Counters 
+		Bytes Read=0
+	File Output Format Counters 
+		Bytes Written=167
+16/06/21 21:20:13 INFO mapreduce.ImportJobBase: Transferred 167 bytes in 21.0221 seconds (7.944 bytes/sec)
+16/06/21 21:20:13 INFO mapreduce.ImportJobBase: Retrieved 3 records.
+16/06/21 21:20:13 INFO Configuration.deprecation: mapred.output.key.class is deprecated. Instead, use mapreduce.job.output.key.class
+16/06/21 21:20:13 INFO client.RMProxy: Connecting to ResourceManager at /0.0.0.0:8032
+16/06/21 21:20:14 INFO input.FileInputFormat: Total input paths to process : 2
+16/06/21 21:20:14 INFO mapreduce.JobSubmitter: number of splits:2
+16/06/21 21:20:14 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1466518504658_0011
+16/06/21 21:20:14 INFO impl.YarnClientImpl: Submitted application application_1466518504658_0011
+16/06/21 21:20:14 INFO mapreduce.Job: The url to track the job: http://Inceptez:8088/proxy/application_1466518504658_0011/
+16/06/21 21:20:14 INFO mapreduce.Job: Running job: job_1466518504658_0011
+16/06/21 21:20:27 INFO mapreduce.Job: Job job_1466518504658_0011 running in uber mode : false
+16/06/21 21:20:27 INFO mapreduce.Job:  map 0% reduce 0%
+16/06/21 21:20:40 INFO mapreduce.Job:  map 100% reduce 0%
+16/06/21 21:20:49 INFO mapreduce.Job:  map 100% reduce 100%
+16/06/21 21:20:49 INFO mapreduce.Job: Job job_1466518504658_0011 completed successfully
+16/06/21 21:20:50 INFO mapreduce.Job: Counters: 49
+	File System Counters
+		FILE: Number of bytes read=1067
+		FILE: Number of bytes written=345192
+		FILE: Number of read operations=0
+		FILE: Number of large read operations=0
+		FILE: Number of write operations=0
+		HDFS: Number of bytes read=1105
+		HDFS: Number of bytes written=708
+		HDFS: Number of read operations=9
+		HDFS: Number of large read operations=0
+		HDFS: Number of write operations=2
+	Job Counters 
+		Launched map tasks=2
+		Launched reduce tasks=1
+		Data-local map tasks=2
+		Total time spent by all maps in occupied slots (ms)=22107
+		Total time spent by all reduces in occupied slots (ms)=6587
+		Total time spent by all map tasks (ms)=22107
+		Total time spent by all reduce tasks (ms)=6587
+		Total vcore-seconds taken by all map tasks=22107
+		Total vcore-seconds taken by all reduce tasks=6587
+		Total megabyte-seconds taken by all map tasks=22637568
+		Total megabyte-seconds taken by all reduce tasks=6745088
+	Map-Reduce Framework
+		Map input records=14
+		Map output records=14
+		Map output bytes=1033
+		Map output materialized bytes=1073
+		Input split bytes=289
+		Combine input records=0
+		Combine output records=0
+		Reduce input groups=12
+		Reduce shuffle bytes=1073
+		Reduce input records=14
+		Reduce output records=12
+		Spilled Records=28
+		Shuffled Maps =2
+		Failed Shuffles=0
+		Merged Map outputs=2
+		GC time elapsed (ms)=240
+		CPU time spent (ms)=1970
+		Physical memory (bytes) snapshot=503193600
+		Virtual memory (bytes) snapshot=2923585536
+		Total committed heap usage (bytes)=281223168
+	Shuffle Errors
+		BAD_ID=0
+		CONNECTION=0
+		IO_ERROR=0
+		WRONG_LENGTH=0
+		WRONG_MAP=0
+		WRONG_REDUCE=0
+	File Input Format Counters 
+		Bytes Read=816
+	File Output Format Counters 
+		Bytes Written=708
+16/06/21 21:20:50 INFO tool.ImportTool: Incremental import complete! To run another incremental import of all data following this import, supply the following arguments:
+16/06/21 21:20:50 INFO tool.ImportTool:  --incremental lastmodified
+16/06/21 21:20:50 INFO tool.ImportTool:   --check-column row_ts
+16/06/21 21:20:50 INFO tool.ImportTool:   --last-value 2016-06-21 21:19:52.0
+16/06/21 21:20:50 INFO tool.ImportTool: (Consider saving this with 'sqoop job --create')
+
+[hduser@Inceptez ~]$ hdfs dfs -ls -R inc_imp_lm3_new
+-rw-r--r--   1 hduser supergroup          0 2016-06-21 21:20 inc_imp_lm3_new/_SUCCESS
+-rw-r--r--   1 hduser supergroup        708 2016-06-21 21:20 inc_imp_lm3_new/part-r-00000
+[hduser@Inceptez ~]$ hdfs dfs -cat inc_imp_lm3_new/p*
+1,Arun,Kumar,chennai,33,100000.00,2016-06-18 19:49:56.0
+10,Wayne,Rooney,ManUtd,30,1000000.00,2016-06-19 19:45:13.0
+11,Ryan,Giggs,ManUtd,42,125000.00,2016-06-21 15:47:44.0
+12,Ricardo,Kaka,Brazil,34,100000.00,2016-06-21 15:47:50.0
+2,srini,vasan,chennai,33,10000.00,2016-06-18 19:49:56.0
+3,vasu,devan,banglore,35,90000.00,2016-06-18 19:59:23.0
+4,mohamed,imran,hyderabad,33,1000.00,2016-06-18 19:49:56.0
+5,arun,basker,chennai,23,200000.00,2016-06-18 19:49:56.0
+6,ramesh,babu,manglore,39,100000.00,2016-06-18 19:49:56.0
+7,Deepak Kumar,Mahadevan,chennai,27,100000.00,2016-06-18 19:49:56.0
+8,Lionel,Messi,Barcelona,28,1000000.00,2016-06-18 19:49:56.0
+9,Christiano,Ronaldo,Madrid,31,1100000.00,2016-06-18 19:49:56.0
+====================================================================================================

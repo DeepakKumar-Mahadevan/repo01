@@ -1,0 +1,152 @@
+[cloudera@quickstart ~]$ locate impala
+locate: can not stat () `/var/lib/mlocate/mlocate.db': No such file or directory
+[cloudera@quickstart ~]$ impala
+-bash: impala: command not found
+[cloudera@quickstart ~]$ impala-shell
+Starting Impala Shell without Kerberos authentication
+Connected to quickstart.cloudera:21000
+Server version: impalad version 2.6.0-cdh5.8.0 RELEASE (build 5464d1750381b40a7e7163b12b09f11b891b4de3)
+***********************************************************************************
+Welcome to the Impala shell. Copyright (c) 2015 Cloudera, Inc. All rights reserved.
+(Impala Shell v2.6.0-cdh5.8.0 (5464d17) built on Thu Jun 16 12:35:00 PDT 2016)
+
+To see live updates on a query's progress, run 'set LIVE_SUMMARY=1;'.
+***********************************************************************************
+[quickstart.cloudera:21000] > show tables;
+Query: show tables
+
+Fetched 0 row(s) in 1.26s
+[quickstart.cloudera:21000] > show databases;
+Query: show databases
++------------------+----------------------------------------------+
+| name             | comment                                      |
++------------------+----------------------------------------------+
+| _impala_builtins | System database for Impala builtin functions |
+| default          | Default Hive database                        |
++------------------+----------------------------------------------+
+Fetched 2 row(s) in 0.12s
+[quickstart.cloudera:21000] > show tables in default;
+Query: show tables in default
+
+Fetched 0 row(s) in 0.11s
+[quickstart.cloudera:21000] > show tables in _impala_builtins;
+Query: show tables in _impala_builtins
+
+Fetched 0 row(s) in 0.11s
+[quickstart.cloudera:21000] > create database dkmdb01;
+Query: create database dkmdb01
+
+Fetched 0 row(s) in 2.14s
+[quickstart.cloudera:21000] > show databases;
+Query: show databases
++------------------+----------------------------------------------+
+| name             | comment                                      |
++------------------+----------------------------------------------+
+| _impala_builtins | System database for Impala builtin functions |
+| default          | Default Hive database                        |
+| dkmdb01          |                                              |
++------------------+----------------------------------------------+
+Fetched 3 row(s) in 0.11s
+[quickstart.cloudera:21000] > use dkmdb01;
+Query: use dkmdb01
+[quickstart.cloudera:21000] > create table test01 (id int, value varchar(10));
+Query: create table test01 (id int, value varchar(10))
+
+Fetched 0 row(s) in 1.62s
+[quickstart.cloudera:21000] > show create table test01;
+Query: show create table test01
++----------------------------------------------------------------------------------+
+| result                                                                           |
++----------------------------------------------------------------------------------+
+| CREATE TABLE dkmdb01.test01 (                                                    |
+|   id INT,                                                                        |
+|   value VARCHAR(10)                                                              |
+| )                                                                                |
+| STORED AS TEXTFILE                                                               |
+| LOCATION 'hdfs://quickstart.cloudera:8020/user/hive/warehouse/dkmdb01.db/test01' |
+| TBLPROPERTIES ('transient_lastDdlTime'='1476125884')                             |
++----------------------------------------------------------------------------------+
+Fetched 1 row(s) in 8.94s
+[quickstart.cloudera:21000] > insert into table test01 values (1,'REC 01');
+Query: insert into table test01 values (1,'REC 01')
+ERROR: AnalysisException: Possible loss of precision for target table 'dkmdb01.test01'.
+Expression ''rec 01'' (type: STRING) would need to be cast to VARCHAR(10) for column 'value'
+
+[quickstart.cloudera:21000] > insert into table test01 values (1,"REC 01");
+Query: insert into table test01 values (1,"REC 01")
+ERROR: AnalysisException: Possible loss of precision for target table 'dkmdb01.test01'.
+Expression ''rec 01'' (type: STRING) would need to be cast to VARCHAR(10) for column 'value'
+
+[quickstart.cloudera:21000] > insert into table test01 values (1,REC 01);
+Query: insert into table test01 values (1,REC 01)
+ERROR: AnalysisException: Syntax error in line 1:
+insert into table test01 values (1,REC 01)
+                                       ^
+Encountered: INTEGER LITERAL
+Expected: AND, AS, ASC, BETWEEN, CROSS, DESC, DIV, ELSE, END, FOLLOWING, FROM, FULL, GROUP, HAVING, ILIKE, IN, INNER, IREGEXP, IS, JOIN, LEFT, LIKE, LIMIT, LOCATION, NOT, NULLS, OFFSET, ON, OR, ORDER, PRECEDING, RANGE, REGEXP, RIGHT, RLIKE, ROWS, SET, STRAIGHT_JOIN, THEN, UNION, USING, WHEN, WHERE, COMMA, IDENTIFIER
+
+CAUSED BY: Exception: Syntax error
+
+[quickstart.cloudera:21000] > insert into table test01 values (1,cast('REC 01' as varchar(10));
+Query: insert into table test01 values (1,cast('REC 01' as varchar(10))
+ERROR: AnalysisException: Syntax error in line 1:
+...t('REC 01' as varchar(10))
+                            ^
+Encountered: EOF
+Expected: COMMA
+
+CAUSED BY: Exception: Syntax error
+
+[quickstart.cloudera:21000] > insert into table test01 values (1,cast('REC 01' as varchar(10)));
+Query: insert into table test01 values (1,cast('REC 01' as varchar(10)))
+Inserted 1 row(s) in 4.65s
+[quickstart.cloudera:21000] > select * from test01;
+Query: select * from test01
++----+--------+
+| id | value  |
++----+--------+
+| 1  | REC 01 |
++----+--------+
+Fetched 1 row(s) in 3.67s
+[quickstart.cloudera:21000] > alter table test01 add column (col2 string);
+Query: alter table test01 add column (col2 string)
+ERROR: AnalysisException: Syntax error in line 1:
+alter table test01 add column (col2 string)
+                       ^
+Encountered: COLUMN
+Expected: COLUMNS, IF, PARTITION
+
+CAUSED BY: Exception: Syntax error
+
+[quickstart.cloudera:21000] > alter table test01 add columns (col2 string);
+Query: alter table test01 add columns (col2 string)
+[quickstart.cloudera:21000] > show create table test01;
+Query: show create table test01
++------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| result                                                                                                                                                     |
++------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| CREATE TABLE dkmdb01.test01 (                                                                                                                              |
+|   id INT,                                                                                                                                                  |
+|   value VARCHAR(10),                                                                                                                                       |
+|   col2 STRING                                                                                                                                              |
+| )                                                                                                                                                          |
+| STORED AS TEXTFILE                                                                                                                                         |
+| LOCATION 'hdfs://quickstart.cloudera:8020/user/hive/warehouse/dkmdb01.db/test01'                                                                           |
+| TBLPROPERTIES ('numFiles'='1', 'COLUMN_STATS_ACCURATE'='false', 'transient_lastDdlTime'='1476126573', 'numRows'='-1', 'totalSize'='9', 'rawDataSize'='-1') |
++------------------------------------------------------------------------------------------------------------------------------------------------------------+
+Fetched 1 row(s) in 0.11s
+[quickstart.cloudera:21000] > insert into table test01 values (1,cast('REC 01' as varchar(10)),'COL2 for REC 01');
+Query: insert into table test01 values (1,cast('REC 01' as varchar(10)),'COL2 for REC 01')
+Inserted 1 row(s) in 0.38s
+[quickstart.cloudera:21000] > select * from test01;
+Query: select * from test01
++----+--------+-----------------+
+| id | value  | col2            |
++----+--------+-----------------+
+| 1  | REC 01 | NULL            |
+| 1  | REC 01 | COL2 for REC 01 |
++----+--------+-----------------+
+Fetched 2 row(s) in 0.64s
+[quickstart.cloudera:21000] > exit
+                            > ;
+Goodbye cloudera

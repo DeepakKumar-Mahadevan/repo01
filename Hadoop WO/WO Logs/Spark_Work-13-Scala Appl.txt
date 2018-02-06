@@ -1,0 +1,501 @@
+[hduser@Inceptez ~]$ cd spark_scripts/
+[hduser@Inceptez spark_scripts]$
+[hduser@Inceptez spark_scripts]$ mkdir spark_apps
+[hduser@Inceptez spark_scripts]$ mkdir -p spark_apps/src/main/scala
+[hduser@Inceptez spark_scripts]$ ls -R
+.:
+spark_apps  wordcount.py
+
+./spark_apps:
+src
+
+./spark_apps/src:
+main
+
+./spark_apps/src/main:
+scala
+
+[hduser@Inceptez spark_apps]$ vi src/main/scala/dkmapp01.scala
+[hduser@Inceptez spark_apps]$ ls -l -R
+.:
+total 4
+drwxrwxr-x 3 hduser hduser 4096 Sep 15 22:02 src
+
+./src:
+total 4
+drwxrwxr-x 3 hduser hduser 4096 Sep 15 22:02 main
+
+./src/main:
+total 4
+drwxrwxr-x 2 hduser hduser 4096 Sep 15 22:09 scala
+
+./src/main/scala:
+total 4
+-rw-rw-r-- 1 hduser hduser 684 Sep 15 22:09 dkmapp01.scala
+
+[hduser@Inceptez spark_apps]$ vi dkmapp01.sbt
+[hduser@Inceptez spark_apps]$ ls
+dkmapp01.sbt  src
+[hduser@Inceptez spark_apps]$ sbt package
+-bash: sbt: command not found
+
+>>> Installed sbt
+
+[hduser@Inceptez spark_apps]$ sbt package
+Getting org.scala-sbt sbt 0.13.5 ...
+[info] Set current project to DKM Spark Project (in build file:/home/hduser/spark_scripts/spark_apps/)
+[info] Updating {file:/home/hduser/spark_scripts/spark_apps/}spark_apps...
+[info] Resolving org.fusesource.jansi#jansi;1.4 ...
+[info] Done updating.
+[info] Compiling 1 Scala source to /home/hduser/spark_scripts/spark_apps/target/scala-2.10/classes...
+[info] 'compiler-interface' not yet compiled for Scala 2.10.5. Compiling...
+[info]   Compilation completed in 107.251 s
+[info] Packaging /home/hduser/spark_scripts/spark_apps/target/scala-2.10/dkm-spark-project_2.10-1.6.0.jar ...
+[info] Done packaging.
+[success] Total time: 720 s, completed Sep 15, 2016 11:31:01 PM
+----------------------------------------------------------------
+[hduser@Inceptez spark_apps]$ $SPARK_HOME/bin/spark-submit --class "SimpleApp" --master local[4] target/scala-2.10/dkm-spark-project_2.10-1.6.0.jar
+/usr/local/spark/bin/spark-class: line 86: /usr/lib/jvm/java-1.7.0-openjdk-1.7.0.85.x86_64/bin/java: No such file or directory
+
+[hduser@Inceptez bin]$ cp spark-class /home/hduser/bkup_files/
+[hduser@Inceptez bin]$ vi spark-class
+
+[hduser@Inceptez spark_apps]$ spark-submit --class "SimpleApp" --master local[4] target/scala-2.10/dkm-spark-project_2.10-1.6.0.jar
+/usr/local/spark/bin/spark-class: line 86: /usr/lib/jvm/java-1.7.0-openjdk-1.7.0.85.x86_64: No such file or directory
+
+[hduser@Inceptez bin]$ cd /usr/lib/jvm/
+[hduser@Inceptez jvm]$ ls -l
+total 8
+lrwxrwxrwx  1 root root   26 Sep 15 22:21 java -> /etc/alternatives/java_sdk
+drwxr-xr-x. 3 root root 4096 Aug 24  2015 java-1.6.0-openjdk-1.6.0.36.x86_64
+lrwxrwxrwx  1 root root   32 Sep 15 22:21 java-1.7.0 -> /etc/alternatives/java_sdk_1.7.0
+drwxr-xr-x  7 root root 4096 Sep 15 22:21 java-1.7.0-openjdk-1.7.0.111.x86_64
+lrwxrwxrwx  1 root root   35 Sep 15 22:21 java-1.7.0-openjdk.x86_64 -> java-1.7.0-openjdk-1.7.0.111.x86_64
+lrwxrwxrwx  1 root root   34 Sep 15 22:21 java-openjdk -> /etc/alternatives/java_sdk_openjdk
+lrwxrwxrwx  1 root root   21 Sep 15 22:21 jre -> /etc/alternatives/jre
+lrwxrwxrwx. 1 root root   27 Aug 24  2015 jre-1.6.0 -> /etc/alternatives/jre_1.6.0
+lrwxrwxrwx. 1 root root   38 Aug 24  2015 jre-1.6.0-openjdk.x86_64 -> java-1.6.0-openjdk-1.6.0.36.x86_64/jre
+lrwxrwxrwx  1 root root   27 Sep 15 22:21 jre-1.7.0 -> /etc/alternatives/jre_1.7.0
+lrwxrwxrwx  1 root root   39 Sep 15 22:21 jre-1.7.0-openjdk.x86_64 -> java-1.7.0-openjdk-1.7.0.111.x86_64/jre
+lrwxrwxrwx  1 root root   29 Sep 15 22:21 jre-openjdk -> /etc/alternatives/jre_openjdk
+
+[hduser@Inceptez bin]$ echo $JAVA_HOME
+/usr/lib/jvm/java-1.7.0-openjdk-1.7.0.85.x86_64
+
+[hduser@Inceptez ~]$ vi .bashrc
+[hduser@Inceptez ~]$ source .bashrc
+
+[hduser@Inceptez ~]$ echo $JAVA_HOME
+/usr/lib/jvm/java-1.7.0-openjdk-1.7.0.111.x86_64
+
+[hduser@Inceptez spark_apps]$ spark-submit --class "SimpleApp" --master local[4] target/scala-2.10/dkm-spark-project_2.10-1.6.0.jar
+16/09/16 00:04:27 INFO spark.SparkContext: Running Spark version 1.6.0
+16/09/16 00:04:29 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+16/09/16 00:04:30 WARN util.Utils: Your hostname, Inceptez resolves to a loopback address: 127.0.0.1; using 192.168.107.134 instead (on interface eth0)
+16/09/16 00:04:30 WARN util.Utils: Set SPARK_LOCAL_IP if you need to bind to another address
+16/09/16 00:04:30 INFO spark.SecurityManager: Changing view acls to: hduser
+16/09/16 00:04:30 INFO spark.SecurityManager: Changing modify acls to: hduser
+16/09/16 00:04:30 INFO spark.SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users with view permissions: Set(hduser); users with modify permissions: Set(hduser)
+16/09/16 00:04:32 INFO util.Utils: Successfully started service 'sparkDriver' on port 36305.
+16/09/16 00:04:34 INFO slf4j.Slf4jLogger: Slf4jLogger started
+16/09/16 00:04:34 INFO Remoting: Starting remoting
+16/09/16 00:04:35 INFO Remoting: Remoting started; listening on addresses :[akka.tcp://sparkDriverActorSystem@192.168.107.134:55187]
+16/09/16 00:04:35 INFO util.Utils: Successfully started service 'sparkDriverActorSystem' on port 55187.
+16/09/16 00:04:35 INFO spark.SparkEnv: Registering MapOutputTracker
+16/09/16 00:04:35 INFO spark.SparkEnv: Registering BlockManagerMaster
+16/09/16 00:04:35 INFO storage.DiskBlockManager: Created local directory at /tmp/blockmgr-8e9ad1d5-b27b-4492-9c27-cfd1b893aa35
+16/09/16 00:04:35 INFO storage.MemoryStore: MemoryStore started with capacity 517.4 MB
+16/09/16 00:04:36 INFO spark.SparkEnv: Registering OutputCommitCoordinator
+16/09/16 00:04:43 INFO server.Server: jetty-8.y.z-SNAPSHOT
+16/09/16 00:04:43 INFO server.AbstractConnector: Started SelectChannelConnector@0.0.0.0:4040
+16/09/16 00:04:43 INFO util.Utils: Successfully started service 'SparkUI' on port 4040.
+16/09/16 00:04:43 INFO ui.SparkUI: Started SparkUI at http://192.168.107.134:4040
+16/09/16 00:04:43 INFO spark.HttpFileServer: HTTP File server directory is /tmp/spark-92ded4c0-e288-4778-ae50-3371b4a74b63/httpd-fed50c1d-e084-438b-b409-52b1be89cc0f
+16/09/16 00:04:44 INFO spark.HttpServer: Starting HTTP Server
+16/09/16 00:04:44 INFO server.Server: jetty-8.y.z-SNAPSHOT
+16/09/16 00:04:44 INFO server.AbstractConnector: Started SocketConnector@0.0.0.0:41010
+16/09/16 00:04:44 INFO util.Utils: Successfully started service 'HTTP file server' on port 41010.
+16/09/16 00:04:44 INFO spark.SparkContext: Added JAR file:/home/hduser/spark_scripts/spark_apps/target/scala-2.10/dkm-spark-project_2.10-1.6.0.jar at http://192.168.107.134:41010/jars/dkm-spark-project_2.10-1.6.0.jar with timestamp 1473964484169
+16/09/16 00:04:44 INFO executor.Executor: Starting executor ID driver on host localhost
+16/09/16 00:04:45 INFO util.Utils: Successfully started service 'org.apache.spark.network.netty.NettyBlockTransferService' on port 41055.
+16/09/16 00:04:45 INFO netty.NettyBlockTransferService: Server created on 41055
+16/09/16 00:04:45 INFO storage.BlockManagerMaster: Trying to register BlockManager
+16/09/16 00:04:45 INFO storage.BlockManagerMasterEndpoint: Registering block manager localhost:41055 with 517.4 MB RAM, BlockManagerId(driver, localhost, 41055)
+16/09/16 00:04:45 INFO storage.BlockManagerMaster: Registered BlockManager
+16/09/16 00:04:47 INFO storage.MemoryStore: Block broadcast_0 stored as values in memory (estimated size 153.9 KB, free 153.9 KB)
+16/09/16 00:04:47 INFO storage.MemoryStore: Block broadcast_0_piece0 stored as bytes in memory (estimated size 14.1 KB, free 168.1 KB)
+16/09/16 00:04:47 INFO storage.BlockManagerInfo: Added broadcast_0_piece0 in memory on localhost:41055 (size: 14.1 KB, free: 517.4 MB)
+16/09/16 00:04:47 INFO spark.SparkContext: Created broadcast 0 from textFile at dkmapp01.scala:11
+Exception in thread "main" java.net.ConnectException: Call From Inceptez/127.0.0.1 to localhost:54310 failed on connection exception: java.net.ConnectException: Connection refused; For more details see:  http://wiki.apache.org/hadoop/ConnectionRefused
+16/09/16 00:04:57 INFO spark.SparkContext: Invoking stop() from shutdown hook
+16/09/16 00:04:57 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/metrics/json,null}
+16/09/16 00:04:57 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/stages/stage/kill,null}
+16/09/16 00:04:57 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/api,null}
+16/09/16 00:04:57 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/,null}
+16/09/16 00:04:57 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/static,null}
+16/09/16 00:04:57 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/executors/threadDump/json,null}
+16/09/16 00:04:57 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/executors/threadDump,null}
+16/09/16 00:04:57 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/executors/json,null}
+16/09/16 00:04:57 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/executors,null}
+16/09/16 00:04:57 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/environment/json,null}
+16/09/16 00:04:57 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/environment,null}
+16/09/16 00:04:57 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/storage/rdd/json,null}
+16/09/16 00:04:57 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/storage/rdd,null}
+16/09/16 00:04:57 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/storage/json,null}
+16/09/16 00:04:57 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/storage,null}
+16/09/16 00:04:57 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/stages/pool/json,null}
+16/09/16 00:04:57 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/stages/pool,null}
+16/09/16 00:04:57 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/stages/stage/json,null}
+16/09/16 00:04:57 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/stages/stage,null}
+16/09/16 00:04:57 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/stages/json,null}
+16/09/16 00:04:57 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/stages,null}
+16/09/16 00:04:57 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/jobs/job/json,null}
+16/09/16 00:04:57 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/jobs/job,null}
+16/09/16 00:04:57 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/jobs/json,null}
+16/09/16 00:04:57 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/jobs,null}
+16/09/16 00:04:57 INFO ui.SparkUI: Stopped Spark web UI at http://192.168.107.134:4040
+16/09/16 00:04:58 INFO spark.MapOutputTrackerMasterEndpoint: MapOutputTrackerMasterEndpoint stopped!
+16/09/16 00:04:58 INFO storage.MemoryStore: MemoryStore cleared
+16/09/16 00:04:58 INFO storage.BlockManager: BlockManager stopped
+16/09/16 00:04:58 INFO storage.BlockManagerMaster: BlockManagerMaster stopped
+16/09/16 00:04:58 INFO scheduler.OutputCommitCoordinator$OutputCommitCoordinatorEndpoint: OutputCommitCoordinator stopped!
+16/09/16 00:04:58 INFO spark.SparkContext: Successfully stopped SparkContext
+16/09/16 00:04:58 INFO util.ShutdownHookManager: Shutdown hook called
+16/09/16 00:04:58 INFO util.ShutdownHookManager: Deleting directory /tmp/spark-92ded4c0-e288-4778-ae50-3371b4a74b63/httpd-fed50c1d-e084-438b-b409-52b1be89cc0f
+16/09/16 00:04:58 INFO util.ShutdownHookManager: Deleting directory /tmp/spark-92ded4c0-e288-4778-ae50-3371b4a74b63
+16/09/16 00:04:58 INFO remote.RemoteActorRefProvider$RemotingTerminator: Shutting down remote daemon.
+16/09/16 00:04:58 INFO remote.RemoteActorRefProvider$RemotingTerminator: Remote daemon shut down; proceeding with flushing remote transports.
+------------------------------------------
+[hduser@Inceptez ~]$ start-all.sh
+This script is Deprecated. Instead use start-dfs.sh and start-yarn.sh
+/usr/local/hadoop/bin/hdfs: line 276: /usr/lib/jvm/java-1.7.0-openjdk-1.7.0.85.x86_64/bin/java: No such file or directory
+/usr/local/hadoop/bin/hdfs: line 276: exec: /usr/lib/jvm/java-1.7.0-openjdk-1.7.0.85.x86_64/bin/java: cannot execute: No such file or directory
+Starting namenodes on []
+localhost: starting namenode, logging to /usr/local/hadoop/logs/hadoop-hduser-namenode-Inceptez.out
+localhost: /usr/local/hadoop/bin/hdfs: line 276: /usr/lib/jvm/java-1.7.0-openjdk-1.7.0.85.x86_64/bin/java: No such file or directory
+localhost: /usr/local/hadoop/bin/hdfs: line 276: exec: /usr/lib/jvm/java-1.7.0-openjdk-1.7.0.85.x86_64/bin/java: cannot execute: No such file or directory
+localhost: starting datanode, logging to /usr/local/hadoop/logs/hadoop-hduser-datanode-Inceptez.out
+localhost: /usr/local/hadoop/bin/hdfs: line 276: /usr/lib/jvm/java-1.7.0-openjdk-1.7.0.85.x86_64/bin/java: No such file or directory
+localhost: /usr/local/hadoop/bin/hdfs: line 276: exec: /usr/lib/jvm/java-1.7.0-openjdk-1.7.0.85.x86_64/bin/java: cannot execute: No such file or directory
+/usr/local/hadoop/bin/hdfs: line 276: /usr/lib/jvm/java-1.7.0-openjdk-1.7.0.85.x86_64/bin/java: No such file or directory
+/usr/local/hadoop/bin/hdfs: line 276: exec: /usr/lib/jvm/java-1.7.0-openjdk-1.7.0.85.x86_64/bin/java: cannot execute: No such file or directory
+starting yarn daemons
+starting resourcemanager, logging to /usr/local/hadoop/logs/yarn-hduser-resourcemanager-Inceptez.out
+/usr/local/hadoop/bin/yarn: line 284: /usr/lib/jvm/java-1.7.0-openjdk-1.7.0.85.x86_64/bin/java: No such file or directory
+/usr/local/hadoop/bin/yarn: line 284: exec: /usr/lib/jvm/java-1.7.0-openjdk-1.7.0.85.x86_64/bin/java: cannot execute: No such file or directory
+localhost: starting nodemanager, logging to /usr/local/hadoop/logs/yarn-hduser-nodemanager-Inceptez.out
+localhost: /usr/local/hadoop/bin/yarn: line 284: /usr/lib/jvm/java-1.7.0-openjdk-1.7.0.85.x86_64/bin/java: No such file or directory
+localhost: /usr/local/hadoop/bin/yarn: line 284: exec: /usr/lib/jvm/java-1.7.0-openjdk-1.7.0.85.x86_64/bin/java: cannot execute: No such file or directory
+
+/usr/local/hadoop/etc/hadoop
+[hduser@Inceptez hadoop]$ grep java *
+hadoop-env.cmd:@rem The java implementation to use.  Required.
+hadoop-env.cmd:@rem set HADOOP_OPTS=%HADOOP_OPTS% -Djava.net.preferIPv4Stack=true
+hadoop-env.sh:# The java implementation to use.
+hadoop-env.sh:export HADOOP_OPTS="$HADOOP_OPTS -Djava.net.preferIPv4Stack=true"
+hadoop-env.sh:export JAVA_HOME=/usr/lib/jvm/java-1.7.0-openjdk-1.7.0.85.x86_64
+hadoop-metrics2.properties:# See javadoc of package-info.java for org.apache.hadoop.metrics2 for details
+yarn-env.cmd:  set YARN_OPTS=%YARN_OPTS% -Djava.library.path=%JAVA_LIBRARY_PATH%
+yarn-env.sh:  #echo "run java in $JAVA_HOME"
+yarn-env.sh:JAVA=$JAVA_HOME/bin/java
+yarn-env.sh:  YARN_OPTS="$YARN_OPTS -Djava.library.path=$JAVA_LIBRARY_PATH"
+[hduser@Inceptez hadoop]$ cp hadoop-env.sh ~/bkup_files/
+[hduser@Inceptez hadoop]$ vi hadoop-env.sh
+[hduser@Inceptez hadoop]$ start-all.sh
+This script is Deprecated. Instead use start-dfs.sh and start-yarn.sh
+16/09/16 00:28:06 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Starting namenodes on [localhost]
+localhost: starting namenode, logging to /usr/local/hadoop/logs/hadoop-hduser-namenode-Inceptez.out
+localhost: starting datanode, logging to /usr/local/hadoop/logs/hadoop-hduser-datanode-Inceptez.out
+Starting secondary namenodes [0.0.0.0]
+0.0.0.0: starting secondarynamenode, logging to /usr/local/hadoop/logs/hadoop-hduser-secondarynamenode-Inceptez.out
+16/09/16 00:28:39 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+starting yarn daemons
+starting resourcemanager, logging to /usr/local/hadoop/logs/yarn-hduser-resourcemanager-Inceptez.out
+localhost: starting nodemanager, logging to /usr/local/hadoop/logs/yarn-hduser-nodemanager-Inceptez.out
+[hduser@Inceptez hadoop]$ jps
+3085 SecondaryNameNode
+2796 NameNode
+3330 NodeManager
+3360 Jps
+2891 DataNode
+3229 ResourceManager
+-----------------------------------------------
+[hduser@Inceptez spark_apps]$ spark-submit --class "SimpleApp" --master local[4] target/scala-2.10/dkm-spark-project_2.10-1.6.0.jar
+16/09/16 00:30:24 INFO spark.SparkContext: Running Spark version 1.6.0
+16/09/16 00:30:25 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+16/09/16 00:30:25 WARN util.Utils: Your hostname, Inceptez resolves to a loopback address: 127.0.0.1; using 192.168.107.134 instead (on interface eth0)
+16/09/16 00:30:25 WARN util.Utils: Set SPARK_LOCAL_IP if you need to bind to another address
+16/09/16 00:30:25 INFO spark.SecurityManager: Changing view acls to: hduser
+16/09/16 00:30:25 INFO spark.SecurityManager: Changing modify acls to: hduser
+16/09/16 00:30:25 INFO spark.SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users with view permissions: Set(hduser); users with modify permissions: Set(hduser)
+16/09/16 00:30:26 INFO util.Utils: Successfully started service 'sparkDriver' on port 59720.
+16/09/16 00:30:27 INFO slf4j.Slf4jLogger: Slf4jLogger started
+16/09/16 00:30:27 INFO Remoting: Starting remoting
+16/09/16 00:30:28 INFO Remoting: Remoting started; listening on addresses :[akka.tcp://sparkDriverActorSystem@192.168.107.134:32934]
+16/09/16 00:30:28 INFO util.Utils: Successfully started service 'sparkDriverActorSystem' on port 32934.
+16/09/16 00:30:28 INFO spark.SparkEnv: Registering MapOutputTracker
+16/09/16 00:30:28 INFO spark.SparkEnv: Registering BlockManagerMaster
+16/09/16 00:30:28 INFO storage.DiskBlockManager: Created local directory at /tmp/blockmgr-ff34a332-42e3-4eb5-b269-60bea8be96f4
+16/09/16 00:30:28 INFO storage.MemoryStore: MemoryStore started with capacity 517.4 MB
+16/09/16 00:30:28 INFO spark.SparkEnv: Registering OutputCommitCoordinator
+16/09/16 00:30:31 INFO server.Server: jetty-8.y.z-SNAPSHOT
+16/09/16 00:30:31 INFO server.AbstractConnector: Started SelectChannelConnector@0.0.0.0:4040
+16/09/16 00:30:31 INFO util.Utils: Successfully started service 'SparkUI' on port 4040.
+16/09/16 00:30:31 INFO ui.SparkUI: Started SparkUI at http://192.168.107.134:4040
+16/09/16 00:30:31 INFO spark.HttpFileServer: HTTP File server directory is /tmp/spark-2e4a27b1-f122-42cb-a860-b1a2995c2669/httpd-7758c3be-69f3-4c55-9d7b-ca309e22b4c9
+16/09/16 00:30:31 INFO spark.HttpServer: Starting HTTP Server
+16/09/16 00:30:31 INFO server.Server: jetty-8.y.z-SNAPSHOT
+16/09/16 00:30:31 INFO server.AbstractConnector: Started SocketConnector@0.0.0.0:57044
+16/09/16 00:30:31 INFO util.Utils: Successfully started service 'HTTP file server' on port 57044.
+16/09/16 00:30:31 INFO spark.SparkContext: Added JAR file:/home/hduser/spark_scripts/spark_apps/target/scala-2.10/dkm-spark-project_2.10-1.6.0.jar at http://192.168.107.134:57044/jars/dkm-spark-project_2.10-1.6.0.jar with timestamp 1473966031777
+16/09/16 00:30:32 INFO executor.Executor: Starting executor ID driver on host localhost
+16/09/16 00:30:32 INFO util.Utils: Successfully started service 'org.apache.spark.network.netty.NettyBlockTransferService' on port 33005.
+16/09/16 00:30:32 INFO netty.NettyBlockTransferService: Server created on 33005
+16/09/16 00:30:32 INFO storage.BlockManagerMaster: Trying to register BlockManager
+16/09/16 00:30:32 INFO storage.BlockManagerMasterEndpoint: Registering block manager localhost:33005 with 517.4 MB RAM, BlockManagerId(driver, localhost, 33005)
+16/09/16 00:30:32 INFO storage.BlockManagerMaster: Registered BlockManager
+16/09/16 00:30:34 INFO storage.MemoryStore: Block broadcast_0 stored as values in memory (estimated size 153.9 KB, free 153.9 KB)
+16/09/16 00:30:34 INFO storage.MemoryStore: Block broadcast_0_piece0 stored as bytes in memory (estimated size 14.1 KB, free 168.1 KB)
+16/09/16 00:30:34 INFO storage.BlockManagerInfo: Added broadcast_0_piece0 in memory on localhost:33005 (size: 14.1 KB, free: 517.4 MB)
+16/09/16 00:30:34 INFO spark.SparkContext: Created broadcast 0 from textFile at dkmapp01.scala:11
+Exception in thread "main" org.apache.hadoop.mapred.InvalidInputException: Input path does not exist: hdfs://localhost:54310/home/hduser/Desktop/Work/Sample_Data/ManUtdPlayers2.csv
+        at org.apache.hadoop.mapred.FileInputFormat.singleThreadedListStatus(FileInputFormat.java:285)
+        at org.apache.hadoop.mapred.FileInputFormat.listStatus(FileInputFormat.java:228)
+        at org.apache.hadoop.mapred.FileInputFormat.getSplits(FileInputFormat.java:313)
+        at org.apache.spark.rdd.HadoopRDD.getPartitions(HadoopRDD.scala:199)
+        at org.apache.spark.rdd.RDD$$anonfun$partitions$2.apply(RDD.scala:239)
+        at org.apache.spark.rdd.RDD$$anonfun$partitions$2.apply(RDD.scala:237)
+        at scala.Option.getOrElse(Option.scala:120)
+        at org.apache.spark.rdd.RDD.partitions(RDD.scala:237)
+        at org.apache.spark.rdd.MapPartitionsRDD.getPartitions(MapPartitionsRDD.scala:35)
+        at org.apache.spark.rdd.RDD$$anonfun$partitions$2.apply(RDD.scala:239)
+        at org.apache.spark.rdd.RDD$$anonfun$partitions$2.apply(RDD.scala:237)
+        at scala.Option.getOrElse(Option.scala:120)
+        at org.apache.spark.rdd.RDD.partitions(RDD.scala:237)
+        at org.apache.spark.rdd.MapPartitionsRDD.getPartitions(MapPartitionsRDD.scala:35)
+        at org.apache.spark.rdd.RDD$$anonfun$partitions$2.apply(RDD.scala:239)
+        at org.apache.spark.rdd.RDD$$anonfun$partitions$2.apply(RDD.scala:237)
+        at scala.Option.getOrElse(Option.scala:120)
+        at org.apache.spark.rdd.RDD.partitions(RDD.scala:237)
+        at org.apache.spark.SparkContext.runJob(SparkContext.scala:1929)
+        at org.apache.spark.rdd.RDD.count(RDD.scala:1143)
+        at SimpleApp$.main(dkmapp01.scala:12)
+        at SimpleApp.main(dkmapp01.scala)
+        at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+        at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+        at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+        at java.lang.reflect.Method.invoke(Method.java:606)
+        at org.apache.spark.deploy.SparkSubmit$.org$apache$spark$deploy$SparkSubmit$$runMain(SparkSubmit.scala:731)
+        at org.apache.spark.deploy.SparkSubmit$.doRunMain$1(SparkSubmit.scala:181)
+        at org.apache.spark.deploy.SparkSubmit$.submit(SparkSubmit.scala:206)
+        at org.apache.spark.deploy.SparkSubmit$.main(SparkSubmit.scala:121)
+        at org.apache.spark.deploy.SparkSubmit.main(SparkSubmit.scala)
+16/09/16 00:30:38 INFO spark.SparkContext: Invoking stop() from shutdown hook
+16/09/16 00:30:38 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/metrics/json,null}
+16/09/16 00:30:38 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/stages/stage/kill,null}
+16/09/16 00:30:38 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/api,null}
+16/09/16 00:30:38 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/,null}
+16/09/16 00:30:38 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/static,null}
+16/09/16 00:30:38 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/executors/threadDump/json,null}
+16/09/16 00:30:38 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/executors/threadDump,null}
+16/09/16 00:30:38 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/executors/json,null}
+16/09/16 00:30:38 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/executors,null}
+16/09/16 00:30:38 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/environment/json,null}
+16/09/16 00:30:38 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/environment,null}
+16/09/16 00:30:38 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/storage/rdd/json,null}
+16/09/16 00:30:38 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/storage/rdd,null}
+16/09/16 00:30:38 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/storage/json,null}
+16/09/16 00:30:38 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/storage,null}
+16/09/16 00:30:38 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/stages/pool/json,null}
+16/09/16 00:30:38 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/stages/pool,null}
+16/09/16 00:30:38 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/stages/stage/json,null}
+16/09/16 00:30:38 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/stages/stage,null}
+16/09/16 00:30:38 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/stages/json,null}
+16/09/16 00:30:38 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/stages,null}
+16/09/16 00:30:38 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/jobs/job/json,null}
+16/09/16 00:30:38 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/jobs/job,null}
+16/09/16 00:30:38 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/jobs/json,null}
+16/09/16 00:30:38 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/jobs,null}
+16/09/16 00:30:38 INFO ui.SparkUI: Stopped Spark web UI at http://192.168.107.134:4040
+16/09/16 00:30:38 INFO spark.MapOutputTrackerMasterEndpoint: MapOutputTrackerMasterEndpoint stopped!
+16/09/16 00:30:38 INFO storage.MemoryStore: MemoryStore cleared
+16/09/16 00:30:38 INFO storage.BlockManager: BlockManager stopped
+16/09/16 00:30:38 INFO storage.BlockManagerMaster: BlockManagerMaster stopped
+16/09/16 00:30:38 INFO scheduler.OutputCommitCoordinator$OutputCommitCoordinatorEndpoint: OutputCommitCoordinator stopped!
+16/09/16 00:30:38 INFO spark.SparkContext: Successfully stopped SparkContext
+16/09/16 00:30:38 INFO util.ShutdownHookManager: Shutdown hook called
+16/09/16 00:30:38 INFO util.ShutdownHookManager: Deleting directory /tmp/spark-2e4a27b1-f122-42cb-a860-b1a2995c2669/httpd-7758c3be-69f3-4c55-9d7b-ca309e22b4c9
+16/09/16 00:30:38 INFO util.ShutdownHookManager: Deleting directory /tmp/spark-2e4a27b1-f122-42cb-a860-b1a2995c2669
+16/09/16 00:30:38 INFO remote.RemoteActorRefProvider$RemotingTerminator: Shutting down remote daemon.
+16/09/16 00:30:38 INFO remote.RemoteActorRefProvider$RemotingTerminator: Remote daemon shut down; proceeding with flushing remote transports.
+16/09/16 00:30:38 INFO remote.RemoteActorRefProvider$RemotingTerminator: Remoting shut down.
+------------------------------------------------------
+[hduser@Inceptez ~]$ cat /home/hduser/spark_scripts/spark_apps/src/main/scala/dkmapp01.scala
+/* dkmapp01.scala */
+import org.apache.spark.SparkContext
+import org.apache.spark.SparkContext._
+import org.apache.spark.SparkConf
+
+object DKMApp01 {
+  def main(args: Array[String]) {
+    val InpFile = "file:///home/hduser/Desktop/Work/Sample_Data/ManUtdPlayers2.csv" // Should be some file on your system
+    val conf = new SparkConf().setAppName("DKMAPP01 Application")
+    val sc = new SparkContext(conf)
+    val InpData = sc.textFile(InpFile, 2).cache()
+    val numUSA = InpData.filter(line => line.contains("USA")).count()
+    val numEng = InpData.filter(line => line.contains("England")).count()
+    println("Lines with USA: %s, Lines with England: %s".format(numUSA, numEng))
+  }
+}
+[hduser@Inceptez scala]$ vi dkmapp01.scala
+[hduser@Inceptez scala]$ cd ../../../
+[hduser@Inceptez spark_apps]$ sbt package
+[info] Set current project to DKM Spark Project (in build file:/home/hduser/spark_scripts/spark_apps/)
+[info] Compiling 1 Scala source to /home/hduser/spark_scripts/spark_apps/target/scala-2.10/classes...
+[info] Packaging /home/hduser/spark_scripts/spark_apps/target/scala-2.10/dkm-spark-project_2.10-1.6.0.jar ...
+[info] Done packaging.
+[success] Total time: 16 s, completed Sep 16, 2016 12:33:07 AM
+------------------------------------------------------
+[hduser@Inceptez spark_apps]$ spark-submit --class "DKMApp01" --master local[4] target/scala-2.10/dkm-spark-project_2.10-1.6.0.jar
+16/09/16 00:34:13 INFO spark.SparkContext: Running Spark version 1.6.0
+16/09/16 00:34:14 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+16/09/16 00:34:14 WARN util.Utils: Your hostname, Inceptez resolves to a loopback address: 127.0.0.1; using 192.168.107.134 instead (on interface eth0)
+16/09/16 00:34:14 WARN util.Utils: Set SPARK_LOCAL_IP if you need to bind to another address
+16/09/16 00:34:14 INFO spark.SecurityManager: Changing view acls to: hduser
+16/09/16 00:34:14 INFO spark.SecurityManager: Changing modify acls to: hduser
+16/09/16 00:34:14 INFO spark.SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users with view permissions: Set(hduser); users with modify permissions: Set(hduser)
+16/09/16 00:34:14 INFO util.Utils: Successfully started service 'sparkDriver' on port 34802.
+16/09/16 00:34:15 INFO slf4j.Slf4jLogger: Slf4jLogger started
+16/09/16 00:34:15 INFO Remoting: Starting remoting
+16/09/16 00:34:15 INFO Remoting: Remoting started; listening on addresses :[akka.tcp://sparkDriverActorSystem@192.168.107.134:53982]
+16/09/16 00:34:15 INFO util.Utils: Successfully started service 'sparkDriverActorSystem' on port 53982.
+16/09/16 00:34:15 INFO spark.SparkEnv: Registering MapOutputTracker
+16/09/16 00:34:15 INFO spark.SparkEnv: Registering BlockManagerMaster
+16/09/16 00:34:15 INFO storage.DiskBlockManager: Created local directory at /tmp/blockmgr-b3f8f22d-9be4-4f3c-a97b-4df56367d013
+16/09/16 00:34:15 INFO storage.MemoryStore: MemoryStore started with capacity 517.4 MB
+16/09/16 00:34:16 INFO spark.SparkEnv: Registering OutputCommitCoordinator
+16/09/16 00:34:18 INFO server.Server: jetty-8.y.z-SNAPSHOT
+16/09/16 00:34:18 INFO server.AbstractConnector: Started SelectChannelConnector@0.0.0.0:4040
+16/09/16 00:34:18 INFO util.Utils: Successfully started service 'SparkUI' on port 4040.
+16/09/16 00:34:18 INFO ui.SparkUI: Started SparkUI at http://192.168.107.134:4040
+16/09/16 00:34:18 INFO spark.HttpFileServer: HTTP File server directory is /tmp/spark-dbed10be-4ef0-482e-b0cb-c2487e4f1415/httpd-4ec94c9b-4bae-4ede-a5fe-6fda38e1360b
+16/09/16 00:34:18 INFO spark.HttpServer: Starting HTTP Server
+16/09/16 00:34:18 INFO server.Server: jetty-8.y.z-SNAPSHOT
+16/09/16 00:34:18 INFO server.AbstractConnector: Started SocketConnector@0.0.0.0:40976
+16/09/16 00:34:18 INFO util.Utils: Successfully started service 'HTTP file server' on port 40976.
+16/09/16 00:34:18 INFO spark.SparkContext: Added JAR file:/home/hduser/spark_scripts/spark_apps/target/scala-2.10/dkm-spark-project_2.10-1.6.0.jar at http://192.168.107.134:40976/jars/dkm-spark-project_2.10-1.6.0.jar with timestamp 1473966258782
+16/09/16 00:34:18 INFO executor.Executor: Starting executor ID driver on host localhost
+16/09/16 00:34:19 INFO util.Utils: Successfully started service 'org.apache.spark.network.netty.NettyBlockTransferService' on port 37804.
+16/09/16 00:34:19 INFO netty.NettyBlockTransferService: Server created on 37804
+16/09/16 00:34:19 INFO storage.BlockManagerMaster: Trying to register BlockManager
+16/09/16 00:34:19 INFO storage.BlockManagerMasterEndpoint: Registering block manager localhost:37804 with 517.4 MB RAM, BlockManagerId(driver, localhost, 37804)
+16/09/16 00:34:19 INFO storage.BlockManagerMaster: Registered BlockManager
+16/09/16 00:34:20 INFO storage.MemoryStore: Block broadcast_0 stored as values in memory (estimated size 153.9 KB, free 153.9 KB)
+16/09/16 00:34:20 INFO storage.MemoryStore: Block broadcast_0_piece0 stored as bytes in memory (estimated size 14.1 KB, free 168.1 KB)
+16/09/16 00:34:20 INFO storage.BlockManagerInfo: Added broadcast_0_piece0 in memory on localhost:37804 (size: 14.1 KB, free: 517.4 MB)
+16/09/16 00:34:20 INFO spark.SparkContext: Created broadcast 0 from textFile at dkmapp01.scala:11
+16/09/16 00:34:23 INFO mapred.FileInputFormat: Total input paths to process : 1
+16/09/16 00:34:23 INFO spark.SparkContext: Starting job: count at dkmapp01.scala:12
+16/09/16 00:34:23 INFO scheduler.DAGScheduler: Got job 0 (count at dkmapp01.scala:12) with 2 output partitions
+16/09/16 00:34:23 INFO scheduler.DAGScheduler: Final stage: ResultStage 0 (count at dkmapp01.scala:12)
+16/09/16 00:34:23 INFO scheduler.DAGScheduler: Parents of final stage: List()
+16/09/16 00:34:23 INFO scheduler.DAGScheduler: Missing parents: List()
+16/09/16 00:34:23 INFO scheduler.DAGScheduler: Submitting ResultStage 0 (MapPartitionsRDD[2] at filter at dkmapp01.scala:12), which has no missing parents
+16/09/16 00:34:23 INFO storage.MemoryStore: Block broadcast_1 stored as values in memory (estimated size 3.1 KB, free 171.2 KB)
+16/09/16 00:34:23 INFO storage.MemoryStore: Block broadcast_1_piece0 stored as bytes in memory (estimated size 1909.0 B, free 173.1 KB)
+16/09/16 00:34:23 INFO storage.BlockManagerInfo: Added broadcast_1_piece0 in memory on localhost:37804 (size: 1909.0 B, free: 517.4 MB)
+16/09/16 00:34:23 INFO spark.SparkContext: Created broadcast 1 from broadcast at DAGScheduler.scala:1006
+16/09/16 00:34:23 INFO scheduler.DAGScheduler: Submitting 2 missing tasks from ResultStage 0 (MapPartitionsRDD[2] at filter at dkmapp01.scala:12)
+16/09/16 00:34:23 INFO scheduler.TaskSchedulerImpl: Adding task set 0.0 with 2 tasks
+16/09/16 00:34:23 INFO scheduler.TaskSetManager: Starting task 0.0 in stage 0.0 (TID 0, localhost, partition 0,PROCESS_LOCAL, 2239 bytes)
+16/09/16 00:34:23 INFO scheduler.TaskSetManager: Starting task 1.0 in stage 0.0 (TID 1, localhost, partition 1,PROCESS_LOCAL, 2239 bytes)
+16/09/16 00:34:23 INFO executor.Executor: Running task 0.0 in stage 0.0 (TID 0)
+16/09/16 00:34:23 INFO executor.Executor: Running task 1.0 in stage 0.0 (TID 1)
+16/09/16 00:34:23 INFO executor.Executor: Fetching http://192.168.107.134:40976/jars/dkm-spark-project_2.10-1.6.0.jar with timestamp 1473966258782
+16/09/16 00:34:24 INFO util.Utils: Fetching http://192.168.107.134:40976/jars/dkm-spark-project_2.10-1.6.0.jar to /tmp/spark-dbed10be-4ef0-482e-b0cb-c2487e4f1415/userFiles-55f6569a-18a2-4e70-9c83-2a725e9b489e/fetchFileTemp5090458948350801266.tmp
+16/09/16 00:34:24 INFO executor.Executor: Adding file:/tmp/spark-dbed10be-4ef0-482e-b0cb-c2487e4f1415/userFiles-55f6569a-18a2-4e70-9c83-2a725e9b489e/dkm-spark-project_2.10-1.6.0.jar to class loader
+16/09/16 00:34:24 INFO spark.CacheManager: Partition rdd_1_0 not found, computing it
+16/09/16 00:34:24 INFO rdd.HadoopRDD: Input split: file:/home/hduser/Desktop/Work/Sample_Data/ManUtdPlayers2.csv:0+11686
+16/09/16 00:34:24 INFO spark.CacheManager: Partition rdd_1_1 not found, computing it
+16/09/16 00:34:24 INFO rdd.HadoopRDD: Input split: file:/home/hduser/Desktop/Work/Sample_Data/ManUtdPlayers2.csv:11686+11687
+16/09/16 00:34:24 INFO Configuration.deprecation: mapred.tip.id is deprecated. Instead, use mapreduce.task.id
+16/09/16 00:34:24 INFO Configuration.deprecation: mapred.task.id is deprecated. Instead, use mapreduce.task.attempt.id
+16/09/16 00:34:24 INFO Configuration.deprecation: mapred.task.is.map is deprecated. Instead, use mapreduce.task.ismap
+16/09/16 00:34:24 INFO Configuration.deprecation: mapred.task.partition is deprecated. Instead, use mapreduce.task.partition
+16/09/16 00:34:24 INFO Configuration.deprecation: mapred.job.id is deprecated. Instead, use mapreduce.job.id
+16/09/16 00:34:24 INFO storage.MemoryStore: Block rdd_1_1 stored as values in memory (estimated size 34.9 KB, free 208.0 KB)
+16/09/16 00:34:24 INFO storage.BlockManagerInfo: Added rdd_1_1 in memory on localhost:37804 (size: 34.9 KB, free: 517.4 MB)
+16/09/16 00:34:24 INFO storage.MemoryStore: Block rdd_1_0 stored as values in memory (estimated size 34.8 KB, free 242.8 KB)
+16/09/16 00:34:24 INFO storage.BlockManagerInfo: Added rdd_1_0 in memory on localhost:37804 (size: 34.8 KB, free: 517.3 MB)
+16/09/16 00:34:24 INFO executor.Executor: Finished task 0.0 in stage 0.0 (TID 0). 2662 bytes result sent to driver
+16/09/16 00:34:24 INFO executor.Executor: Finished task 1.0 in stage 0.0 (TID 1). 2662 bytes result sent to driver
+16/09/16 00:34:24 INFO scheduler.TaskSetManager: Finished task 0.0 in stage 0.0 (TID 0) in 1012 ms on localhost (1/2)
+16/09/16 00:34:24 INFO scheduler.TaskSetManager: Finished task 1.0 in stage 0.0 (TID 1) in 987 ms on localhost (2/2)
+16/09/16 00:34:24 INFO scheduler.DAGScheduler: ResultStage 0 (count at dkmapp01.scala:12) finished in 1.041 s
+16/09/16 00:34:24 INFO scheduler.TaskSchedulerImpl: Removed TaskSet 0.0, whose tasks have all completed, from pool
+16/09/16 00:34:24 INFO scheduler.DAGScheduler: Job 0 finished: count at dkmapp01.scala:12, took 1.445646 s
+16/09/16 00:34:24 INFO spark.SparkContext: Starting job: count at dkmapp01.scala:13
+16/09/16 00:34:24 INFO scheduler.DAGScheduler: Got job 1 (count at dkmapp01.scala:13) with 2 output partitions
+16/09/16 00:34:24 INFO scheduler.DAGScheduler: Final stage: ResultStage 1 (count at dkmapp01.scala:13)
+16/09/16 00:34:24 INFO scheduler.DAGScheduler: Parents of final stage: List()
+16/09/16 00:34:24 INFO scheduler.DAGScheduler: Missing parents: List()
+16/09/16 00:34:24 INFO scheduler.DAGScheduler: Submitting ResultStage 1 (MapPartitionsRDD[3] at filter at dkmapp01.scala:13), which has no missing parents
+16/09/16 00:34:24 INFO storage.MemoryStore: Block broadcast_2 stored as values in memory (estimated size 3.1 KB, free 245.9 KB)
+16/09/16 00:34:24 INFO storage.MemoryStore: Block broadcast_2_piece0 stored as bytes in memory (estimated size 1911.0 B, free 247.8 KB)
+16/09/16 00:34:24 INFO storage.BlockManagerInfo: Added broadcast_2_piece0 in memory on localhost:37804 (size: 1911.0 B, free: 517.3 MB)
+16/09/16 00:34:24 INFO spark.SparkContext: Created broadcast 2 from broadcast at DAGScheduler.scala:1006
+16/09/16 00:34:24 INFO scheduler.DAGScheduler: Submitting 2 missing tasks from ResultStage 1 (MapPartitionsRDD[3] at filter at dkmapp01.scala:13)
+16/09/16 00:34:24 INFO scheduler.TaskSchedulerImpl: Adding task set 1.0 with 2 tasks
+16/09/16 00:34:24 INFO scheduler.TaskSetManager: Starting task 0.0 in stage 1.0 (TID 2, localhost, partition 0,PROCESS_LOCAL, 2239 bytes)
+16/09/16 00:34:24 INFO scheduler.TaskSetManager: Starting task 1.0 in stage 1.0 (TID 3, localhost, partition 1,PROCESS_LOCAL, 2239 bytes)
+16/09/16 00:34:24 INFO executor.Executor: Running task 0.0 in stage 1.0 (TID 2)
+16/09/16 00:34:24 INFO executor.Executor: Running task 1.0 in stage 1.0 (TID 3)
+16/09/16 00:34:24 INFO storage.BlockManager: Found block rdd_1_1 locally
+16/09/16 00:34:24 INFO storage.BlockManager: Found block rdd_1_0 locally
+16/09/16 00:34:24 INFO executor.Executor: Finished task 1.0 in stage 1.0 (TID 3). 2082 bytes result sent to driver
+16/09/16 00:34:24 INFO executor.Executor: Finished task 0.0 in stage 1.0 (TID 2). 2082 bytes result sent to driver
+16/09/16 00:34:24 INFO scheduler.TaskSetManager: Finished task 0.0 in stage 1.0 (TID 2) in 62 ms on localhost (1/2)
+16/09/16 00:34:24 INFO scheduler.DAGScheduler: ResultStage 1 (count at dkmapp01.scala:13) finished in 0.061 s
+16/09/16 00:34:24 INFO scheduler.DAGScheduler: Job 1 finished: count at dkmapp01.scala:13, took 0.107126 s
+16/09/16 00:34:25 INFO scheduler.TaskSetManager: Finished task 1.0 in stage 1.0 (TID 3) in 63 ms on localhost (2/2)
+16/09/16 00:34:25 INFO scheduler.TaskSchedulerImpl: Removed TaskSet 1.0, whose tasks have all completed, from pool
+Lines with USA: 4, Lines with England: 279
+16/09/16 00:34:25 INFO spark.SparkContext: Invoking stop() from shutdown hook
+16/09/16 00:34:25 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/metrics/json,null}
+16/09/16 00:34:25 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/stages/stage/kill,null}
+16/09/16 00:34:25 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/api,null}
+16/09/16 00:34:25 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/,null}
+16/09/16 00:34:25 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/static,null}
+16/09/16 00:34:25 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/executors/threadDump/json,null}
+16/09/16 00:34:25 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/executors/threadDump,null}
+16/09/16 00:34:25 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/executors/json,null}
+16/09/16 00:34:25 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/executors,null}
+16/09/16 00:34:25 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/environment/json,null}
+16/09/16 00:34:25 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/environment,null}
+16/09/16 00:34:25 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/storage/rdd/json,null}
+16/09/16 00:34:25 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/storage/rdd,null}
+16/09/16 00:34:25 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/storage/json,null}
+16/09/16 00:34:25 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/storage,null}
+16/09/16 00:34:25 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/stages/pool/json,null}
+16/09/16 00:34:25 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/stages/pool,null}
+16/09/16 00:34:25 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/stages/stage/json,null}
+16/09/16 00:34:25 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/stages/stage,null}
+16/09/16 00:34:25 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/stages/json,null}
+16/09/16 00:34:25 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/stages,null}
+16/09/16 00:34:25 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/jobs/job/json,null}
+16/09/16 00:34:25 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/jobs/job,null}
+16/09/16 00:34:25 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/jobs/json,null}
+16/09/16 00:34:25 INFO handler.ContextHandler: stopped o.s.j.s.ServletContextHandler{/jobs,null}
+16/09/16 00:34:25 INFO ui.SparkUI: Stopped Spark web UI at http://192.168.107.134:4040
+16/09/16 00:34:25 INFO spark.MapOutputTrackerMasterEndpoint: MapOutputTrackerMasterEndpoint stopped!
+16/09/16 00:34:25 INFO storage.MemoryStore: MemoryStore cleared
+16/09/16 00:34:25 INFO storage.BlockManager: BlockManager stopped
+16/09/16 00:34:25 INFO storage.BlockManagerMaster: BlockManagerMaster stopped
+16/09/16 00:34:25 INFO remote.RemoteActorRefProvider$RemotingTerminator: Shutting down remote daemon.
+16/09/16 00:34:25 INFO spark.SparkContext: Successfully stopped SparkContext
+16/09/16 00:34:25 INFO remote.RemoteActorRefProvider$RemotingTerminator: Remote daemon shut down; proceeding with flushing remote transports.
+16/09/16 00:34:25 INFO scheduler.OutputCommitCoordinator$OutputCommitCoordinatorEndpoint: OutputCommitCoordinator stopped!
+16/09/16 00:34:25 INFO util.ShutdownHookManager: Shutdown hook called
+16/09/16 00:34:25 INFO util.ShutdownHookManager: Deleting directory /tmp/spark-dbed10be-4ef0-482e-b0cb-c2487e4f1415/httpd-4ec94c9b-4bae-4ede-a5fe-6fda38e1360b
+16/09/16 00:34:25 INFO util.ShutdownHookManager: Deleting directory /tmp/spark-dbed10be-4ef0-482e-b0cb-c2487e4f1415

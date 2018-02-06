@@ -1,0 +1,101 @@
+[root@sandbox ~]# pig -x local
+2016-07-26 01:47:51,020 [main] INFO  org.apache.pig.Main - Apache Pig version 0.12.0.2.0.6.0-76 (rexported) compiled Oct 17 2013, 20:44:07
+2016-07-26 01:47:51,020 [main] INFO  org.apache.pig.Main - Logging error messages to: /root/pig_1469477871018.log
+2016-07-26 01:47:51,084 [main] INFO  org.apache.pig.impl.util.Utils - Default bootup file /root/.pigbootup not found
+2016-07-26 01:47:51,276 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+2016-07-26 01:47:51,277 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.job.tracker is deprecated. Instead, use mapreduce.jobtracker.address
+2016-07-26 01:47:51,278 [main] INFO  org.apache.pig.backend.hadoop.executionengine.HExecutionEngine - Connecting to hadoop file system at: file:///
+2016-07-26 01:47:51,281 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.used.genericoptionsparser is deprecated. Instead, use mapreduce.client.genericoptionsparser.used
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/usr/lib/hadoop/lib/slf4j-log4j12-1.7.5.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/usr/lib/zookeeper/lib/slf4j-log4j12-1.6.1.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.Log4jLoggerFactory]
+2016-07-26 01:47:51,741 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - io.bytes.per.checksum is deprecated. Instead, use dfs.bytes-per-checksum
+2016-07-26 01:47:51,744 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+grunt> dump
+2016-07-26 01:47:58,450 [main] ERROR org.apache.pig.tools.grunt.Grunt - ERROR 2997: Encountered IOException. No previously defined alias found. Please define an alias and use 'dump' operator.
+Details at logfile: /root/pig_1469477871018.log
+grunt> [root@sandbox ~]# ^C
+====================================================================================================
+[root@sandbox ~]#
+[root@sandbox ~]# hbase shell
+16/07/26 01:49:28 INFO Configuration.deprecation: hadoop.native.lib is deprecated. Instead, use io.native.lib.available
+HBase Shell; enter 'help<RETURN>' for list of supported commands.
+Type "exit<RETURN>" to leave the HBase Shell
+Version 0.96.0.2.0.6.0-76-hadoop2, re6d7a56f72914d01e55c0478d74e5cfd3778f231, Thu Oct 17 18:15:20 PDT 2013
+
+hbase(main):001:0> !list
+TABLE
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/usr/lib/zookeeper/lib/slf4j-log4j12-1.6.1.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/usr/lib/hadoop/lib/slf4j-log4j12-1.7.5.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+ambarismoketest
+1 row(s) in 3.0220 seconds
+
+=> false
+hbase(main):002:0> list
+TABLE
+ambarismoketest
+1 row(s) in 0.1850 seconds
+
+=> ["ambarismoketest"]
+hbase(main):003:0> describt 'ambarismoketest'
+NoMethodError: undefined method `describt' for #<Object:0x6197cc>
+
+hbase(main):004:0> describe4~ 'ambarismoketest'
+NoMethodError: undefined method `~' for "ambarismoketest":String
+
+hbase(main):005:0> describe 'ambarismoketest'
+DESCRIPTION                                                                                                  ENABLED
+ 'ambarismoketest', {NAME => 'family', DATA_BLOCK_ENCODING => 'NONE', BLOOMFILTER => 'ROW', REPLICATION_SCOP true
+ E => '0', VERSIONS => '1', COMPRESSION => 'NONE', MIN_VERSIONS => '0', TTL => '2147483647', KEEP_DELETED_CE
+ LLS => 'false', BLOCKSIZE => '65536', IN_MEMORY => 'false', ENCODE_ON_DISK => 'true', BLOCKCACHE => 'true'}
+1 row(s) in 0.9120 seconds
+
+hbase(main):006:0> scan 'ambarismoketest'
+ROW                                         COLUMN+CELL
+ row01                                      column=family:col01, timestamp=1382317478875, value=id000a0f02_date042013
+1 row(s) in 0.1210 seconds
+
+hbase(main):007:0> exit
+====================================================================================================
+[root@sandbox ~]# hive
+16/07/26 01:52:02 INFO Configuration.deprecation: mapred.input.dir.recursive is deprecated. Instead, use mapreduce.input.fileinputformat.input.dir.recursive
+16/07/26 01:52:02 INFO Configuration.deprecation: mapred.max.split.size is deprecated. Instead, use mapreduce.input.fileinputformat.split.maxsize
+16/07/26 01:52:02 INFO Configuration.deprecation: mapred.min.split.size is deprecated. Instead, use mapreduce.input.fileinputformat.split.minsize
+16/07/26 01:52:02 INFO Configuration.deprecation: mapred.min.split.size.per.rack is deprecated. Instead, use mapreduce.input.fileinputformat.split.minsize.per.rack
+16/07/26 01:52:02 INFO Configuration.deprecation: mapred.min.split.size.per.node is deprecated. Instead, use mapreduce.input.fileinputformat.split.minsize.per.node
+16/07/26 01:52:02 INFO Configuration.deprecation: mapred.reduce.tasks is deprecated. Instead, use mapreduce.job.reduces
+16/07/26 01:52:02 INFO Configuration.deprecation: mapred.reduce.tasks.speculative.execution is deprecated. Instead, use mapreduce.reduce.speculative
+
+Logging initialized using configuration in jar:file:/usr/lib/hive/lib/hive-common-0.12.0.2.0.6.0-76.jar!/hive-log4j.properties
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/usr/lib/hadoop/lib/slf4j-log4j12-1.7.5.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/usr/lib/hive/lib/slf4j-log4j12-1.7.5.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.Log4jLoggerFactory]
+hive> show databases;
+OK
+default
+Time taken: 1.73 seconds, Fetched: 1 row(s)
+hive> show tables in default;
+OK
+a
+sample_07
+sample_08
+Time taken: 1.25 seconds, Fetched: 3 row(s)
+hive> set hive.cli.print.current.db=true;
+hive (default)> set hive.cli.print.header4~=true;
+hive (default)> set hive.cli.print.header=true;
+hive (default)> select * from sample_07 limit 5;
+OK
+code    description     total_emp       salary
+00-0000 All Occupations 134354250       40690
+11-0000 Management occupations  6003930 96150
+11-1011 Chief executives        299160  151370
+11-1021 General and operations managers 1655410 103780
+11-1031 Legislators     61110   33880
+Time taken: 0.303 seconds, Fetched: 5 row(s)
+====================================================================================================

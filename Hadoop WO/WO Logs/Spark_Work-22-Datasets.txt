@@ -1,0 +1,103 @@
+scala> val nameDS = List("Deepak","Farooq","Karthick","Imran","Rajesh").toDS();
+16/09/29 22:57:46 INFO codegen.GenerateUnsafeProjection: Code generated in 16.588726 ms
+nameDS: org.apache.spark.sql.Dataset[String] = [value: string]
+
+scala> nameDS.show()
++--------+
+|   value|
++--------+
+|  Deepak|
+|  Farooq|
+|Karthick|
+|   Imran|
+|  Rajesh|
++--------+
+====================================================================================================
+scala> val empDS = empDF.as[Emp];
+empDS: org.apache.spark.sql.Dataset[Emp] = [emp_id: int, emp_name: string, emp_sal: float, emp_org: int]
+
+scala> empDS.printSchema()
+root
+ |-- emp_id: integer (nullable = true)
+ |-- emp_name: string (nullable = true)
+ |-- emp_sal: float (nullable = false)
+ |-- emp_org: integer (nullable = true)
+
+scala> empDS.show()
++------+--------+--------+-------+
+|emp_id|emp_name| emp_sal|emp_org|
++------+--------+--------+-------+
+|     1|  Deepak| 82000.0|      1|
+|     2|  Farooq| 70000.0|      1|
+|     3| Kathick| 96000.0|      1|
+|     4|    Hari| 90000.0|      2|
+|     5| Vadivel|100000.0|      3|
+|     6|    Mani| 75000.0|      4|
+|     7| Vignesh| 75000.0|      2|
++------+--------+--------+-------+
+
+====================================================================================================
+scala> val empDS2 = sc.parallelize(Emp(8,"Imran",82000.0,1),Emp(9,"Rajesh",90000.0,1))
+<console>:31: error: type mismatch;
+ found   : Double(82000.0)
+ required: Float
+         val empDS2 = sc.parallelize(Emp(8,"Imran",82000.0,1),Emp(9,"Rajesh",90000.0,1))
+                                                   ^
+<console>:31: error: type mismatch;
+ found   : Double(90000.0)
+ required: Float
+         val empDS2 = sc.parallelize(Emp(8,"Imran",82000.0,1),Emp(9,"Rajesh",90000.0,1))
+                                                                             ^
+
+scala> val empDS2 = sc.parallelize(Emp(8,"Imran",82000,1),Emp(9,"Rajesh",90000,1))
+<console>:31: error: type mismatch;
+ found   : Emp
+ required: Seq[?]
+         val empDS2 = sc.parallelize(Emp(8,"Imran",82000,1),Emp(9,"Rajesh",90000,1))
+                                        ^
+<console>:31: error: type mismatch;
+ found   : Emp
+ required: Int
+         val empDS2 = sc.parallelize(Emp(8,"Imran",82000,1),Emp(9,"Rajesh",90000,1))
+                                                               ^
+
+scala> val empDS2 = Seq(Emp(8,"Imran",82000,1),Emp(9,"Rajesh",90000,1)).toDS()
+16/09/29 23:22:01 INFO codegen.GenerateUnsafeProjection: Code generated in 24.199167 ms
+empDS2: org.apache.spark.sql.Dataset[Emp] = [emp_id: int, emp_name: string, emp_sal: float, emp_org: int]
+
+scala> empDS2.show()
++------+--------+-------+-------+
+|emp_id|emp_name|emp_sal|emp_org|
++------+--------+-------+-------+
+|     8|   Imran|82000.0|      1|
+|     9|  Rajesh|90000.0|      1|
++------+--------+-------+-------+
+
+scala> val empDS3 = empDS.unionAll(empDS2)
+<console>:39: error: value unionAll is not a member of org.apache.spark.sql.Dataset[Emp]
+         val empDS3 = empDS.unionAll(empDS2)
+                            ^
+====================================================================================================
+scala> val empDF2 = empDS2.toDF()
+empDF2: org.apache.spark.sql.DataFrame = [emp_id: int, emp_name: string, emp_sal: float, emp_org: int]
+
+scala> val empDF3 = empDF.unionAll(empDF2)
+empDF3: org.apache.spark.sql.DataFrame = [emp_id: int, emp_name: string, emp_sal: float, emp_org: int]
+
+scala> empDF3.show()
++------+--------+--------+-------+
+|emp_id|emp_name| emp_sal|emp_org|
++------+--------+--------+-------+
+|     1|  Deepak| 82000.0|      1|
+|     2|  Farooq| 70000.0|      1|
+|     3| Kathick| 96000.0|      1|
+|     4|    Hari| 90000.0|      2|
+|     5| Vadivel|100000.0|      3|
+|     6|    Mani| 75000.0|      4|
+|     7| Vignesh| 75000.0|      2|
+|     8|   Imran| 82000.0|      1|
+|     9|  Rajesh| 90000.0|      1|
++------+--------+--------+-------+
+
+====================================================================================================
+====================================================================================================

@@ -1,0 +1,142 @@
+[hduser@Inceptez ~]$ spark-shell
+Spark context available as sc.
+SQL context available as sqlContext.
+
+scala> val bpl_data = sc.textFile("file:/home/hduser/mydata01/BPL.csv");
+bpl_data: org.apache.spark.rdd.RDD[String] = MapPartitionsRDD[1] at textFile at <console>:27
+
+scala> bpl_data.collect;
+res0: Array[String] = Array(TEAM,PLAYED,WON,DRAWN,LOST,POINTS, MANU,38,35,2,1,107, CHEL,38,25,5,8,80, ARSL,38,23,7,8,76, MANC,38,20,8,10,68, LIVP,38,18,8,12,62, TOTH,38,16,11,11,59)
+
+scala> val bpl_data_01 = bpl_data.map(x => x.split(","));
+bpl_data_01: org.apache.spark.rdd.RDD[Array[String]] = MapPartitionsRDD[2] at map at <console>:29
+
+scala> bpl_data_01.collect;
+res1: Array[Array[String]] = Array(Array(TEAM, PLAYED, WON, DRAWN, LOST, POINTS), Array(MANU, 38, 35, 2, 1, 107), Array(CHEL, 38, 25, 5, 8, 80), Array(ARSL, 38, 23, 7, 8, 76), Array(MANC, 38, 20, 8, 10, 68), Array(LIVP, 38, 18, 8, 12, 62), Array(TOTH, 38, 16, 11, 11, 59))
+
+scala> val bpl_data_02 = bpl_data_01.filter(x => x(0) != 'TEAM');
+<console>:1: error: unclosed character literal
+       val bpl_data_02 = bpl_data_01.filter(x => x(0) != 'TEAM');
+                                                              ^
+
+scala> val bpl_data_02 = bpl_data_01.filter(x => x(0) != "TEAM");
+bpl_data_02: org.apache.spark.rdd.RDD[Array[String]] = MapPartitionsRDD[3] at filter at <console>:31
+
+scala> bpl_data_02.collect;
+res2: Array[Array[String]] = Array(Array(MANU, 38, 35, 2, 1, 107), Array(CHEL, 38, 25, 5, 8, 80), Array(ARSL, 38, 23, 7, 8, 76), Array(MANC, 38, 20, 8, 10, 68), Array(LIVP, 38, 18, 8, 12, 62), Array(TOTH, 38, 16, 11, 11, 59))
+
+scala> case class bpl_table(team:String, played:Integer, won:Integer, drawn:Integer, lost:Integer, points:Integer);
+defined class bpl_table
+
+scala> val bplt = bpl_data_02.map(x => bpl_table(x(0), x(1).toInt, x(2).toInt, x(3).toInt, x(4).toInt, x(5).toInt));
+bplt: org.apache.spark.rdd.RDD[bpl_table] = MapPartitionsRDD[4] at map at <console>:35
+
+scala> bplt.first;
+res3: bpl_table = bpl_table(MANU,38,35,2,1,107)
+
+scala> import sqlContext.implicits
+import sqlContext.implicits
+
+scala> import org.apache.sql._
+<console>:26: error: object sql is not a member of package org.apache
+         import org.apache.sql._
+                           ^
+
+scala> import org.apache.spark.sql._
+import org.apache.spark.sql._
+
+scala> val bplt_df = bplt.toDF();
+bplt_df: org.apache.spark.sql.DataFrame = [team: string, played: int, won: int, drawn: int, lost: int, points: int]
+
+scala> bplt_df.show();
++----+------+---+-----+----+------+
+|team|played|won|drawn|lost|points|
++----+------+---+-----+----+------+
+|MANU|    38| 35|    2|   1|   107|
+|CHEL|    38| 25|    5|   8|    80|
+|ARSL|    38| 23|    7|   8|    76|
+|MANC|    38| 20|    8|  10|    68|
+|LIVP|    38| 18|    8|  12|    62|
+|TOTH|    38| 16|   11|  11|    59|
++----+------+---+-----+----+------+
+
+scala> bplt_df.count();
+res5: Long = 6
+
+scala> bplt_df.printSchema();
+root
+ |-- team: string (nullable = true)
+ |-- played: integer (nullable = true)
+ |-- won: integer (nullable = true)
+ |-- drawn: integer (nullable = true)
+ |-- lost: integer (nullable = true)
+ |-- points: integer (nullable = true)
+
+scala> bplt_df.show(4);
++----+------+---+-----+----+------+
+|team|played|won|drawn|lost|points|
++----+------+---+-----+----+------+
+|MANU|    38| 35|    2|   1|   107|
+|CHEL|    38| 25|    5|   8|    80|
+|ARSL|    38| 23|    7|   8|    76|
+|MANC|    38| 20|    8|  10|    68|
++----+------+---+-----+----+------+
+only showing top 4 rows
+
+scala> bplt_df.select("team","points").show(4);
++----+------+
+|team|points|
++----+------+
+|MANU|   107|
+|CHEL|    80|
+|ARSL|    76|
+|MANC|    68|
++----+------+
+only showing top 4 rows
+
+scala> bplt_df.registerAsTempTable("BPL_Table");
+<console>:44: error: value registerAsTempTable is not a member of org.apache.spark.sql.DataFrame
+              bplt_df.registerAsTempTable("BPL_Table");
+                      ^
+
+scala> bplt_df.registerTempTable("BPL_Table");
+
+scala> sqlContext.sql("Select * from BPL_Table").show(4);
++----+------+---+-----+----+------+
+|team|played|won|drawn|lost|points|
++----+------+---+-----+----+------+
+|MANU|    38| 35|    2|   1|   107|
+|CHEL|    38| 25|    5|   8|    80|
+|ARSL|    38| 23|    7|   8|    76|
+|MANC|    38| 20|    8|  10|    68|
++----+------+---+-----+----+------+
+only showing top 4 rows
+
+scala> sqlContext.sql("Select * from BPL_Table order by team asc").show();
++----+------+---+-----+----+------+
+|team|played|won|drawn|lost|points|
++----+------+---+-----+----+------+
+|ARSL|    38| 23|    7|   8|    76|
+|CHEL|    38| 25|    5|   8|    80|
+|LIVP|    38| 18|    8|  12|    62|
+|MANC|    38| 20|    8|  10|    68|
+|MANU|    38| 35|    2|   1|   107|
+|TOTH|    38| 16|   11|  11|    59|
++----+------+---+-----+----+------+
+
+scala> sqlContext.sql("Select * from BPL_Table where lost >= 10").show();
++----+------+---+-----+----+------+
+|team|played|won|drawn|lost|points|
++----+------+---+-----+----+------+
+|MANC|    38| 20|    8|  10|    68|
+|LIVP|    38| 18|    8|  12|    62|
+|TOTH|    38| 16|   11|  11|    59|
++----+------+---+-----+----+------+
+
+scala> sqlContext.sql("Select * from BPL_Table where won >= 25").show();
++----+------+---+-----+----+------+
+|team|played|won|drawn|lost|points|
++----+------+---+-----+----+------+
+|MANU|    38| 35|    2|   1|   107|
+|CHEL|    38| 25|    5|   8|    80|
++----+------+---+-----+----+------+

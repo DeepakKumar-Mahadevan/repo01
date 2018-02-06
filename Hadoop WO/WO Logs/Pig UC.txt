@@ -1,0 +1,265 @@
+[hduser@Inceptez ~]$ hadoop fs -mkdir /user/hduser/weblogs/
+[hduser@Inceptez pigdata]$ pwd
+/home/hduser/pigdata
+[hduser@Inceptez pigdata]$ hadoop fs -put weblogs_parse.txt /user/hduser/weblogs/
+[hduser@Inceptez pigdata]$ hadoop fs -ls -R /user/hduser/weblogs/
+-rw-r--r--   1 hduser supergroup   81468050 2016-07-27 19:59 /user/hduser/weblogs/weblogs_parse.txt
+
+[hduser@Inceptez pigdata]$ pig -x tez
+16/07/27 20:02:09 INFO pig.ExecTypeProvider: Trying ExecType : LOCAL
+16/07/27 20:02:09 INFO pig.ExecTypeProvider: Trying ExecType : MAPREDUCE
+16/07/27 20:02:09 INFO pig.ExecTypeProvider: Trying ExecType : TEZ_LOCAL
+16/07/27 20:02:09 INFO pig.ExecTypeProvider: Trying ExecType : TEZ
+16/07/27 20:02:09 INFO pig.ExecTypeProvider: Picked TEZ as the ExecType
+2016-07-27 20:02:10,099 [main] INFO  org.apache.pig.Main - Apache Pig version 0.15.0 (r1682971) compiled Jun 01 2015, 11:44:35
+2016-07-27 20:02:10,099 [main] INFO  org.apache.pig.Main - Logging error messages to: /home/hduser/pigdata/pig_1469629930095.log
+2016-07-27 20:02:10,246 [main] INFO  org.apache.pig.impl.util.Utils - Default bootup file /home/hduser/.pigbootup not found
+2016-07-27 20:02:13,044 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.job.tracker is deprecated. Instead, use mapreduce.jobtracker.address
+2016-07-27 20:02:13,045 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+2016-07-27 20:02:13,045 [main] INFO  org.apache.pig.backend.hadoop.executionengine.HExecutionEngine - Connecting to hadoop file system at: hdfs://localhost:54310
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/usr/local/hadoop/share/hadoop/common/lib/slf4j-log4j12-1.7.5.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/usr/local/hbase/lib/slf4j-log4j12-1.6.4.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.Log4jLoggerFactory]
+2016-07-27 20:02:14,764 [main] WARN  org.apache.hadoop.util.NativeCodeLoader - Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+2016-07-27 20:02:16,614 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+grunt> 
+grunt> weblogs = LOAD '/user/hduser/weblogs/web*' USING PigStorage('\t')
+>> AS (
+>> client_ip:chararray,
+>> full_request_date:chararray,
+>> day:int,
+>> month:chararray,
+>> month_num:int,
+>> year:int,
+>> hour:int,
+>> minute:int,
+>> second:int,
+>> timezone:chararray,
+>> http_verb:chararray,
+>> uri:chararray,
+>> http_status_code:chararray,
+>> bytes_returned:chararray,
+>> referrer:chararray,
+>> user_agent:chararray
+>> );
+
+640.603.73.641	03/Jun/2012:08:37:20 -0500	03	Jun	06	2012	08	37	20	-0500	GET	/services	200	0	/services	Mozilla/5.0 (Windows; U; Windows NT 6.0; pt-BR; rv:1.9.1.9) Gecko/20100315 Firefox/3.5.9 (.NET CLR 3.5.30729)
+640.603.73.641	03/Jun/2012:08:37:23 -0500	03	Jun	06	2012	08	37	23	-0500	GET	/services	200	0	/services	Mozilla/5.0 (Windows; U; Windows NT 6.0; pt-BR; rv:1.9.1.9) Gecko/20100315 Firefox/3.5.9 (.NET CLR 3.5.30729)
+51.618.301.83	03/Jun/2012:08:52:00 -0500	03	Jun	06	2012	08	52	00	-0500	GET	/products	200	0	-	Mozilla/5.0 (Windows; U; Windows NT 6.1; en-GB; rv:1.9.1.9) Gecko/20100315 Firefox/3.5.9
+51.618.301.83	03/Jun/2012:08:52:00 -0500	03	Jun	06	2012	08	52	00	-0500	GET	/products	200	0	/products	Mozilla/5.0 (Windows; U; Windows NT 6.1; en-GB; rv:1.9.1.9) Gecko/20100315 Firefox/3.5.9
+51.618.301.83	03/Jun/2012:08:52:07 -0500	03	Jun	06	2012	08	52	07	-0500	GET	/docs/doc6.pdf	200	0	/products	Mozilla/5.0 (Windows; U; Windows NT 6.1; en-GB; rv:1.9.1.9) Gecko/20100315 Firefox/3.5.9
+51.618.301.83	03/Jun/2012:08:52:08 -0500	03	Jun	06	2012	08	52	08	-0500	GET	/docs/doc6.pdf	200	0	/docs/doc6.pdf	Mozilla/5.0 (Windows; U; Windows NT 6.1; en-GB; rv:1.9.1.9) Gecko/20100315 Firefox/3.5.9
+51.618.301.83	03/Jun/2012:08:52:10 -0500	03	Jun	06	2012	08	52	10	-0500	GET	/download/download1.zip	200	0	/docs/doc6.pdf	Mozilla/5.0 (Windows; U; Windows NT 6.1; en-GB; rv:1.9.1.9) Gecko/20100315 Firefox/3.5.9
+363.642.615.72	03/Jun/2012:09:06:00 -0500	03	Jun	06	2012	09	06	00	-0500	GET	/demo	200	0	-	Jakarta Commons-HttpClient/3.0-rc4
+363.642.615.72	03/Jun/2012:09:11:00 -0500	03	Jun	06	2012	09	11	00	-0500	GET	/demo	200	0	/demo	Jakarta Commons-HttpClient/3.0-rc4
+612.57.72.653	03/Jun/2012:09:12:00 -0500	03	Jun	06	2012	09	12	00	-0500	GET	/product/product2	200	0	-Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; .NET CLR 1.1.4322; .NET CLR 2.0.50727; .NET CLR 3.0.04506.30)
+
+2016-07-27 20:05:05,446 [PigTezLauncher-0] ERROR org.apache.pig.backend.hadoop.executionengine.tez.TezSessionManager - Exception while waiting for Tez client to be ready
+org.apache.tez.dag.api.TezUncheckedException: Invalid configuration of tez jars, tez.lib.uris is not defined in the configuration
+	at org.apache.tez.client.TezClientUtils.setupTezJarsLocalResources(TezClientUtils.java:167)
+	at org.apache.tez.client.TezClient.getTezJarResources(TezClient.java:787)
+	at org.apache.tez.client.TezClient.start(TezClient.java:337)
+	at org.apache.pig.backend.hadoop.executionengine.tez.TezSessionManager.createSession(TezSessionManager.java:96)
+	at org.apache.pig.backend.hadoop.executionengine.tez.TezSessionManager.getClient(TezSessionManager.java:211)
+	at org.apache.pig.backend.hadoop.executionengine.tez.TezJob.run(TezJob.java:158)
+	at org.apache.pig.backend.hadoop.executionengine.tez.TezLauncher$1.run(TezLauncher.java:187)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:471)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:262)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:615)
+	at java.lang.Thread.run(Thread.java:745)
+2016-07-27 20:05:05,447 [PigTezLauncher-0] ERROR org.apache.pig.backend.hadoop.executionengine.tez.TezJob - Cannot submit DAG
+java.lang.RuntimeException: org.apache.tez.dag.api.TezUncheckedException: Invalid configuration of tez jars, tez.lib.uris is not defined in the configuration
+	at org.apache.pig.backend.hadoop.executionengine.tez.TezSessionManager.createSession(TezSessionManager.java:105)
+	at org.apache.pig.backend.hadoop.executionengine.tez.TezSessionManager.getClient(TezSessionManager.java:211)
+	at org.apache.pig.backend.hadoop.executionengine.tez.TezJob.run(TezJob.java:158)
+	at org.apache.pig.backend.hadoop.executionengine.tez.TezLauncher$1.run(TezLauncher.java:187)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:471)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:262)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:615)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: org.apache.tez.dag.api.TezUncheckedException: Invalid configuration of tez jars, tez.lib.uris is not defined in the configuration
+	at org.apache.tez.client.TezClientUtils.setupTezJarsLocalResources(TezClientUtils.java:167)
+	at org.apache.tez.client.TezClient.getTezJarResources(TezClient.java:787)
+	at org.apache.tez.client.TezClient.start(TezClient.java:337)
+	at org.apache.pig.backend.hadoop.executionengine.tez.TezSessionManager.createSession(TezSessionManager.java:96)
+	... 8 more
+2016-07-27 20:05:06,215 [main] INFO  org.apache.pig.tools.pigstats.tez.TezPigScriptStats - Script Statistics:
+
+       HadoopVersion: 2.6.0                                                                                               
+          PigVersion: 0.15.0                                                                                              
+          TezVersion: 0.7.0                                                                                               
+              UserId: hduser                                                                                              
+            FileName:                                                                                                     
+           StartedAt: 2016-07-27 20:05:03                                                                                 
+          FinishedAt: 2016-07-27 20:05:06                                                                                 
+            Features: UNKNOWN                                                                                             
+
+Failed!
+
+DAG PigLatin:DefaultJobName-0_scope-2:
+       ApplicationId: null                                                                                                
+  TotalLaunchedTasks: -1                                                                                                  
+       FileBytesRead: -1                                                                                                  
+    FileBytesWritten: -1                                                                                                  
+       HdfsBytesRead: 0                                                                                                   
+    HdfsBytesWritten: 0                                                                                                   
+
+Input(s):
+
+Output(s):
+
+2016-07-27 20:05:06,217 [main] ERROR org.apache.pig.tools.grunt.Grunt - ERROR 1066: Unable to open iterator for alias weblogs
+Details at logfile: /home/hduser/pigdata/pig_1469629930095.log
+-----
+grunt> weblogs = LOAD '/user/hduser/weblogs/web*' USING PigStorage('\t')
+>> AS (
+>> client_ip:chararray,
+>> full_request_date:chararray,
+>> day:int,
+>> month:chararray,
+>> month_num:int,
+>> year:int,
+>> hour:int,
+>> minute:int,
+>> second:int,
+>> timezone:chararray,
+>> http_verb:chararray,
+>> uri:chararray,
+>> http_status_code:chararray,
+>> bytes_returned:chararray,
+>> referrer:chararray,
+>> user_agent:chararray
+>> );
+2016-07-27 20:13:13,150 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+grunt> describe     
+weblogs: {client_ip: chararray,full_request_date: chararray,day: int,month: chararray,month_num: int,year: int,hour: int,minute: int,second: int,timezone: chararray,http_verb: chararray,uri: chararray,http_status_code: chararray,bytes_returned: chararray,referrer: chararray,user_agent: chararray}
+
+grunt> careers_visitors = FILTER weblogs BY uri == '/careers';
+grunt> describe                                               
+careers_visitors: {client_ip: chararray,full_request_date: chararray,day: int,month: chararray,month_num: int,year: int,hour: int,minute: int,second: int,timezone: chararray,http_verb: chararray,uri: chararray,http_status_code: chararray,bytes_returned: chararray,referrer: chararray,user_agent: chararray}
+grunt> select_fields = FOREACH careers_visitors GENERATE client_ip;
+grunt> groups_fields = GROUP weblogs BY http_verb;
+grunt> count = FOREACH groups_fields GENERATE group,COUNT(weblogs);
+grunt> describe
+count: {group: chararray,long}
+grunt> dump
+(GET,445454)
+=========================
+grunt> stu = load '/home/hduser/pigdata/student' using PigStorage ('\t') as (name:chararray, id:int);
+(vineet,1)
+(hisham,2)
+(raj,3)
+(ajeet,4)
+(sujit ,5)
+(ramesh,6)
+(priya,7)
+(priyanka,8)
+(suresh,9)
+(ritesh,10)
+(hitesh,11)
+(jatin,12)
+(chitesh,13)
+(suman,14)
+(raman,15)
+(aman,16)
+(ravi,17)
+(shravi,18)
+(chavvi,19)
+(himanshu,20)
+grunt> res = load '/home/hduser/pigdata/result' using PigStorage ('\t') as (id:int,res:chararray);
+grunt> dump
+job_local2077449500_0004	res	MAP_ONLY	Message: org.apache.pig.backend.executionengine.ExecException: ERROR 2118: Input path does not exist: file:/home/hduser/pigdata/result
+grunt> res = load '/home/hduser/pigdata/results' using PigStorage ('\t') as (id:int,res:chararray);
+(1,fail)
+(2,fail)
+(3,pass)
+(4,pass)
+(5,fail)
+(6,pass)
+(7,fail)
+(8,pass)
+(9,pass)
+(10,pass)
+(11,pass)
+(12,fail)
+(13,fail)
+(14,fail)
+(15,pass)
+(16,pass)
+(17,pass)
+(18,pass)
+(19,pass)
+(20,fail)
+grunt> stures = join stu, res by id;
+2016-07-27 21:42:52,987 [main] ERROR org.apache.pig.tools.grunt.Grunt - ERROR 1200: <line 5, column 17>  mismatched input ',' expecting BY
+Details at logfile: /home/hduser/pigdata/pig_1469635408766.log
+grunt> stures = join stu, res BY id;
+2016-07-27 21:43:08,111 [main] ERROR org.apache.pig.tools.grunt.Grunt - ERROR 1200: <line 5, column 17>  mismatched input ',' expecting BY
+Details at logfile: /home/hduser/pigdata/pig_1469635408766.log
+grunt> stures = join stu res BY id; 
+2016-07-27 21:43:19,336 [main] ERROR org.apache.pig.tools.grunt.Grunt - ERROR 1200: <line 5, column 18>  mismatched input 'res' expecting BY
+Details at logfile: /home/hduser/pigdata/pig_1469635408766.log
+grunt> stures = join stu by id, res by id;
+(vineet,1,1,fail)
+(hisham,2,2,fail)
+(raj,3,3,pass)
+(ajeet,4,4,pass)
+(sujit ,5,5,fail)
+(ramesh,6,6,pass)
+(priya,7,7,fail)
+(priyanka,8,8,pass)
+(suresh,9,9,pass)
+(ritesh,10,10,pass)
+(hitesh,11,11,pass)
+(jatin,12,12,fail)
+(chitesh,13,13,fail)
+(suman,14,14,fail)
+(raman,15,15,pass)
+(aman,16,16,pass)
+(ravi,17,17,pass)
+(shravi,18,18,pass)
+(chavvi,19,19,pass)
+(himanshu,20,20,fail)
+grunt> stustat = foreach stures generate name,res;
+(vineet,fail)
+(hisham,fail)
+(raj,pass)
+(ajeet,pass)
+(sujit ,fail)
+(ramesh,pass)
+(priya,fail)
+(priyanka,pass)
+(suresh,pass)
+(ritesh,pass)
+(hitesh,pass)
+(jatin,fail)
+(chitesh,fail)
+(suman,fail)
+(raman,pass)
+(aman,pass)
+(ravi,pass)
+(shravi,pass)
+(chavvi,pass)
+(himanshu,fail)
+grunt> passstu = filter stustat by res = 'pass';
+2016-07-27 21:48:45,200 [main] ERROR org.apache.pig.tools.grunt.Grunt - ERROR 1200: <line 7, column 32>  Syntax error, unexpected symbol at or near '='
+Details at logfile: /home/hduser/pigdata/pig_1469635408766.log
+grunt> passstu = filter stustat by res == 'pass';
+(raj,pass)
+(ajeet,pass)
+(ramesh,pass)
+(priyanka,pass)
+(suresh,pass)
+(ritesh,pass)
+(hitesh,pass)
+(raman,pass)
+(aman,pass)
+(ravi,pass)
+(shravi,pass)
+(chavvi,pass)
+
+

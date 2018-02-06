@@ -1,0 +1,433 @@
+scala> import org.apache.spark.sql._
+import org.apache.spark.sql._
+
+scala> val sqc = new org.apache.spark.sql.SQLContext(sc);
+sqc: org.apache.spark.sql.SQLContext = org.apache.spark.sql.SQLContext@1802ccb3
+
+scala> val empDF = sqc.read.json("file:///home/hduser/mydata01/employee4.json");
+empDF: org.apache.spark.sql.DataFrame = [age: string, id: string, name: string]
+
+scala> empDF.sqc.select("age").collect();
+<console>:35: error: value sqc is not a member of org.apache.spark.sql.DataFrame
+              empDF.sqc.select("age").collect();
+                    ^
+scala> empDF.select("age").show();
++---+
+|age|
++---+
+| 25|
+| 28|
+| 39|
+| 23|
+| 23|
++---+
+
+scala> empDF.write.parquet("file:///home/hduser/spark_op/empDF.parquet");
+16/09/22 21:02:50 INFO storage.MemoryStore: Block broadcast_5 stored as values in memory (estimated size 228.9 KB, free 486.6 KB)
+16/09/22 21:02:50 INFO storage.MemoryStore: Block broadcast_5_piece0 stored as bytes in memory (estimated size 19.6 KB, free 506.2 KB)
+16/09/22 21:02:50 INFO storage.BlockManagerInfo: Added broadcast_5_piece0 in memory on localhost:46061 (size: 19.6 KB, free: 517.4 MB)
+16/09/22 21:02:50 INFO spark.SparkContext: Created broadcast 5 from parquet at <console>:35
+16/09/22 21:02:50 INFO storage.MemoryStore: Block broadcast_6 stored as values in memory (estimated size 229.2 KB, free 735.4 KB)
+16/09/22 21:02:50 INFO storage.MemoryStore: Block broadcast_6_piece0 stored as bytes in memory (estimated size 19.6 KB, free 755.0 KB)
+16/09/22 21:02:50 INFO storage.BlockManagerInfo: Added broadcast_6_piece0 in memory on localhost:46061 (size: 19.6 KB, free: 517.3 MB)
+16/09/22 21:02:50 INFO spark.SparkContext: Created broadcast 6 from parquet at <console>:35
+16/09/22 21:02:50 INFO parquet.ParquetRelation: Using default output committer for Parquet: org.apache.parquet.hadoop.ParquetOutputCommitter
+16/09/22 21:02:50 INFO datasources.DefaultWriterContainer: Using user defined output committer class org.apache.parquet.hadoop.ParquetOutputCommitter
+16/09/22 21:02:50 INFO mapred.FileInputFormat: Total input paths to process : 1
+16/09/22 21:02:50 INFO spark.SparkContext: Starting job: parquet at <console>:35
+16/09/22 21:02:50 INFO scheduler.DAGScheduler: Got job 2 (parquet at <console>:35) with 1 output partitions
+16/09/22 21:02:50 INFO scheduler.DAGScheduler: Final stage: ResultStage 2 (parquet at <console>:35)
+16/09/22 21:02:50 INFO scheduler.DAGScheduler: Parents of final stage: List()
+16/09/22 21:02:50 INFO scheduler.DAGScheduler: Missing parents: List()
+16/09/22 21:02:50 INFO scheduler.DAGScheduler: Submitting ResultStage 2 (MapPartitionsRDD[13] at parquet at <console>:35), which has no missing parents
+16/09/22 21:02:50 INFO storage.MemoryStore: Block broadcast_7 stored as values in memory (estimated size 66.8 KB, free 821.8 KB)
+16/09/22 21:02:50 INFO storage.MemoryStore: Block broadcast_7_piece0 stored as bytes in memory (estimated size 23.8 KB, free 845.6 KB)
+16/09/22 21:02:50 INFO storage.BlockManagerInfo: Added broadcast_7_piece0 in memory on localhost:46061 (size: 23.8 KB, free: 517.3 MB)
+16/09/22 21:02:50 INFO spark.SparkContext: Created broadcast 7 from broadcast at DAGScheduler.scala:1006
+16/09/22 21:02:50 INFO scheduler.DAGScheduler: Submitting 1 missing tasks from ResultStage 2 (MapPartitionsRDD[13] at parquet at <console>:35)
+16/09/22 21:02:50 INFO scheduler.TaskSchedulerImpl: Adding task set 2.0 with 1 tasks
+16/09/22 21:02:50 INFO scheduler.TaskSetManager: Starting task 0.0 in stage 2.0 (TID 2, localhost, partition 0,PROCESS_LOCAL, 2143 bytes)
+16/09/22 21:02:50 INFO executor.Executor: Running task 0.0 in stage 2.0 (TID 2)
+16/09/22 21:02:50 INFO rdd.HadoopRDD: Input split: file:/home/hduser/mydata01/employee4.json:0+244
+16/09/22 21:02:51 INFO codegen.GenerateUnsafeProjection: Code generated in 36.370149 ms
+16/09/22 21:02:51 INFO datasources.DefaultWriterContainer: Using user defined output committer class org.apache.parquet.hadoop.ParquetOutputCommitter
+16/09/22 21:02:51 INFO codec.CodecConfig: Compression: GZIP
+16/09/22 21:02:51 INFO hadoop.ParquetOutputFormat: Parquet block size to 134217728
+16/09/22 21:02:51 INFO hadoop.ParquetOutputFormat: Parquet page size to 1048576
+16/09/22 21:02:51 INFO hadoop.ParquetOutputFormat: Parquet dictionary page size to 1048576
+16/09/22 21:02:51 INFO hadoop.ParquetOutputFormat: Dictionary is on
+16/09/22 21:02:51 INFO hadoop.ParquetOutputFormat: Validation is off
+16/09/22 21:02:51 INFO hadoop.ParquetOutputFormat: Writer version is: PARQUET_1_0
+16/09/22 21:02:51 INFO parquet.CatalystWriteSupport: Initialized Parquet WriteSupport with Catalyst schema:
+{
+  "type" : "struct",
+  "fields" : [ {
+    "name" : "age",
+    "type" : "string",
+    "nullable" : true,
+    "metadata" : { }
+  }, {
+    "name" : "id",
+    "type" : "string",
+    "nullable" : true,
+    "metadata" : { }
+  }, {
+    "name" : "name",
+    "type" : "string",
+    "nullable" : true,
+    "metadata" : { }
+  } ]
+}
+and corresponding Parquet message type:
+message spark_schema {
+  optional binary age (UTF8);
+  optional binary id (UTF8);
+  optional binary name (UTF8);
+}
+
+
+16/09/22 21:02:51 INFO compress.CodecPool: Got brand-new compressor [.gz]
+16/09/22 21:02:51 INFO hadoop.InternalParquetRecordWriter: Flushing mem columnStore to file. allocated memory: 173
+SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+16/09/22 21:02:51 INFO hadoop.ColumnChunkPageWriteStore: written 59B for [age] BINARY: 5 values, 10B raw, 30B comp, 1 pages, encodings: [PLAIN_DICTIONARY, RLE, BIT_PACKED], dic { 4 entries, 24B raw, 4B comp}
+16/09/22 21:02:51 INFO hadoop.ColumnChunkPageWriteStore: written 76B for [id] BINARY: 5 values, 46B raw, 43B comp, 1 pages, encodings: [PLAIN, RLE, BIT_PACKED]
+16/09/22 21:02:51 INFO hadoop.ColumnChunkPageWriteStore: written 102B for [name] BINARY: 5 values, 55B raw, 65B comp, 1 pages, encodings: [PLAIN, RLE, BIT_PACKED]
+16/09/22 21:02:51 INFO output.FileOutputCommitter: Saved output of task 'attempt_201609222102_0002_m_000000_0' to file:/home/hduser/spark_op/empDF.parquet/_temporary/0/task_201609222102_0002_m_000000
+16/09/22 21:02:51 INFO mapred.SparkHadoopMapRedUtil: attempt_201609222102_0002_m_000000_0: Committed
+16/09/22 21:02:51 INFO executor.Executor: Finished task 0.0 in stage 2.0 (TID 2). 2044 bytes result sent to driver
+16/09/22 21:02:51 INFO scheduler.DAGScheduler: ResultStage 2 (parquet at <console>:35) finished in 0.696 s
+16/09/22 21:02:51 INFO scheduler.DAGScheduler: Job 2 finished: parquet at <console>:35, took 0.833697 s
+16/09/22 21:02:51 INFO scheduler.TaskSetManager: Finished task 0.0 in stage 2.0 (TID 2) in 698 ms on localhost (1/1)
+16/09/22 21:02:51 INFO scheduler.TaskSchedulerImpl: Removed TaskSet 2.0, whose tasks have all completed, from pool
+16/09/22 21:02:51 INFO hadoop.ParquetFileReader: Initiating action with parallelism: 5
+16/09/22 21:02:52 INFO storage.BlockManagerInfo: Removed broadcast_3_piece0 on localhost:46061 in memory (size: 19.6 KB, free: 517.3 MB)
+16/09/22 21:02:52 INFO storage.BlockManagerInfo: Removed broadcast_7_piece0 on localhost:46061 in memory (size: 23.8 KB, free: 517.4 MB)
+16/09/22 21:02:52 INFO spark.ContextCleaner: Cleaned accumulator 3
+16/09/22 21:02:52 INFO storage.BlockManagerInfo: Removed broadcast_5_piece0 on localhost:46061 in memory (size: 19.6 KB, free: 517.4 MB)
+16/09/22 21:02:52 INFO storage.BlockManagerInfo: Removed broadcast_4_piece0 on localhost:46061 in memory (size: 3.3 KB, free: 517.4 MB)
+16/09/22 21:02:52 INFO spark.ContextCleaner: Cleaned accumulator 2
+16/09/22 21:02:52 INFO datasources.DefaultWriterContainer: Job job_201609222102_0000 committed.
+16/09/22 21:02:52 INFO parquet.ParquetRelation: Listing file:/home/hduser/spark_op/empDF.parquet on driver
+16/09/22 21:02:52 INFO parquet.ParquetRelation: Listing file:/home/hduser/spark_op/empDF.parquet on driver
+
+[hduser@Inceptez ~]$ ls
+70-persistent-net.rules  Downloads                                     hive_udfs     mydata01        part-m-00000_new       pig_scripts_01  untitled folder
+bkup_files               eclipse-jee-juno-SR2-linux-gtk-x86_64.tar.gz  ifcfg-eth0    MyJars          Pictures               Public          Videos
+derby.log                flume_bkp                                     install       my_sh_scritps   pig_1469031153489.log  spark_op        workspace
+Desktop                  hive                                          Installation  mysql_pwd.txt   pig_1470243551697.log  spark_scripts   y
+device1                  hive2local_data                               metastore_db  nifi_ip_dir_01  pig_1470243698049.log  Sqoop_Work-01~  y.pub
+dkmdb01_dir.txt          hive_data_01                                  mrdata        nifi_op_dir_01  pigdata                Templates       zookeeper.out
+Documents                hive_scripts                                  Music         nwbkup          pig_logs               twitter_data
+[hduser@Inceptez ~]$ cd spark_op/
+[hduser@Inceptez spark_op]$ ls
+empDF.parquet
+[hduser@Inceptez spark_op]$ cd empDF.parquet/
+[hduser@Inceptez empDF.parquet]$ ls
+_common_metadata  _metadata  part-r-00000-dcf1a5f2-3e33-4d89-aa4a-666bdbe8c67b.gz.parquet  _SUCCESS
+[hduser@Inceptez empDF.parquet]$ ls -l
+total 12
+-rw-r--r-- 1 hduser hduser 360 Sep 22 21:02 _common_metadata
+-rw-r--r-- 1 hduser hduser 695 Sep 22 21:02 _metadata
+-rw-r--r-- 1 hduser hduser 795 Sep 22 21:02 part-r-00000-dcf1a5f2-3e33-4d89-aa4a-666bdbe8c67b.gz.parquet
+-rw-r--r-- 1 hduser hduser   0 Sep 22 21:02 _SUCCESS
+[hduser@Inceptez empDF.parquet]$ cat part-r-00000-dcf1a5f2-3e33-4d89-aa4a-666bdbe8c67b.gz.parquet
+PAR10Hcb``02e▒ ▒▒▒6 ▒▒<,                                                                                                                                               3923cb```▒gb~▒
+6▒▒
+\V,                                                                                                                                                                    12051201cb```▒g▒▒F▒PJi(m
+D▒▒E.n▒,                                                                                                                                                               satishamithcb```▒g▒ŉ%▒▒▒@Vv▒▒▒▒
+d&▒f▒d▒Y▒e▒) eE▒)e▒ۼ▒7LH
+spark_schema
+%age%
+%id%
+%name%
+<&
+age
+▒▒<3923&▒
+id
+▒▒&▒<12051201&▒
+name
+▒▒&▒<satishamith▒
+)org.apache.spark.sql.parquet.row.metadata▒{"type":"struct","fields":[{"name":"age","type":"string","nullable":true,"metadata":{}},{"name":"id","type":"string","nullable":true,"metadata":{}},{"name":"name","type":"string","nullable":true,"metadata":{}}]}parquet-mr version 1.6.0▒PAR1[hduser@Inceptez empDF.parquet]$ PuTTYPuTTYPuTTY
+
+====================================================================================================
+scala> val empDFpq = sqc.read.parquet("file:/home/hduser/spark_op/empDF.parquet");
+16/09/22 21:12:05 INFO parquet.ParquetRelation: Listing file:/home/hduser/spark_op/empDF.parquet on driver
+16/09/22 21:12:05 INFO spark.SparkContext: Starting job: parquet at <console>:32
+16/09/22 21:12:05 INFO scheduler.DAGScheduler: Got job 3 (parquet at <console>:32) with 1 output partitions
+16/09/22 21:12:05 INFO scheduler.DAGScheduler: Final stage: ResultStage 3 (parquet at <console>:32)
+16/09/22 21:12:05 INFO scheduler.DAGScheduler: Parents of final stage: List()
+16/09/22 21:12:05 INFO scheduler.DAGScheduler: Missing parents: List()
+16/09/22 21:12:05 INFO scheduler.DAGScheduler: Submitting ResultStage 3 (MapPartitionsRDD[16] at parquet at <console>:32), which has no missing parents
+16/09/22 21:12:05 INFO storage.MemoryStore: Block broadcast_8 stored as values in memory (estimated size 61.8 KB, free 310.6 KB)
+16/09/22 21:12:05 INFO storage.MemoryStore: Block broadcast_8_piece0 stored as bytes in memory (estimated size 20.9 KB, free 331.5 KB)
+16/09/22 21:12:05 INFO storage.BlockManagerInfo: Added broadcast_8_piece0 in memory on localhost:46061 (size: 20.9 KB, free: 517.4 MB)
+16/09/22 21:12:05 INFO spark.SparkContext: Created broadcast 8 from broadcast at DAGScheduler.scala:1006
+16/09/22 21:12:05 INFO scheduler.DAGScheduler: Submitting 1 missing tasks from ResultStage 3 (MapPartitionsRDD[16] at parquet at <console>:32)
+16/09/22 21:12:05 INFO scheduler.TaskSchedulerImpl: Adding task set 3.0 with 1 tasks
+16/09/22 21:12:05 INFO scheduler.TaskSetManager: Starting task 0.0 in stage 3.0 (TID 3, localhost, partition 0,PROCESS_LOCAL, 2199 bytes)
+16/09/22 21:12:05 INFO executor.Executor: Running task 0.0 in stage 3.0 (TID 3)
+16/09/22 21:12:05 INFO hadoop.ParquetFileReader: Initiating action with parallelism: 5
+16/09/22 21:12:05 INFO executor.Executor: Finished task 0.0 in stage 3.0 (TID 3). 1678 bytes result sent to driver
+16/09/22 21:12:05 INFO scheduler.DAGScheduler: ResultStage 3 (parquet at <console>:32) finished in 0.057 s
+16/09/22 21:12:05 INFO scheduler.DAGScheduler: Job 3 finished: parquet at <console>:32, took 0.123709 s
+16/09/22 21:12:05 INFO scheduler.TaskSetManager: Finished task 0.0 in stage 3.0 (TID 3) in 61 ms on localhost (1/1)
+16/09/22 21:12:05 INFO scheduler.TaskSchedulerImpl: Removed TaskSet 3.0, whose tasks have all completed, from pool
+empDFpq: org.apache.spark.sql.DataFrame = [age: string, id: string, name: string]
+
+scala> empDFpq.show();
+16/09/22 21:12:25 INFO storage.MemoryStore: Block broadcast_9 stored as values in memory (estimated size 228.9 KB, free 560.3 KB)
+16/09/22 21:12:26 INFO storage.MemoryStore: Block broadcast_9_piece0 stored as bytes in memory (estimated size 19.6 KB, free 579.9 KB)
+16/09/22 21:12:26 INFO storage.BlockManagerInfo: Added broadcast_9_piece0 in memory on localhost:46061 (size: 19.6 KB, free: 517.3 MB)
+16/09/22 21:12:26 INFO spark.SparkContext: Created broadcast 9 from show at <console>:35
+16/09/22 21:12:26 INFO Configuration.deprecation: mapred.min.split.size is deprecated. Instead, use mapreduce.input.fileinputformat.split.minsize
+16/09/22 21:12:26 INFO parquet.ParquetRelation: Reading Parquet file(s) from file:/home/hduser/spark_op/empDF.parquet/part-r-00000-dcf1a5f2-3e33-4d89-aa4a-666bdbe8c67b.gz.parquet
+16/09/22 21:12:26 INFO spark.SparkContext: Starting job: show at <console>:35
+16/09/22 21:12:26 INFO scheduler.DAGScheduler: Got job 4 (show at <console>:35) with 1 output partitions
+16/09/22 21:12:26 INFO scheduler.DAGScheduler: Final stage: ResultStage 4 (show at <console>:35)
+16/09/22 21:12:26 INFO scheduler.DAGScheduler: Parents of final stage: List()
+16/09/22 21:12:26 INFO scheduler.DAGScheduler: Missing parents: List()
+16/09/22 21:12:26 INFO scheduler.DAGScheduler: Submitting ResultStage 4 (MapPartitionsRDD[19] at show at <console>:35), which has no missing parents
+16/09/22 21:12:26 INFO storage.MemoryStore: Block broadcast_10 stored as values in memory (estimated size 5.6 KB, free 585.4 KB)
+16/09/22 21:12:26 INFO storage.MemoryStore: Block broadcast_10_piece0 stored as bytes in memory (estimated size 3.1 KB, free 588.6 KB)
+16/09/22 21:12:26 INFO storage.BlockManagerInfo: Added broadcast_10_piece0 in memory on localhost:46061 (size: 3.1 KB, free: 517.3 MB)
+16/09/22 21:12:26 INFO spark.SparkContext: Created broadcast 10 from broadcast at DAGScheduler.scala:1006
+16/09/22 21:12:26 INFO scheduler.DAGScheduler: Submitting 1 missing tasks from ResultStage 4 (MapPartitionsRDD[19] at show at <console>:35)
+16/09/22 21:12:26 INFO scheduler.TaskSchedulerImpl: Adding task set 4.0 with 1 tasks
+16/09/22 21:12:26 INFO scheduler.TaskSetManager: Starting task 0.0 in stage 4.0 (TID 4, localhost, partition 0,PROCESS_LOCAL, 2233 bytes)
+16/09/22 21:12:26 INFO executor.Executor: Running task 0.0 in stage 4.0 (TID 4)
+16/09/22 21:12:26 INFO parquet.ParquetRelation$$anonfun$buildInternalScan$1$$anon$1: Input split: ParquetInputSplit{part: file:/home/hduser/spark_op/empDF.parquet/part-r-00000-dcf1a5f2-3e33-4d89-aa4a-666bdbe8c67b.gz.parquet start: 0 end: 795 length: 795 hosts: []}
+16/09/22 21:12:26 INFO codegen.GenerateSafeProjection: Code generated in 18.626166 ms
+16/09/22 21:12:26 INFO compress.CodecPool: Got brand-new decompressor [.gz]
+16/09/22 21:12:26 INFO executor.Executor: Finished task 0.0 in stage 4.0 (TID 4). 2645 bytes result sent to driver
+16/09/22 21:12:26 INFO scheduler.DAGScheduler: ResultStage 4 (show at <console>:35) finished in 0.086 s
+16/09/22 21:12:26 INFO scheduler.DAGScheduler: Job 4 finished: show at <console>:35, took 0.106212 s
++---+----+-------+
+|age|  id|   name|
++---+----+-------+
+| 25|1201| satish|
+| 28|1202|krishna|
+| 39|1203|  amith|
+| 23|1204|  javed|
+| 23|1205| prudvi|
++---+----+-------+
+
+====================================================================================================
+scala> shc.sql("show create table dkmdb02.test8");
+16/09/22 21:19:23 INFO parse.ParseDriver: Parsing command: show create table dkmdb02.test8
+16/09/22 21:19:25 INFO parse.ParseDriver: Parse Completed
+16/09/22 21:19:25 INFO log.PerfLogger: <PERFLOG method=Driver.run from=org.apache.hadoop.hive.ql.Driver>
+16/09/22 21:19:25 INFO log.PerfLogger: <PERFLOG method=TimeToSubmit from=org.apache.hadoop.hive.ql.Driver>
+16/09/22 21:19:25 INFO log.PerfLogger: <PERFLOG method=compile from=org.apache.hadoop.hive.ql.Driver>
+16/09/22 21:19:25 INFO log.PerfLogger: <PERFLOG method=parse from=org.apache.hadoop.hive.ql.Driver>
+16/09/22 21:19:25 INFO parse.ParseDriver: Parsing command: show create table dkmdb02.test8
+16/09/22 21:19:27 INFO parse.ParseDriver: Parse Completed
+16/09/22 21:19:27 INFO log.PerfLogger: </PERFLOG method=parse start=1474559365813 end=1474559367041 duration=1228 from=org.apache.hadoop.hive.ql.Driver>
+16/09/22 21:19:27 INFO log.PerfLogger: <PERFLOG method=semanticAnalyze from=org.apache.hadoop.hive.ql.Driver>
+16/09/22 21:19:27 INFO ql.Driver: Semantic Analysis Completed
+16/09/22 21:19:27 INFO log.PerfLogger: </PERFLOG method=semanticAnalyze start=1474559367340 end=1474559367963 duration=623 from=org.apache.hadoop.hive.ql.Driver>
+16/09/22 21:19:28 INFO exec.ListSinkOperator: Initializing operator OP[0]
+16/09/22 21:19:28 INFO exec.ListSinkOperator: Initialization Done 0 OP
+16/09/22 21:19:28 INFO exec.ListSinkOperator: Operator 0 OP initialized
+16/09/22 21:19:28 INFO ql.Driver: Returning Hive schema: Schema(fieldSchemas:[FieldSchema(name:createtab_stmt, type:string, comment:from deserializer)], properties:null)
+16/09/22 21:19:28 INFO log.PerfLogger: </PERFLOG method=compile start=1474559365574 end=1474559368655 duration=3081 from=org.apache.hadoop.hive.ql.Driver>
+16/09/22 21:19:28 INFO log.PerfLogger: <PERFLOG method=acquireReadWriteLocks from=org.apache.hadoop.hive.ql.Driver>
+16/09/22 21:19:28 INFO lockmgr.DbTxnManager: Setting lock request transaction to 0 for queryId=hduser_20160922211925_278f92bd-df65-4a6a-b1e5-f106b26c39a9
+16/09/22 21:19:28 INFO lockmgr.DbLockManager: Requesting: queryId=hduser_20160922211925_278f92bd-df65-4a6a-b1e5-f106b26c39a9 LockRequest(component:[LockComponent(type:SHARED_READ, level:TABLE, dbname:dkmdb02, tablename:test8)], txnid:0, user:hduser, hostname:Inceptez)
+16/09/22 21:19:28 INFO lockmgr.DbLockManager: Response to queryId=hduser_20160922211925_278f92bd-df65-4a6a-b1e5-f106b26c39a9 LockResponse(lockid:446, state:ACQUIRED)
+16/09/22 21:19:28 INFO log.PerfLogger: </PERFLOG method=acquireReadWriteLocks start=1474559368655 end=1474559368831 duration=176 from=org.apache.hadoop.hive.ql.Driver>
+16/09/22 21:19:28 INFO log.PerfLogger: <PERFLOG method=Driver.execute from=org.apache.hadoop.hive.ql.Driver>
+16/09/22 21:19:28 INFO ql.Driver: Starting command(queryId=hduser_20160922211925_278f92bd-df65-4a6a-b1e5-f106b26c39a9): show create table dkmdb02.test8
+16/09/22 21:19:28 INFO log.PerfLogger: </PERFLOG method=TimeToSubmit start=1474559365574 end=1474559368835 duration=3261 from=org.apache.hadoop.hive.ql.Driver>
+16/09/22 21:19:28 INFO log.PerfLogger: <PERFLOG method=runTasks from=org.apache.hadoop.hive.ql.Driver>
+16/09/22 21:19:28 INFO log.PerfLogger: <PERFLOG method=task.DDL.Stage-0 from=org.apache.hadoop.hive.ql.Driver>
+16/09/22 21:19:28 INFO ql.Driver: Starting task [Stage-0:DDL] in serial mode
+16/09/22 21:19:29 ERROR hive.log: error in initSerDe: java.lang.ClassNotFoundException Class parquet.hive.serde.ParquetHiveSerDe not found
+java.lang.ClassNotFoundException: Class parquet.hive.serde.ParquetHiveSerDe not found
+        at org.apache.hadoop.conf.Configuration.getClassByName(Configuration.java:1980)
+        at org.apache.hadoop.hive.metastore.MetaStoreUtils.getDeserializer(MetaStoreUtils.java:385)
+        at org.apache.hadoop.hive.ql.metadata.Table.getDeserializerFromMetaStore(Table.java:276)
+        at org.apache.hadoop.hive.ql.metadata.Table.getDeserializer(Table.java:258)
+        at org.apache.hadoop.hive.ql.metadata.Table.getCols(Table.java:605)
+        at org.apache.hadoop.hive.ql.exec.DDLTask.showCreateTable(DDLTask.java:1961)
+        at org.apache.hadoop.hive.ql.exec.DDLTask.execute(DDLTask.java:445)
+        at org.apache.hadoop.hive.ql.exec.Task.executeTask(Task.java:160)
+        at org.apache.hadoop.hive.ql.exec.TaskRunner.runSequential(TaskRunner.java:88)
+        at org.apache.hadoop.hive.ql.Driver.launchTask(Driver.java:1653)
+        at org.apache.hadoop.hive.ql.Driver.execute(Driver.java:1412)
+        at org.apache.hadoop.hive.ql.Driver.runInternal(Driver.java:1195)
+        at org.apache.hadoop.hive.ql.Driver.run(Driver.java:1059)
+        at org.apache.hadoop.hive.ql.Driver.run(Driver.java:1049)
+        at org.apache.spark.sql.hive.client.ClientWrapper$$anonfun$runHive$1.apply(ClientWrapper.scala:484)
+        at org.apache.spark.sql.hive.client.ClientWrapper$$anonfun$runHive$1.apply(ClientWrapper.scala:473)
+        at org.apache.spark.sql.hive.client.ClientWrapper$$anonfun$withHiveState$1.apply(ClientWrapper.scala:279)
+        at org.apache.spark.sql.hive.client.ClientWrapper.liftedTree1$1(ClientWrapper.scala:226)
+        at org.apache.spark.sql.hive.client.ClientWrapper.retryLocked(ClientWrapper.scala:225)
+        at org.apache.spark.sql.hive.client.ClientWrapper.withHiveState(ClientWrapper.scala:268)
+        at org.apache.spark.sql.hive.client.ClientWrapper.runHive(ClientWrapper.scala:473)
+        at org.apache.spark.sql.hive.client.ClientWrapper.runSqlHive(ClientWrapper.scala:463)
+        at org.apache.spark.sql.hive.HiveContext.runSqlHive(HiveContext.scala:605)
+        at org.apache.spark.sql.hive.execution.HiveNativeCommand.run(HiveNativeCommand.scala:33)
+        at org.apache.spark.sql.execution.ExecutedCommand.sideEffectResult$lzycompute(commands.scala:58)
+        at org.apache.spark.sql.execution.ExecutedCommand.sideEffectResult(commands.scala:56)
+        at org.apache.spark.sql.execution.ExecutedCommand.doExecute(commands.scala:70)
+        at org.apache.spark.sql.execution.SparkPlan$$anonfun$execute$5.apply(SparkPlan.scala:132)
+        at org.apache.spark.sql.execution.SparkPlan$$anonfun$execute$5.apply(SparkPlan.scala:130)
+        at org.apache.spark.rdd.RDDOperationScope$.withScope(RDDOperationScope.scala:150)
+        at org.apache.spark.sql.execution.SparkPlan.execute(SparkPlan.scala:130)
+        at org.apache.spark.sql.execution.QueryExecution.toRdd$lzycompute(QueryExecution.scala:55)
+        at org.apache.spark.sql.execution.QueryExecution.toRdd(QueryExecution.scala:55)
+        at org.apache.spark.sql.DataFrame.<init>(DataFrame.scala:145)
+        at org.apache.spark.sql.DataFrame.<init>(DataFrame.scala:130)
+        at org.apache.spark.sql.DataFrame$.apply(DataFrame.scala:52)
+        at org.apache.spark.sql.SQLContext.sql(SQLContext.scala:817)
+        at $line34.$read$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:33)
+        at $line34.$read$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:38)
+        at $line34.$read$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:40)
+        at $line34.$read$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:42)
+        at $line34.$read$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:44)
+        at $line34.$read$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:46)
+        at $line34.$read$$iwC$$iwC$$iwC$$iwC.<init>(<console>:48)
+        at $line34.$read$$iwC$$iwC$$iwC.<init>(<console>:50)
+        at $line34.$read$$iwC$$iwC.<init>(<console>:52)
+        at $line34.$read$$iwC.<init>(<console>:54)
+        at $line34.$read.<init>(<console>:56)
+        at $line34.$read$.<init>(<console>:60)
+        at $line34.$read$.<clinit>(<console>)
+        at $line34.$eval$.<init>(<console>:7)
+        at $line34.$eval$.<clinit>(<console>)
+        at $line34.$eval.$print(<console>)
+        at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+        at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+        at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+        at java.lang.reflect.Method.invoke(Method.java:606)
+        at org.apache.spark.repl.SparkIMain$ReadEvalPrint.call(SparkIMain.scala:1065)
+        at org.apache.spark.repl.SparkIMain$Request.loadAndRun(SparkIMain.scala:1346)
+        at org.apache.spark.repl.SparkIMain.loadAndRunReq$1(SparkIMain.scala:840)
+        at org.apache.spark.repl.SparkIMain.interpret(SparkIMain.scala:871)
+        at org.apache.spark.repl.SparkIMain.interpret(SparkIMain.scala:819)
+        at org.apache.spark.repl.SparkILoop.reallyInterpret$1(SparkILoop.scala:857)
+        at org.apache.spark.repl.SparkILoop.interpretStartingWith(SparkILoop.scala:902)
+        at org.apache.spark.repl.SparkILoop.command(SparkILoop.scala:814)
+        at org.apache.spark.repl.SparkILoop.processLine$1(SparkILoop.scala:657)
+        at org.apache.spark.repl.SparkILoop.innerLoop$1(SparkILoop.scala:665)
+        at org.apache.spark.repl.SparkILoop.org$apache$spark$repl$SparkILoop$$loop(SparkILoop.scala:670)
+        at org.apache.spark.repl.SparkILoop$$anonfun$org$apache$spark$repl$SparkILoop$$process$1.apply$mcZ$sp(SparkILoop.scala:997)
+        at org.apache.spark.repl.SparkILoop$$anonfun$org$apache$spark$repl$SparkILoop$$process$1.apply(SparkILoop.scala:945)
+        at org.apache.spark.repl.SparkILoop$$anonfun$org$apache$spark$repl$SparkILoop$$process$1.apply(SparkILoop.scala:945)
+        at scala.tools.nsc.util.ScalaClassLoader$.savingContextLoader(ScalaClassLoader.scala:135)
+        at org.apache.spark.repl.SparkILoop.org$apache$spark$repl$SparkILoop$$process(SparkILoop.scala:945)
+        at org.apache.spark.repl.SparkILoop.process(SparkILoop.scala:1059)
+        at org.apache.spark.repl.Main$.main(Main.scala:31)
+        at org.apache.spark.repl.Main.main(Main.scala)
+        at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+        at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+        at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+        at java.lang.reflect.Method.invoke(Method.java:606)
+        at org.apache.spark.deploy.SparkSubmit$.org$apache$spark$deploy$SparkSubmit$$runMain(SparkSubmit.scala:731)
+        at org.apache.spark.deploy.SparkSubmit$.doRunMain$1(SparkSubmit.scala:181)
+        at org.apache.spark.deploy.SparkSubmit$.submit(SparkSubmit.scala:206)
+        at org.apache.spark.deploy.SparkSubmit$.main(SparkSubmit.scala:121)
+        at org.apache.spark.deploy.SparkSubmit.main(SparkSubmit.scala)
+16/09/22 21:19:29 ERROR metadata.Table: Unable to get field from serde: parquet.hive.serde.ParquetHiveSerDe
+java.lang.RuntimeException: MetaException(message:java.lang.ClassNotFoundException Class parquet.hive.serde.ParquetHiveSerDe not found)
+        at org.apache.hadoop.hive.ql.metadata.Table.getDeserializerFromMetaStore(Table.java:278)
+        at org.apache.hadoop.hive.ql.metadata.Table.getDeserializer(Table.java:258)
+        at org.apache.hadoop.hive.ql.metadata.Table.getCols(Table.java:605)
+        at org.apache.hadoop.hive.ql.exec.DDLTask.showCreateTable(DDLTask.java:1961)
+        at org.apache.hadoop.hive.ql.exec.DDLTask.execute(DDLTask.java:445)
+        at org.apache.hadoop.hive.ql.exec.Task.executeTask(Task.java:160)
+        at org.apache.hadoop.hive.ql.exec.TaskRunner.runSequential(TaskRunner.java:88)
+        at org.apache.hadoop.hive.ql.Driver.launchTask(Driver.java:1653)
+        at org.apache.hadoop.hive.ql.Driver.execute(Driver.java:1412)
+        at org.apache.hadoop.hive.ql.Driver.runInternal(Driver.java:1195)
+        at org.apache.hadoop.hive.ql.Driver.run(Driver.java:1059)
+        at org.apache.hadoop.hive.ql.Driver.run(Driver.java:1049)
+        at org.apache.spark.sql.hive.client.ClientWrapper$$anonfun$runHive$1.apply(ClientWrapper.scala:484)
+        at org.apache.spark.sql.hive.client.ClientWrapper$$anonfun$runHive$1.apply(ClientWrapper.scala:473)
+        at org.apache.spark.sql.hive.client.ClientWrapper$$anonfun$withHiveState$1.apply(ClientWrapper.scala:279)
+        at org.apache.spark.sql.hive.client.ClientWrapper.liftedTree1$1(ClientWrapper.scala:226)
+        at org.apache.spark.sql.hive.client.ClientWrapper.retryLocked(ClientWrapper.scala:225)
+        at org.apache.spark.sql.hive.client.ClientWrapper.withHiveState(ClientWrapper.scala:268)
+        at org.apache.spark.sql.hive.client.ClientWrapper.runHive(ClientWrapper.scala:473)
+        at org.apache.spark.sql.hive.client.ClientWrapper.runSqlHive(ClientWrapper.scala:463)
+        at org.apache.spark.sql.hive.HiveContext.runSqlHive(HiveContext.scala:605)
+        at org.apache.spark.sql.hive.execution.HiveNativeCommand.run(HiveNativeCommand.scala:33)
+        at org.apache.spark.sql.execution.ExecutedCommand.sideEffectResult$lzycompute(commands.scala:58)
+        at org.apache.spark.sql.execution.ExecutedCommand.sideEffectResult(commands.scala:56)
+        at org.apache.spark.sql.execution.ExecutedCommand.doExecute(commands.scala:70)
+        at org.apache.spark.sql.execution.SparkPlan$$anonfun$execute$5.apply(SparkPlan.scala:132)
+        at org.apache.spark.sql.execution.SparkPlan$$anonfun$execute$5.apply(SparkPlan.scala:130)
+        at org.apache.spark.rdd.RDDOperationScope$.withScope(RDDOperationScope.scala:150)
+        at org.apache.spark.sql.execution.SparkPlan.execute(SparkPlan.scala:130)
+        at org.apache.spark.sql.execution.QueryExecution.toRdd$lzycompute(QueryExecution.scala:55)
+        at org.apache.spark.sql.execution.QueryExecution.toRdd(QueryExecution.scala:55)
+        at org.apache.spark.sql.DataFrame.<init>(DataFrame.scala:145)
+        at org.apache.spark.sql.DataFrame.<init>(DataFrame.scala:130)
+        at org.apache.spark.sql.DataFrame$.apply(DataFrame.scala:52)
+        at org.apache.spark.sql.SQLContext.sql(SQLContext.scala:817)
+        at $line34.$read$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:33)
+        at $line34.$read$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:38)
+        at $line34.$read$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:40)
+        at $line34.$read$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:42)
+        at $line34.$read$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:44)
+        at $line34.$read$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:46)
+        at $line34.$read$$iwC$$iwC$$iwC$$iwC.<init>(<console>:48)
+        at $line34.$read$$iwC$$iwC$$iwC.<init>(<console>:50)
+        at $line34.$read$$iwC$$iwC.<init>(<console>:52)
+        at $line34.$read$$iwC.<init>(<console>:54)
+        at $line34.$read.<init>(<console>:56)
+        at $line34.$read$.<init>(<console>:60)
+        at $line34.$read$.<clinit>(<console>)
+        at $line34.$eval$.<init>(<console>:7)
+        at $line34.$eval$.<clinit>(<console>)
+        at $line34.$eval.$print(<console>)
+        at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+        at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+        at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+        at java.lang.reflect.Method.invoke(Method.java:606)
+        at org.apache.spark.repl.SparkIMain$ReadEvalPrint.call(SparkIMain.scala:1065)
+        at org.apache.spark.repl.SparkIMain$Request.loadAndRun(SparkIMain.scala:1346)
+        at org.apache.spark.repl.SparkIMain.loadAndRunReq$1(SparkIMain.scala:840)
+        at org.apache.spark.repl.SparkIMain.interpret(SparkIMain.scala:871)
+        at org.apache.spark.repl.SparkIMain.interpret(SparkIMain.scala:819)
+        at org.apache.spark.repl.SparkILoop.reallyInterpret$1(SparkILoop.scala:857)
+        at org.apache.spark.repl.SparkILoop.interpretStartingWith(SparkILoop.scala:902)
+        at org.apache.spark.repl.SparkILoop.command(SparkILoop.scala:814)
+        at org.apache.spark.repl.SparkILoop.processLine$1(SparkILoop.scala:657)
+        at org.apache.spark.repl.SparkILoop.innerLoop$1(SparkILoop.scala:665)
+        at org.apache.spark.repl.SparkILoop.org$apache$spark$repl$SparkILoop$$loop(SparkILoop.scala:670)
+        at org.apache.spark.repl.SparkILoop$$anonfun$org$apache$spark$repl$SparkILoop$$process$1.apply$mcZ$sp(SparkILoop.scala:997)
+        at org.apache.spark.repl.SparkILoop$$anonfun$org$apache$spark$repl$SparkILoop$$process$1.apply(SparkILoop.scala:945)
+        at org.apache.spark.repl.SparkILoop$$anonfun$org$apache$spark$repl$SparkILoop$$process$1.apply(SparkILoop.scala:945)
+        at scala.tools.nsc.util.ScalaClassLoader$.savingContextLoader(ScalaClassLoader.scala:135)
+        at org.apache.spark.repl.SparkILoop.org$apache$spark$repl$SparkILoop$$process(SparkILoop.scala:945)
+        at org.apache.spark.repl.SparkILoop.process(SparkILoop.scala:1059)
+        at org.apache.spark.repl.Main$.main(Main.scala:31)
+        at org.apache.spark.repl.Main.main(Main.scala)
+        at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+        at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+        at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+        at java.lang.reflect.Method.invoke(Method.java:606)
+        at org.apache.spark.deploy.SparkSubmit$.org$apache$spark$deploy$SparkSubmit$$runMain(SparkSubmit.scala:731)
+        at org.apache.spark.deploy.SparkSubmit$.doRunMain$1(SparkSubmit.scala:181)
+        at org.apache.spark.deploy.SparkSubmit$.submit(SparkSubmit.scala:206)
+        at org.apache.spark.deploy.SparkSubmit$.main(SparkSubmit.scala:121)
+        at org.apache.spark.deploy.SparkSubmit.main(SparkSubmit.scala)
+Caused by: MetaException(message:java.lang.ClassNotFoundException Class parquet.hive.serde.ParquetHiveSerDe not found)
+        at org.apache.hadoop.hive.metastore.MetaStoreUtils.getDeserializer(MetaStoreUtils.java:399)
+        at org.apache.hadoop.hive.ql.metadata.Table.getDeserializerFromMetaStore(Table.java:276)
+        ... 82 more
+16/09/22 21:19:29 INFO log.PerfLogger: </PERFLOG method=runTasks start=1474559368835 end=1474559369416 duration=581 from=org.apache.hadoop.hive.ql.Driver>
+16/09/22 21:19:29 INFO log.PerfLogger: </PERFLOG method=Driver.execute start=1474559368831 end=1474559369416 duration=585 from=org.apache.hadoop.hive.ql.Driver>
+16/09/22 21:19:29 INFO ql.Driver: OK
+16/09/22 21:19:29 INFO log.PerfLogger: <PERFLOG method=releaseLocks from=org.apache.hadoop.hive.ql.Driver>
+16/09/22 21:19:30 INFO log.PerfLogger: </PERFLOG method=releaseLocks start=1474559369466 end=1474559370069 duration=603 from=org.apache.hadoop.hive.ql.Driver>
+16/09/22 21:19:30 INFO log.PerfLogger: </PERFLOG method=Driver.run start=1474559365573 end=1474559370069 duration=4496 from=org.apache.hadoop.hive.ql.Driver>
+16/09/22 21:19:30 INFO Configuration.deprecation: mapred.input.dir is deprecated. Instead, use mapreduce.input.fileinputformat.inputdir
+16/09/22 21:19:30 INFO mapred.FileInputFormat: Total input paths to process : 1
+16/09/22 21:19:30 INFO exec.ListSinkOperator: 0 finished. closing...
+16/09/22 21:19:30 INFO exec.ListSinkOperator: 0 Close done
+res4: org.apache.spark.sql.DataFrame = [result: string]
+====================================================================================================

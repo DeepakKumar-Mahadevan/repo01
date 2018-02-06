@@ -1,0 +1,324 @@
+mysql> select player, position, dob from DKMDB01.ManUtdPlayers1 where country = 'Brazil' into outfile '/tmp/MU-Bra.csv' fields terminated by ',' lines terminated by '\n';
+Query OK, 5 rows affected (0.11 sec)
+
+mysql> select player, position, dob from DKMDB01.ManUtdPlayers1 where country = 'Portugal' into outfile '/tmp/MU-Por.csv' fields terminated by ',' lines terminated by '\n';
+Query OK, 3 rows affected (0.00 sec)
+
+mysql> select player, position, dob from DKMDB01.ManUtdPlayers1 where country = 'England' into outfile '/tmp/MU-Eng.csv' fields terminated by ',' lines terminated by '\n';
+Query OK, 279 rows affected (0.00 sec)
+
+[hduser@Inceptez ~]$ sudo mv /tmp/MU* ~/Desktop/Work/Sample_Data/
+[sudo] password for hduser:
+[hduser@Inceptez Sample_Data]$ cat MU-Bra.csv MU-Por.csv > MU-Bra-Por.csv
+[hduser@Inceptez Sample_Data]$ ls -l
+total 180
+-rw-rw-rw- 1 mysql  mysql  23373 Aug 25 00:25 ManUtdPlayers1.csv
+-rw-rw-rw- 1 mysql  mysql  23373 Aug 25 00:39 ManUtdPlayers2.csv
+-rw-rw-r-- 1 hduser hduser 23579 Aug 24 23:06 ManUtdPlayers.csv
+-rw-rw-rw- 1 mysql  mysql    275 Aug 25 14:19 MU-Arg.csv
+-rw-rw-rw- 1 mysql  mysql    154 Aug 25 20:19 MU-Bra.csv
+-rw-rw-r-- 1 hduser hduser   239 Aug 25 20:23 MU-Bra-Por.csv
+-rw-rw-rw- 1 mysql  mysql    536 Aug 25 14:20 MU-Dutch.csv
+-rw-rw-rw- 1 mysql  mysql   9479 Aug 25 20:20 MU-Eng.csv
+-rw-rw-rw- 1 mysql  mysql    501 Aug 25 14:20 MU-Fra.csv
+-rw-rw-rw- 1 mysql  mysql     85 Aug 25 20:19 MU-Por.csv
+-rw-rw-rw- 1 mysql  mysql    133 Aug 25 14:59 MU-USA.csv
+-rw-rw-rw- 1 mysql  mysql   1093 Aug 25 14:19 MU-Wales.csv
+====================================================================================================
+Static Partitioning using Load
+------------------------------
+
+hive> load data local inpath '/home/hduser/Desktop/Work/Sample_Data/MU-Eng.csv' into table dkmdb02.manutdplayers1 partition (country = 'England');
+Loading data to table dkmdb02.manutdplayers1 partition (country=England)
+Partition dkmdb02.manutdplayers1{country=England} stats: [numFiles=1, numRows=0, totalSize=9479, rawDataSize=0]
+OK
+Time taken: 0.494 seconds
+hive> show partitions dkmdb02.manutdplayers1;
+OK
+country=Argentina
+country=England
+country=France
+country=Germany
+country=Netherlands
+country=Spain
+country=USA
+Time taken: 0.169 seconds, Fetched: 7 row(s)
+
+[hduser@Inceptez Sample_Data]$ hdfs dfs -ls -R /user/hive/warehouse/dkmdb02.db
+16/08/25 20:27:47 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+drwxr-xr-x   - hduser supergroup          0 2016-08-25 20:26 /user/hive/warehouse/dkmdb02.db/manutdplayers1
+drwxr-xr-x   - hduser supergroup          0 2016-08-25 15:10 /user/hive/warehouse/dkmdb02.db/manutdplayers1/country=Argentina
+-rw-r--r--   1 hduser supergroup        223 2016-08-25 15:10 /user/hive/warehouse/dkmdb02.db/manutdplayers1/country=Argentina/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-08-25 20:26 /user/hive/warehouse/dkmdb02.db/manutdplayers1/country=England
+-rw-r--r--   1 hduser supergroup       9479 2016-08-25 20:26 /user/hive/warehouse/dkmdb02.db/manutdplayers1/country=England/MU-Eng.csv
+drwxr-xr-x   - hduser supergroup          0 2016-08-25 15:10 /user/hive/warehouse/dkmdb02.db/manutdplayers1/country=France
+-rw-r--r--   1 hduser supergroup        421 2016-08-25 15:10 /user/hive/warehouse/dkmdb02.db/manutdplayers1/country=France/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-08-25 14:48 /user/hive/warehouse/dkmdb02.db/manutdplayers1/country=Germany
+-rw-r--r--   1 hduser supergroup         85 2016-08-25 14:48 /user/hive/warehouse/dkmdb02.db/manutdplayers1/country=Germany/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-08-25 15:10 /user/hive/warehouse/dkmdb02.db/manutdplayers1/country=Netherlands
+-rw-r--r--   1 hduser supergroup        404 2016-08-25 15:10 /user/hive/warehouse/dkmdb02.db/manutdplayers1/country=Netherlands/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-08-25 20:08 /user/hive/warehouse/dkmdb02.db/manutdplayers1/country=Spain
+-rw-r--r--   1 hduser supergroup        189 2016-08-25 20:08 /user/hive/warehouse/dkmdb02.db/manutdplayers1/country=Spain/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-08-25 15:00 /user/hive/warehouse/dkmdb02.db/manutdplayers1/country=USA
+-rw-r--r--   1 hduser supergroup        133 2016-08-25 15:00 /user/hive/warehouse/dkmdb02.db/manutdplayers1/country=USA/MU-USA.csv
+
+hive> select * from dkmdb02.manutdplayers1 where country = 'England' limit 10;
+OK
+Peter Abbott    Forward 1953-10-01      England
+Ted Adams       Goalkeeper      1906-11-30      England
+Alphonso Ainsworth      Forward 1913-07-31      England
+Nicky Ajose     Forward 1991-10-07      England
+George Albinson Midfielder      1897-02-14      England
+Reg Allen       Goalkeeper      1919-05-03      England
+Arthur Allman   Defender        1890-12-24      England
+Alfred Ambler   Midfielder      1879-07-01      England
+Ben Amos        Goalkeeper      1990-04-10      England
+John Anderson   Midfielder      1921-10-11      England
+Time taken: 0.612 seconds, Fetched: 10 row(s)
+
+hive> select * from dkmdb02.manutdplayers1 where dob = '1985-10-24';
+OK
+Wayne Rooney    Forward 1985-10-24      England
+Time taken: 0.185 seconds, Fetched: 1 row(s)
+====================================================================================================
+Dynamic Partitioning using Load (WON'T WORK)
+--------------------------------------------
+
+hive> load data local inpath '/home/hduser/Desktop/Work/Sample_Data/MU-Bra-Por.csv' into table dkmdb02.manutdplayers1 partition (country);
+FAILED: SemanticException org.apache.hadoop.hive.ql.metadata.HiveException: MetaException(message:Invalid partition key & values; keys [country, ], values [])
+
+The quick context is that:
+1.Load data simply copies data, it doesn't read it so it cannot figure out what to partition
+2.Would suggest that you load data into an intermediate table first (or using an external table pointing to all the files) and then letting partition dynamic insert to kick in to load it into a partitioned table
+====================================================================================================
+hive> desc formatted dkmdb02.manutdplayers1 partition country=England;
+FAILED: ParseException line 1:48 missing ( at 'country' near '=' in constant
+
+hive> desc formatted dkmdb02.manutdplayers1 partition (country=England);
+FAILED: ParseException line 1:57 cannot recognize input near 'England' ')' '<EOF>' in constant
+
+hive> desc formatted dkmdb02.manutdplayers1 partition (country='England');
+OK
+# col_name              data_type               comment
+
+player                  varchar(30)
+position                varchar(20)
+dob                     date
+
+# Partition Information
+# col_name              data_type               comment
+
+country                 varchar(25)
+
+# Detailed Partition Information
+Partition Value:        [England]
+Database:               dkmdb02
+Table:                  manutdplayers1
+CreateTime:             Thu Aug 25 20:26:51 IST 2016
+LastAccessTime:         UNKNOWN
+Protect Mode:           None
+Location:               hdfs://localhost:54310/user/hive/warehouse/dkmdb02.db/manutdplayers1/country=England
+Partition Parameters:
+        COLUMN_STATS_ACCURATE   true
+        numFiles                1
+        numRows                 0
+        rawDataSize             0
+        totalSize               9479
+        transient_lastDdlTime   1472137012
+
+# Storage Information
+SerDe Library:          org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe
+InputFormat:            org.apache.hadoop.mapred.TextInputFormat
+OutputFormat:           org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat
+Compressed:             No
+Num Buckets:            -1
+Bucket Columns:         []
+Sort Columns:           []
+Storage Desc Params:
+        field.delim             ,
+        serialization.format    ,
+Time taken: 0.629 seconds, Fetched: 38 row(s)
+====================================================================================================
+mysql> select player, dob from DKMDB01.ManUtdPlayers1 where country = 'England' and position = 'Forward' into outfile '/tmp/MU-Eng-Fwd.csv' fields terminated by ',' lines terminated by '\n';
+Query OK, 90 rows affected (0.00 sec)
+
+mysql> select player, dob from DKMDB01.ManUtdPlayers1 where country = 'England' and position not = 'Forward' into outfile '/tmp/MU-Eng-Oth.csv' fields terminated by ',' lines terminated by '\n';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '= 'Forward' into outfile '/tmp/MU-Eng-Oth.csv' fields terminated by ',' lines te' at line 1
+
+mysql> select player, dob from DKMDB01.ManUtdPlayers1 where country = 'England' and position <> 'Forward' into outfile '/tmp/MU-Eng-Oth.csv' fields terminated by ',' lines terminated by '\n';
+Query OK, 189 rows affected (0.00 sec)
+
+[hduser@Inceptez Sample_Data]$ sudo mv /tmp/MU* $PWD
+[sudo] password for hduser:
+[hduser@Inceptez Sample_Data]$ ls -l
+total 192
+-rw-rw-rw- 1 mysql  mysql  23373 Aug 25 00:25 ManUtdPlayers1.csv
+-rw-rw-rw- 1 mysql  mysql  23373 Aug 25 00:39 ManUtdPlayers2.csv
+-rw-rw-r-- 1 hduser hduser 23579 Aug 24 23:06 ManUtdPlayers.csv
+-rw-rw-rw- 1 mysql  mysql    275 Aug 25 14:19 MU-Arg.csv
+-rw-rw-rw- 1 mysql  mysql    154 Aug 25 20:19 MU-Bra.csv
+-rw-rw-r-- 1 hduser hduser   239 Aug 25 20:23 MU-Bra-Por.csv
+-rw-rw-rw- 1 mysql  mysql    536 Aug 25 14:20 MU-Dutch.csv
+-rw-rw-rw- 1 mysql  mysql   9479 Aug 25 20:20 MU-Eng.csv
+-rw-rw-rw- 1 mysql  mysql   2214 Aug 25 20:51 MU-Eng-Fwd.csv
+-rw-rw-rw- 1 mysql  mysql   4616 Aug 25 20:52 MU-Eng-Oth.csv
+-rw-rw-rw- 1 mysql  mysql    501 Aug 25 14:20 MU-Fra.csv
+-rw-rw-rw- 1 mysql  mysql     85 Aug 25 20:19 MU-Por.csv
+-rw-rw-rw- 1 mysql  mysql    133 Aug 25 14:59 MU-USA.csv
+-rw-rw-rw- 1 mysql  mysql   1093 Aug 25 14:19 MU-Wales.csv
+-rw-rw-r-- 1 hduser hduser  2213 Jul 10 23:56 SampleData.csv
+-rw-rw-r-- 1 hduser hduser  2236 Jul 10 23:51 SampleData.csv~
+-rw-rw-r-- 1 hduser hduser 53974 Jul 10 23:51 SampleData.xlsx
+[hduser@Inceptez Sample_Data]$ head -3 MU-Eng-Fwd.csv
+Peter Abbott,1953-10-01
+Alphonso Ainsworth,1913-07-31
+Nicky Ajose,1991-10-07
+[hduser@Inceptez Sample_Data]$ head -3 MU-Eng-Oth.csv
+Ted Adams,1906-11-30
+George Albinson,1897-02-14
+Reg Allen,1919-05-03
+====================================================================================================
+Partitioning on multiple columns:
+---------------------------------
+
+[hduser@Inceptez Sample_Data]$ hdfs dfs -ls -R /user/hduser/hiveexternaldata/dkmdb02.db/
+drwxr-xr-x   - hduser supergroup          0 2016-08-25 01:14 /user/hduser/hiveexternaldata/dkmdb02.db/ManUtdPlayers
+-rw-r--r--   1 hduser supergroup      23373 2016-08-25 00:58 /user/hduser/hiveexternaldata/dkmdb02.db/ManUtdPlayers/ManUtdPlayers1.csv
+
+hive> create external table dkmdb02.ManUtdPlayers2 (player varchar(30), dob date) partitioned by (country varchar(25), position varchar(20))
+    > row format delimited fields terminated by ','
+    > location '/user/hduser/hiveexternaldata/dkmdb02.db/ManUtdPlayers2';
+OK
+Time taken: 0.335 seconds
+
+hive> show partitions dkmdb02.ManUtdPlayers2;
+OK
+Time taken: 0.27 seconds
+
+[hduser@Inceptez Sample_Data]$ hdfs dfs -ls -R /user/hduser/hiveexternaldata/dkmdb02.db/
+drwxr-xr-x   - hduser supergroup          0 2016-08-25 01:14 /user/hduser/hiveexternaldata/dkmdb02.db/ManUtdPlayers
+-rw-r--r--   1 hduser supergroup      23373 2016-08-25 00:58 /user/hduser/hiveexternaldata/dkmdb02.db/ManUtdPlayers/ManUtdPlayers1.csv
+drwxr-xr-x   - hduser supergroup          0 2016-08-25 20:58 /user/hduser/hiveexternaldata/dkmdb02.db/ManUtdPlayers2
+====================================================================================================
+Static Partitioning using Load:
+-------------------------------
+
+hive> load data local inpath '/home/hduser/Desktop/Work/Sample_Data/MU-Eng-Fwd.csv' into table dkmdb02.ManUtdPlayers2 partition (country = 'England', position = 'Forward');
+Loading data to table dkmdb02.manutdplayers2 partition (country=England, position=Forward)
+Partition dkmdb02.manutdplayers2{country=England, position=Forward} stats: [numFiles=1, numRows=0, totalSize=2214, rawDataSize=0]
+OK
+Time taken: 0.996 seconds
+
+hive> show partitions dkmdb02.ManUtdPlayers2;
+OK
+country=England/position=Forward
+Time taken: 0.185 seconds, Fetched: 1 row(s)
+
+[hduser@Inceptez Sample_Data]$ hdfs dfs -ls -R /user/hduser/hiveexternaldata/dkmdb02.db/ManUtdPlayers2
+drwxr-xr-x   - hduser supergroup          0 2016-08-25 21:04 /user/hduser/hiveexternaldata/dkmdb02.db/ManUtdPlayers2/country=England
+drwxr-xr-x   - hduser supergroup          0 2016-08-25 21:04 /user/hduser/hiveexternaldata/dkmdb02.db/ManUtdPlayers2/country=England/position=Forward
+-rw-r--r--   1 hduser supergroup       2214 2016-08-25 21:04 /user/hduser/hiveexternaldata/dkmdb02.db/ManUtdPlayers2/country=England/position=Forward/MU-Eng-Fwd.csv
+====================================================================================================
+Dynamic Partitioning using Insert:
+----------------------------------
+
+hive> set hive.exec.dynamic.partition.mode=strict;
+hive> insert into table dkmdb02.manutdplayers2 partition (country='England', position) select player, dob, country, position from default.ManUtdPlayers where country = 'England' and position <> 'Forward';
+FAILED: SemanticException [Error 10044]: Line 1:18 Cannot insert into target table because column number/types are different 'position': Table insclause-0 has 3 columns, but query has 4 columns.
+
+hive> insert into table dkmdb02.manutdplayers2 partition (country='England', position) select player, dob, position from default.ManUtdPlayers where country = 'England' and position <> 'Forward';
+Query ID = hduser_20160825211111_c2f8c3bd-9e4b-4b2b-a3e2-cb8d578e0885
+Total jobs = 3
+Launching Job 1 out of 3
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_1472132069327_0002, Tracking URL = http://Inceptez:8088/proxy/application_1472132069327_0002/
+Kill Command = /usr/local/hadoop/bin/hadoop job  -kill job_1472132069327_0002
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 0
+2016-08-25 21:12:03,446 Stage-1 map = 0%,  reduce = 0%
+2016-08-25 21:12:30,274 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 4.54 sec
+MapReduce Total cumulative CPU time: 4 seconds 540 msec
+Ended Job = job_1472132069327_0002
+Stage-4 is selected by condition resolver.
+Stage-3 is filtered out by condition resolver.
+Stage-5 is filtered out by condition resolver.
+Moving data to: hdfs://localhost:54310/tmp/hive/hduser/70b9991c-b3c8-409d-8a72-b6883f3234aa/hive_2016-08-25_21-11-15_564_1176943574379215478-1/-ext-10000
+Loading data to table dkmdb02.manutdplayers2 partition (country=England, position=null)
+         Time taken for load dynamic partitions : 863
+        Loading partition {country=England, position=Midfielder}
+        Loading partition {country=England, position=Defender}
+        Loading partition {country=England, position=Goalkeeper}
+         Time taken for adding to write entity : 5
+[Error 30017]: Skipping stats aggregation by error org.apache.hadoop.hive.ql.metadata.HiveException: [Error 30001]: StatsPublisher cannot be initialized. There was a error in the initialization of StatsPublisher, and retrying might help. If you dont want the query to fail because accurate statistics could not be collected, set hive.stats.reliable=false
+Partition dkmdb02.manutdplayers2{country=England, position=Defender} stats: [numFiles=1, numRows=-1, totalSize=1827, rawDataSize=-1]
+Partition dkmdb02.manutdplayers2{country=England, position=Goalkeeper} stats: [numFiles=1, numRows=-1, totalSize=918, rawDataSize=-1]
+Partition dkmdb02.manutdplayers2{country=England, position=Midfielder} stats: [numFiles=1, numRows=-1, totalSize=1871, rawDataSize=-1]
+MapReduce Jobs Launched:
+Stage-Stage-1: Map: 1   Cumulative CPU: 4.54 sec   HDFS Read: 23622 HDFS Write: 4616 SUCCESS
+Total MapReduce CPU Time Spent: 4 seconds 540 msec
+OK
+Time taken: 78.842 seconds
+
+hive> show partitions dkmdb02.ManUtdPlayers2;                                                                                                                           OK
+country=England/position=Defender
+country=England/position=Forward
+country=England/position=Goalkeeper
+country=England/position=Midfielder
+Time taken: 0.269 seconds, Fetched: 4 row(s)
+
+[hduser@Inceptez Sample_Data]$ hdfs dfs -ls -R /user/hduser/hiveexternaldata/dkmdb02.db/ManUtdPlayers2
+drwxr-xr-x   - hduser supergroup          0 2016-08-25 21:12 /user/hduser/hiveexternaldata/dkmdb02.db/ManUtdPlayers2/country=England
+drwxr-xr-x   - hduser supergroup          0 2016-08-25 21:12 /user/hduser/hiveexternaldata/dkmdb02.db/ManUtdPlayers2/country=England/position=Defender
+-rw-r--r--   1 hduser supergroup       1827 2016-08-25 21:12 /user/hduser/hiveexternaldata/dkmdb02.db/ManUtdPlayers2/country=England/position=Defender/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-08-25 21:04 /user/hduser/hiveexternaldata/dkmdb02.db/ManUtdPlayers2/country=England/position=Forward
+-rw-r--r--   1 hduser supergroup       2214 2016-08-25 21:04 /user/hduser/hiveexternaldata/dkmdb02.db/ManUtdPlayers2/country=England/position=Forward/MU-Eng-Fwd.csv
+drwxr-xr-x   - hduser supergroup          0 2016-08-25 21:12 /user/hduser/hiveexternaldata/dkmdb02.db/ManUtdPlayers2/country=England/position=Goalkeeper
+-rw-r--r--   1 hduser supergroup        918 2016-08-25 21:12 /user/hduser/hiveexternaldata/dkmdb02.db/ManUtdPlayers2/country=England/position=Goalkeeper/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-08-25 21:12 /user/hduser/hiveexternaldata/dkmdb02.db/ManUtdPlayers2/country=England/position=Midfielder
+-rw-r--r--   1 hduser supergroup       1871 2016-08-25 21:12 /user/hduser/hiveexternaldata/dkmdb02.db/ManUtdPlayers2/country=England/position=Midfielder/000000_0
+====================================================================================================
+hive> select * from dkmdb02.ManUtdPlayers2 where position = 'Goalkeeper';
+OK
+Ted Adams       1906-11-30      England Goalkeeper
+Reg Allen       1919-05-03      England Goalkeeper
+Ben Amos        1990-04-10      England Goalkeeper
+Gary Bailey     1958-08-09      England Goalkeeper
+Robert Beale    1884-01-08      England Goalkeeper
+Herbert Birchenough     1874-09-21      England Goalkeeper
+John Breedon    1907-12-29      England Goalkeeper
+Herbert Broomfield      1878-12-11      England Goalkeeper
+Berry Brown     1927-09-06      England Goalkeeper
+Arthur Chesters 1910-02-14      England Goalkeeper
+Gordon Clayton  1936-11-03      England Goalkeeper
+Clifford Collinson      1920-03-03      England Goalkeeper
+John Connaughton        1949-09-23      England Goalkeeper
+Tony Coton      1961-05-19      England Goalkeeper
+Jack Crompton   1921-12-18      England Goalkeeper
+Nick Culkin     1978-07-06      England Goalkeeper
+Fraser Digby    1967-01-23      England Goalkeeper
+Ben Foster      1983-04-03      England Goalkeeper
+David Gaskell   1940-10-05      England Goalkeeper
+Paul Gibson     1976-11-01      England Goalkeeper
+Tom Heaton      1986-04-15      England Goalkeeper
+Dean Henderson  1997-03-12      England Goalkeeper
+Sam Johnstone   1993-03-25      England Goalkeeper
+Jack Mew        1889-03-30      England Goalkeeper
+Steve Pears     1962-01-22      England Goalkeeper
+Kevin Pilkington        1974-03-08      England Goalkeeper
+Mike Pinner     1934-02-16      England Goalkeeper
+Terry Poole     1949-12-16      England Goalkeeper
+Paul Rachubka   1981-05-21      England Goalkeeper
+Jimmy Rimmer    1948-02-10      England Goalkeeper
+Les Sealey      1957-09-29      England Goalkeeper
+Luke Steele     1984-09-24      England Goalkeeper
+Alex Stepney    1942-09-18      England Goalkeeper
+Chris Turner    1958-09-15      England Goalkeeper
+Gary Walsh      1968-03-21      England Goalkeeper
+Jeffrey Wealands        1951-08-26      England Goalkeeper
+Ben Williams    1982-08-27      England Goalkeeper
+Ray Wood        1931-06-11      England Goalkeeper
+Time taken: 0.27 seconds, Fetched: 38 row(s)
+
+hive> select * from dkmdb02.ManUtdPlayers2;
+OK
+Time taken: 0.297 seconds, Fetched: 279 row(s)
+====================================================================================================

@@ -1,0 +1,782 @@
+mysql> create table student (stu_id int(5) not null, stu_name varchar(30) not null, stu_dep int(3) default null, row_ts timestamp default current_timestamp on update current_timestamp not null, primary key(stu_id));
+Query OK, 0 rows affected (0.20 sec)
+
+mysql> desc student;
++----------+-------------+------+-----+-------------------+-----------------------------+
+| Field    | Type        | Null | Key | Default           | Extra                       |
++----------+-------------+------+-----+-------------------+-----------------------------+
+| stu_id   | int(5)      | NO   | PRI | NULL              |                             |
+| stu_name | varchar(30) | NO   |     | NULL              |                             |
+| stu_dep  | int(3)      | YES  |     | NULL              |                             |
+| row_ts   | timestamp   | NO   |     | CURRENT_TIMESTAMP | on update CURRENT_TIMESTAMP |
++----------+-------------+------+-----+-------------------+-----------------------------+
+4 rows in set (0.04 sec)
+
+mysql> create table department (dep_id int(3) not null, dep_name varchar(30) not null, row_ts timestamp default current_timestamp on update current_timestamp not null, primary key(dep_id));
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> desc department;
++----------+-------------+------+-----+-------------------+-----------------------------+
+| Field    | Type        | Null | Key | Default           | Extra                       |
++----------+-------------+------+-----+-------------------+-----------------------------+
+| dep_id   | int(3)      | NO   | PRI | NULL              |                             |
+| dep_name | varchar(30) | NO   |     | NULL              |                             |
+| row_ts   | timestamp   | NO   |     | CURRENT_TIMESTAMP | on update CURRENT_TIMESTAMP |
++----------+-------------+------+-----+-------------------+-----------------------------+
+3 rows in set (0.00 sec)
+
+mysql> insert into student values (1,Deepak,1);
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> insert into student (stu_id,stu_name,stu_dep) values (1,Deepak,1);
+ERROR 1054 (42S22): Unknown column 'Deepak' in 'field list'
+mysql> insert into student (stu_id,stu_name,stu_dep) values (1,'Deepak',1);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into student (stu_id,stu_name,stu_dep) values (2,'Farooq',1);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into student (stu_id,stu_name,stu_dep) values (3,'Vadivel',2);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into student (stu_id,stu_name,stu_dep) values (4,'Hari',3);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into student (stu_id,stu_name,stu_dep) values (5,'Karthick',1);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into department (dep_id,dep_name) values (1,'RBS');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into department (dep_id,dep_name) values (2,'VDSI');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into department (dep_id,dep_name) values (3,'CTS');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from student;
++--------+----------+---------+---------------------+
+| stu_id | stu_name | stu_dep | row_ts              |
++--------+----------+---------+---------------------+
+|      1 | Deepak   |       1 | 2016-06-21 20:24:56 |
+|      2 | Farooq   |       1 | 2016-06-21 20:25:21 |
+|      3 | Vadivel  |       2 | 2016-06-21 20:25:43 |
+|      4 | Hari     |       3 | 2016-06-21 20:26:05 |
+|      5 | Karthick |       1 | 2016-06-21 20:26:21 |
++--------+----------+---------+---------------------+
+5 rows in set (0.02 sec)
+
+mysql> select * from department;
++--------+----------+---------------------+
+| dep_id | dep_name | row_ts              |
++--------+----------+---------------------+
+|      1 | RBS      | 2016-06-21 20:27:05 |
+|      2 | VDSI     | 2016-06-21 20:27:19 |
+|      3 | CTS      | 2016-06-21 20:27:28 |
++--------+----------+---------------------+
+3 rows in set (0.00 sec)
+
+mysql> select * from student s,department d where s.stu_dep = d.dep_id;
++--------+----------+---------+---------------------+--------+----------+---------------------+
+| stu_id | stu_name | stu_dep | row_ts              | dep_id | dep_name | row_ts              |
++--------+----------+---------+---------------------+--------+----------+---------------------+
+|      1 | Deepak   |       1 | 2016-06-21 20:24:56 |      1 | RBS      | 2016-06-21 20:27:05 |
+|      2 | Farooq   |       1 | 2016-06-21 20:25:21 |      1 | RBS      | 2016-06-21 20:27:05 |
+|      3 | Vadivel  |       2 | 2016-06-21 20:25:43 |      2 | VDSI     | 2016-06-21 20:27:19 |
+|      4 | Hari     |       3 | 2016-06-21 20:26:05 |      3 | CTS      | 2016-06-21 20:27:28 |
+|      5 | Karthick |       1 | 2016-06-21 20:26:21 |      1 | RBS      | 2016-06-21 20:27:05 |
++--------+----------+---------+---------------------+--------+----------+---------------------+
+5 rows in set (0.00 sec)
+
+mysql> select s.stu_id, s.stu_name, d.dep_id, d.dep_name from student s,department d where s.stu_dep = d.dep_id;
++--------+----------+--------+----------+
+| stu_id | stu_name | dep_id | dep_name |
++--------+----------+--------+----------+
+|      1 | Deepak   |      1 | RBS      |
+|      2 | Farooq   |      1 | RBS      |
+|      3 | Vadivel  |      2 | VDSI     |
+|      4 | Hari     |      3 | CTS      |
+|      5 | Karthick |      1 | RBS      |
++--------+----------+--------+----------+
+5 rows in set (0.00 sec)
+
+====================================================================================================
+[hduser@Inceptez ~]$ sqoop import --connect jdbc:mysql://localhost/DKMDB01 --username root --P --direct --query 'select * from student s,department d where s.stu_dep = d.dep_id and $CONDITIONS' --split-by a.stu_id --target-dir join_query_op8;
+Enter password: 
+16/06/21 20:32:11 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
+16/06/21 20:32:11 INFO tool.CodeGenTool: Beginning code generation
+16/06/21 20:32:12 INFO manager.SqlManager: Executing SQL statement: select * from student s,department d where s.stu_dep = d.dep_id and  (1 = 0) 
+16/06/21 20:32:12 INFO manager.SqlManager: Executing SQL statement: select * from student s,department d where s.stu_dep = d.dep_id and  (1 = 0) 
+16/06/21 20:32:12 ERROR tool.ImportTool: Imported Failed: Duplicate Column identifier specified: 'row_ts'
+====================================================================================================
+[hduser@Inceptez ~]$ sqoop import --connect jdbc:mysql://localhost/DKMDB01 --username root --P --direct --query 'select * from student s,department d where s.stu_dep = d.dep_id and $CONDITIONS' --split-by a.stu_id --target-dir join_query_op8;
+Warning: /usr/local/sqoop/../hbase does not exist! HBase imports will fail.
+Please set $HBASE_HOME to the root of your HBase installation.
+Warning: /usr/local/sqoop/../hcatalog does not exist! HCatalog jobs will fail.
+Please set $HCAT_HOME to the root of your HCatalog installation.
+Warning: /usr/local/sqoop/../accumulo does not exist! Accumulo imports will fail.
+Please set $ACCUMULO_HOME to the root of your Accumulo installation.
+Warning: /usr/local/sqoop/../zookeeper does not exist! Accumulo imports will fail.
+Please set $ZOOKEEPER_HOME to the root of your Zookeeper installation.
+16/06/21 20:32:08 INFO sqoop.Sqoop: Running Sqoop version: 1.4.5
+Enter password: 
+16/06/21 20:32:11 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
+16/06/21 20:32:11 INFO tool.CodeGenTool: Beginning code generation
+16/06/21 20:32:12 INFO manager.SqlManager: Executing SQL statement: select * from student s,department d where s.stu_dep = d.dep_id and  (1 = 0) 
+16/06/21 20:32:12 INFO manager.SqlManager: Executing SQL statement: select * from student s,department d where s.stu_dep = d.dep_id and  (1 = 0) 
+16/06/21 20:32:12 ERROR tool.ImportTool: Imported Failed: Duplicate Column identifier specified: 'row_ts'
+
+[hduser@Inceptez ~]$ sqoop import --connect jdbc:mysql://localhost/DKMDB01 --username root --P --direct --query 'select s.stu_id, s.stu_name, d.dep_id, d.dep_name from student s,department d where s.stu_dep = d.dep_id and $CONDITIONS' --split-by s.stu_id --target-dir join_query_op8;
+Warning: /usr/local/sqoop/../hbase does not exist! HBase imports will fail.
+Please set $HBASE_HOME to the root of your HBase installation.
+Warning: /usr/local/sqoop/../hcatalog does not exist! HCatalog jobs will fail.
+Please set $HCAT_HOME to the root of your HCatalog installation.
+Warning: /usr/local/sqoop/../accumulo does not exist! Accumulo imports will fail.
+Please set $ACCUMULO_HOME to the root of your Accumulo installation.
+Warning: /usr/local/sqoop/../zookeeper does not exist! Accumulo imports will fail.
+Please set $ZOOKEEPER_HOME to the root of your Zookeeper installation.
+16/06/21 20:34:57 INFO sqoop.Sqoop: Running Sqoop version: 1.4.5
+Enter password: 
+16/06/21 20:35:00 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
+16/06/21 20:35:00 INFO tool.CodeGenTool: Beginning code generation
+16/06/21 20:35:00 INFO manager.SqlManager: Executing SQL statement: select s.stu_id, s.stu_name, d.dep_id, d.dep_name from student s,department d where s.stu_dep = d.dep_id and  (1 = 0) 
+16/06/21 20:35:00 INFO manager.SqlManager: Executing SQL statement: select s.stu_id, s.stu_name, d.dep_id, d.dep_name from student s,department d where s.stu_dep = d.dep_id and  (1 = 0) 
+16/06/21 20:35:01 INFO manager.SqlManager: Executing SQL statement: select s.stu_id, s.stu_name, d.dep_id, d.dep_name from student s,department d where s.stu_dep = d.dep_id and  (1 = 0) 
+16/06/21 20:35:01 INFO orm.CompilationManager: HADOOP_MAPRED_HOME is /usr/local/hadoop
+Note: /tmp/sqoop-hduser/compile/bc0d3b8069be0c67d1d3b968483e143b/QueryResult.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+16/06/21 20:35:07 INFO orm.CompilationManager: Writing jar file: /tmp/sqoop-hduser/compile/bc0d3b8069be0c67d1d3b968483e143b/QueryResult.jar
+16/06/21 20:35:07 INFO mapreduce.ImportJobBase: Beginning query import.
+16/06/21 20:35:08 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+16/06/21 20:35:08 INFO Configuration.deprecation: mapred.jar is deprecated. Instead, use mapreduce.job.jar
+16/06/21 20:35:10 INFO Configuration.deprecation: mapred.map.tasks is deprecated. Instead, use mapreduce.job.maps
+16/06/21 20:35:10 INFO client.RMProxy: Connecting to ResourceManager at /0.0.0.0:8032
+16/06/21 20:35:14 INFO db.DBInputFormat: Using read commited transaction isolation
+16/06/21 20:35:14 INFO db.DataDrivenDBInputFormat: BoundingValsQuery: SELECT MIN(t1.stu_id), MAX(t1.stu_id) FROM (select s.stu_id, s.stu_name, d.dep_id, d.dep_name from student s,department d where s.stu_dep = d.dep_id and  (1 = 1) ) AS t1
+16/06/21 20:35:14 INFO mapreduce.JobSubmitter: number of splits:5
+16/06/21 20:35:15 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1466518504658_0003
+16/06/21 20:35:16 INFO impl.YarnClientImpl: Submitted application application_1466518504658_0003
+16/06/21 20:35:16 INFO mapreduce.Job: The url to track the job: http://Inceptez:8088/proxy/application_1466518504658_0003/
+16/06/21 20:35:16 INFO mapreduce.Job: Running job: job_1466518504658_0003
+16/06/21 20:35:35 INFO mapreduce.Job: Job job_1466518504658_0003 running in uber mode : false
+16/06/21 20:35:35 INFO mapreduce.Job:  map 0% reduce 0%
+16/06/21 20:36:41 INFO mapreduce.Job:  map 40% reduce 0%
+16/06/21 20:36:44 INFO mapreduce.Job:  map 80% reduce 0%
+16/06/21 20:36:45 INFO mapreduce.Job:  map 100% reduce 0%
+16/06/21 20:36:45 INFO mapreduce.Job: Job job_1466518504658_0003 completed successfully
+16/06/21 20:36:46 INFO mapreduce.Job: Counters: 30
+	File System Counters
+		FILE: Number of bytes read=0
+		FILE: Number of bytes written=573935
+		FILE: Number of read operations=0
+		FILE: Number of large read operations=0
+		FILE: Number of write operations=0
+		HDFS: Number of bytes read=531
+		HDFS: Number of bytes written=77
+		HDFS: Number of read operations=20
+		HDFS: Number of large read operations=0
+		HDFS: Number of write operations=10
+	Job Counters 
+		Launched map tasks=5
+		Other local map tasks=5
+		Total time spent by all maps in occupied slots (ms)=323422
+		Total time spent by all reduces in occupied slots (ms)=0
+		Total time spent by all map tasks (ms)=323422
+		Total vcore-seconds taken by all map tasks=323422
+		Total megabyte-seconds taken by all map tasks=331184128
+	Map-Reduce Framework
+		Map input records=5
+		Map output records=5
+		Input split bytes=531
+		Spilled Records=0
+		Failed Shuffles=0
+		Merged Map outputs=0
+		GC time elapsed (ms)=4534
+		CPU time spent (ms)=11310
+		Physical memory (bytes) snapshot=478404608
+		Virtual memory (bytes) snapshot=4877496320
+		Total committed heap usage (bytes)=119275520
+	File Input Format Counters 
+		Bytes Read=0
+	File Output Format Counters 
+		Bytes Written=77
+16/06/21 20:36:46 INFO mapreduce.ImportJobBase: Transferred 77 bytes in 95.7353 seconds (0.8043 bytes/sec)
+16/06/21 20:36:46 INFO mapreduce.ImportJobBase: Retrieved 5 records.
+
+[hduser@Inceptez ~]$ hdfs dfs -ls -R join_query_op8
+-rw-r--r--   1 hduser supergroup          0 2016-06-21 20:36 join_query_op8/_SUCCESS
+-rw-r--r--   1 hduser supergroup         15 2016-06-21 20:36 join_query_op8/part-m-00000
+-rw-r--r--   1 hduser supergroup         15 2016-06-21 20:36 join_query_op8/part-m-00001
+-rw-r--r--   1 hduser supergroup         17 2016-06-21 20:36 join_query_op8/part-m-00002
+-rw-r--r--   1 hduser supergroup         13 2016-06-21 20:36 join_query_op8/part-m-00003
+-rw-r--r--   1 hduser supergroup         17 2016-06-21 20:36 join_query_op8/part-m-00004
+[hduser@Inceptez ~]$ hdfs dfs -cat join_query_op8/p*0
+1,Deepak,1,RBS
+[hduser@Inceptez ~]$ hdfs dfs -cat join_query_op8/p*1
+2,Farooq,1,RBS
+[hduser@Inceptez ~]$ hdfs dfs -cat join_query_op8/p*2
+3,Vadivel,2,VDSI
+[hduser@Inceptez ~]$ hdfs dfs -cat join_query_op8/p*3
+4,Hari,3,CTS
+[hduser@Inceptez ~]$ hdfs dfs -cat join_query_op8/p*4
+5,Karthick,1,RBS
+
+====================================================================================================
+mysql> insert into department (dep_id,dep_name) values (4,'HCL');
+Query OK, 1 row affected (0.15 sec)
+
+mysql> insert into student (stu_id,stu_name,stu_dep) values (6,'Mani',4);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> delete from department where dep_id = 4;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from student;
++--------+----------+---------+---------------------+
+| stu_id | stu_name | stu_dep | row_ts              |
++--------+----------+---------+---------------------+
+|      1 | Deepak   |       1 | 2016-06-21 20:24:56 |
+|      2 | Farooq   |       1 | 2016-06-21 20:25:21 |
+|      3 | Vadivel  |       2 | 2016-06-21 20:25:43 |
+|      4 | Hari     |       3 | 2016-06-21 20:26:05 |
+|      5 | Karthick |       1 | 2016-06-21 20:26:21 |
+|      6 | Mani     |       4 | 2016-06-21 20:41:08 |
++--------+----------+---------+---------------------+
+6 rows in set (0.08 sec)
+
+mysql> select * from department;
++--------+----------+---------------------+
+| dep_id | dep_name | row_ts              |
++--------+----------+---------------------+
+|      1 | RBS      | 2016-06-21 20:27:05 |
+|      2 | VDSI     | 2016-06-21 20:27:19 |
+|      3 | CTS      | 2016-06-21 20:27:28 |
++--------+----------+---------------------+
+3 rows in set (0.00 sec)
+
+mysql> select s.stu_id, s.stu_name, d.dep_id, d.dep_name from student s,department d where s.stu_dep = d.dep_id;
++--------+----------+--------+----------+
+| stu_id | stu_name | dep_id | dep_name |
++--------+----------+--------+----------+
+|      1 | Deepak   |      1 | RBS      |
+|      2 | Farooq   |      1 | RBS      |
+|      3 | Vadivel  |      2 | VDSI     |
+|      4 | Hari     |      3 | CTS      |
+|      5 | Karthick |      1 | RBS      |
++--------+----------+--------+----------+
+5 rows in set (0.00 sec)
+
+====================================================================================================
+[hduser@Inceptez ~]$ sqoop import --connect jdbc:mysql://localhost/DKMDB01 --username root --P --direct --query 'select s.stu_id, s.stu_name, d.dep_id, d.dep_name from student s,department d where s.stu_dep = d.dep_id and $CONDITIONS' --split-by s.stu_id --target-dir join_query_op9;
+Warning: /usr/local/sqoop/../hbase does not exist! HBase imports will fail.
+Please set $HBASE_HOME to the root of your HBase installation.
+Warning: /usr/local/sqoop/../hcatalog does not exist! HCatalog jobs will fail.
+Please set $HCAT_HOME to the root of your HCatalog installation.
+Warning: /usr/local/sqoop/../accumulo does not exist! Accumulo imports will fail.
+Please set $ACCUMULO_HOME to the root of your Accumulo installation.
+Warning: /usr/local/sqoop/../zookeeper does not exist! Accumulo imports will fail.
+Please set $ZOOKEEPER_HOME to the root of your Zookeeper installation.
+16/06/21 20:42:41 INFO sqoop.Sqoop: Running Sqoop version: 1.4.5
+Enter password: 
+16/06/21 20:42:45 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
+16/06/21 20:42:45 INFO tool.CodeGenTool: Beginning code generation
+16/06/21 20:42:46 INFO manager.SqlManager: Executing SQL statement: select s.stu_id, s.stu_name, d.dep_id, d.dep_name from student s,department d where s.stu_dep = d.dep_id and  (1 = 0) 
+16/06/21 20:42:46 INFO manager.SqlManager: Executing SQL statement: select s.stu_id, s.stu_name, d.dep_id, d.dep_name from student s,department d where s.stu_dep = d.dep_id and  (1 = 0) 
+16/06/21 20:42:46 INFO manager.SqlManager: Executing SQL statement: select s.stu_id, s.stu_name, d.dep_id, d.dep_name from student s,department d where s.stu_dep = d.dep_id and  (1 = 0) 
+16/06/21 20:42:46 INFO orm.CompilationManager: HADOOP_MAPRED_HOME is /usr/local/hadoop
+Note: /tmp/sqoop-hduser/compile/c866b6d59ee45e73a0325be6fb5a19df/QueryResult.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+16/06/21 20:42:55 INFO orm.CompilationManager: Writing jar file: /tmp/sqoop-hduser/compile/c866b6d59ee45e73a0325be6fb5a19df/QueryResult.jar
+16/06/21 20:42:55 INFO mapreduce.ImportJobBase: Beginning query import.
+16/06/21 20:42:56 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+16/06/21 20:42:56 INFO Configuration.deprecation: mapred.jar is deprecated. Instead, use mapreduce.job.jar
+16/06/21 20:42:59 INFO Configuration.deprecation: mapred.map.tasks is deprecated. Instead, use mapreduce.job.maps
+16/06/21 20:42:59 INFO client.RMProxy: Connecting to ResourceManager at /0.0.0.0:8032
+16/06/21 20:43:03 INFO db.DBInputFormat: Using read commited transaction isolation
+16/06/21 20:43:03 INFO db.DataDrivenDBInputFormat: BoundingValsQuery: SELECT MIN(t1.stu_id), MAX(t1.stu_id) FROM (select s.stu_id, s.stu_name, d.dep_id, d.dep_name from student s,department d where s.stu_dep = d.dep_id and  (1 = 1) ) AS t1
+16/06/21 20:43:03 INFO mapreduce.JobSubmitter: number of splits:5
+16/06/21 20:43:04 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1466518504658_0004
+16/06/21 20:43:06 INFO impl.YarnClientImpl: Submitted application application_1466518504658_0004
+16/06/21 20:43:06 INFO mapreduce.Job: The url to track the job: http://Inceptez:8088/proxy/application_1466518504658_0004/
+16/06/21 20:43:06 INFO mapreduce.Job: Running job: job_1466518504658_0004
+16/06/21 20:43:29 INFO mapreduce.Job: Job job_1466518504658_0004 running in uber mode : false
+16/06/21 20:43:29 INFO mapreduce.Job:  map 0% reduce 0%
+16/06/21 20:44:44 INFO mapreduce.Job:  map 40% reduce 0%
+16/06/21 20:44:47 INFO mapreduce.Job:  map 60% reduce 0%
+16/06/21 20:44:48 INFO mapreduce.Job:  map 80% reduce 0%
+16/06/21 20:44:49 INFO mapreduce.Job:  map 100% reduce 0%
+16/06/21 20:44:49 INFO mapreduce.Job: Job job_1466518504658_0004 completed successfully
+16/06/21 20:44:49 INFO mapreduce.Job: Counters: 31
+	File System Counters
+		FILE: Number of bytes read=0
+		FILE: Number of bytes written=573935
+		FILE: Number of read operations=0
+		FILE: Number of large read operations=0
+		FILE: Number of write operations=0
+		HDFS: Number of bytes read=531
+		HDFS: Number of bytes written=77
+		HDFS: Number of read operations=20
+		HDFS: Number of large read operations=0
+		HDFS: Number of write operations=10
+	Job Counters 
+		Killed map tasks=1
+		Launched map tasks=6
+		Other local map tasks=6
+		Total time spent by all maps in occupied slots (ms)=368340
+		Total time spent by all reduces in occupied slots (ms)=0
+		Total time spent by all map tasks (ms)=368340
+		Total vcore-seconds taken by all map tasks=368340
+		Total megabyte-seconds taken by all map tasks=377180160
+	Map-Reduce Framework
+		Map input records=5
+		Map output records=5
+		Input split bytes=531
+		Spilled Records=0
+		Failed Shuffles=0
+		Merged Map outputs=0
+		GC time elapsed (ms)=5464
+		CPU time spent (ms)=11300
+		Physical memory (bytes) snapshot=508821504
+		Virtual memory (bytes) snapshot=4888199168
+		Total committed heap usage (bytes)=119275520
+	File Input Format Counters 
+		Bytes Read=0
+	File Output Format Counters 
+		Bytes Written=77
+16/06/21 20:44:49 INFO mapreduce.ImportJobBase: Transferred 77 bytes in 110.4564 seconds (0.6971 bytes/sec)
+16/06/21 20:44:49 INFO mapreduce.ImportJobBase: Retrieved 5 records.
+[hduser@Inceptez ~]$ hdfs dfs -cat join_query_op8/p*
+16/06/21 20:45:11 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+1,Deepak,1,RBS
+2,Farooq,1,RBS
+3,Vadivel,2,VDSI
+4,Hari,3,CTS
+5,Karthick,1,RBS
+
+mysql> insert into department (dep_id,dep_name) values (4,'HCL');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select s.stu_id, s.stu_name, d.dep_id, d.dep_name from student s,department d where s.stu_dep = d.dep_id;
++--------+----------+--------+----------+
+| stu_id | stu_name | dep_id | dep_name |
++--------+----------+--------+----------+
+|      1 | Deepak   |      1 | RBS      |
+|      2 | Farooq   |      1 | RBS      |
+|      5 | Karthick |      1 | RBS      |
+|      3 | Vadivel  |      2 | VDSI     |
+|      4 | Hari     |      3 | CTS      |
+|      6 | Mani     |      4 | HCL      |
++--------+----------+--------+----------+
+6 rows in set (0.00 sec)
+
+[hduser@Inceptez ~]$ sqoop import --connect jdbc:mysql://localhost/DKMDB01 --username root --P --direct --query 'select s.stu_id, s.stu_name, d.dep_id, d.dep_name from student s,department d where s.stu_dep = d.dep_id and $CONDITIONS' --split-by s.stu_id --target-dir join_query_opA;
+Warning: /usr/local/sqoop/../hbase does not exist! HBase imports will fail.
+Please set $HBASE_HOME to the root of your HBase installation.
+Warning: /usr/local/sqoop/../hcatalog does not exist! HCatalog jobs will fail.
+Please set $HCAT_HOME to the root of your HCatalog installation.
+Warning: /usr/local/sqoop/../accumulo does not exist! Accumulo imports will fail.
+Please set $ACCUMULO_HOME to the root of your Accumulo installation.
+Warning: /usr/local/sqoop/../zookeeper does not exist! Accumulo imports will fail.
+Please set $ZOOKEEPER_HOME to the root of your Zookeeper installation.
+16/06/21 20:47:41 INFO sqoop.Sqoop: Running Sqoop version: 1.4.5
+Enter password: 
+16/06/21 20:47:44 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
+16/06/21 20:47:44 INFO tool.CodeGenTool: Beginning code generation
+16/06/21 20:47:45 INFO manager.SqlManager: Executing SQL statement: select s.stu_id, s.stu_name, d.dep_id, d.dep_name from student s,department d where s.stu_dep = d.dep_id and  (1 = 0) 
+16/06/21 20:47:45 INFO manager.SqlManager: Executing SQL statement: select s.stu_id, s.stu_name, d.dep_id, d.dep_name from student s,department d where s.stu_dep = d.dep_id and  (1 = 0) 
+16/06/21 20:47:45 INFO manager.SqlManager: Executing SQL statement: select s.stu_id, s.stu_name, d.dep_id, d.dep_name from student s,department d where s.stu_dep = d.dep_id and  (1 = 0) 
+16/06/21 20:47:45 INFO orm.CompilationManager: HADOOP_MAPRED_HOME is /usr/local/hadoop
+Note: /tmp/sqoop-hduser/compile/2e0418f1057107f704e25ff5a4eb16ec/QueryResult.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+16/06/21 20:47:52 INFO orm.CompilationManager: Writing jar file: /tmp/sqoop-hduser/compile/2e0418f1057107f704e25ff5a4eb16ec/QueryResult.jar
+16/06/21 20:47:52 INFO mapreduce.ImportJobBase: Beginning query import.
+16/06/21 20:47:53 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+16/06/21 20:47:53 INFO Configuration.deprecation: mapred.jar is deprecated. Instead, use mapreduce.job.jar
+16/06/21 20:47:56 INFO Configuration.deprecation: mapred.map.tasks is deprecated. Instead, use mapreduce.job.maps
+16/06/21 20:47:56 INFO client.RMProxy: Connecting to ResourceManager at /0.0.0.0:8032
+16/06/21 20:48:00 INFO db.DBInputFormat: Using read commited transaction isolation
+16/06/21 20:48:00 INFO db.DataDrivenDBInputFormat: BoundingValsQuery: SELECT MIN(t1.stu_id), MAX(t1.stu_id) FROM (select s.stu_id, s.stu_name, d.dep_id, d.dep_name from student s,department d where s.stu_dep = d.dep_id and  (1 = 1) ) AS t1
+16/06/21 20:48:01 INFO mapreduce.JobSubmitter: number of splits:4
+16/06/21 20:48:01 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1466518504658_0005
+16/06/21 20:48:03 INFO impl.YarnClientImpl: Submitted application application_1466518504658_0005
+16/06/21 20:48:03 INFO mapreduce.Job: The url to track the job: http://Inceptez:8088/proxy/application_1466518504658_0005/
+16/06/21 20:48:03 INFO mapreduce.Job: Running job: job_1466518504658_0005
+16/06/21 20:48:23 INFO mapreduce.Job: Job job_1466518504658_0005 running in uber mode : false
+16/06/21 20:48:23 INFO mapreduce.Job:  map 0% reduce 0%
+16/06/21 20:49:16 INFO mapreduce.Job:  map 50% reduce 0%
+16/06/21 20:49:18 INFO mapreduce.Job:  map 75% reduce 0%
+16/06/21 20:49:19 INFO mapreduce.Job:  map 100% reduce 0%
+16/06/21 20:49:19 INFO mapreduce.Job: Job job_1466518504658_0005 completed successfully
+16/06/21 20:49:19 INFO mapreduce.Job: Counters: 30
+	File System Counters
+		FILE: Number of bytes read=0
+		FILE: Number of bytes written=459148
+		FILE: Number of read operations=0
+		FILE: Number of large read operations=0
+		FILE: Number of write operations=0
+		HDFS: Number of bytes read=425
+		HDFS: Number of bytes written=90
+		HDFS: Number of read operations=16
+		HDFS: Number of large read operations=0
+		HDFS: Number of write operations=8
+	Job Counters 
+		Launched map tasks=4
+		Other local map tasks=4
+		Total time spent by all maps in occupied slots (ms)=203286
+		Total time spent by all reduces in occupied slots (ms)=0
+		Total time spent by all map tasks (ms)=203286
+		Total vcore-seconds taken by all map tasks=203286
+		Total megabyte-seconds taken by all map tasks=208164864
+	Map-Reduce Framework
+		Map input records=6
+		Map output records=6
+		Input split bytes=425
+		Spilled Records=0
+		Failed Shuffles=0
+		Merged Map outputs=0
+		GC time elapsed (ms)=2369
+		CPU time spent (ms)=8710
+		Physical memory (bytes) snapshot=401444864
+		Virtual memory (bytes) snapshot=3901849600
+		Total committed heap usage (bytes)=95420416
+	File Input Format Counters 
+		Bytes Read=0
+	File Output Format Counters 
+		Bytes Written=90
+16/06/21 20:49:19 INFO mapreduce.ImportJobBase: Transferred 90 bytes in 82.9601 seconds (1.0849 bytes/sec)
+16/06/21 20:49:19 INFO mapreduce.ImportJobBase: Retrieved 6 records.
+[hduser@Inceptez ~]$ hdfs dfs -cat join_query_opA/p*
+16/06/21 20:49:30 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+1,Deepak,1,RBS
+2,Farooq,1,RBS
+3,Vadivel,2,VDSI
+4,Hari,3,CTS
+5,Karthick,1,RBS
+6,Mani,4,HCL
+
+====================================================================================================
+[hduser@Inceptez ~]$ sqoop import --connect jdbc:mysql://localhost/DKMDB01 --username root --P --direct --query 'select s.stu_id, s.stu_name, d.dep_id, d.dep_name from student s,department d where s.stu_dep = d.dep_id and $CONDITIONS' --split-by s.stu_id --boundary-query 'select 2, max(stu_id) from student' --target-dir join_query_opB;
+Warning: /usr/local/sqoop/../hbase does not exist! HBase imports will fail.
+Please set $HBASE_HOME to the root of your HBase installation.
+Warning: /usr/local/sqoop/../hcatalog does not exist! HCatalog jobs will fail.
+Please set $HCAT_HOME to the root of your HCatalog installation.
+Warning: /usr/local/sqoop/../accumulo does not exist! Accumulo imports will fail.
+Please set $ACCUMULO_HOME to the root of your Accumulo installation.
+Warning: /usr/local/sqoop/../zookeeper does not exist! Accumulo imports will fail.
+Please set $ZOOKEEPER_HOME to the root of your Zookeeper installation.
+16/06/21 20:53:39 INFO sqoop.Sqoop: Running Sqoop version: 1.4.5
+Enter password: 
+16/06/21 20:53:44 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
+16/06/21 20:53:44 INFO tool.CodeGenTool: Beginning code generation
+16/06/21 20:53:44 INFO manager.SqlManager: Executing SQL statement: select s.stu_id, s.stu_name, d.dep_id, d.dep_name from student s,department d where s.stu_dep = d.dep_id and  (1 = 0) 
+16/06/21 20:53:44 INFO manager.SqlManager: Executing SQL statement: select s.stu_id, s.stu_name, d.dep_id, d.dep_name from student s,department d where s.stu_dep = d.dep_id and  (1 = 0) 
+16/06/21 20:53:45 INFO manager.SqlManager: Executing SQL statement: select s.stu_id, s.stu_name, d.dep_id, d.dep_name from student s,department d where s.stu_dep = d.dep_id and  (1 = 0) 
+16/06/21 20:53:45 INFO orm.CompilationManager: HADOOP_MAPRED_HOME is /usr/local/hadoop
+Note: /tmp/sqoop-hduser/compile/99ad42c3d737863fbab0da622e18536f/QueryResult.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+16/06/21 20:53:50 INFO orm.CompilationManager: Writing jar file: /tmp/sqoop-hduser/compile/99ad42c3d737863fbab0da622e18536f/QueryResult.jar
+16/06/21 20:53:50 INFO mapreduce.ImportJobBase: Beginning query import.
+16/06/21 20:53:51 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+16/06/21 20:53:51 INFO Configuration.deprecation: mapred.jar is deprecated. Instead, use mapreduce.job.jar
+16/06/21 20:53:53 INFO Configuration.deprecation: mapred.map.tasks is deprecated. Instead, use mapreduce.job.maps
+16/06/21 20:53:54 INFO client.RMProxy: Connecting to ResourceManager at /0.0.0.0:8032
+16/06/21 20:53:57 INFO db.DBInputFormat: Using read commited transaction isolation
+16/06/21 20:53:57 INFO db.DataDrivenDBInputFormat: BoundingValsQuery: select 2, max(stu_id) from student
+16/06/21 20:53:57 INFO mapreduce.JobSubmitter: number of splits:5
+16/06/21 20:53:58 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1466518504658_0006
+16/06/21 20:53:59 INFO impl.YarnClientImpl: Submitted application application_1466518504658_0006
+16/06/21 20:53:59 INFO mapreduce.Job: The url to track the job: http://Inceptez:8088/proxy/application_1466518504658_0006/
+16/06/21 20:53:59 INFO mapreduce.Job: Running job: job_1466518504658_0006
+16/06/21 20:54:19 INFO mapreduce.Job: Job job_1466518504658_0006 running in uber mode : false
+16/06/21 20:54:19 INFO mapreduce.Job:  map 0% reduce 0%
+16/06/21 20:55:34 INFO mapreduce.Job:  map 80% reduce 0%
+16/06/21 20:55:35 INFO mapreduce.Job:  map 100% reduce 0%
+16/06/21 20:55:36 INFO mapreduce.Job: Job job_1466518504658_0006 completed successfully
+16/06/21 20:55:36 INFO mapreduce.Job: Counters: 30
+	File System Counters
+		FILE: Number of bytes read=0
+		FILE: Number of bytes written=573260
+		FILE: Number of read operations=0
+		FILE: Number of large read operations=0
+		FILE: Number of write operations=0
+		HDFS: Number of bytes read=531
+		HDFS: Number of bytes written=75
+		HDFS: Number of read operations=20
+		HDFS: Number of large read operations=0
+		HDFS: Number of write operations=10
+	Job Counters 
+		Launched map tasks=5
+		Other local map tasks=5
+		Total time spent by all maps in occupied slots (ms)=354190
+		Total time spent by all reduces in occupied slots (ms)=0
+		Total time spent by all map tasks (ms)=354190
+		Total vcore-seconds taken by all map tasks=354190
+		Total megabyte-seconds taken by all map tasks=362690560
+	Map-Reduce Framework
+		Map input records=5
+		Map output records=5
+		Input split bytes=531
+		Spilled Records=0
+		Failed Shuffles=0
+		Merged Map outputs=0
+		GC time elapsed (ms)=4517
+		CPU time spent (ms)=10970
+		Physical memory (bytes) snapshot=503681024
+		Virtual memory (bytes) snapshot=4877623296
+		Total committed heap usage (bytes)=119275520
+	File Input Format Counters 
+		Bytes Read=0
+	File Output Format Counters 
+		Bytes Written=75
+16/06/21 20:55:36 INFO mapreduce.ImportJobBase: Transferred 75 bytes in 102.5731 seconds (0.7312 bytes/sec)
+16/06/21 20:55:36 INFO mapreduce.ImportJobBase: Retrieved 5 records.
+[hduser@Inceptez ~]$ hdfs dfs -cat join_query_opB/p*
+16/06/21 20:55:52 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+2,Farooq,1,RBS
+3,Vadivel,2,VDSI
+4,Hari,3,CTS
+5,Karthick,1,RBS
+6,Mani,4,HCL
+
+====================================================================================================
+[hduser@Inceptez ~]$ sqoop import --connect jdbc:mysql://localhost/DKMDB01 --username root --P --direct --query 'select s.stu_id, s.stu_name, d.dep_id, d.dep_name from student s,department d where s.stu_dep = d.dep_id and $CONDITIONS' --split-by s.stu_id --boundary-query 'select 4, max(stu_id) from student' --target-dir join_query_opC;
+Warning: /usr/local/sqoop/../hbase does not exist! HBase imports will fail.
+Please set $HBASE_HOME to the root of your HBase installation.
+Warning: /usr/local/sqoop/../hcatalog does not exist! HCatalog jobs will fail.
+Please set $HCAT_HOME to the root of your HCatalog installation.
+Warning: /usr/local/sqoop/../accumulo does not exist! Accumulo imports will fail.
+Please set $ACCUMULO_HOME to the root of your Accumulo installation.
+Warning: /usr/local/sqoop/../zookeeper does not exist! Accumulo imports will fail.
+Please set $ZOOKEEPER_HOME to the root of your Zookeeper installation.
+16/06/21 20:57:26 INFO sqoop.Sqoop: Running Sqoop version: 1.4.5
+Enter password: 
+16/06/21 20:57:30 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
+16/06/21 20:57:30 INFO tool.CodeGenTool: Beginning code generation
+16/06/21 20:57:31 INFO manager.SqlManager: Executing SQL statement: select s.stu_id, s.stu_name, d.dep_id, d.dep_name from student s,department d where s.stu_dep = d.dep_id and  (1 = 0) 
+16/06/21 20:57:31 INFO manager.SqlManager: Executing SQL statement: select s.stu_id, s.stu_name, d.dep_id, d.dep_name from student s,department d where s.stu_dep = d.dep_id and  (1 = 0) 
+16/06/21 20:57:31 INFO manager.SqlManager: Executing SQL statement: select s.stu_id, s.stu_name, d.dep_id, d.dep_name from student s,department d where s.stu_dep = d.dep_id and  (1 = 0) 
+16/06/21 20:57:31 INFO orm.CompilationManager: HADOOP_MAPRED_HOME is /usr/local/hadoop
+Note: /tmp/sqoop-hduser/compile/9086faf753f76a444be0cb2a2fa9aac4/QueryResult.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+16/06/21 20:57:36 INFO orm.CompilationManager: Writing jar file: /tmp/sqoop-hduser/compile/9086faf753f76a444be0cb2a2fa9aac4/QueryResult.jar
+16/06/21 20:57:36 INFO mapreduce.ImportJobBase: Beginning query import.
+16/06/21 20:57:37 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+16/06/21 20:57:37 INFO Configuration.deprecation: mapred.jar is deprecated. Instead, use mapreduce.job.jar
+16/06/21 20:57:40 INFO Configuration.deprecation: mapred.map.tasks is deprecated. Instead, use mapreduce.job.maps
+16/06/21 20:57:40 INFO client.RMProxy: Connecting to ResourceManager at /0.0.0.0:8032
+16/06/21 20:57:43 INFO db.DBInputFormat: Using read commited transaction isolation
+16/06/21 20:57:43 INFO db.DataDrivenDBInputFormat: BoundingValsQuery: select 4, max(stu_id) from student
+16/06/21 20:57:43 INFO mapreduce.JobSubmitter: number of splits:3
+16/06/21 20:57:44 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1466518504658_0007
+16/06/21 20:57:45 INFO impl.YarnClientImpl: Submitted application application_1466518504658_0007
+16/06/21 20:57:45 INFO mapreduce.Job: The url to track the job: http://Inceptez:8088/proxy/application_1466518504658_0007/
+16/06/21 20:57:45 INFO mapreduce.Job: Running job: job_1466518504658_0007
+16/06/21 20:58:03 INFO mapreduce.Job: Job job_1466518504658_0007 running in uber mode : false
+16/06/21 20:58:03 INFO mapreduce.Job:  map 0% reduce 0%
+16/06/21 20:58:59 INFO mapreduce.Job:  map 67% reduce 0%
+16/06/21 20:59:00 INFO mapreduce.Job:  map 100% reduce 0%
+16/06/21 20:59:01 INFO mapreduce.Job: Job job_1466518504658_0007 completed successfully
+16/06/21 20:59:02 INFO mapreduce.Job: Counters: 30
+	File System Counters
+		FILE: Number of bytes read=0
+		FILE: Number of bytes written=343956
+		FILE: Number of read operations=0
+		FILE: Number of large read operations=0
+		FILE: Number of write operations=0
+		HDFS: Number of bytes read=319
+		HDFS: Number of bytes written=43
+		HDFS: Number of read operations=12
+		HDFS: Number of large read operations=0
+		HDFS: Number of write operations=6
+	Job Counters 
+		Launched map tasks=3
+		Other local map tasks=3
+		Total time spent by all maps in occupied slots (ms)=158191
+		Total time spent by all reduces in occupied slots (ms)=0
+		Total time spent by all map tasks (ms)=158191
+		Total vcore-seconds taken by all map tasks=158191
+		Total megabyte-seconds taken by all map tasks=161987584
+	Map-Reduce Framework
+		Map input records=3
+		Map output records=3
+		Input split bytes=319
+		Spilled Records=0
+		Failed Shuffles=0
+		Merged Map outputs=0
+		GC time elapsed (ms)=2314
+		CPU time spent (ms)=9710
+		Physical memory (bytes) snapshot=314646528
+		Virtual memory (bytes) snapshot=2926387200
+		Total committed heap usage (bytes)=71565312
+	File Input Format Counters 
+		Bytes Read=0
+	File Output Format Counters 
+		Bytes Written=43
+16/06/21 20:59:02 INFO mapreduce.ImportJobBase: Transferred 43 bytes in 82.0406 seconds (0.5241 bytes/sec)
+16/06/21 20:59:02 INFO mapreduce.ImportJobBase: Retrieved 3 records.
+[hduser@Inceptez ~]$ hdfs dfs -cat join_query_opC/p*
+16/06/21 21:01:00 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+4,Hari,3,CTS
+5,Karthick,1,RBS
+6,Mani,4,HCL
+
+====================================================================================================
+[hduser@Inceptez ~]$ sqoop import --connect jdbc:mysql://localhost/DKMDB01 --username root --P --direct --query 'select s.stu_id, s.stu_name, d.dep_id, d.dep_name from student s,department d where s.stu_dep = d.dep_id and $CONDITIONS' --split-by s.stu_id --boundary-query 'select 4, max(stu_id) from student' --m 1 --target-dir join_query_opD;
+Warning: /usr/local/sqoop/../hbase does not exist! HBase imports will fail.
+Please set $HBASE_HOME to the root of your HBase installation.
+Warning: /usr/local/sqoop/../hcatalog does not exist! HCatalog jobs will fail.
+Please set $HCAT_HOME to the root of your HCatalog installation.
+Warning: /usr/local/sqoop/../accumulo does not exist! Accumulo imports will fail.
+Please set $ACCUMULO_HOME to the root of your Accumulo installation.
+Warning: /usr/local/sqoop/../zookeeper does not exist! Accumulo imports will fail.
+Please set $ZOOKEEPER_HOME to the root of your Zookeeper installation.
+16/06/21 21:02:09 INFO sqoop.Sqoop: Running Sqoop version: 1.4.5
+Enter password: 
+16/06/21 21:02:13 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
+16/06/21 21:02:13 INFO tool.CodeGenTool: Beginning code generation
+16/06/21 21:02:13 INFO manager.SqlManager: Executing SQL statement: select s.stu_id, s.stu_name, d.dep_id, d.dep_name from student s,department d where s.stu_dep = d.dep_id and  (1 = 0) 
+16/06/21 21:02:13 INFO manager.SqlManager: Executing SQL statement: select s.stu_id, s.stu_name, d.dep_id, d.dep_name from student s,department d where s.stu_dep = d.dep_id and  (1 = 0) 
+16/06/21 21:02:13 INFO manager.SqlManager: Executing SQL statement: select s.stu_id, s.stu_name, d.dep_id, d.dep_name from student s,department d where s.stu_dep = d.dep_id and  (1 = 0) 
+16/06/21 21:02:13 INFO orm.CompilationManager: HADOOP_MAPRED_HOME is /usr/local/hadoop
+Note: /tmp/sqoop-hduser/compile/57ed9095aad5ce80e6b5686a1297301f/QueryResult.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+16/06/21 21:02:19 INFO orm.CompilationManager: Writing jar file: /tmp/sqoop-hduser/compile/57ed9095aad5ce80e6b5686a1297301f/QueryResult.jar
+16/06/21 21:02:19 INFO mapreduce.ImportJobBase: Beginning query import.
+16/06/21 21:02:20 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+16/06/21 21:02:20 INFO Configuration.deprecation: mapred.jar is deprecated. Instead, use mapreduce.job.jar
+16/06/21 21:02:23 INFO Configuration.deprecation: mapred.map.tasks is deprecated. Instead, use mapreduce.job.maps
+16/06/21 21:02:23 INFO client.RMProxy: Connecting to ResourceManager at /0.0.0.0:8032
+16/06/21 21:02:27 INFO db.DBInputFormat: Using read commited transaction isolation
+16/06/21 21:02:27 INFO db.DataDrivenDBInputFormat: BoundingValsQuery: select 4, max(stu_id) from student
+16/06/21 21:02:27 INFO mapreduce.JobSubmitter: number of splits:1
+16/06/21 21:02:28 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1466518504658_0008
+16/06/21 21:02:29 INFO impl.YarnClientImpl: Submitted application application_1466518504658_0008
+16/06/21 21:02:30 INFO mapreduce.Job: The url to track the job: http://Inceptez:8088/proxy/application_1466518504658_0008/
+16/06/21 21:02:30 INFO mapreduce.Job: Running job: job_1466518504658_0008
+16/06/21 21:02:50 INFO mapreduce.Job: Job job_1466518504658_0008 running in uber mode : false
+16/06/21 21:02:50 INFO mapreduce.Job:  map 0% reduce 0%
+16/06/21 21:03:06 INFO mapreduce.Job:  map 100% reduce 0%
+16/06/21 21:03:06 INFO mapreduce.Job: Job job_1466518504658_0008 completed successfully
+16/06/21 21:03:06 INFO mapreduce.Job: Counters: 30
+	File System Counters
+		FILE: Number of bytes read=0
+		FILE: Number of bytes written=114652
+		FILE: Number of read operations=0
+		FILE: Number of large read operations=0
+		FILE: Number of write operations=0
+		HDFS: Number of bytes read=107
+		HDFS: Number of bytes written=43
+		HDFS: Number of read operations=4
+		HDFS: Number of large read operations=0
+		HDFS: Number of write operations=2
+	Job Counters 
+		Launched map tasks=1
+		Other local map tasks=1
+		Total time spent by all maps in occupied slots (ms)=12376
+		Total time spent by all reduces in occupied slots (ms)=0
+		Total time spent by all map tasks (ms)=12376
+		Total vcore-seconds taken by all map tasks=12376
+		Total megabyte-seconds taken by all map tasks=12673024
+	Map-Reduce Framework
+		Map input records=3
+		Map output records=3
+		Input split bytes=107
+		Spilled Records=0
+		Failed Shuffles=0
+		Merged Map outputs=0
+		GC time elapsed (ms)=187
+		CPU time spent (ms)=2100
+		Physical memory (bytes) snapshot=103165952
+		Virtual memory (bytes) snapshot=975462400
+		Total committed heap usage (bytes)=23855104
+	File Input Format Counters 
+		Bytes Read=0
+	File Output Format Counters 
+		Bytes Written=43
+16/06/21 21:03:06 INFO mapreduce.ImportJobBase: Transferred 43 bytes in 43.2661 seconds (0.9939 bytes/sec)
+16/06/21 21:03:06 INFO mapreduce.ImportJobBase: Retrieved 3 records.
+[hduser@Inceptez ~]$ hdfs dfs -cat join_query_opD/p*
+16/06/21 21:03:23 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+4,Hari,3,CTS
+5,Karthick,1,RBS
+6,Mani,4,HCL
+
+[hduser@Inceptez ~]$ sqoop import --connect jdbc:mysql://localhost/DKMDB01 --username root --P --direct --query 'select s.stu_id, s.stu_name, d.dep_id, d.dep_name from student s,department d where s.stu_dep = d.dep_id and $CONDITIONS' --split-by s.stu_id --boundary-query 'select 4, max(stu_id) from student' --m 2 --target-dir join_query_opE;
+Warning: /usr/local/sqoop/../hbase does not exist! HBase imports will fail.
+Please set $HBASE_HOME to the root of your HBase installation.
+Warning: /usr/local/sqoop/../hcatalog does not exist! HCatalog jobs will fail.
+Please set $HCAT_HOME to the root of your HCatalog installation.
+Warning: /usr/local/sqoop/../accumulo does not exist! Accumulo imports will fail.
+Please set $ACCUMULO_HOME to the root of your Accumulo installation.
+Warning: /usr/local/sqoop/../zookeeper does not exist! Accumulo imports will fail.
+Please set $ZOOKEEPER_HOME to the root of your Zookeeper installation.
+16/06/21 21:03:46 INFO sqoop.Sqoop: Running Sqoop version: 1.4.5
+Enter password: 
+16/06/21 21:03:49 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
+16/06/21 21:03:49 INFO tool.CodeGenTool: Beginning code generation
+16/06/21 21:03:50 INFO manager.SqlManager: Executing SQL statement: select s.stu_id, s.stu_name, d.dep_id, d.dep_name from student s,department d where s.stu_dep = d.dep_id and  (1 = 0) 
+16/06/21 21:03:50 INFO manager.SqlManager: Executing SQL statement: select s.stu_id, s.stu_name, d.dep_id, d.dep_name from student s,department d where s.stu_dep = d.dep_id and  (1 = 0) 
+16/06/21 21:03:50 INFO manager.SqlManager: Executing SQL statement: select s.stu_id, s.stu_name, d.dep_id, d.dep_name from student s,department d where s.stu_dep = d.dep_id and  (1 = 0) 
+16/06/21 21:03:50 INFO orm.CompilationManager: HADOOP_MAPRED_HOME is /usr/local/hadoop
+Note: /tmp/sqoop-hduser/compile/34ba7a796abfb204628f7f127959c465/QueryResult.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+16/06/21 21:03:56 INFO orm.CompilationManager: Writing jar file: /tmp/sqoop-hduser/compile/34ba7a796abfb204628f7f127959c465/QueryResult.jar
+16/06/21 21:03:56 INFO mapreduce.ImportJobBase: Beginning query import.
+16/06/21 21:03:57 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+16/06/21 21:03:57 INFO Configuration.deprecation: mapred.jar is deprecated. Instead, use mapreduce.job.jar
+16/06/21 21:04:00 INFO Configuration.deprecation: mapred.map.tasks is deprecated. Instead, use mapreduce.job.maps
+16/06/21 21:04:00 INFO client.RMProxy: Connecting to ResourceManager at /0.0.0.0:8032
+16/06/21 21:04:03 INFO db.DBInputFormat: Using read commited transaction isolation
+16/06/21 21:04:03 INFO db.DataDrivenDBInputFormat: BoundingValsQuery: select 4, max(stu_id) from student
+16/06/21 21:04:04 INFO mapreduce.JobSubmitter: number of splits:3
+16/06/21 21:04:04 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1466518504658_0009
+16/06/21 21:04:05 INFO impl.YarnClientImpl: Submitted application application_1466518504658_0009
+16/06/21 21:04:06 INFO mapreduce.Job: The url to track the job: http://Inceptez:8088/proxy/application_1466518504658_0009/
+16/06/21 21:04:06 INFO mapreduce.Job: Running job: job_1466518504658_0009
+16/06/21 21:04:26 INFO mapreduce.Job: Job job_1466518504658_0009 running in uber mode : false
+16/06/21 21:04:26 INFO mapreduce.Job:  map 0% reduce 0%
+16/06/21 21:05:16 INFO mapreduce.Job:  map 67% reduce 0%
+16/06/21 21:05:17 INFO mapreduce.Job:  map 100% reduce 0%
+16/06/21 21:05:18 INFO mapreduce.Job: Job job_1466518504658_0009 completed successfully
+16/06/21 21:05:19 INFO mapreduce.Job: Counters: 30
+	File System Counters
+		FILE: Number of bytes read=0
+		FILE: Number of bytes written=343956
+		FILE: Number of read operations=0
+		FILE: Number of large read operations=0
+		FILE: Number of write operations=0
+		HDFS: Number of bytes read=319
+		HDFS: Number of bytes written=43
+		HDFS: Number of read operations=12
+		HDFS: Number of large read operations=0
+		HDFS: Number of write operations=6
+	Job Counters 
+		Launched map tasks=3
+		Other local map tasks=3
+		Total time spent by all maps in occupied slots (ms)=140874
+		Total time spent by all reduces in occupied slots (ms)=0
+		Total time spent by all map tasks (ms)=140874
+		Total vcore-seconds taken by all map tasks=140874
+		Total megabyte-seconds taken by all map tasks=144254976
+	Map-Reduce Framework
+		Map input records=3
+		Map output records=3
+		Input split bytes=319
+		Spilled Records=0
+		Failed Shuffles=0
+		Merged Map outputs=0
+		GC time elapsed (ms)=2293
+		CPU time spent (ms)=7790
+		Physical memory (bytes) snapshot=302878720
+		Virtual memory (bytes) snapshot=2926387200
+		Total committed heap usage (bytes)=71565312
+	File Input Format Counters 
+		Bytes Read=0
+	File Output Format Counters 
+		Bytes Written=43
+16/06/21 21:05:19 INFO mapreduce.ImportJobBase: Transferred 43 bytes in 78.992 seconds (0.5444 bytes/sec)
+16/06/21 21:05:19 INFO mapreduce.ImportJobBase: Retrieved 3 records.
+[hduser@Inceptez ~]$ hdfs dfs -cat join_query_opE/p*
+16/06/21 21:05:44 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+4,Hari,3,CTS
+5,Karthick,1,RBS
+6,Mani,4,HCL

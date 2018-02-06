@@ -1,0 +1,145 @@
+hive> create database dkmdb02;
+OK
+Time taken: 4.923 seconds
+hive> show databases;
+OK
+default
+dkmdb01
+dkmdb02
+
+hive (default)> create external table ManUtdPlayers (player varchar(30), country varchar(25), position varchar(20), dob date)                              
+              > row format delimited fields terminated by ','              
+              > stored as orc location '/user/hduser/hiveexternaldata/dkmdb02.db/ManUtdPlayers';                             
+OK
+Time taken: 0.574 seconds
+
+hive (default)> show create table ManUtdPlayers;
+OK
+CREATE EXTERNAL TABLE `ManUtdPlayers`(
+  `player` varchar(30), 
+  `country` varchar(25), 
+  `position` varchar(20), 
+  `dob` date)
+ROW FORMAT DELIMITED 
+  FIELDS TERMINATED BY ',' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.orc.OrcInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.orc.OrcOutputFormat'
+LOCATION
+  'hdfs://localhost:54310/user/hduser/hiveexternaldata/dkmdb02.db/ManUtdPlayers'
+TBLPROPERTIES (
+  'transient_lastDdlTime'='1472066631')
+Time taken: 0.294 seconds, Fetched: 15 row(s)
+
+
+[hduser@Inceptez ~]$ hdfs dfs -mkdir -p /user/hduser/hiveexternaldata/dkmdb02.db/ManUtdPlayers
+
+[hduser@Inceptez ~]$ hdfs dfs -ls -R /user/hduser/hiveexternaldata/
+16/08/25 00:55:15 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+drwxr-xr-x   - hduser supergroup          0 2016-08-25 00:53 /user/hduser/hiveexternaldata/dkmdb02.db
+drwxr-xr-x   - hduser supergroup          0 2016-08-25 00:53 /user/hduser/hiveexternaldata/dkmdb02.db/ManUtdPlayers
+
+====================================================================================================
+
+hive (default)> load data local inpath '/home/hduser/Desktop/Work/Sample_Data/ManUtdPlayers1.csv' into table ManUtdPlayers;
+Loading data to table default.manutdplayers
+Table default.manutdplayers stats: [numFiles=1, totalSize=23373]
+OK
+Time taken: 1.27 seconds
+
+hive (default)> select * from ManUtdPlayers limit 10;
+OK
+Failed with exception java.io.IOException:java.io.IOException: Malformed ORC file hdfs://localhost:54310/user/hduser/hiveexternaldata/dkmdb02.db/ManUtdPlayers/ManUtdPlayers1.csv. Invalid postscript.
+Time taken: 0.469 seconds
+
+hive (default)> alter table ManUtdPlayers stored as textfile;
+FAILED: ParseException line 1:26 cannot recognize input near 'stored' 'as' 'textfile' in alter table statement
+
+hive (default)> drop table ManUtdPlayers;
+OK
+
+hive (default)> create external table ManUtdPlayers (player varchar(30), country varchar(25), position varchar(20), dob date)
+              > row format delimited fields terminated by ',' location '/user/hduser/hiveexternaldata/dkmdb02.db/ManUtdPlayers';
+OK
+Time taken: 0.126 seconds
+hive (default)> show create table ManUtdPlayers;
+OK
+CREATE EXTERNAL TABLE `ManUtdPlayers`(
+  `player` varchar(30), 
+  `country` varchar(25), 
+  `position` varchar(20), 
+  `dob` date)
+ROW FORMAT DELIMITED 
+  FIELDS TERMINATED BY ',' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.mapred.TextInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION
+  'hdfs://localhost:54310/user/hduser/hiveexternaldata/dkmdb02.db/ManUtdPlayers'
+TBLPROPERTIES (
+  'COLUMN_STATS_ACCURATE'='false', 
+  'numFiles'='0', 
+  'numRows'='-1', 
+  'rawDataSize'='-1', 
+  'totalSize'='0', 
+  'transient_lastDdlTime'='1472067455')
+Time taken: 0.122 seconds, Fetched: 20 row(s)
+
+hive (default)> load data local inpath '/home/hduser/Desktop/Work/Sample_Data/ManUtdPlayers1.csv' into table ManUtdPlayers;
+Loading data to table default.manutdplayers
+Table default.manutdplayers stats: [numFiles=2, numRows=0, totalSize=46746, rawDataSize=0]
+OK
+Time taken: 0.361 seconds
+
+hive (default)> select * from ManUtdPlayers limit 10;
+OK
+Peter Abbott	England	Forward	1953-10-01
+Stan Ackerley	Australia	Defender	1942-07-12
+Ted Adams	England	Goalkeeper	1906-11-30
+Alphonso Ainsworth	England	Forward	1913-07-31
+Nicky Ajose	England	Forward	1991-10-07
+George Albinson	England	Midfielder	1897-02-14
+Arthur Albiston	Scotland	Defender	1957-07-14
+Reg Allen	England	Goalkeeper	1919-05-03
+Arthur Allman	England	Defender	1890-12-24
+Alfred Ambler	England	Midfielder	1879-07-01
+Time taken: 0.126 seconds, Fetched: 10 row(s)
+
+[hduser@Inceptez ~]$ hdfs dfs -ls -R /user/hduser/hiveexternaldata/dkmdb02.db
+16/08/25 01:11:57 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+drwxr-xr-x   - hduser supergroup          0 2016-08-25 01:08 /user/hduser/hiveexternaldata/dkmdb02.db/ManUtdPlayers
+-rw-r--r--   1 hduser supergroup      23373 2016-08-25 00:58 /user/hduser/hiveexternaldata/dkmdb02.db/ManUtdPlayers/ManUtdPlayers1.csv
+-rw-r--r--   1 hduser supergroup      23373 2016-08-25 01:08 /user/hduser/hiveexternaldata/dkmdb02.db/ManUtdPlayers/ManUtdPlayers1_copy_1.csv
+
+Total MapReduce CPU Time Spent: 6 seconds 670 msec
+OK
+1094
+Time taken: 139.973 seconds, Fetched: 1 row(s)
+
+[hduser@Inceptez ~]$ hdfs dfs -rm /user/hduser/hiveexternaldata/dkmdb02.db/ManUtdPlayers/ManUtdPlayers1_copy_1.csv
+16/08/25 01:13:58 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+16/08/25 01:14:01 INFO fs.TrashPolicyDefault: Namenode trash configuration: Deletion interval = 0 minutes, Emptier interval = 0 minutes.
+Deleted /user/hduser/hiveexternaldata/dkmdb02.db/ManUtdPlayers/ManUtdPlayers1_copy_1.csv
+====================================================================================================
+mysql> select * from ManUtdPlayers1 where country = 'Argentina' into outfile '/tmp/MU-Arg.csv' fields terminated by ',' lines terminated by '\n';
+Query OK, 6 rows affected (0.07 sec)
+
+mysql> select * from ManUtdPlayers1 where country = 'Wales' into outfile '/tmp/MU-Wales.csv' fields terminated by ',' lines terminated by '\n';
+Query OK, 28 rows affected (0.00 sec)
+
+mysql> select * from ManUtdPlayers1 where country = 'France' into outfile '/tmp/MU-Fra.csv' fields terminated by ',' lines terminated by '\n';
+Query OK, 12 rows affected (0.00 sec)
+
+mysql> select * from ManUtdPlayers1 where country = 'Netherlands' into outfile '/tmp/MU-Dutch.csv' fields terminated by ',' lines terminated by '\n';
+Query OK, 11 rows affected (0.00 sec)
+
+mysql> select * from ManUtdPlayers1 where country = 'USA' into outfile '/tmp/MU-USA.csv' fields terminated by ',' lines terminated by '\n';
+Query OK, 4 rows affected (0.00 sec)
+
+[hduser@Inceptez Sample_Data]$ ls
+ManUtdPlayers1.csv  ManUtdPlayers.csv  MU-Dutch.csv  MU-USA.csv    SampleData.csv   SampleData.xlsx
+ManUtdPlayers2.csv  MU-Arg.csv         MU-Fra.csv    MU-Wales.csv  SampleData.csv~
+====================================================================================================
+====================================================================================================

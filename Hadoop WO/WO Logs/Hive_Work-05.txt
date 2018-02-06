@@ -1,0 +1,368 @@
+hive (default)> create table customer(custno string, firstname string, lastname string, age int,profession string)
+              > row format delimited
+              > fields terminated by ',';
+OK
+Time taken: 2.498 seconds
+hive (default)> load data local inpath '/home/hduser/hive/data/custs' into table customer;
+Loading data to table default.customer
+Table default.customer stats: [numFiles=1, totalSize=391355]
+OK
+Time taken: 2.895 seconds
+
+hive (default)> create table txnrecords(txnno INT, txndate STRING, custno INT, amount DOUBLE,
+              > category STRING, product STRING, city STRING, state STRING, spendby STRING)
+              > row format delimited
+              > fields terminated by ','
+              > lines terminated by '\n'
+              > stored as textfile;
+OK
+Time taken: 0.209 seconds
+hive (default)> LOAD DATA LOCAL INPATH '/home/hduser/hive/data/txns' OVERWRITE INTO TABLE txnrecords;
+Loading data to table default.txnrecords
+Table default.txnrecords stats: [numFiles=1, numRows=0, totalSize=8472073, rawDataSize=0]
+OK
+Time taken: 1.303 seconds
+
+hive (default)> create table cust_trxn (custno int,firstname string,age int,profession string,amount double,product string)
+              > row format delimited
+              > fields terminated by ',';
+OK
+Time taken: 0.215 seconds
+====================================================================================================
+hive (default)> insert into table cust_trxn                                      
+              > select a.custno,a.firstname,a.age,a.profession,b.amount,b.product
+              > from customer a join txnrecords b on a.custno = b.custno;        
+Query ID = hduser_20160715201616_e7dd055a-4d9a-41b0-802e-40d6333720fc
+Total jobs = 1
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/usr/local/hadoop/share/hadoop/common/lib/slf4j-log4j12-1.7.5.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/usr/local/hive/lib/hive-jdbc-0.14.0-standalone.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.Log4jLoggerFactory]
+16/07/15 20:16:41 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Execution log at: /tmp/hduser/hduser_20160715201616_e7dd055a-4d9a-41b0-802e-40d6333720fc.log
+2016-07-15 08:16:43	Starting to launch local task to process map join;	maximum memory = 518979584
+2016-07-15 08:16:47	Dump the side-table for tag: 0 with group count: 9999 into file: file:/tmp/hivelog/91d0460c-f22a-4840-8e6d-d907201594d6/hive_2016-07-15_20-16-36_101_3223231913177274296-1/-local-10001/HashTable-Stage-4/MapJoin-mapfile00--.hashtable
+2016-07-15 08:16:48	Uploaded 1 File to: file:/tmp/hivelog/91d0460c-f22a-4840-8e6d-d907201594d6/hive_2016-07-15_20-16-36_101_3223231913177274296-1/-local-10001/HashTable-Stage-4/MapJoin-mapfile00--.hashtable (553952 bytes)
+2016-07-15 08:16:48	End of local task; Time Taken: 4.866 sec.
+Execution completed successfully
+MapredLocal task succeeded
+Launching Job 1 out of 1
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_1468591924483_0001, Tracking URL = http://Inceptez:8088/proxy/application_1468591924483_0001/
+Kill Command = /usr/local/hadoop/bin/hadoop job  -kill job_1468591924483_0001
+Hadoop job information for Stage-4: number of mappers: 1; number of reducers: 0
+2016-07-15 20:17:05,120 Stage-4 map = 0%,  reduce = 0%
+2016-07-15 20:17:25,232 Stage-4 map = 100%,  reduce = 0%, Cumulative CPU 10.48 sec
+MapReduce Total cumulative CPU time: 10 seconds 480 msec
+Ended Job = job_1468591924483_0001
+Loading data to table default.cust_trxn
+[Error 30017]: Skipping stats aggregation by error org.apache.hadoop.hive.ql.metadata.HiveException: [Error 30001]: StatsPublisher cannot be initialized. There was a error in the initialization of StatsPublisher, and retrying might help. If you dont want the query to fail because accurate statistics could not be collected, set hive.stats.reliable=false
+Table default.cust_trxn stats: [numFiles=1, totalSize=4855063]
+MapReduce Jobs Launched: 
+Stage-Stage-4: Map: 1   Cumulative CPU: 10.48 sec   HDFS Read: 8472285 HDFS Write: 4855063 SUCCESS
+Total MapReduce CPU Time Spent: 10 seconds 480 msec
+OK
+_col0	_col1	_col2	_col3	_col4	_col5
+Time taken: 51.866 seconds
+hive (default)> select count(1) from cust_trxn;
+Query ID = hduser_20160715201818_3d4382ec-2bfb-45e3-b82b-f3b677f5f3c9
+Total jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks determined at compile time: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1468591924483_0002, Tracking URL = http://Inceptez:8088/proxy/application_1468591924483_0002/
+Kill Command = /usr/local/hadoop/bin/hadoop job  -kill job_1468591924483_0002
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2016-07-15 20:18:15,015 Stage-1 map = 0%,  reduce = 0%
+2016-07-15 20:18:27,038 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.65 sec
+2016-07-15 20:18:42,034 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 2.98 sec
+MapReduce Total cumulative CPU time: 2 seconds 980 msec
+Ended Job = job_1468591924483_0002
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1  Reduce: 1   Cumulative CPU: 2.98 sec   HDFS Read: 4855278 HDFS Write: 6 SUCCESS
+Total MapReduce CPU Time Spent: 2 seconds 980 msec
+OK
+_c0
+95892
+Time taken: 41.209 seconds, Fetched: 1 row(s)
+====================================================================================================
+hive (default)> select sum(amount) from cust_trxn group by age;
+Query ID = hduser_20160715202121_eac4aa55-b969-4138-96c2-66ef716412ac
+Total jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1468591924483_0003, Tracking URL = http://Inceptez:8088/proxy/application_1468591924483_0003/
+Kill Command = /usr/local/hadoop/bin/hadoop job  -kill job_1468591924483_0003
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2016-07-15 20:21:30,313 Stage-1 map = 0%,  reduce = 0%
+2016-07-15 20:21:41,103 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 2.08 sec
+2016-07-15 20:21:50,823 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 3.51 sec
+MapReduce Total cumulative CPU time: 3 seconds 510 msec
+Ended Job = job_1468591924483_0003
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1  Reduce: 1   Cumulative CPU: 3.51 sec   HDFS Read: 4855278 HDFS Write: 1018 SUCCESS
+Total MapReduce CPU Time Spent: 3 seconds 510 msec
+OK
+_c0
+114106.53999999988
+93119.28999999989
+102184.93999999999
+108190.75000000017
+171685.4400000004
+213935.09999999992
+190617.17999999976
+183926.84999999986
+196820.43999999974
+208872.0300000002
+185087.46000000025
+199928.4699999997
+187060.08000000007
+206421.79000000004
+224709.63000000038
+206029.66999999963
+191174.00999999998
+226621.9899999995
+212853.17000000036
+189715.74000000008
+184809.46999999997
+162660.96000000008
+211422.18000000014
+200295.45000000024
+196292.76999999984
+94379.23999999996
+92269.36000000002
+109974.91000000012
+89717.77999999994
+96180.5299999999
+229291.43000000023
+187957.8499999998
+185766.22999999995
+200630.46000000017
+184151.2899999999
+184189.88999999993
+195767.15000000029
+209730.74000000005
+231294.58000000022
+192311.11000000004
+177225.52999999962
+193122.18999999994
+196500.4000000001
+220082.50000000003
+205570.2299999999
+196263.26000000024
+199961.28000000035
+170352.8900000004
+179541.09000000008
+186641.21999999994
+185973.9900000001
+187280.06999999992
+168255.1299999998
+208228.53999999954
+92722.48
+Time taken: 33.472 seconds, Fetched: 55 row(s)
+====================================================================================================
+[hduser@Inceptez hive_scripts]$ vi case1.sql
+[hduser@Inceptez hive_scripts]$ cat case1.sql
+select * , case
+when age<30 then 'low'
+when age>=30 and age < 50 then 'middle'
+when age>=50 then 'old'
+else 'others'
+end
+from cust_trxn
+limit 10;
+
+[hduser@Inceptez hive_scripts]$ hive -f case1.sql
+
+Logging initialized using configuration in jar:file:/usr/local/hive/lib/hive-common-0.14.0.jar!/hive-log4j.properties
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/usr/local/hadoop/share/hadoop/common/lib/slf4j-log4j12-1.7.5.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/usr/local/hive/lib/hive-jdbc-0.14.0-standalone.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.Log4jLoggerFactory]
+OK
+4007024	Cameron	59	Actor	40.33	Cardio Machine Accessories	old
+4006742	Gregory	36	Accountant	198.44	Weightlifting Gloves	middle
+4009775	Ruby	44	Designer	5.58	Weightlifting Machine Accessories	middle
+4002199	Keith	44	Police officer	198.19	Gymnastics Rings	middle
+4002613	Hugh	43	Engineering technician	98.81	Field Hockey	middle
+4007591	Jennifer	54	Electrician	193.63	Camping & Backpacking & Hiking	old
+4002190	Sheryl	62	Designer	27.89	Jigsaw Puzzles	old
+4002964	Ken	67	Recreation and fitness worker	96.01	Sandboxes	old
+4007361	Terri	52	Loan officer	10.44	Snowmobiling	old
+4004798	Geoffrey	65	Chemist	152.46	Bungee Jumping	old
+Time taken: 4.298 seconds, Fetched: 10 row(s)
+
+[hduser@Inceptez hive_scripts]$ hive -e 'select max(amount) from txnrecords'
+
+Logging initialized using configuration in jar:file:/usr/local/hive/lib/hive-common-0.14.0.jar!/hive-log4j.properties
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/usr/local/hadoop/share/hadoop/common/lib/slf4j-log4j12-1.7.5.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/usr/local/hive/lib/hive-jdbc-0.14.0-standalone.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.Log4jLoggerFactory]
+Query ID = hduser_20160715205656_fcefa377-c7bd-41ec-bf0c-7968f8d576e6
+Total jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks determined at compile time: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1468591924483_0004, Tracking URL = http://Inceptez:8088/proxy/application_1468591924483_0004/
+Kill Command = /usr/local/hadoop/bin/hadoop job  -kill job_1468591924483_0004
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2016-07-15 20:57:31,228 Stage-1 map = 0%,  reduce = 0%
+2016-07-15 20:58:03,007 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 4.93 sec
+2016-07-15 20:58:39,609 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 8.9 sec
+MapReduce Total cumulative CPU time: 8 seconds 900 msec
+Ended Job = job_1468591924483_0004
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1  Reduce: 1   Cumulative CPU: 8.9 sec   HDFS Read: 8472285 HDFS Write: 6 SUCCESS
+Total MapReduce CPU Time Spent: 8 seconds 900 msec
+OK
+200.0
+Time taken: 107.069 seconds, Fetched: 1 row(s)
+
+hive (default)> source /home/hduser/hive_scripts/case1.sql     
+              > ;
+OK
+cust_trxn.custno	cust_trxn.firstname	cust_trxn.age	cust_trxn.profession	cust_trxn.amount	cust_trxn.product	_c1
+4007024	Cameron	59	Actor	40.33	Cardio Machine Accessories	old
+4006742	Gregory	36	Accountant	198.44	Weightlifting Gloves	middle
+4009775	Ruby	44	Designer	5.58	Weightlifting Machine Accessories	middle
+4002199	Keith	44	Police officer	198.19	Gymnastics Rings	middle
+4002613	Hugh	43	Engineering technician	98.81	Field Hockey	middle
+4007591	Jennifer	54	Electrician	193.63	Camping & Backpacking & Hiking	old
+4002190	Sheryl	62	Designer	27.89	Jigsaw Puzzles	old
+4002964	Ken	67	Recreation and fitness worker	96.01	Sandboxes	old
+4007361	Terri	52	Loan officer	10.44	Snowmobiling	old
+4004798	Geoffrey	65	Chemist	152.46	Bungee Jumping	old
+Time taken: 0.804 seconds, Fetched: 10 row(s)
+====================================================================================================
+hive (default)> CREATE TABLE u_data ( userid INT, movieid INT, rating INT, unixtime STRING)
+              > ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t' STORED AS TEXTFILE;
+OK
+Time taken: 0.256 seconds
+hive (default)> load data local inpath '/home/hduser/hive_data_01/u_data.ip' into table u_data;
+Loading data to table default.u_data
+Table default.u_data stats: [numFiles=1, totalSize=95]
+OK
+Time taken: 0.685 seconds
+hive (default)> select * from u_data;
+OK
+u_data.userid	u_data.movieid	u_data.rating	u_data.unixtime
+1	101	6	1369721454
+2	102	7	1369721455
+3	103	8	1369721456
+4	104	9	1369721457
+5	105	9	1369721458
+Time taken: 0.149 seconds, Fetched: 5 row(s)
+
+/home/hduser/hive_udfs
+[hduser@Inceptez hive_udfs]$ cat weekday_mapper.py 
+import sys
+import datetime
+for line in sys.stdin:
+          line = line.strip()
+          userid, movieid, rating, unixtime = line.split('\t')
+          weekday = datetime.datetime.fromtimestamp(float(unixtime)).isoweekday()
+          print '\t'.join([userid, movieid, rating, str(weekday)])
+
+hive (default)> add file /home/hduser/hive_udfs/weekday_mapper.py;
+Added resources: [/home/hduser/hive_udfs/weekday_mapper.py]
+hive (default)> SELECT                                            
+              > TRANSFORM (userid, movieid, rating, unixtime)
+              > USING 'python weekday_mapper.py'
+              > AS (userid, movieid, rating, weekday)
+              > FROM u_data;
+Query ID = hduser_20160715214646_0c1e8e88-21f5-4685-9622-ea0589c2a6b0
+Total jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_1468591924483_0007, Tracking URL = http://Inceptez:8088/proxy/application_1468591924483_0007/
+Kill Command = /usr/local/hadoop/bin/hadoop job  -kill job_1468591924483_0007
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 0
+2016-07-15 21:46:38,403 Stage-1 map = 0%,  reduce = 0%
+2016-07-15 21:46:54,729 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.66 sec
+MapReduce Total cumulative CPU time: 1 seconds 660 msec
+Ended Job = job_1468591924483_0007
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1   Cumulative CPU: 1.66 sec   HDFS Read: 308 HDFS Write: 50 SUCCESS
+Total MapReduce CPU Time Spent: 1 seconds 660 msec
+OK
+userid	movieid	rating	weekday
+1	101	6	2
+2	102	7	2
+3	103	8	2
+4	104	9	2
+5	105	9	2
+Time taken: 41.642 seconds, Fetched: 5 row(s)
+
+/home/hduser/hive_scripts
+[hduser@Inceptez hive_scripts]$ cat tfm_wm_py.hql 
+SELECT
+TRANSFORM (userid, movieid, rating, unixtime)
+USING 'python weekday_mapper.py'
+AS (userid, movieid, rating, weekday)
+FROM u_data;
+
+hive (default)> source /home/hduser/hive_scripts/tfm_wm_py.hql;   
+Query ID = hduser_20160715214848_b48d2324-da91-493a-8720-ec34b76cae3e
+Total jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_1468591924483_0008, Tracking URL = http://Inceptez:8088/proxy/application_1468591924483_0008/
+Kill Command = /usr/local/hadoop/bin/hadoop job  -kill job_1468591924483_0008
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 0
+2016-07-15 21:48:17,050 Stage-1 map = 0%,  reduce = 0%
+2016-07-15 21:48:24,649 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.18 sec
+MapReduce Total cumulative CPU time: 1 seconds 180 msec
+Ended Job = job_1468591924483_0008
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1   Cumulative CPU: 1.18 sec   HDFS Read: 308 HDFS Write: 50 SUCCESS
+Total MapReduce CPU Time Spent: 1 seconds 180 msec
+OK
+userid	movieid	rating	weekday
+1	101	6	2
+2	102	7	2
+3	103	8	2
+4	104	9	2
+5	105	9	2
+Time taken: 17.816 seconds, Fetched: 5 row(s)
+====================================================================================================
+hive (default)> list files;
+/home/hduser/hive_udfs/weekday_mapper.py
+hive (default)> list jars; 
+hive (default)> select hello(empname) from xml_Emp1;
+FAILED: SemanticException [Error 10011]: Line 1:7 Invalid function 'hello'
+hive (default)> ADD JAR /home/hduser/hive/HiveUdf.jar;
+Added [/home/hduser/hive/HiveUdf.jar] to class path
+Added resources: [/home/hduser/hive/HiveUdf.jar]
+hive (default)> create function hello as 'Inceptez.Training.Hello.helloword';
+FAILED: Execution Error, return code 1 from org.apache.hadoop.hive.ql.exec.FunctionTask. AlreadyExistsException(message:Function hello already exists)
+hive (default)> list jars;                                                   
+/home/hduser/hive/HiveUdf.jar
+hive (default)> select hello(empname) from xml_Emp1;                         
+OK
+_c0
+Hello Ashfaq
+Hello Vivek
+Hello Vishwa
+Hello Arun
+Time taken: 0.11 seconds, Fetched: 4 row(s)
+====================================================================================================

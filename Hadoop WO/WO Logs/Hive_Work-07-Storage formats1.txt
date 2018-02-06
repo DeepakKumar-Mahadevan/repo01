@@ -1,0 +1,720 @@
+hive (dkmdb02)> create table test1 (id int, col1 varchar(6), col2 varchar(6)) row format delimited fields terminated by ',';
+
+hive (dkmdb02)> show create table test1;
+createtab_stmt
+CREATE TABLE `test1`(
+  `id` int,
+  `col1` varchar(6),
+  `col2` varchar(6))
+ROW FORMAT DELIMITED
+  FIELDS TERMINATED BY ','
+STORED AS INPUTFORMAT
+  'org.apache.hadoop.mapred.TextInputFormat'
+OUTPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION
+  'hdfs://localhost:54310/user/hive/warehouse/dkmdb02.db/test1'
+TBLPROPERTIES (
+  'transient_lastDdlTime'='1474473425')
+Time taken: 0.101 seconds, Fetched: 14 row(s)
+
+hive (dkmdb02)> load data local inpath '/home/hduser/hive_data_01/test1.txt' into table test1;
+
+hive (dkmdb02)> select * from test1;
+test1.id        test1.col1      test1.col2
+1       R1C1    R1C2
+2       R2C1    R2C2
+3       R3C1    R3C2
+Time taken: 0.502 seconds, Fetched: 3 row(s)
+
+[hduser@Inceptez hive_data_01]$ hdfs dfs -ls /user/hive/warehouse/dkmdb02.db/test1
+Found 1 items
+-rw-r--r--   1 hduser supergroup         39 2016-09-21 21:29 /user/hive/warehouse/dkmdb02.db/test1/test1.txt
+[hduser@Inceptez hive_data_01]$ hdfs dfs -cat /user/hive/warehouse/dkmdb02.db/test1/test1.txt
+01,R1C1,R1C2
+02,R2C1,R2C2
+03,R3C1,R3C2
+
+====================================================================================================
+DEFAULT DDL
+-----------
+hive (dkmdb02)> create table test2 (id int, col1 varchar(6), col2 varchar(6));
+
+hive (dkmdb02)> show create table test2;
+createtab_stmt
+CREATE TABLE `test2`(
+  `id` int,
+  `col1` varchar(6),
+  `col2` varchar(6))
+ROW FORMAT SERDE
+  'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe'
+STORED AS INPUTFORMAT
+  'org.apache.hadoop.mapred.TextInputFormat'
+OUTPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION
+  'hdfs://localhost:54310/user/hive/warehouse/dkmdb02.db/test2'
+TBLPROPERTIES (
+  'transient_lastDdlTime'='1474473818')
+Time taken: 0.234 seconds, Fetched: 14 row(s)
+
+hive (dkmdb02)> load data local inpath '/home/hduser/hive_data_01/test1.txt' into table test2;
+
+>>> Will not load properly as row format is serde
+hive (dkmdb02)> select * from test2;
+test2.id        test2.col1      test2.col2
+NULL    NULL    NULL
+NULL    NULL    NULL
+NULL    NULL    NULL
+Time taken: 0.115 seconds, Fetched: 3 row(s)
+
+[hduser@Inceptez hive_data_01]$ hdfs dfs -ls /user/hive/warehouse/dkmdb02.db/test2
+Found 1 items
+-rw-r--r--   1 hduser supergroup         39 2016-09-21 21:34 /user/hive/warehouse/dkmdb02.db/test2/test1.txt
+[hduser@Inceptez hive_data_01]$ hdfs dfs -cat /user/hive/warehouse/dkmdb02.db/test2/test1.txt
+01,R1C1,R1C2
+02,R2C1,R2C2
+03,R3C1,R3C2
+
+[hduser@Inceptez hive_data_01]$ hdfs dfs -rm /user/hive/warehouse/dkmdb02.db/test2/test1.txt
+16/09/21 21:37:47 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+16/09/21 21:37:48 INFO fs.TrashPolicyDefault: Namenode trash configuration: Deletion interval = 0 minutes, Emptier interval = 0 minutes.
+Deleted /user/hive/warehouse/dkmdb02.db/test2/test1.txt
+
+hive (dkmdb02)> select * from test2;
+test2.id        test2.col1      test2.col2
+Time taken: 0.079 seconds
+
+hive (dkmdb02)> insert into table test2 select * from test1;
+Query ID = hduser_20160921213939_f8894ea0-580f-4236-bb26-141bcf293fbb
+Total jobs = 3
+Launching Job 1 out of 3
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_1474472671010_0001, Tracking URL = http://Inceptez:8088/proxy/application_1474472671010_0001/
+Kill Command = /usr/local/hadoop/bin/hadoop job  -kill job_1474472671010_0001
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 0
+2016-09-21 21:39:32,421 Stage-1 map = 0%,  reduce = 0%
+2016-09-21 21:39:42,755 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.29 sec
+MapReduce Total cumulative CPU time: 1 seconds 290 msec
+Ended Job = job_1474472671010_0001
+Stage-4 is selected by condition resolver.
+Stage-3 is filtered out by condition resolver.
+Stage-5 is filtered out by condition resolver.
+Moving data to: hdfs://localhost:54310/tmp/hive/hduser/dbee0dd1-0326-48eb-8d60-55038171dc64/hive_2016-09-21_21-39-03_438_8097453991283336089-1/-ext-10000
+Loading data to table dkmdb02.test2
+[Error 30017]: Skipping stats aggregation by error org.apache.hadoop.hive.ql.metadata.HiveException: [Error 30001]: StatsPublisher cannot be initialized. There was a error in the initialization of StatsPublisher, and retrying might help. If you dont want the query to fail because accurate statistics could not be collected, set hive.stats.reliable=false
+Table dkmdb02.test2 stats: [numFiles=1, totalSize=36]
+MapReduce Jobs Launched:
+Stage-Stage-1: Map: 1   Cumulative CPU: 1.29 sec   HDFS Read: 262 HDFS Write: 36 SUCCESS
+Total MapReduce CPU Time Spent: 1 seconds 290 msec
+OK
+test1.id        test1.col1      test1.col2
+Time taken: 41.904 seconds
+
+hive (dkmdb02)> select * from test2;
+test2.id        test2.col1      test2.col2
+1       R1C1    R1C2
+2       R2C1    R2C2
+3       R3C1    R3C2
+Time taken: 0.216 seconds, Fetched: 3 row(s)
+
+[hduser@Inceptez hive_data_01]$ hdfs dfs -ls /user/hive/warehouse/dkmdb02.db/test2
+Found 1 items
+-rw-r--r--   1 hduser supergroup         36 2016-09-21 21:39 /user/hive/warehouse/dkmdb02.db/test2/000000_0
+[hduser@Inceptez hive_data_01]$ hdfs dfs -cat /user/hive/warehouse/dkmdb02.db/test2/000000_0
+1R1C1R1C2
+2R2C1R2C2
+3R3C1R3C2
+
+====================================================================================================
+hive (dkmdb02)> create table test3 (id int, col1 varchar(6), col2 varchar(6)) row format delimited fields terminated by ',' stored as textfile;
+
+hive (dkmdb02)> show create table test3;
+createtab_stmt
+CREATE TABLE `test3`(
+  `id` int,
+  `col1` varchar(6),
+  `col2` varchar(6))
+ROW FORMAT DELIMITED
+  FIELDS TERMINATED BY ','
+STORED AS INPUTFORMAT
+  'org.apache.hadoop.mapred.TextInputFormat'
+OUTPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION
+  'hdfs://localhost:54310/user/hive/warehouse/dkmdb02.db/test3'
+TBLPROPERTIES (
+  'transient_lastDdlTime'='1474474398')
+Time taken: 0.107 seconds, Fetched: 14 row(s)
+
+>>> show create table indicates it's same as test1.
+====================================================================================================
+hive (dkmdb02)> create table test4 (id int, col1 varchar(6), col2 varchar(6)) row format delimited fields terminated by ',' stored as sequencefile;
+
+hive (dkmdb02)> show create table test4;
+createtab_stmt
+CREATE TABLE `test4`(
+  `id` int,
+  `col1` varchar(6),
+  `col2` varchar(6))
+ROW FORMAT DELIMITED
+  FIELDS TERMINATED BY ','
+STORED AS INPUTFORMAT
+  'org.apache.hadoop.mapred.SequenceFileInputFormat'
+OUTPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.HiveSequenceFileOutputFormat'
+LOCATION
+  'hdfs://localhost:54310/user/hive/warehouse/dkmdb02.db/test4'
+TBLPROPERTIES (
+  'transient_lastDdlTime'='1474475384')
+Time taken: 0.1 seconds, Fetched: 14 row(s)
+
+hive (dkmdb02)> load data local inpath '/home/hduser/hive_data_01/test1.txt' into table test4;
+Loading data to table dkmdb02.test4
+Failed with exception Wrong file format. Please check the file's format.
+FAILED: Execution Error, return code 1 from org.apache.hadoop.hive.ql.exec.MoveTask
+
+hive (dkmdb02)> insert into table test4 select * from test2;
+Query ID = hduser_20160921220202_77043b27-0a05-4e54-be55-ff3f69f41201
+Total jobs = 3
+Launching Job 1 out of 3
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_1474472671010_0002, Tracking URL = http://Inceptez:8088/proxy/application_1474472671010_0002/
+Kill Command = /usr/local/hadoop/bin/hadoop job  -kill job_1474472671010_0002
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 0
+2016-09-21 22:02:48,870 Stage-1 map = 0%,  reduce = 0%
+2016-09-21 22:03:01,288 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.38 sec
+MapReduce Total cumulative CPU time: 1 seconds 380 msec
+Ended Job = job_1474472671010_0002
+Stage-4 is selected by condition resolver.
+Stage-3 is filtered out by condition resolver.
+Stage-5 is filtered out by condition resolver.
+Moving data to: hdfs://localhost:54310/tmp/hive/hduser/dbee0dd1-0326-48eb-8d60-55038171dc64/hive_2016-09-21_22-02-30_332_8305507827258647269-1/-ext-10000
+Loading data to table dkmdb02.test4
+[Error 30017]: Skipping stats aggregation by error org.apache.hadoop.hive.ql.metadata.HiveException: [Error 30001]: StatsPublisher cannot be initialized. There was a error in the initialization of StatsPublisher, and retrying might help. If you dont want the query to fail because accurate statistics could not be collected, set hive.stats.reliable=false
+Table dkmdb02.test4 stats: [numFiles=1, totalSize=159]
+MapReduce Jobs Launched:
+Stage-Stage-1: Map: 1   Cumulative CPU: 1.38 sec   HDFS Read: 258 HDFS Write: 159 SUCCESS
+Total MapReduce CPU Time Spent: 1 seconds 380 msec
+OK
+test2.id        test2.col1      test2.col2
+Time taken: 35.343 seconds
+
+hive (dkmdb02)> select * from test4;
+test4.id        test4.col1      test4.col2
+1       R1C1    R1C2
+2       R2C1    R2C2
+3       R3C1    R3C2
+Time taken: 0.06 seconds, Fetched: 3 row(s)
+
+[hduser@Inceptez hive_data_01]$ hdfs dfs -ls /user/hive/warehouse/dkmdb02.db/test4
+Found 1 items
+-rw-r--r--   1 hduser supergroup        159 2016-09-21 22:03 /user/hive/warehouse/dkmdb02.db/test4/000000_0
+[hduser@Inceptez hive_data_01]$ hdfs dfs -cat /user/hive/warehouse/dkmdb02.db/test4/000000_0
+SEQ"org.apache.hadoop.io.BytesWritableorg.apache.hadoop.io.Textiݗ▒▒g▒▒)▒▒zˋ7
+                                                                            1,R1C1,R1C2
+                                                                                       2,R2C1,R2C2
+                                                                                                  3,R3C1,R3C2[hduser@Inceptez hive_data_01]$
+====================================================================================================
+hive (dkmdb02)> create table test5 (id int, col1 varchar(6), col2 varchar(6)) row format delimited fields terminated by ',' stored as rcfile;
+
+hive (dkmdb02)> show create table test5;
+createtab_stmt
+CREATE TABLE `test5`(
+  `id` int,
+  `col1` varchar(6),
+  `col2` varchar(6))
+ROW FORMAT DELIMITED
+  FIELDS TERMINATED BY ','
+STORED AS INPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.RCFileInputFormat'
+OUTPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.RCFileOutputFormat'
+LOCATION
+  'hdfs://localhost:54310/user/hive/warehouse/dkmdb02.db/test5'
+TBLPROPERTIES (
+  'transient_lastDdlTime'='1474475945')
+Time taken: 0.1 seconds, Fetched: 14 row(s)
+
+hive (dkmdb02)> load data local inpath '/home/hduser/hive_data_01/test1.txt' into table test5;
+Loading data to table dkmdb02.test5
+Failed with exception Wrong file format. Please check the file's format.
+FAILED: Execution Error, return code 1 from org.apache.hadoop.hive.ql.exec.MoveTask
+
+hive (dkmdb02)> insert into table test5 select * from test4;
+Query ID = hduser_20160921221010_d5b744ff-a252-4047-8dc9-cf300b93e062
+Total jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_1474472671010_0003, Tracking URL = http://Inceptez:8088/proxy/application_1474472671010_0003/
+Kill Command = /usr/local/hadoop/bin/hadoop job  -kill job_1474472671010_0003
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 0
+2016-09-21 22:11:01,602 Stage-1 map = 0%,  reduce = 0%
+2016-09-21 22:11:14,101 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.34 sec
+MapReduce Total cumulative CPU time: 1 seconds 340 msec
+Ended Job = job_1474472671010_0003
+Stage-4 is selected by condition resolver.
+Stage-3 is filtered out by condition resolver.
+Stage-5 is filtered out by condition resolver.
+Moving data to: hdfs://localhost:54310/tmp/hive/hduser/dbee0dd1-0326-48eb-8d60-55038171dc64/hive_2016-09-21_22-10-44_435_4235268608428374408-1/-ext-10000
+Loading data to table dkmdb02.test5
+[Error 30017]: Skipping stats aggregation by error org.apache.hadoop.hive.ql.metadata.HiveException: [Error 30001]: StatsPublisher cannot be initialized. There was a error in the initialization of StatsPublisher, and retrying might help. If you dont want the query to fail because accurate statistics could not be collected, set hive.stats.reliable=false
+Table dkmdb02.test5 stats: [numFiles=1, totalSize=111]
+MapReduce Jobs Launched:
+Stage-Stage-1: Map: 1   Cumulative CPU: 1.34 sec   HDFS Read: 476 HDFS Write: 111 SUCCESS
+Total MapReduce CPU Time Spent: 1 seconds 340 msec
+OK
+test4.id        test4.col1      test4.col2
+Time taken: 30.962 seconds
+
+hive (dkmdb02)> select * from test5;
+test5.id        test5.col1      test5.col2
+1       R1C1    R1C2
+2       R2C1    R2C2
+3       R3C1    R3C2
+Time taken: 0.122 seconds, Fetched: 3 row(s)
+
+[hduser@Inceptez hive_data_01]$ hdfs dfs -ls /user/hive/warehouse/dkmdb02.db/test5
+Found 1 items
+-rw-r--r--   1 hduser supergroup        111 2016-09-21 22:11 /user/hive/warehouse/dkmdb02.db/test5/000000_0
+[hduser@Inceptez hive_data_01]$ hdfs dfs -cat /user/hive/warehouse/dkmdb02.db/test5/000000_0
+RCFhive.io.rcfile.column.number3K!▒Ɇ"w\▒▒▒▒i4+▒
+▒
+▒R1C1R2C1R3C1R1C2R2C2R3C2[hduser@Inceptez hive_data_01]$
+
+>>> RCFILE stores columns of a table in form of record in a columnar manner. It first partitions rows horizontally into row splits and then it vertically partitions each row split in a columnar way. RCFILE first stores the metadata of a row split, as the key part of a record, and all the data of a row split as the value part. This means that RCFILE encourages column oriented storage rather than row oriented storage.
+
+====================================================================================================
+hive (dkmdb02)> create table test6 (id int, col1 varchar(6), col2 varchar(6)) row format delimited fields terminated by ',' stored as orcfile;
+
+hive (dkmdb02)> show create table test6;
+createtab_stmt
+CREATE TABLE `test6`(
+  `id` int,
+  `col1` varchar(6),
+  `col2` varchar(6))
+ROW FORMAT DELIMITED
+  FIELDS TERMINATED BY ','
+STORED AS INPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.orc.OrcInputFormat'
+OUTPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.orc.OrcOutputFormat'
+LOCATION
+  'hdfs://localhost:54310/user/hive/warehouse/dkmdb02.db/test6'
+TBLPROPERTIES (
+  'transient_lastDdlTime'='1474476407')
+Time taken: 0.094 seconds, Fetched: 14 row(s)
+
+hive (dkmdb02)> load data local inpath '/home/hduser/hive_data_01/test1.txt' into table test6;
+Loading data to table dkmdb02.test6
+Table dkmdb02.test6 stats: [numFiles=1, totalSize=39]
+OK
+Time taken: 0.23 seconds
+
+hive (dkmdb02)> select * from test6;
+OK
+test6.id        test6.col1      test6.col2
+Failed with exception java.io.IOException:java.io.IOException: Malformed ORC file hdfs://localhost:54310/user/hive/warehouse/dkmdb02.db/test6/test1.txt. Invalid postscript.
+Time taken: 0.111 seconds
+
+>>> Will not load properly as storage format is ORC
+
+[hduser@Inceptez hive_data_01]$ hdfs dfs -ls /user/hive/warehouse/dkmdb02.db/test6
+Found 1 items
+-rw-r--r--   1 hduser supergroup         39 2016-09-21 22:17 /user/hive/warehouse/dkmdb02.db/test6/test1.txt
+[hduser@Inceptez hive_data_01]$ hdfs dfs -rm /user/hive/warehouse/dkmdb02.db/test6/test1.txt
+Deleted /user/hive/warehouse/dkmdb02.db/test6/test1.txt
+
+hive (dkmdb02)> insert into table test6 select * from test5;
+Query ID = hduser_20160921222020_b806c9c1-22f3-43b7-ade6-4b44c6615d8f
+Total jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_1474472671010_0004, Tracking URL = http://Inceptez:8088/proxy/application_1474472671010_0004/
+Kill Command = /usr/local/hadoop/bin/hadoop job  -kill job_1474472671010_0004
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 0
+2016-09-21 22:20:31,892 Stage-1 map = 0%,  reduce = 0%
+2016-09-21 22:21:02,877 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 4.39 sec
+MapReduce Total cumulative CPU time: 4 seconds 390 msec
+Ended Job = job_1474472671010_0004
+Stage-4 is selected by condition resolver.
+Stage-3 is filtered out by condition resolver.
+Stage-5 is filtered out by condition resolver.
+Moving data to: hdfs://localhost:54310/tmp/hive/hduser/dbee0dd1-0326-48eb-8d60-55038171dc64/hive_2016-09-21_22-20-08_346_5279238159672453198-1/-ext-10000
+Loading data to table dkmdb02.test6
+[Error 30017]: Skipping stats aggregation by error org.apache.hadoop.hive.ql.metadata.HiveException: [Error 30001]: StatsPublisher cannot be initialized. There was a error in the initialization of StatsPublisher, and retrying might help. If you dont want the query to fail because accurate statistics could not be collected, set hive.stats.reliable=false
+Table dkmdb02.test6 stats: [numFiles=1, totalSize=375]
+MapReduce Jobs Launched:
+Stage-Stage-1: Map: 1   Cumulative CPU: 4.39 sec   HDFS Read: 339 HDFS Write: 375 SUCCESS
+Total MapReduce CPU Time Spent: 4 seconds 390 msec
+OK
+test5.id        test5.col1      test5.col2
+Time taken: 57.775 seconds
+
+hive (dkmdb02)> select * from test6;
+OK
+test6.id        test6.col1      test6.col2
+1       R1C1    R1C2
+2       R2C1    R2C2
+3       R3C1    R3C2
+Time taken: 0.103 seconds, Fetched: 3 row(s)
+
+[hduser@Inceptez hive_data_01]$ hdfs dfs -ls /user/hive/warehouse/dkmdb02.db/test6
+Found 1 items
+-rw-r--r--   1 hduser supergroup        375 2016-09-21 22:21 /user/hive/warehouse/dkmdb02.db/test6/000000_0
+[hduser@Inceptez hive_data_01]$ hdfs dfs -cat /user/hive/warehouse/dkmdb02.db/test6/000000_0
+ORC                                                                                                                                                                    '
+8▒▒be!!f%>.▒ CgC!▒ cgC          8▒▒be!!f%>.▒ Cg#!▒ cg#                  F$`R1C1R2C1R3C1R1C2R2C2R3C2j▒b▒``▒▒▒ьb`▒IBL3▒iF▒8;▒f▒▒▒L@▒▒g▒▒%X▒▒8▒▒   ▒`▒▒b▒`▒▒▒`b▒``▒▒▒▒`V▒▒b2t6b    2v6▒▒@3▒IH▒▒`8▒(▒▒▒,+▒▒`▒▒$▒▒#▒▒▒▒,▒▒▒▒c▒
+!▒▒▒
+    ▒▒
+      4`▒▒X▒
+            ▒q0 ▒I▒X    U▒q▒:
+;H ▒▒Ō$$&e▒▒"
+(30▒▒ORCPuTTYPuTTY[hduser@Inceptez hive_data_01]$ PuTTYPuTTY
+
+====================================================================================================
+hive (dkmdb02)> create table test6 (id int, col1 varchar(6), col2 varchar(6)) row format serde 'parquet.hive.serde.ParquetHiveSerDe';
+FAILED: Execution Error, return code 1 from org.apache.hadoop.hive.ql.exec.DDLTask. Cannot validate serde: parquet.hive.serde.ParquetHiveSerDe
+
+hive (dkmdb02)> create table test6 (id int, col1 varchar(6), col2 varchar(6)) row format serde 'parquet.hive.serde.ParquetHiveSerDe' stored as INPUTFORMAT 'parquet.hive.DeprecatedParquetInputFormat' OUTPUTFORMAT 'parquet.hive.DeprecatedParquetOutputFormat';
+FAILED: SemanticException Cannot find class 'parquet.hive.DeprecatedParquetInputFormat'
+
+--------------------
+[hduser@Inceptez hive_data_01]$ locate parquet
+...
+/usr/local/nifi/work/nar/extensions/nifi-flume-nar-0.6.0.nar-unpacked/META-INF/bundled-dependencies/parquet-hive-bundle-1.4.1.jar
+...
+--------------------
+
+hive (dkmdb02)> list jars;
+hive (dkmdb02)> add jar /usr/local/nifi/work/nar/extensions/nifi-flume-nar-0.6.0.nar-unpacked/META-INF/bundled-dependencies/parquet-hive-bundle-1.4.1.jar;
+Added [/usr/local/nifi/work/nar/extensions/nifi-flume-nar-0.6.0.nar-unpacked/META-INF/bundled-dependencies/parquet-hive-bundle-1.4.1.jar] to class path
+Added resources: [/usr/local/nifi/work/nar/extensions/nifi-flume-nar-0.6.0.nar-unpacked/META-INF/bundled-dependencies/parquet-hive-bundle-1.4.1.jar]
+hive (dkmdb02)> list jars;
+/usr/local/nifi/work/nar/extensions/nifi-flume-nar-0.6.0.nar-unpacked/META-INF/bundled-dependencies/parquet-hive-bundle-1.4.1.jar
+
+hive (dkmdb02)> create table test6 (id int, col1 varchar(6), col2 varchar(6)) row format serde 'parquet.hive.serde.ParquetHiveSerDe';
+FAILED: Execution Error, return code 1 from org.apache.hadoop.hive.ql.exec.DDLTask. AlreadyExistsException(message:Table test6 already exists)
+
+hive (dkmdb02)> create table test7 (id int, col1 varchar(6), col2 varchar(6)) row format serde 'parquet.hive.serde.ParquetHiveSerDe';
+
+hive (dkmdb02)> show create table test7;
+OK
+createtab_stmt
+CREATE TABLE `test7`(
+  `id` int COMMENT '',
+  `col1` varchar(6) COMMENT '',
+  `col2` varchar(6) COMMENT '')
+ROW FORMAT SERDE
+  'parquet.hive.serde.ParquetHiveSerDe'
+STORED AS INPUTFORMAT
+  'org.apache.hadoop.mapred.TextInputFormat'
+OUTPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION
+  'hdfs://localhost:54310/user/hive/warehouse/dkmdb02.db/test7'
+TBLPROPERTIES (
+  'transient_lastDdlTime'='1474478075')
+Time taken: 0.211 seconds, Fetched: 14 row(s)
+
+hive (dkmdb02)> load data local inpath '/home/hduser/hive_data_01/test1.txt' into table test7;
+
+hive (dkmdb02)> select * from test7;
+OK
+test7.id        test7.col1      test7.col2
+NULL    NULL    NULL
+NULL    NULL    NULL
+NULL    NULL    NULL
+Time taken: 0.104 seconds, Fetched: 3 row(s)
+
+>>> Will not load properly as Row format is Parquet
+
+[hduser@Inceptez hive_data_01]$ hdfs dfs -ls /user/hive/warehouse/dkmdb02.db/test7
+Found 1 items
+-rw-r--r--   1 hduser supergroup         39 2016-09-21 22:45 /user/hive/warehouse/dkmdb02.db/test7/test1.txt
+[hduser@Inceptez hive_data_01]$ hdfs dfs -rm /user/hive/warehouse/dkmdb02.db/test7/test1.txt
+Deleted /user/hive/warehouse/dkmdb02.db/test7/test1.txt
+
+hive (dkmdb02)> insert into table test7 select * from test6;
+Query ID = hduser_20160921224848_a5bfc153-bc56-4391-a2f8-e84cf594ea8d
+Total jobs = 3
+Launching Job 1 out of 3
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_1474472671010_0006, Tracking URL = http://Inceptez:8088/proxy/application_1474472671010_0006/
+Kill Command = /usr/local/hadoop/bin/hadoop job  -kill job_1474472671010_0006
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 0
+2016-09-21 22:48:51,502 Stage-1 map = 0%,  reduce = 0%
+2016-09-21 22:49:52,557 Stage-1 map = 0%,  reduce = 0%
+2016-09-21 22:49:57,957 Stage-1 map = 100%,  reduce = 0%
+Ended Job = job_1474472671010_0006 with errors
+Error during job, obtaining debugging information...
+Examining task ID: task_1474472671010_0006_m_000000 (and more) from job job_1474472671010_0006
+
+Task with the most failures(4):
+-----
+Task ID:
+  task_1474472671010_0006_m_000000
+
+URL:
+  http://0.0.0.0:8088/taskdetails.jsp?jobid=job_1474472671010_0006&tipid=task_1474472671010_0006_m_000000
+-----
+Diagnostic Messages for this Task:
+Error: java.lang.RuntimeException: org.apache.hadoop.hive.ql.metadata.HiveException: Hive Runtime Error while processing row {"id":1,"col1":"R1C1","col2":"R1C2"}
+        at org.apache.hadoop.hive.ql.exec.mr.ExecMapper.map(ExecMapper.java:185)
+        at org.apache.hadoop.mapred.MapRunner.run(MapRunner.java:54)
+        at org.apache.hadoop.mapred.MapTask.runOldMapper(MapTask.java:450)
+        at org.apache.hadoop.mapred.MapTask.run(MapTask.java:343)
+        at org.apache.hadoop.mapred.YarnChild$2.run(YarnChild.java:163)
+        at java.security.AccessController.doPrivileged(Native Method)
+        at javax.security.auth.Subject.doAs(Subject.java:415)
+        at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1628)
+        at org.apache.hadoop.mapred.YarnChild.main(YarnChild.java:158)
+Caused by: org.apache.hadoop.hive.ql.metadata.HiveException: Hive Runtime Error while processing row {"id":1,"col1":"R1C1","col2":"R1C2"}
+        at org.apache.hadoop.hive.ql.exec.MapOperator.process(MapOperator.java:503)
+        at org.apache.hadoop.hive.ql.exec.mr.ExecMapper.map(ExecMapper.java:176)
+        ... 8 more
+Caused by: java.lang.ClassCastException: org.apache.hadoop.io.ArrayWritable cannot be cast to org.apache.hadoop.io.BytesWritable
+        at org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat$1.write(HiveIgnoreKeyTextOutputFormat.java:91)
+        at org.apache.hadoop.hive.ql.exec.FileSinkOperator.processOp(FileSinkOperator.java:689)
+        at org.apache.hadoop.hive.ql.exec.Operator.forward(Operator.java:815)
+        at org.apache.hadoop.hive.ql.exec.SelectOperator.processOp(SelectOperator.java:84)
+        at org.apache.hadoop.hive.ql.exec.Operator.forward(Operator.java:815)
+        at org.apache.hadoop.hive.ql.exec.TableScanOperator.processOp(TableScanOperator.java:95)
+        at org.apache.hadoop.hive.ql.exec.MapOperator$MapOpCtx.forward(MapOperator.java:157)
+        at org.apache.hadoop.hive.ql.exec.MapOperator.process(MapOperator.java:493)
+        ... 9 more
+
+
+FAILED: Execution Error, return code 2 from org.apache.hadoop.hive.ql.exec.mr.MapRedTask
+MapReduce Jobs Launched:
+Stage-Stage-1: Map: 1   HDFS Read: 0 HDFS Write: 0 FAIL
+Total MapReduce CPU Time Spent: 0 msec
+
+====================================================================================================
+hive (dkmdb02)> create table test8 (id int, col1 varchar(6), col2 varchar(6)) row format serde 'parquet.hive.serde.ParquetHiveSerDe' stored as INPUTFORMAT 'parquet.hive.DeprecatedParquetInputFormat' OUTPUTFORMAT 'parquet.hive.DeprecatedParquetOutputFormat';
+
+hive (dkmdb02)> show create table test8;
+OK
+createtab_stmt
+CREATE TABLE `test8`(
+  `id` int COMMENT '',
+  `col1` varchar(6) COMMENT '',
+  `col2` varchar(6) COMMENT '')
+ROW FORMAT SERDE
+  'parquet.hive.serde.ParquetHiveSerDe'
+STORED AS INPUTFORMAT
+  'parquet.hive.DeprecatedParquetInputFormat'
+OUTPUTFORMAT
+  'parquet.hive.DeprecatedParquetOutputFormat'
+LOCATION
+  'hdfs://localhost:54310/user/hive/warehouse/dkmdb02.db/test8'
+TBLPROPERTIES (
+  'transient_lastDdlTime'='1474478718')
+Time taken: 0.12 seconds, Fetched: 14 row(s)
+
+hive (dkmdb02)> load data local inpath '/home/hduser/hive_data_01/test1.txt' into table test8;
+
+hive (dkmdb02)> select * from test8;
+OK
+test8.id        test8.col1      test8.col2
+Failed with exception java.io.IOException:java.lang.RuntimeException: hdfs://localhost:54310/user/hive/warehouse/dkmdb02.db/test8/test1.txt is not a Parquet file. expected magic number at tail [80, 65, 82, 49] but found [51, 67, 50, 10]
+Time taken: 0.058 seconds
+
+>>> Will not load properly as storage format is Parquet
+
+hive (dkmdb02)> insert into table test8 select * from test6;                                                                                                            Query ID = hduser_20160921225757_3867c212-1720-4a3f-bf38-1acc755fb409
+Total jobs = 3
+Launching Job 1 out of 3
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_1474472671010_0007, Tracking URL = http://Inceptez:8088/proxy/application_1474472671010_0007/
+Kill Command = /usr/local/hadoop/bin/hadoop job  -kill job_1474472671010_0007
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 0
+2016-09-21 22:57:34,568 Stage-1 map = 0%,  reduce = 0%
+2016-09-21 22:57:47,701 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 3.14 sec
+MapReduce Total cumulative CPU time: 3 seconds 140 msec
+Ended Job = job_1474472671010_0007
+Stage-4 is selected by condition resolver.
+Stage-3 is filtered out by condition resolver.
+Stage-5 is filtered out by condition resolver.
+Moving data to: hdfs://localhost:54310/tmp/hive/hduser/dbee0dd1-0326-48eb-8d60-55038171dc64/hive_2016-09-21_22-57-17_489_7562045724973687390-1/-ext-10000
+Loading data to table dkmdb02.test8
+[Error 30017]: Skipping stats aggregation by error org.apache.hadoop.hive.ql.metadata.HiveException: [Error 30001]: StatsPublisher cannot be initialized. There was a error in the initialization of StatsPublisher, and retrying might help. If you dont want the query to fail because accurate statistics could not be collected, set hive.stats.reliable=false
+Table dkmdb02.test8 stats: [numFiles=2, totalSize=457]
+MapReduce Jobs Launched:
+Stage-Stage-1: Map: 1   Cumulative CPU: 3.14 sec   HDFS Read: 707 HDFS Write: 418 SUCCESS
+Total MapReduce CPU Time Spent: 3 seconds 140 msec
+OK
+test6.id        test6.col1      test6.col2
+Time taken: 31.599 seconds
+
+hive (dkmdb02)> select * from test8;
+OK
+test8.id        test8.col1      test8.col2
+SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+Failed with exception java.io.IOException:java.lang.RuntimeException: hdfs://localhost:54310/user/hive/warehouse/dkmdb02.db/test8/test1.txt is not a Parquet file. expected magic number at tail [80, 65, 82, 49] but found [51, 67, 50, 10]
+Time taken: 0.084 seconds
+
+--------------------------
+[hduser@Inceptez hive_data_01]$ hdfs dfs -ls /user/hive/warehouse/dkmdb02.db/test8
+Found 2 items
+-rw-r--r--   1 hduser supergroup        418 2016-09-21 22:57 /user/hive/warehouse/dkmdb02.db/test8/000000_0
+-rw-r--r--   1 hduser supergroup         39 2016-09-21 22:56 /user/hive/warehouse/dkmdb02.db/test8/test1.txt
+[hduser@Inceptez hive_data_01]$  hdfs dfs -rm /user/hive/warehouse/dkmdb02.db/test8/test1.txt
+Deleted /user/hive/warehouse/dkmdb02.db/test8/test1.txt
+
+--------------------------
+
+hive (dkmdb02)> select * from test8;
+OK
+test8.id        test8.col1      test8.col2
+1       R1C1    R1C2
+2       R2C1    R2C2
+3       R3C1    R3C2
+Time taken: 0.109 seconds, Fetched: 3 row(s)
+
+[hduser@Inceptez hive_data_01]$ hdfs dfs -cat /user/hive/warehouse/dkmdb02.db/test8/000000_0
+16/09/21 23:00:54 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+PAR1$$<<R3C1R1C1R1C1R2C1R3C1<<R3C2R1C2R1C2R2C2R3C2LH
+                                                    hive_schema%id
+%col1%
+%col2%<idff<&n
+col1~~&n<R3C1R1C1&▒
+col2~~&▒<R3C2R1C2▒(parquet-mr version 1.5.0▒PAR1[hduser@Inceptez hive_data_01]$
+====================================================================================================
+hive (dkmdb02)> create table test9 (id int, col1 varchar(6), col2 varchar(6)) row format delimited fields terminated by ',' stored as avro;
+
+hive (dkmdb02)> show create table test9 ;
+OK
+createtab_stmt
+CREATE TABLE `test9`(
+  `id` int COMMENT 'from deserializer',
+  `col1` varchar(6) COMMENT 'from deserializer',
+  `col2` varchar(6) COMMENT 'from deserializer')
+ROW FORMAT DELIMITED
+  FIELDS TERMINATED BY ','
+STORED AS INPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.avro.AvroContainerInputFormat'
+OUTPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.avro.AvroContainerOutputFormat'
+LOCATION
+  'hdfs://localhost:54310/user/hive/warehouse/dkmdb02.db/test9'
+TBLPROPERTIES (
+  'transient_lastDdlTime'='1474556659')
+Time taken: 0.366 seconds, Fetched: 14 row(s)
+
+hive (dkmdb02)> load data local inpath '/home/hduser/hive_data_01/test1.txt' into table test9;
+
+hive (dkmdb02)> select * from test9;
+OK
+test9.id        test9.col1      test9.col2
+Failed with exception java.io.IOException:java.io.IOException: Not a data file.
+Time taken: 0.6 seconds
+
+>>> Will not load properly as storage format is Parquet
+
+[hduser@Inceptez ~]$ hdfs dfs -ls /user/hive/warehouse/dkmdb02.db/test9
+Found 1 items
+-rw-r--r--   1 hduser supergroup         39 2016-09-22 20:35 /user/hive/warehouse/dkmdb02.db/test9/test1.txt
+[hduser@Inceptez ~]$ hdfs dfs -rm /user/hive/warehouse/dkmdb02.db/test9/test1.txt
+Deleted /user/hive/warehouse/dkmdb02.db/test9/test1.txt
+
+hive (dkmdb02)> insert into table test9 select * from test8;
+FAILED: RuntimeException java.lang.ClassNotFoundException: parquet.hive.DeprecatedParquetInputFormat
+
+hive (dkmdb02)> list jars;
+hive (dkmdb02)> add jar /home/hduser/install/parquet-hive-bundle-1.8.1.jar;
+Added [/home/hduser/install/parquet-hive-bundle-1.8.1.jar] to class path
+Added resources: [/home/hduser/install/parquet-hive-bundle-1.8.1.jar]
+hive (dkmdb02)> list jars;
+/home/hduser/install/parquet-hive-bundle-1.8.1.jar
+
+hive (dkmdb02)> insert into table test9 select * from test8;
+FAILED: RuntimeException java.lang.ClassNotFoundException: parquet.hive.DeprecatedParquetInputFormat
+
+hive (dkmdb02)> add jar /usr/local/nifi/work/nar/extensions/nifi-flume-nar-0.6.0.nar-unpacked/META-INF/bundled-dependencies/parquet-hive-bundle-1.4.1.jar;
+Added [/usr/local/nifi/work/nar/extensions/nifi-flume-nar-0.6.0.nar-unpacked/META-INF/bundled-dependencies/parquet-hive-bundle-1.4.1.jar] to class path
+Added resources: [/usr/local/nifi/work/nar/extensions/nifi-flume-nar-0.6.0.nar-unpacked/META-INF/bundled-dependencies/parquet-hive-bundle-1.4.1.jar]
+hive (dkmdb02)> list jars;
+/usr/local/nifi/work/nar/extensions/nifi-flume-nar-0.6.0.nar-unpacked/META-INF/bundled-dependencies/parquet-hive-bundle-1.4.1.jar
+/home/hduser/install/parquet-hive-bundle-1.8.1.jar
+
+hive (dkmdb02)> insert into table test9 select * from test8;
+Query ID = hduser_20160922204040_24f65a48-c775-44cc-af16-2b9be33bd6f6
+Total jobs = 3
+Launching Job 1 out of 3
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_1474556379401_0001, Tracking URL = http://Inceptez:8088/proxy/application_1474556379401_0001/
+Kill Command = /usr/local/hadoop/bin/hadoop job  -kill job_1474556379401_0001
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 0
+2016-09-22 20:41:17,026 Stage-1 map = 0%,  reduce = 0%
+2016-09-22 20:41:28,511 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.93 sec
+MapReduce Total cumulative CPU time: 1 seconds 930 msec
+Ended Job = job_1474556379401_0001
+Stage-4 is selected by condition resolver.
+Stage-3 is filtered out by condition resolver.
+Stage-5 is filtered out by condition resolver.
+Moving data to: hdfs://localhost:54310/tmp/hive/hduser/32461c47-3969-4c9d-8874-7cd559a95a61/hive_2016-09-22_20-40-48_450_6110313529206922493-1/-ext-10000
+Loading data to table dkmdb02.test9
+[Error 30017]: Skipping stats aggregation by error org.apache.hadoop.hive.ql.metadata.HiveException: [Error 30001]: StatsPublisher cannot be initialized. There was a error in the initialization of StatsPublisher, and retrying might help. If you dont want the query to fail because accurate statistics could not be collected, set hive.stats.reliable=false
+Table dkmdb02.test9 stats: [numFiles=1, totalSize=439]
+MapReduce Jobs Launched:
+Stage-Stage-1: Map: 1   Cumulative CPU: 1.93 sec   HDFS Read: 637 HDFS Write: 439 SUCCESS
+Total MapReduce CPU Time Spent: 1 seconds 930 msec
+OK
+test8.id        test8.col1      test8.col2
+Time taken: 41.584 seconds
+
+hive (dkmdb02)> select * from test9;
+OK
+test9.id        test9.col1      test9.col2
+1       R1C1    R1C2
+2       R2C1    R2C2
+3       R3C1    R3C2
+Time taken: 0.081 seconds, Fetched: 3 row(s)
+
+[hduser@Inceptez ~]$ hdfs dfs -ls /user/hive/warehouse/dkmdb02.db/test9
+16/09/22 20:43:15 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Found 1 items
+-rw-r--r--   1 hduser supergroup        439 2016-09-22 20:41 /user/hive/warehouse/dkmdb02.db/test9/000000_0
+[hduser@Inceptez ~]$ hdfs dfs -cat /user/hive/warehouse/dkmdb02.db/test9/000000_0
+16/09/22 20:43:28 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Objavro.schema▒{"type":"record","name":"test9","namespace":"dkmdb02","fields":[{"name":"id","type":["null","int"],"doc":"\u0000\u0000","default":null},{"name":"col1","type":["null",{"type":"string","logicalType":"varchar","maxLength":6}],"default":null},{"name":"col2","type":["null",{"type":"string","logicalType":"varchar","maxLength":6}],"default":null}]}▒▒`n▒▒▒:▒;~iR▒R1CR1CR2CR2CR3CR3C2▒▒`n▒▒▒:▒;~iR▒[hduser@Inceptez ~]$ PuTTY
+
+====================================================================================================
+hive (dkmdb02)> delete jar /usr/local/nifi/work/nar/extensions/nifi-flume-nar-0.6.0.nar-unpacked/META-INF/bundled-dependencies/parquet-hive-bundle-1.4.1.jar;
+Deleted [/usr/local/nifi/work/nar/extensions/nifi-flume-nar-0.6.0.nar-unpacked/META-INF/bundled-dependencies/parquet-hive-bundle-1.4.1.jar] from class path
+
+hive (dkmdb02)> create table test10 (id int, col1 varchar(6), col2 varchar(6)) row format serde 'parquet.hive.serde.ParquetHiveSerDe' stored as INPUTFORMAT 'parquet.hive.DeprecatedParquetInputFormat' OUTPUTFORMAT 'parquet.hive.DeprecatedParquetOutputFormat';
+FAILED: SemanticException Cannot find class 'parquet.hive.DeprecatedParquetInputFormat'
+
+hive> show create table dkmdb02.test8;
+FAILED: Execution Error, return code 1 from org.apache.hadoop.hive.ql.exec.DDLTask. java.lang.RuntimeException: MetaException(message:java.lang.ClassNotFoundException Class parquet.hive.serde.ParquetHiveSerDe not found)
+
+>>> show create table doesn't work too, when jar is missing.
+
+hive> add jar /usr/local/nifi/work/nar/extensions/nifi-flume-nar-0.6.0.nar-unpacked/META-INF/bundled-dependencies/parquet-hive-bundle-1.4.1.jar;
+Added [/usr/local/nifi/work/nar/extensions/nifi-flume-nar-0.6.0.nar-unpacked/META-INF/bundled-dependencies/parquet-hive-bundle-1.4.1.jar] to class path
+Added resources: [/usr/local/nifi/work/nar/extensions/nifi-flume-nar-0.6.0.nar-unpacked/META-INF/bundled-dependencies/parquet-hive-bundle-1.4.1.jar]
+hive> show create table dkmdb02.test8;
+OK
+CREATE TABLE `dkmdb02.test8`(
+  `id` int COMMENT '',
+  `col1` varchar(6) COMMENT '',
+  `col2` varchar(6) COMMENT '')
+ROW FORMAT SERDE
+  'parquet.hive.serde.ParquetHiveSerDe'
+STORED AS INPUTFORMAT
+  'parquet.hive.DeprecatedParquetInputFormat'
+OUTPUTFORMAT
+  'parquet.hive.DeprecatedParquetOutputFormat'
+LOCATION
+  'hdfs://localhost:54310/user/hive/warehouse/dkmdb02.db/test8'
+TBLPROPERTIES (
+  'COLUMN_STATS_ACCURATE'='true',
+  'numFiles'='2',
+  'totalSize'='457',
+  'transient_lastDdlTime'='1474478869')
+Time taken: 0.264 seconds, Fetched: 17 row(s)
+====================================================================================================

@@ -1,0 +1,217 @@
+[hduser@Inceptez ~]$ cd $FLUME_HOME
+[hduser@Inceptez flume]$ pwd
+/usr/local/flume
+[hduser@Inceptez flume]$ ls
+bin  CHANGELOG  conf  DEVNOTES  docs  lib  LICENSE  NOTICE  README  RELEASE-NOTES  tools
+[hduser@Inceptez flume]$ cd lib/
+[hduser@Inceptez lib]$ ls
+apache-log4j-extras-1.1.jar               dom4j-1.6.1.jar                         jcl-over-slf4j-1.6.1.jar             paranamer-2.3.jar
+apache-mime4j-core-0.7.2.jar              flume-avro-source-1.4.0.jar             jdom-1.0.jar                         pdfbox-1.7.1.jar
+apache-mime4j-dom-0.7.2.jar               flume-file-channel-1.4.0.jar            jempbox-1.7.1.jar                    poi-3.8.jar
+asm-3.1.jar                               flume-hdfs-sink-1.4.0.jar               jetty-6.1.26.jar                     poi-ooxml-3.8.jar
+aspectjrt-1.6.11.jar                      flume-irc-sink-1.4.0.jar                jetty-util-6.1.26.jar                poi-ooxml-schemas-3.8.jar
+async-1.3.1.jar                           flume-jdbc-channel-1.4.0.jar            joda-time-2.1.jar                    poi-scratchpad-3.8.jar
+asynchbase-1.4.1.jar                      flume-jms-source-1.4.0.jar              jsr305-1.3.9.jar                     rome-0.9.jar
+avro-1.7.3.jar                            flume-ng-configuration-1.4.0.jar        juniversalchardet-1.0.3.jar          servlet-api-2.5-20110124.jar
+avro-ipc-1.7.3.jar                        flume-ng-core-1.4.0.jar                 libthrift-0.7.0.jar                  slf4j-api-1.6.1.jar
+bcmail-jdk15-1.45.jar                     flume-ng-elasticsearch-sink-1.4.0.jar   log4j-1.2.16.jar                     slf4j-log4j12-1.6.1.jar
+bcprov-jdk15-1.45.jar                     flume-ng-embedded-agent-1.4.0.jar       lucene-analyzers-common-4.3.0.jar    snappy-java-1.0.4.1.jar
+boilerpipe-1.1.0.jar                      flume-ng-hbase-sink-1.4.0.jar           lucene-analyzers-kuromoji-4.3.0.jar  solr-cell-4.3.0.jar
+cdk-morphlines-avro-0.4.0.jar             flume-ng-log4jappender-1.4.0.jar        lucene-analyzers-phonetic-4.3.0.jar  solr-core-4.3.0.jar
+cdk-morphlines-core-0.4.0.jar             flume-ng-morphline-solr-sink-1.4.0.jar  lucene-codecs-4.3.0.jar              solr-solrj-4.3.0.jar
+cdk-morphlines-solr-cell-0.4.0.jar        flume-ng-node-1.4.0.jar                 lucene-core-4.3.0.jar                spatial4j-0.3.jar
+cdk-morphlines-solr-core-0.4.0.jar        flume-ng-sdk-1.4.0.jar                  lucene-grouping-4.3.0.jar            tagsoup-1.2.1.jar
+cdk-morphlines-tika-core-0.4.0.jar        flume-scribe-source-1.4.0.jar           lucene-highlighter-4.3.0.jar         tika-core-1.3.jar
+cdk-morphlines-tika-decompress-0.4.0.jar  flume-thrift-source-1.4.0.jar           lucene-memory-4.3.0.jar              tika-parsers-1.3.jar
+cdk-morphlines-twitter-0.4.0.jar          flume-tools-1.4.0.jar                   lucene-misc-4.3.0.jar                tika-xmp-1.3.jar
+commons-cli-1.2.jar                       fontbox-1.7.1.jar                       lucene-queries-4.3.0.jar             velocity-1.7.jar
+commons-codec-1.8.jar                     gson-2.2.2.jar                          lucene-queryparser-4.3.0.jar         vorbis-java-core-0.1.jar
+commons-collections-3.2.1.jar             httpclient-4.2.1.jar                    lucene-spatial-4.3.0.jar             vorbis-java-core-0.1-tests.jar
+commons-compress-1.4.1.jar                httpcore-4.2.1.jar                      lucene-suggest-4.3.0.jar             vorbis-java-tika-0.1.jar
+commons-dbcp-1.4.jar                      httpmime-4.2.3.jar                      metadata-extractor-2.6.2.jar         wstx-asl-3.2.7.jar
+commons-fileupload-1.2.1.jar              irclib-1.10.jar                         metrics-core-3.0.0.jar               xmlbeans-2.3.0.jar
+commons-io-2.1.jar                        isoparser-1.0-RC-1.jar                  mina-core-2.0.4.jar                  xmpcore-5.1.2.jar
+commons-lang-2.5.jar                      jackson-annotations-2.2.1.jar           netcdf-4.2-min.jar                   xz-1.0.jar
+commons-logging-1.1.1.jar                 jackson-core-2.2.1.jar                  netty-3.4.0.Final.jar                zookeeper-3.3.6.jar
+commons-pool-1.5.4.jar                    jackson-core-asl-1.9.3.jar              noggit-0.5.jar
+config-1.0.0.jar                          jackson-databind-2.2.1.jar              org.restlet-2.1.1.jar
+derby-10.8.2.2.jar                        jackson-mapper-asl-1.9.3.jar            org.restlet.ext.servlet-2.1.1.jar
+[hduser@Inceptez lib]$ 
+[hduser@Inceptez lib]$ locate twitter
+/home/hduser/install/twitter.conf
+/usr/lib64/firefox/browser/searchplugins/twitter.xml
+/usr/local/flume/conf/twitter.conf
+/usr/local/flume/lib/cdk-morphlines-twitter-0.4.0.jar
+/usr/local/nifi/work/docs/components/org.apache.nifi.processors.twitter.GetTwitter
+/usr/local/nifi/work/docs/components/org.apache.nifi.processors.twitter.GetTwitter/index.html
+/usr/local/nifi/work/nar/extensions/nifi-flume-nar-0.6.0.nar-unpacked/META-INF/bundled-dependencies/flume-twitter-source-1.6.0.jar
+/usr/local/nifi/work/nar/extensions/nifi-flume-nar-0.6.0.nar-unpacked/META-INF/bundled-dependencies/twitter4j-core-3.0.3.jar
+/usr/local/nifi/work/nar/extensions/nifi-flume-nar-0.6.0.nar-unpacked/META-INF/bundled-dependencies/twitter4j-media-support-3.0.3.jar
+/usr/local/nifi/work/nar/extensions/nifi-flume-nar-0.6.0.nar-unpacked/META-INF/bundled-dependencies/twitter4j-stream-3.0.3.jar
+/usr/local/nifi/work/nar/extensions/nifi-social-media-nar-0.6.0.nar-unpacked/META-INF/bundled-dependencies/hbc-twitter4j-2.2.0.jar
+/usr/local/nifi/work/nar/extensions/nifi-social-media-nar-0.6.0.nar-unpacked/META-INF/bundled-dependencies/nifi-twitter-processors-0.6.0.jar
+/usr/local/nifi/work/nar/extensions/nifi-social-media-nar-0.6.0.nar-unpacked/META-INF/bundled-dependencies/twitter4j-core-4.0.1.jar
+/usr/local/nifi/work/nar/extensions/nifi-social-media-nar-0.6.0.nar-unpacked/META-INF/bundled-dependencies/twitter4j-stream-4.0.1.jar
+[hduser@Inceptez lib]$ pwd
+/usr/local/flume/lib
+[hduser@Inceptez lib]$ cp /usr/local/nifi/work/nar/extensions/nifi-flume-nar-0.6.0.nar-unpacked/META-INF/bundled-dependencies/twitter4j-* $PWD
+[hduser@Inceptez lib]$ ls
+apache-log4j-extras-1.1.jar               dom4j-1.6.1.jar                         jcl-over-slf4j-1.6.1.jar             paranamer-2.3.jar
+apache-mime4j-core-0.7.2.jar              flume-avro-source-1.4.0.jar             jdom-1.0.jar                         pdfbox-1.7.1.jar
+apache-mime4j-dom-0.7.2.jar               flume-file-channel-1.4.0.jar            jempbox-1.7.1.jar                    poi-3.8.jar
+asm-3.1.jar                               flume-hdfs-sink-1.4.0.jar               jetty-6.1.26.jar                     poi-ooxml-3.8.jar
+aspectjrt-1.6.11.jar                      flume-irc-sink-1.4.0.jar                jetty-util-6.1.26.jar                poi-ooxml-schemas-3.8.jar
+async-1.3.1.jar                           flume-jdbc-channel-1.4.0.jar            joda-time-2.1.jar                    poi-scratchpad-3.8.jar
+asynchbase-1.4.1.jar                      flume-jms-source-1.4.0.jar              jsr305-1.3.9.jar                     rome-0.9.jar
+avro-1.7.3.jar                            flume-ng-configuration-1.4.0.jar        juniversalchardet-1.0.3.jar          servlet-api-2.5-20110124.jar
+avro-ipc-1.7.3.jar                        flume-ng-core-1.4.0.jar                 libthrift-0.7.0.jar                  slf4j-api-1.6.1.jar
+bcmail-jdk15-1.45.jar                     flume-ng-elasticsearch-sink-1.4.0.jar   log4j-1.2.16.jar                     slf4j-log4j12-1.6.1.jar
+bcprov-jdk15-1.45.jar                     flume-ng-embedded-agent-1.4.0.jar       lucene-analyzers-common-4.3.0.jar    snappy-java-1.0.4.1.jar
+boilerpipe-1.1.0.jar                      flume-ng-hbase-sink-1.4.0.jar           lucene-analyzers-kuromoji-4.3.0.jar  solr-cell-4.3.0.jar
+cdk-morphlines-avro-0.4.0.jar             flume-ng-log4jappender-1.4.0.jar        lucene-analyzers-phonetic-4.3.0.jar  solr-core-4.3.0.jar
+cdk-morphlines-core-0.4.0.jar             flume-ng-morphline-solr-sink-1.4.0.jar  lucene-codecs-4.3.0.jar              solr-solrj-4.3.0.jar
+cdk-morphlines-solr-cell-0.4.0.jar        flume-ng-node-1.4.0.jar                 lucene-core-4.3.0.jar                spatial4j-0.3.jar
+cdk-morphlines-solr-core-0.4.0.jar        flume-ng-sdk-1.4.0.jar                  lucene-grouping-4.3.0.jar            tagsoup-1.2.1.jar
+cdk-morphlines-tika-core-0.4.0.jar        flume-scribe-source-1.4.0.jar           lucene-highlighter-4.3.0.jar         tika-core-1.3.jar
+cdk-morphlines-tika-decompress-0.4.0.jar  flume-thrift-source-1.4.0.jar           lucene-memory-4.3.0.jar              tika-parsers-1.3.jar
+cdk-morphlines-twitter-0.4.0.jar          flume-tools-1.4.0.jar                   lucene-misc-4.3.0.jar                tika-xmp-1.3.jar
+commons-cli-1.2.jar                       fontbox-1.7.1.jar                       lucene-queries-4.3.0.jar             twitter4j-core-3.0.3.jar
+commons-codec-1.8.jar                     gson-2.2.2.jar                          lucene-queryparser-4.3.0.jar         twitter4j-media-support-3.0.3.jar
+commons-collections-3.2.1.jar             httpclient-4.2.1.jar                    lucene-spatial-4.3.0.jar             twitter4j-stream-3.0.3.jar
+commons-compress-1.4.1.jar                httpcore-4.2.1.jar                      lucene-suggest-4.3.0.jar             velocity-1.7.jar
+commons-dbcp-1.4.jar                      httpmime-4.2.3.jar                      metadata-extractor-2.6.2.jar         vorbis-java-core-0.1.jar
+commons-fileupload-1.2.1.jar              irclib-1.10.jar                         metrics-core-3.0.0.jar               vorbis-java-core-0.1-tests.jar
+commons-io-2.1.jar                        isoparser-1.0-RC-1.jar                  mina-core-2.0.4.jar                  vorbis-java-tika-0.1.jar
+commons-lang-2.5.jar                      jackson-annotations-2.2.1.jar           netcdf-4.2-min.jar                   wstx-asl-3.2.7.jar
+commons-logging-1.1.1.jar                 jackson-core-2.2.1.jar                  netty-3.4.0.Final.jar                xmlbeans-2.3.0.jar
+commons-pool-1.5.4.jar                    jackson-core-asl-1.9.3.jar              noggit-0.5.jar                       xmpcore-5.1.2.jar
+config-1.0.0.jar                          jackson-databind-2.2.1.jar              org.restlet-2.1.1.jar                xz-1.0.jar
+derby-10.8.2.2.jar                        jackson-mapper-asl-1.9.3.jar            org.restlet.ext.servlet-2.1.1.jar    zookeeper-3.3.6.jar
+
+[hduser@Inceptez ~]$ cp /usr/local/nifi/work/nar/extensions/nifi-flume-nar-0.6.0.nar-unpacked/META-INF/bundled-dependencies/flume-twitter-source-1.6.0.jar /usr/local/flume/lib/
+[hduser@Inceptez ~]$ ls /usr/local/flume/lib/*twi*
+/usr/local/flume/lib/cdk-morphlines-twitter-0.4.0.jar  /usr/local/flume/lib/twitter4j-media-support-3.0.3.jar
+/usr/local/flume/lib/flume-twitter-source-1.6.0.jar    /usr/local/flume/lib/twitter4j-stream-3.0.3.jar
+/usr/local/flume/lib/twitter4j-core-3.0.3.jar
+
+==============================
+[hduser@Inceptez conf]$ hdfs dfs -mkdir twitter_data
+[hduser@Inceptez conf]$ hdfs dfs -ls /user/hduser
+Found 26 items
+drwxr-xr-x   - hduser supergroup          0 2016-08-16 20:57 /user/hduser/twitter_data
+
+[hduser@Inceptez hadoop]$ grep local *
+capacity-scheduler.xml:    <name>yarn.scheduler.capacity.node-locality-delay</name>
+capacity-scheduler.xml:      attempts to schedule rack-local containers. 
+core-site.xml:<value>/usr/local/hadoop_store/tmp</value>
+core-site.xml:<value>hdfs://localhost:54310</value>
+hadoop-metrics.properties:# dfs.servers=localhost:8649
+hadoop-metrics.properties:# mapred.servers=localhost:8649
+hadoop-metrics.properties:# jvm.servers=localhost:8649
+hadoop-metrics.properties:# rpc.servers=localhost:8649
+hadoop-metrics.properties:# ugi.servers=localhost:8649
+hadoop-policy.xml:    <name>security.resourcelocalizer.protocol.acl</name>
+hdfs-site.xml:<value>file:/usr/local/hadoop_store/hdfs/namenode</value>
+hdfs-site.xml:<value>file:/usr/local/hadoop_store/hdfs/datanode</value>
+hdfs-site.xml:<value>file:/usr/local/hadoop_store/hdfs/secondarynamenode</value>
+kms-site.xml:    <value>HTTP/localhost</value>
+slaves:localhost
+[hduser@Inceptez hadoop]$ cd
+[hduser@Inceptez ~]$ 
+[hduser@Inceptez ~]$ hdfs dfs -ls hdfs://localhost:54310/
+16/08/16 21:02:38 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Found 4 items
+drwxr-xr-x   - hduser supergroup          0 2016-06-19 11:53 hdfs://localhost:54310/flume
+drwxr-xr-x   - hduser supergroup          0 2016-06-06 17:46 hdfs://localhost:54310/system
+drwx-w----   - hduser supergroup          0 2016-08-03 23:50 hdfs://localhost:54310/tmp
+drwxr-xr-x   - hduser supergroup          0 2016-07-02 09:57 hdfs://localhost:54310/user
+
+bin/flume-ng agent --conf ./conf/ -f conf/twitter.conf 
+Dflume.root.logger=DEBUG,console -n TwitterAgent
+
+flume-ng agent -n a1 -c conf -f $FLUME_HOME/conf/tail_exec.conf
+
+flume-ng agent -n TwitterAgent -c conf -f $FLUME_HOME/conf/twitter.conf
+
+[hduser@Inceptez ~]$ hdfs dfs -ls twitter_data
+16/08/16 21:54:17 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Found 19 items
+-rw-r--r--   1 hduser supergroup       1296 2016-08-16 21:53 twitter_data/DKM_Twitter_App01-.1471364622594
+-rw-r--r--   1 hduser supergroup      12190 2016-08-16 21:53 twitter_data/DKM_Twitter_App01-.1471364622595
+-rw-r--r--   1 hduser supergroup      30716 2016-08-16 21:53 twitter_data/DKM_Twitter_App01-.1471364622596
+-rw-r--r--   1 hduser supergroup      25926 2016-08-16 21:53 twitter_data/DKM_Twitter_App01-.1471364622597
+-rw-r--r--   1 hduser supergroup      16862 2016-08-16 21:53 twitter_data/DKM_Twitter_App01-.1471364622598
+-rw-r--r--   1 hduser supergroup      28569 2016-08-16 21:53 twitter_data/DKM_Twitter_App01-.1471364622599
+-rw-r--r--   1 hduser supergroup      19030 2016-08-16 21:53 twitter_data/DKM_Twitter_App01-.1471364622600
+-rw-r--r--   1 hduser supergroup      32763 2016-08-16 21:53 twitter_data/DKM_Twitter_App01-.1471364622601
+-rw-r--r--   1 hduser supergroup      20815 2016-08-16 21:53 twitter_data/DKM_Twitter_App01-.1471364622602
+-rw-r--r--   1 hduser supergroup      26135 2016-08-16 21:53 twitter_data/DKM_Twitter_App01-.1471364622603
+-rw-r--r--   1 hduser supergroup      19171 2016-08-16 21:53 twitter_data/DKM_Twitter_App01-.1471364622604
+-rw-r--r--   1 hduser supergroup      21340 2016-08-16 21:53 twitter_data/DKM_Twitter_App01-.1471364622605
+-rw-r--r--   1 hduser supergroup      29683 2016-08-16 21:53 twitter_data/DKM_Twitter_App01-.1471364622606
+-rw-r--r--   1 hduser supergroup      21248 2016-08-16 21:53 twitter_data/DKM_Twitter_App01-.1471364622607
+-rw-r--r--   1 hduser supergroup      18510 2016-08-16 21:53 twitter_data/DKM_Twitter_App01-.1471364622608
+-rw-r--r--   1 hduser supergroup      21500 2016-08-16 21:53 twitter_data/DKM_Twitter_App01-.1471364622609
+-rw-r--r--   1 hduser supergroup      20013 2016-08-16 21:54 twitter_data/DKM_Twitter_App01-.1471364622610
+-rw-r--r--   1 hduser supergroup      24800 2016-08-16 21:54 twitter_data/DKM_Twitter_App01-.1471364622611
+-rw-r--r--   1 hduser supergroup      14967 2016-08-16 21:54 twitter_data/DKM_Twitter_App01-.1471364622612
+============
+# Naming the components on the current agent.
+TwitterAgent.sources = Twitter
+TwitterAgent.channels = MemChannel
+TwitterAgent.sinks = HDFS
+
+# Describing/Configuring the source.
+TwitterAgent.sources.Twitter.type = org.apache.flume.source.twitter.TwitterSource
+TwitterAgent.sources.Twitter.consumerKey = Z6ZNPyDA6deV8KYMskIhEM4Ze
+TwitterAgent.sources.Twitter.consumerSecret = SNtknAEpzEnYv4wMebQF1PseaGlqUq58kUHvdOc8IZN45miP93
+TwitterAgent.sources.Twitter.accessToken = 145580641-rpfUsxXoSfnadFdTdX9BNTcJ9YHthVwumkGuaDR2
+TwitterAgent.sources.Twitter.accessTokenSecret = VPV2gzkgN4xXqsutBj0WPuILazG9b3GTkqviuQXfI6SlU
+TwitterAgent.sources.Twitter.keywords = Deepak, Data, Scientist, Hadoop, Manchester United, Sachin, Nasa, Messi, Federer
+
+# Describing/Configuring the sink.
+TwitterAgent.sinks.HDFS.type=hdfs
+TwitterAgent.sinks.HDFS.hdfs.path = hdfs://localhost:54310/user/hduser/twitter_data/[hduser@Inceptez twitter_data]$ hdfs dfs -ls twitter_data
+16/08/16 22:38:02 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Found 22 items
+-rw-r--r--   1 hduser supergroup     170890 2016-08-16 22:24 twitter_data/DKM_Twitter_App01-.1471366462330
+-rw-r--r--   1 hduser supergroup     207761 2016-08-16 22:24 twitter_data/DKM_Twitter_App01-.1471366462331
+-rw-r--r--   1 hduser supergroup     197859 2016-08-16 22:24 twitter_data/DKM_Twitter_App01-.1471366462332
+-rw-r--r--   1 hduser supergroup     223691 2016-08-16 22:25 twitter_data/DKM_Twitter_App01-.1471366462333
+-rw-r--r--   1 hduser supergroup     205400 2016-08-16 22:25 twitter_data/DKM_Twitter_App01-.1471366462334
+-rw-r--r--   1 hduser supergroup     222990 2016-08-16 22:25 twitter_data/DKM_Twitter_App01-.1471366462335
+-rw-r--r--   1 hduser supergroup     217330 2016-08-16 22:25 twitter_data/DKM_Twitter_App01-.1471366462336
+-rw-r--r--   1 hduser supergroup     185970 2016-08-16 22:25 twitter_data/DKM_Twitter_App01-.1471366462337
+-rw-r--r--   1 hduser supergroup     194070 2016-08-16 22:25 twitter_data/DKM_Twitter_App01-.1471366462338
+-rw-r--r--   1 hduser supergroup     194625 2016-08-16 22:26 twitter_data/DKM_Twitter_App01-.1471366462339
+-rw-r--r--   1 hduser supergroup     195000 2016-08-16 22:26 twitter_data/DKM_Twitter_App01-.1471366462340
+-rw-r--r--   1 hduser supergroup     186989 2016-08-16 22:26 twitter_data/DKM_Twitter_App01-.1471366462341
+-rw-r--r--   1 hduser supergroup     196426 2016-08-16 22:26 twitter_data/DKM_Twitter_App01-.1471366462342
+-rw-r--r--   1 hduser supergroup     197136 2016-08-16 22:26 twitter_data/DKM_Twitter_App01-.1471366462343
+-rw-r--r--   1 hduser supergroup     195543 2016-08-16 22:27 twitter_data/DKM_Twitter_App01-.1471366462344
+-rw-r--r--   1 hduser supergroup     183087 2016-08-16 22:27 twitter_data/DKM_Twitter_App01-.1471366462345
+-rw-r--r--   1 hduser supergroup     194970 2016-08-16 22:27 twitter_data/DKM_Twitter_App01-.1471366462346
+-rw-r--r--   1 hduser supergroup     188064 2016-08-16 22:27 twitter_data/DKM_Twitter_App01-.1471366462347
+-rw-r--r--   1 hduser supergroup     219858 2016-08-16 22:27 twitter_data/DKM_Twitter_App01-.1471366462348
+-rw-r--r--   1 hduser supergroup     205358 2016-08-16 22:27 twitter_data/DKM_Twitter_App01-.1471366462349
+-rw-r--r--   1 hduser supergroup     191920 2016-08-16 22:28 twitter_data/DKM_Twitter_App01-.1471366462350
+-rw-r--r--   1 hduser supergroup      39788 2016-08-16 22:28 twitter_data/DKM_Twitter_App01-.1471366462351
+
+TwitterAgent.sinks.HDFS.hdfs.fileType=DataStream
+TwitterAgent.sinks.HDFS.hdfs.writeformat=Text
+TwitterAgent.sinks.HDFS.hdfs.batchSize=10
+TwitterAgent.sinks.HDFS.hdfs.rollSize=0
+TwitterAgent.sinks.HDFS.hdfs.rollCount=10
+TwitterAgent.sinks.HDFS.hdfs.rollInterval=10
+TwitterAgent.sinks.HDFS.hdfs.filePrefix = DKM_Twitter_App01-
+
+# Describing/Configuring the channel.
+TwitterAgent.channels.MemChannel.type = memory
+TwitterAgent.channels.MemChannel.capacity = 10
+TwitterAgent.channels.MemChannel.transactionCapacity = 10
+
+# Binding the source and sink to the channel.
+TwitterAgent.sources.Twitter.channels = MemChannel
+TwitterAgent.sinks.HDFS.channel = MemChannel
+====================
+

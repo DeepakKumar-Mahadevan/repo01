@@ -1,0 +1,200 @@
+  <!-- SMTP params--> 
+  <property> 
+   <name>oozie.email.smtp.host</name> 
+   <value>HW-Sandbox-Oozie</value> 
+  </property> 
+  <property> 
+    <name>oozie.email.smtp.port</name> 
+    <value>25</value> 
+  </property> 
+  <property> 
+    <name>oozie.email.from.address</name> 
+    <value>oozie@HW.Sandbox</value> 
+  </property> 
+  <property> 
+    <name>oozie.email.smtp.auth</name> 
+    <value>false</value> 
+  </property> 
+  <property> 
+    <name>oozie.email.smtp.username</name> 
+    <value></value> 
+  </property> 
+  <property> 
+    <name>oozie.email.smtp.password</name> 
+    <value></value> 
+  </property> 
+
+[root@sandbox ~]# ls -l /var/lib/ambari-server/resources/stacks/HDP/*/services/OOZIE/configuration/oozie-site.xml
+-rw-r--r-- 1 root root  8492 Oct 18  2013 /var/lib/ambari-server/resources/stacks/HDP/1.2.0/services/OOZIE/configuration/oozie-site.xml
+-rw-r--r-- 1 root root  8492 Oct 18  2013 /var/lib/ambari-server/resources/stacks/HDP/1.2.1/services/OOZIE/configuration/oozie-site.xml
+-rw-r--r-- 1 root root  8121 Oct 18  2013 /var/lib/ambari-server/resources/stacks/HDP/1.3.0/services/OOZIE/configuration/oozie-site.xml
+-rw-r--r-- 1 root root  8121 Oct 18  2013 /var/lib/ambari-server/resources/stacks/HDP/1.3.2/services/OOZIE/configuration/oozie-site.xml
+-rw-r--r-- 1 root root 10337 Oct 18  2013 /var/lib/ambari-server/resources/stacks/HDP/2.0.5/services/OOZIE/configuration/oozie-site.xml
+-rw-r--r-- 1 root root 11502 Oct 18  2013 /var/lib/ambari-server/resources/stacks/HDP/2.0.6/services/OOZIE/configuration/oozie-site.xml
+[root@sandbox ~]# ls -l /var/lib/ambari-server/resources/stacks/HDPLocal/*/services/OOZIE/configuration/oozie-site.xml
+-rw-r--r-- 1 root root  8492 Oct 18  2013 /var/lib/ambari-server/resources/stacks/HDPLocal/1.2.0/services/OOZIE/configuration/oozie-site.xml
+-rw-r--r-- 1 root root  8492 Oct 18  2013 /var/lib/ambari-server/resources/stacks/HDPLocal/1.2.1/services/OOZIE/configuration/oozie-site.xml
+-rw-r--r-- 1 root root  8121 Oct 18  2013 /var/lib/ambari-server/resources/stacks/HDPLocal/1.3.0/services/OOZIE/configuration/oozie-site.xml
+-rw-r--r-- 1 root root  8121 Oct 18  2013 /var/lib/ambari-server/resources/stacks/HDPLocal/1.3.2/services/OOZIE/configuration/oozie-site.xml
+-rw-r--r-- 1 root root  8550 Oct 18  2013 /var/lib/ambari-server/resources/stacks/HDPLocal/2.0.5/services/OOZIE/configuration/oozie-site.xml
+-rw-r--r-- 1 root root 11502 Oct 18  2013 /var/lib/ambari-server/resources/stacks/HDPLocal/2.0.6/services/OOZIE/configuration/oozie-site.xml
+[root@sandbox ~]# ls -l /etc/oozie/*/oozie-site.xml
+-rw-rw-r-- 1 oozie hadoop 6513 Aug 21 05:52 /etc/oozie/conf.dist/oozie-site.xml
+-rw-rw-r-- 1 oozie hadoop 6513 Aug 21 05:52 /etc/oozie/conf/oozie-site.xml
+[root@sandbox ~]# cmp /etc/oozie/conf/oozie-site.xml /etc/oozie/conf.dist/oozie-site.xml
+[root@sandbox ~]# cmp -b /etc/oozie/conf/oozie-site.xml /etc/oozie/conf.dist/oozie-site.xml
+[root@sandbox ~]# cmp /etc/oozie/conf/oozie-site.xml /var/lib/ambari-server/resources/stacks/HDP/1.2.0/services/OOZIE/configuration/oozie-site.xml
+/etc/oozie/conf/oozie-site.xml /var/lib/ambari-server/resources/stacks/HDP/1.2.0/services/OOZIE/configuration/oozie-site.xml differ: byte 2, line 1
+
+>>> Modified oozie-site.xml via Ambari:
+
+[root@sandbox ~]# ls -l /etc/oozie/*/oozie-site.xml
+-rw-rw-r-- 1 oozie hadoop 6900 Aug 21 06:05 /etc/oozie/conf.dist/oozie-site.xml
+-rw-rw-r-- 1 oozie hadoop 6900 Aug 21 06:05 /etc/oozie/conf/oozie-site.xml
+[root@sandbox ~]# ls -l /var/lib/ambari-server/resources/stacks/HDP/*/services/OOZIE/configuration/oozie-site.xml
+-rw-r--r-- 1 root root  8492 Oct 18  2013 /var/lib/ambari-server/resources/stacks/HDP/1.2.0/services/OOZIE/configuration/oozie-site.xml
+-rw-r--r-- 1 root root  8492 Oct 18  2013 /var/lib/ambari-server/resources/stacks/HDP/1.2.1/services/OOZIE/configuration/oozie-site.xml
+-rw-r--r-- 1 root root  8121 Oct 18  2013 /var/lib/ambari-server/resources/stacks/HDP/1.3.0/services/OOZIE/configuration/oozie-site.xml
+-rw-r--r-- 1 root root  8121 Oct 18  2013 /var/lib/ambari-server/resources/stacks/HDP/1.3.2/services/OOZIE/configuration/oozie-site.xml
+-rw-r--r-- 1 root root 10337 Oct 18  2013 /var/lib/ambari-server/resources/stacks/HDP/2.0.5/services/OOZIE/configuration/oozie-site.xml
+-rw-r--r-- 1 root root 11502 Oct 18  2013 /var/lib/ambari-server/resources/stacks/HDP/2.0.6/services/OOZIE/configuration/oozie-site.xml
+[root@sandbox ~]# ls -l /var/lib/ambari-server/resources/stacks/HDPLocal/*/services/OOZIE/configuration/oozie-site.xml
+-rw-r--r-- 1 root root  8492 Oct 18  2013 /var/lib/ambari-server/resources/stacks/HDPLocal/1.2.0/services/OOZIE/configuration/oozie-site.xml
+-rw-r--r-- 1 root root  8492 Oct 18  2013 /var/lib/ambari-server/resources/stacks/HDPLocal/1.2.1/services/OOZIE/configuration/oozie-site.xml
+-rw-r--r-- 1 root root  8121 Oct 18  2013 /var/lib/ambari-server/resources/stacks/HDPLocal/1.3.0/services/OOZIE/configuration/oozie-site.xml
+-rw-r--r-- 1 root root  8121 Oct 18  2013 /var/lib/ambari-server/resources/stacks/HDPLocal/1.3.2/services/OOZIE/configuration/oozie-site.xml
+-rw-r--r-- 1 root root  8550 Oct 18  2013 /var/lib/ambari-server/resources/stacks/HDPLocal/2.0.5/services/OOZIE/configuration/oozie-site.xml
+-rw-r--r-- 1 root root 11502 Oct 18  2013 /var/lib/ambari-server/resources/stacks/HDPLocal/2.0.6/services/OOZIE/configuration/oozie-site.xml
+
+>>> Now its reflecting in the Oozie config tab
+
+oozie.email.from.address	oozie@HW.Sandbox
+oozie.email.smtp.auth	false
+oozie.email.smtp.host	localhost
+oozie.email.smtp.port	25
+
+>>> But still email not received
+
+echo "This is message body" | mail -s "This is Subject" connectdeepakkumar.m@gmail.com
+
+Message 258:
+From MAILER-DAEMON  Sun Aug 21 06:31:04 2016
+Return-Path: <>
+X-Original-To: root@sandbox.hortonworks.com
+Delivered-To: root@sandbox.hortonworks.com
+Date: Sun, 21 Aug 2016 06:31:04 -0700 (PDT)
+From: MAILER-DAEMON@sandbox.hortonworks.com (Mail Delivery System)
+Subject: Undelivered Mail Returned to Sender
+To: root@sandbox.hortonworks.com
+Auto-Submitted: auto-replied
+Content-Type: multipart/report; report-type=delivery-status;
+        boundary="635D5A0016.1471786264/sandbox.hortonworks.com"
+Status: RO
+
+Part 1:
+Content-Description: Notification
+Content-Type: text/plain; charset=us-ascii
+
+This is the mail system at host sandbox.hortonworks.com.
+
+I'm sorry to have to inform you that your message could not
+be delivered to one or more recipients. It's attached below.
+
+For further assistance, please send mail to postmaster.
+
+If you do so, please include this problem report. You can
+delete your own text from the attached returned message.
+
+                   The mail system
+
+<connectdeepakkumar.m@gmail.com>: host
+    gmail-smtp-in.l.google.com[74.125.130.27] said: 550-5.7.1 [122.174.71.172]
+    The IP you're using to send mail is not authorized to 550-5.7.1 send email
+    directly to our servers. Please use the SMTP relay at your 550-5.7.1
+    service provider instead. Learn more at 550 5.7.1
+    https://support.google.com/mail/answer/10336 ll1si18619703pab.6 - gsmtp (in
+    reply to end of DATA command)
+
+Part 2:
+Content-Description: Delivery report
+Content-Type: message/delivery-status
+
+Part 3:
+Content-Description: Undelivered Message
+Content-Type: message/rfc822
+
+From root@sandbox.hortonworks.com Sun Aug 21 06:30:56 2016
+Return-Path: <root@sandbox.hortonworks.com>
+Date: Sun, 21 Aug 2016 06:30:56 -0700
+To: connectdeepakkumar.m@gmail.com
+Subject: This is Subject
+User-Agent: Heirloom mailx 12.4 7/29/08
+Content-Type: text/plain; charset=us-ascii
+From: root@sandbox.hortonworks.com (root)
+
+This is message body
+&
+At EOF
+
+
+
+Message  2:
+From MAILER-DAEMON  Sun Aug 21 05:32:50 2016
+Return-Path: <>
+X-Original-To: oozie@localhost.hortonworks.com
+Delivered-To: oozie@localhost.hortonworks.com
+Date: Sun, 21 Aug 2016 05:32:49 -0700 (PDT)
+From: MAILER-DAEMON@sandbox.hortonworks.com (Mail Delivery System)
+Subject: Undelivered Mail Returned to Sender
+To: oozie@localhost.hortonworks.com
+Auto-Submitted: auto-replied
+Content-Type: multipart/report; report-type=delivery-status;
+        boundary="09825A131C.1471782769/sandbox.hortonworks.com"
+Status: R
+
+Part 1:
+Content-Description: Notification
+Content-Type: text/plain; charset=us-ascii
+
+This is the mail system at host sandbox.hortonworks.com.
+
+I'm sorry to have to inform you that your message could not
+be delivered to one or more recipients. It's attached below.
+
+For further assistance, please send mail to postmaster.
+
+If you do so, please include this problem report. You can
+delete your own text from the attached returned message.
+
+                   The mail system
+
+<connectdeepakkumar.m@gmail.com>: host
+    gmail-smtp-in.l.google.com[74.125.130.27] said: 550-5.7.1 [122.174.71.172]
+    The IP you're using to send mail is not authorized to 550-5.7.1 send email
+    directly to our servers. Please use the SMTP relay at your 550-5.7.1
+    service provider instead. Learn more at 550 5.7.1
+    https://support.google.com/mail/answer/10336 fi3si9848031pad.276 - gsmtp
+    (in reply to end of DATA command)
+
+Part 2:
+Content-Description: Delivery report
+Content-Type: message/delivery-status
+
+
+Part 3:
+Content-Description: Undelivered Message
+Content-Type: message/rfc822
+
+From oozie@localhost.hortonworks.com Sun Aug 21 05:32:41 2016
+Return-Path: <oozie@localhost.hortonworks.com>
+From: oozie@localhost.hortonworks.com
+To: connectdeepakkumar.m@gmail.com
+Cc: connectdeepakkumar.m@gmail.com
+Subject: Hello Deepak
+Content-Type: text/plain; charset=us-ascii
+Date: Sun, 21 Aug 2016 05:32:41 -0700 (PDT)
+
+Hello Deepak,
+Greetings from Hortonworks-Sandbox.
+Thanks,
+DKM-OOZIE-WF

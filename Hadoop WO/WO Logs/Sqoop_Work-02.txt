@@ -1,0 +1,807 @@
+[hduser@Inceptez ~]$ sqoop import-all-tables --connect jdbc:mysql://localhost/test --username root --P --direct; 
+Enter password: 
+16/06/18 21:05:18 ERROR tool.ImportAllTablesTool: Error during import: No primary key could be found for table Employee. Please specify one with --split-by or perform a sequential import with '-m 1'.
+
+[hduser@Inceptez ~]$ sqoop import-all-tables --connect jdbc:mysql://localhost/test --username root --P --direct --m 1;
+Enter password:
+16/06/18 21:07:29 ERROR tool.ImportAllTablesTool: Encountered IOException running import job: org.apache.hadoop.mapred.FileAlreadyExistsException: Output directory hdfs://localhost:54310/user/hduser/customer already exists
+
+[hduser@Inceptez ~]$ sqoop import-all-tables --connect jdbc:mysql://localhost/test --username root --P --direct --m 1 --target-dir import_all;
+Enter password: 
+16/06/18 21:18:50 ERROR tool.BaseSqoopTool: Error parsing arguments for import-all-tables:
+16/06/18 21:18:50 ERROR tool.BaseSqoopTool: Unrecognized argument: --target-dir
+16/06/18 21:18:50 ERROR tool.BaseSqoopTool: Unrecognized argument: import_all
+
+[hduser@Inceptez ~]$ echo -n "root" > mysql_pwd.txt
+[hduser@Inceptez ~]$ hdfs dfs -copyFromLocal -f mysql_pwd.txt /user/hduser
+[hduser@Inceptez ~]$ hdfs dfs -cat my*
+root
+
+[hduser@Inceptez ~]$ sqoop import-all-tables --connect jdbc:mysql://localhost/test --username root --password-file mysql_pwd.txt --direct --m 1;
+16/06/18 21:45:33 INFO sqoop.Sqoop: Running Sqoop version: 1.4.5
+16/06/18 21:45:33 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+16/06/18 21:45:35 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
+16/06/18 21:45:35 INFO tool.CodeGenTool: Beginning code generation
+16/06/18 21:45:35 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `Employee` AS t LIMIT 1
+16/06/18 21:45:35 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `Employee` AS t LIMIT 1
+16/06/18 21:45:35 INFO orm.CompilationManager: HADOOP_MAPRED_HOME is /usr/local/hadoop
+Note: /tmp/sqoop-hduser/compile/b984ac83263e7526224a4f1f8af52bfe/Employee.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+16/06/18 21:45:38 INFO orm.CompilationManager: Writing jar file: /tmp/sqoop-hduser/compile/b984ac83263e7526224a4f1f8af52bfe/Employee.jar
+16/06/18 21:45:38 INFO manager.DirectMySQLManager: Beginning mysqldump fast path import
+16/06/18 21:45:38 INFO mapreduce.ImportJobBase: Beginning import of Employee
+16/06/18 21:45:38 INFO Configuration.deprecation: mapred.jar is deprecated. Instead, use mapreduce.job.jar
+16/06/18 21:45:38 INFO Configuration.deprecation: mapred.map.tasks is deprecated. Instead, use mapreduce.job.maps
+16/06/18 21:45:38 INFO client.RMProxy: Connecting to ResourceManager at /0.0.0.0:8032
+16/06/18 21:45:41 INFO db.DBInputFormat: Using read commited transaction isolation
+16/06/18 21:45:41 INFO mapreduce.JobSubmitter: number of splits:1
+16/06/18 21:45:41 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1466257336502_0002
+16/06/18 21:45:41 INFO impl.YarnClientImpl: Submitted application application_1466257336502_0002
+16/06/18 21:45:41 INFO mapreduce.Job: The url to track the job: http://Inceptez:8088/proxy/application_1466257336502_0002/
+16/06/18 21:45:41 INFO mapreduce.Job: Running job: job_1466257336502_0002
+16/06/18 21:45:53 INFO mapreduce.Job: Job job_1466257336502_0002 running in uber mode : false
+16/06/18 21:45:53 INFO mapreduce.Job:  map 0% reduce 0%
+16/06/18 21:46:01 INFO mapreduce.Job:  map 100% reduce 0%
+16/06/18 21:46:01 INFO mapreduce.Job: Job job_1466257336502_0002 completed successfully
+16/06/18 21:46:01 INFO mapreduce.Job: Counters: 30
+	File System Counters
+		FILE: Number of bytes read=0
+		FILE: Number of bytes written=114794
+		FILE: Number of read operations=0
+		FILE: Number of large read operations=0
+		FILE: Number of write operations=0
+		HDFS: Number of bytes read=87
+		HDFS: Number of bytes written=199
+		HDFS: Number of read operations=4
+		HDFS: Number of large read operations=0
+		HDFS: Number of write operations=2
+	Job Counters 
+		Launched map tasks=1
+		Other local map tasks=1
+		Total time spent by all maps in occupied slots (ms)=6570
+		Total time spent by all reduces in occupied slots (ms)=0
+		Total time spent by all map tasks (ms)=6570
+		Total vcore-seconds taken by all map tasks=6570
+		Total megabyte-seconds taken by all map tasks=6727680
+	Map-Reduce Framework
+		Map input records=1
+		Map output records=5
+		Input split bytes=87
+		Spilled Records=0
+		Failed Shuffles=0
+		Merged Map outputs=0
+		GC time elapsed (ms)=94
+		CPU time spent (ms)=1090
+		Physical memory (bytes) snapshot=98250752
+		Virtual memory (bytes) snapshot=976515072
+		Total committed heap usage (bytes)=23855104
+	File Input Format Counters 
+		Bytes Read=0
+	File Output Format Counters 
+		Bytes Written=199
+16/06/18 21:46:01 INFO mapreduce.ImportJobBase: Transferred 199 bytes in 23.1807 seconds (8.5847 bytes/sec)
+16/06/18 21:46:01 INFO mapreduce.ImportJobBase: Retrieved 5 records.
+16/06/18 21:46:01 INFO tool.CodeGenTool: Beginning code generation
+16/06/18 21:46:01 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `customer` AS t LIMIT 1
+16/06/18 21:46:01 INFO orm.CompilationManager: HADOOP_MAPRED_HOME is /usr/local/hadoop
+Note: /tmp/sqoop-hduser/compile/b984ac83263e7526224a4f1f8af52bfe/customer.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+16/06/18 21:46:02 INFO orm.CompilationManager: Writing jar file: /tmp/sqoop-hduser/compile/b984ac83263e7526224a4f1f8af52bfe/customer.jar
+16/06/18 21:46:02 INFO manager.DirectMySQLManager: Beginning mysqldump fast path import
+16/06/18 21:46:02 INFO mapreduce.ImportJobBase: Beginning import of customer
+16/06/18 21:46:02 INFO client.RMProxy: Connecting to ResourceManager at /0.0.0.0:8032
+16/06/18 21:46:03 INFO db.DBInputFormat: Using read commited transaction isolation
+16/06/18 21:46:03 INFO mapreduce.JobSubmitter: number of splits:1
+16/06/18 21:46:03 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1466257336502_0003
+16/06/18 21:46:03 INFO impl.YarnClientImpl: Submitted application application_1466257336502_0003
+16/06/18 21:46:03 INFO mapreduce.Job: The url to track the job: http://Inceptez:8088/proxy/application_1466257336502_0003/
+16/06/18 21:46:03 INFO mapreduce.Job: Running job: job_1466257336502_0003
+16/06/18 21:46:16 INFO mapreduce.Job: Job job_1466257336502_0003 running in uber mode : false
+16/06/18 21:46:16 INFO mapreduce.Job:  map 0% reduce 0%
+16/06/18 21:46:24 INFO mapreduce.Job:  map 100% reduce 0%
+16/06/18 21:46:24 INFO mapreduce.Job: Job job_1466257336502_0003 completed successfully
+16/06/18 21:46:24 INFO mapreduce.Job: Counters: 30
+	File System Counters
+		FILE: Number of bytes read=0
+		FILE: Number of bytes written=114825
+		FILE: Number of read operations=0
+		FILE: Number of large read operations=0
+		FILE: Number of write operations=0
+		HDFS: Number of bytes read=87
+		HDFS: Number of bytes written=453
+		HDFS: Number of read operations=4
+		HDFS: Number of large read operations=0
+		HDFS: Number of write operations=2
+	Job Counters 
+		Launched map tasks=1
+		Other local map tasks=1
+		Total time spent by all maps in occupied slots (ms)=6327
+		Total time spent by all reduces in occupied slots (ms)=0
+		Total time spent by all map tasks (ms)=6327
+		Total vcore-seconds taken by all map tasks=6327
+		Total megabyte-seconds taken by all map tasks=6478848
+	Map-Reduce Framework
+		Map input records=1
+		Map output records=10
+		Input split bytes=87
+		Spilled Records=0
+		Failed Shuffles=0
+		Merged Map outputs=0
+		GC time elapsed (ms)=311
+		CPU time spent (ms)=1200
+		Physical memory (bytes) snapshot=105009152
+		Virtual memory (bytes) snapshot=976515072
+		Total committed heap usage (bytes)=23855104
+	File Input Format Counters 
+		Bytes Read=0
+	File Output Format Counters 
+		Bytes Written=453
+16/06/18 21:46:24 INFO mapreduce.ImportJobBase: Transferred 453 bytes in 22.2981 seconds (20.3156 bytes/sec)
+16/06/18 21:46:24 INFO mapreduce.ImportJobBase: Retrieved 10 records.
+16/06/18 21:46:24 INFO tool.CodeGenTool: Beginning code generation
+16/06/18 21:46:24 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `customer1` AS t LIMIT 1
+16/06/18 21:46:24 INFO orm.CompilationManager: HADOOP_MAPRED_HOME is /usr/local/hadoop
+Note: /tmp/sqoop-hduser/compile/b984ac83263e7526224a4f1f8af52bfe/customer1.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+16/06/18 21:46:25 INFO orm.CompilationManager: Writing jar file: /tmp/sqoop-hduser/compile/b984ac83263e7526224a4f1f8af52bfe/customer1.jar
+16/06/18 21:46:25 INFO manager.DirectMySQLManager: Beginning mysqldump fast path import
+16/06/18 21:46:25 INFO mapreduce.ImportJobBase: Beginning import of customer1
+16/06/18 21:46:25 INFO client.RMProxy: Connecting to ResourceManager at /0.0.0.0:8032
+16/06/18 21:46:26 INFO db.DBInputFormat: Using read commited transaction isolation
+16/06/18 21:46:26 INFO mapreduce.JobSubmitter: number of splits:1
+16/06/18 21:46:26 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1466257336502_0004
+16/06/18 21:46:26 INFO impl.YarnClientImpl: Submitted application application_1466257336502_0004
+16/06/18 21:46:26 INFO mapreduce.Job: The url to track the job: http://Inceptez:8088/proxy/application_1466257336502_0004/
+16/06/18 21:46:26 INFO mapreduce.Job: Running job: job_1466257336502_0004
+16/06/18 21:46:39 INFO mapreduce.Job: Job job_1466257336502_0004 running in uber mode : false
+16/06/18 21:46:39 INFO mapreduce.Job:  map 0% reduce 0%
+16/06/18 21:46:47 INFO mapreduce.Job:  map 100% reduce 0%
+16/06/18 21:46:48 INFO mapreduce.Job: Job job_1466257336502_0004 completed successfully
+16/06/18 21:46:48 INFO mapreduce.Job: Counters: 30
+	File System Counters
+		FILE: Number of bytes read=0
+		FILE: Number of bytes written=114828
+		FILE: Number of read operations=0
+		FILE: Number of large read operations=0
+		FILE: Number of write operations=0
+		HDFS: Number of bytes read=87
+		HDFS: Number of bytes written=453
+		HDFS: Number of read operations=4
+		HDFS: Number of large read operations=0
+		HDFS: Number of write operations=2
+	Job Counters 
+		Launched map tasks=1
+		Other local map tasks=1
+		Total time spent by all maps in occupied slots (ms)=6285
+		Total time spent by all reduces in occupied slots (ms)=0
+		Total time spent by all map tasks (ms)=6285
+		Total vcore-seconds taken by all map tasks=6285
+		Total megabyte-seconds taken by all map tasks=6435840
+	Map-Reduce Framework
+		Map input records=1
+		Map output records=10
+		Input split bytes=87
+		Spilled Records=0
+		Failed Shuffles=0
+		Merged Map outputs=0
+		GC time elapsed (ms)=280
+		CPU time spent (ms)=940
+		Physical memory (bytes) snapshot=96681984
+		Virtual memory (bytes) snapshot=976515072
+		Total committed heap usage (bytes)=23855104
+	File Input Format Counters 
+		Bytes Read=0
+	File Output Format Counters 
+		Bytes Written=453
+16/06/18 21:46:48 INFO mapreduce.ImportJobBase: Transferred 453 bytes in 23.3442 seconds (19.4053 bytes/sec)
+16/06/18 21:46:48 INFO mapreduce.ImportJobBase: Retrieved 10 records.
+
+[hduser@Inceptez ~]$ hdfs dfs -ls -R
+drwxr-xr-x   - hduser supergroup          0 2016-06-18 21:46 Employee
+-rw-r--r--   1 hduser supergroup          0 2016-06-18 21:46 Employee/_SUCCESS
+-rw-r--r--   1 hduser supergroup        199 2016-06-18 21:45 Employee/part-m-00000
+drwxr-xr-x   - hduser supergroup          0 2016-06-18 21:46 customer
+-rw-r--r--   1 hduser supergroup          0 2016-06-18 21:46 customer/_SUCCESS
+-rw-r--r--   1 hduser supergroup        453 2016-06-18 21:46 customer/part-m-00000
+drwxr-xr-x   - hduser supergroup          0 2016-06-18 21:46 customer1
+-rw-r--r--   1 hduser supergroup          0 2016-06-18 21:46 customer1/_SUCCESS
+-rw-r--r--   1 hduser supergroup        453 2016-06-18 21:46 customer1/part-m-00000
+
+[hduser@Inceptez ~]$ hdfs dfs -mkdir -p import_all/test
+[hduser@Inceptez ~]$ hdfs dfs -mv  Employee import_all/test
+[hduser@Inceptez ~]$ hdfs dfs -mv  customer import_all/test
+[hduser@Inceptez ~]$ hdfs dfs -mv  customer1 import_all/test
+
+[hduser@Inceptez ~]$ hadoop fs -ls -R import_all/test/
+drwxr-xr-x   - hduser supergroup          0 2016-06-18 21:46 import_all/test/Employee
+-rw-r--r--   1 hduser supergroup          0 2016-06-18 21:46 import_all/test/Employee/_SUCCESS
+-rw-r--r--   1 hduser supergroup        199 2016-06-18 21:45 import_all/test/Employee/part-m-00000
+drwxr-xr-x   - hduser supergroup          0 2016-06-18 21:46 import_all/test/customer
+-rw-r--r--   1 hduser supergroup          0 2016-06-18 21:46 import_all/test/customer/_SUCCESS
+-rw-r--r--   1 hduser supergroup        453 2016-06-18 21:46 import_all/test/customer/part-m-00000
+drwxr-xr-x   - hduser supergroup          0 2016-06-18 21:46 import_all/test/customer1
+-rw-r--r--   1 hduser supergroup          0 2016-06-18 21:46 import_all/test/customer1/_SUCCESS
+-rw-r--r--   1 hduser supergroup        453 2016-06-18 21:46 import_all/test/customer1/part-m-00000
+
+====================================================================================================
+mysql> CREATE TABLE Deepak_DB01.`Employee` (   `Emp_id` int(11) NOT NULL PRIMARY KEY,   `Emp_Name` varchar(25) NOT NULL,   `Emp_sal` decimal(11,2) DEFAULT 0,   `Row_ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP);
+Query OK, 0 rows affected (0.09 sec)
+
+mysql> desc Deepak_DB01.Employee;
++----------+---------------+------+-----+-------------------+-----------------------------+
+| Field    | Type          | Null | Key | Default           | Extra                       |
++----------+---------------+------+-----+-------------------+-----------------------------+
+| Emp_id   | int(11)       | NO   | PRI | NULL              |                             |
+| Emp_Name | varchar(25)   | NO   |     | NULL              |                             |
+| Emp_sal  | decimal(11,2) | YES  |     | 0.00              |                             |
+| Row_ts   | timestamp     | NO   |     | CURRENT_TIMESTAMP | on update CURRENT_TIMESTAMP |
++----------+---------------+------+-----+-------------------+-----------------------------+
+4 rows in set (0.00 sec)
+
+mysql> insert into Deepak_DB01.Employee select * from test.Employee;
+Query OK, 5 rows affected (0.00 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> select * from Deepak_DB01.Employee;
++--------+----------+------------+---------------------+
+| Emp_id | Emp_Name | Emp_sal    | Row_ts              |
++--------+----------+------------+---------------------+
+|      1 | Deepak   |   75000.00 | 2016-06-13 17:06:27 |
+|      2 | Sachin   | 1500000.00 | 2016-06-13 17:07:51 |
+|      3 | Messi    | 2500000.00 | 2016-06-13 17:08:04 |
+|      4 | Federer  | 2000000.00 | 2016-06-13 17:48:19 |
+|      5 | Ronaldo  | 2750000.00 | 2016-06-18 08:28:31 |
++--------+----------+------------+---------------------+
+5 rows in set (0.01 sec)
+
+CREATE TABLE Deepak_DB01.`customer` (
+  `custid` int(11) NOT NULL PRIMARY KEY,
+  `firstname` varchar(20) NOT NULL,
+  `lastname` varchar(20)  DEFAULT ' ',
+  `city` varchar(50) DEFAULT ' ',
+  `age` int(11) DEFAULT NULL,
+  `cust_bal` Decimal(11,2) DEFAULT 0,
+  `row_ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+)
+
+mysql> create database DKMDB01;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> create table DKMDB01.Employee Select * from Deepak_DB01.Employee;
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> desc DKMDB01.Employee;
++----------+---------------+------+-----+---------------------+-------+
+| Field    | Type          | Null | Key | Default             | Extra |
++----------+---------------+------+-----+---------------------+-------+
+| Emp_id   | int(11)       | NO   |     | NULL                |       |
+| Emp_Name | varchar(25)   | NO   |     | NULL                |       |
+| Emp_sal  | decimal(11,2) | YES  |     | 0.00                |       |
+| Row_ts   | timestamp     | NO   |     | 0000-00-00 00:00:00 |       |
++----------+---------------+------+-----+---------------------+-------+
+4 rows in set (0.00 sec)
+
+mysql> desc Deepak_DB01.Employee;
++----------+---------------+------+-----+-------------------+-----------------------------+
+| Field    | Type          | Null | Key | Default           | Extra                       |
++----------+---------------+------+-----+-------------------+-----------------------------+
+| Emp_id   | int(11)       | NO   | PRI | NULL              |                             |
+| Emp_Name | varchar(25)   | NO   |     | NULL              |                             |
+| Emp_sal  | decimal(11,2) | YES  |     | 0.00              |                             |
+| Row_ts   | timestamp     | NO   |     | CURRENT_TIMESTAMP | on update CURRENT_TIMESTAMP |
++----------+---------------+------+-----+-------------------+-----------------------------+
+4 rows in set (0.00 sec)
+
+mysql> create table DKMDB01.Employee like Deepak_DB01.Employee;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> desc DKMDB01.Employee;
++----------+---------------+------+-----+-------------------+-----------------------------+
+| Field    | Type          | Null | Key | Default           | Extra                       |
++----------+---------------+------+-----+-------------------+-----------------------------+
+| Emp_id   | int(11)       | NO   | PRI | NULL              |                             |
+| Emp_Name | varchar(25)   | NO   |     | NULL              |                             |
+| Emp_sal  | decimal(11,2) | YES  |     | 0.00              |                             |
+| Row_ts   | timestamp     | NO   |     | CURRENT_TIMESTAMP | on update CURRENT_TIMESTAMP |
++----------+---------------+------+-----+-------------------+-----------------------------+
+4 rows in set (0.00 sec)
+
+mysql> create table DKMDB01.customer like Deepak_DB01.customer;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> desc DKMDB01.customer;
++-----------+---------------+------+-----+-------------------+-----------------------------+
+| Field     | Type          | Null | Key | Default           | Extra                       |
++-----------+---------------+------+-----+-------------------+-----------------------------+
+| custid    | int(11)       | NO   | PRI | NULL              |                             |
+| firstname | varchar(20)   | NO   |     | NULL              |                             |
+| lastname  | varchar(20)   | YES  |     |                   |                             |
+| city      | varchar(50)   | YES  |     |                   |                             |
+| age       | int(11)       | YES  |     | NULL              |                             |
+| cust_bal  | decimal(11,2) | YES  |     | 0.00              |                             |
+| row_ts    | timestamp     | NO   |     | CURRENT_TIMESTAMP | on update CURRENT_TIMESTAMP |
++-----------+---------------+------+-----+-------------------+-----------------------------+
+7 rows in set (0.00 sec)
+
+mysql> insert into DKMDB01.Employee select * from test.Employee;
+Query OK, 5 rows affected (0.00 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> insert into DKMDB01.customer select * from test.customer;
+Query OK, 10 rows affected, 20 warnings (0.00 sec)
+Records: 10  Duplicates: 0  Warnings: 20
+
+mysql> select * from DKMDB01.Employee;
++--------+----------+------------+---------------------+
+| Emp_id | Emp_Name | Emp_sal    | Row_ts              |
++--------+----------+------------+---------------------+
+|      1 | Deepak   |   75000.00 | 2016-06-13 17:06:27 |
+|      2 | Sachin   | 1500000.00 | 2016-06-13 17:07:51 |
+|      3 | Messi    | 2500000.00 | 2016-06-13 17:08:04 |
+|      4 | Federer  | 2000000.00 | 2016-06-13 17:48:19 |
+|      5 | Ronaldo  | 2750000.00 | 2016-06-18 08:28:31 |
++--------+----------+------------+---------------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from DKMDB01.customer;
++--------+--------------+-----------+-----------+------+----------+---------------------+
+| custid | firstname    | lastname  | city      | age  | cust_bal | row_ts              |
++--------+--------------+-----------+-----------+------+----------+---------------------+
+|      1 | Arun         | Kumar     | chennai   |   33 |  2015.00 | 0000-00-00 00:00:00 |
+|      2 | srini        | vasan     | chennai   |   33 |  2015.00 | 0000-00-00 00:00:00 |
+|      3 | vasu         | devan     | banglore  |   39 |  2015.00 | 0000-00-00 00:00:00 |
+|      7 | Deepak Kumar | Mahadevan | chennai   |   27 |  2016.00 | 0000-00-00 00:00:00 |
+|      8 | Lionel       | Messi     | Barcelona |   28 |  2016.00 | 0000-00-00 00:00:00 |
+|      4 | mohamed      | imran     | hyderabad |   33 |  2015.00 | 0000-00-00 00:00:00 |
+|      5 | arun         | basker    | chennai   |   23 |  2015.00 | 0000-00-00 00:00:00 |
+|      6 | ramesh       | babu      | manglore  |   39 |  2015.00 | 0000-00-00 00:00:00 |
+|      9 | Christiano   | Ronaldo   | Madrid    |   31 |  2016.00 | 0000-00-00 00:00:00 |
+|     10 | Wayne        | Rooney    | ManUtd    |   30 |  2016.00 | 0000-00-00 00:00:00 |
++--------+--------------+-----------+-----------+------+----------+---------------------+
+10 rows in set (0.00 sec)
+====================================================================================================
+[hduser@Inceptez ~]$ sqoop job --create import_all_DKMDB01 -- import-all-tables --connect jdbc:mysql:localhost/DKMDB01 --username root --P --direct;
+Enter password: 
+16/06/18 22:25:32 ERROR tool.BaseSqoopTool: Got error creating database manager: java.io.IOException: No manager for connect string: jdbc:mysql:localhost/DKMDB01
+
+[hduser@Inceptez ~]$ sqoop job --create import_all_DKMDB01 -- import-all-tables --connect jdbc:mysql://localhost/DKMDB01 --username root --P --direct;
+Enter password: 
+16/06/18 22:28:01 ERROR hsqldb.HsqldbJobStorage: Cannot create job import_all_DKMDB01: it already exists
+16/06/18 22:28:01 ERROR tool.JobTool: I/O error performing job operation: java.io.IOException: Job import_all_DKMDB01 already exists
+
+[hduser@Inceptez ~]$ sqoop job --delete import_all_DKMDB01
+[hduser@Inceptez ~]$ sqoop job --create import_all_DKMDB01 -- import-all-tables --connect jdbc:mysql://localhost/DKMDB01 --username root --P --direct;
+
+[hduser@Inceptez ~]$ sqoop job --exec import_all_DKMDB01
+Enter password: 
+16/06/18 22:31:59 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
+16/06/18 22:31:59 INFO tool.CodeGenTool: Beginning code generation
+16/06/18 22:31:59 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `Employee` AS t LIMIT 1
+16/06/18 22:32:00 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `Employee` AS t LIMIT 1
+16/06/18 22:32:00 INFO orm.CompilationManager: HADOOP_MAPRED_HOME is /usr/local/hadoop
+Note: /tmp/sqoop-hduser/compile/d04bbd8e1d4a8b0d174ff652f9ff3368/Employee.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+16/06/18 22:32:02 INFO orm.CompilationManager: Writing jar file: /tmp/sqoop-hduser/compile/d04bbd8e1d4a8b0d174ff652f9ff3368/Employee.jar
+16/06/18 22:32:02 INFO manager.DirectMySQLManager: Beginning mysqldump fast path import
+16/06/18 22:32:02 INFO mapreduce.ImportJobBase: Beginning import of Employee
+16/06/18 22:32:02 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+16/06/18 22:32:02 INFO Configuration.deprecation: mapred.jar is deprecated. Instead, use mapreduce.job.jar
+16/06/18 22:32:03 INFO Configuration.deprecation: mapred.map.tasks is deprecated. Instead, use mapreduce.job.maps
+16/06/18 22:32:03 INFO client.RMProxy: Connecting to ResourceManager at /0.0.0.0:8032
+16/06/18 22:32:05 INFO db.DBInputFormat: Using read commited transaction isolation
+16/06/18 22:32:05 INFO db.DataDrivenDBInputFormat: BoundingValsQuery: SELECT MIN(`Emp_id`), MAX(`Emp_id`) FROM Employee
+16/06/18 22:32:05 INFO mapreduce.JobSubmitter: number of splits:5
+16/06/18 22:32:05 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1466257336502_0005
+16/06/18 22:32:06 INFO impl.YarnClientImpl: Submitted application application_1466257336502_0005
+16/06/18 22:32:06 INFO mapreduce.Job: The url to track the job: http://Inceptez:8088/proxy/application_1466257336502_0005/
+16/06/18 22:32:06 INFO mapreduce.Job: Running job: job_1466257336502_0005
+16/06/18 22:32:15 INFO mapreduce.Job: Job job_1466257336502_0005 running in uber mode : false
+16/06/18 22:32:15 INFO mapreduce.Job:  map 0% reduce 0%
+16/06/18 22:32:55 INFO mapreduce.Job:  map 20% reduce 0%
+16/06/18 22:33:00 INFO mapreduce.Job:  map 80% reduce 0%
+16/06/18 22:33:01 INFO mapreduce.Job:  map 100% reduce 0%
+16/06/18 22:33:02 INFO mapreduce.Job: Job job_1466257336502_0005 completed successfully
+16/06/18 22:33:03 INFO mapreduce.Job: Counters: 30
+	File System Counters
+		FILE: Number of bytes read=0
+		FILE: Number of bytes written=575940
+		FILE: Number of read operations=0
+		FILE: Number of large read operations=0
+		FILE: Number of write operations=0
+		HDFS: Number of bytes read=531
+		HDFS: Number of bytes written=199
+		HDFS: Number of read operations=20
+		HDFS: Number of large read operations=0
+		HDFS: Number of write operations=10
+	Job Counters 
+		Launched map tasks=5
+		Other local map tasks=5
+		Total time spent by all maps in occupied slots (ms)=203381
+		Total time spent by all reduces in occupied slots (ms)=0
+		Total time spent by all map tasks (ms)=203381
+		Total vcore-seconds taken by all map tasks=203381
+		Total megabyte-seconds taken by all map tasks=208262144
+	Map-Reduce Framework
+		Map input records=5
+		Map output records=5
+		Input split bytes=531
+		Spilled Records=0
+		Failed Shuffles=0
+		Merged Map outputs=0
+		GC time elapsed (ms)=1917
+		CPU time spent (ms)=6090
+		Physical memory (bytes) snapshot=445861888
+		Virtual memory (bytes) snapshot=4882718720
+		Total committed heap usage (bytes)=119275520
+	File Input Format Counters 
+		Bytes Read=0
+	File Output Format Counters 
+		Bytes Written=199
+16/06/18 22:33:03 INFO mapreduce.ImportJobBase: Transferred 199 bytes in 59.4217 seconds (3.3489 bytes/sec)
+16/06/18 22:33:03 INFO mapreduce.ImportJobBase: Retrieved 5 records.
+16/06/18 22:33:03 INFO tool.CodeGenTool: Beginning code generation
+16/06/18 22:33:03 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `customer` AS t LIMIT 1
+16/06/18 22:33:03 INFO orm.CompilationManager: HADOOP_MAPRED_HOME is /usr/local/hadoop
+Note: /tmp/sqoop-hduser/compile/d04bbd8e1d4a8b0d174ff652f9ff3368/customer.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+16/06/18 22:33:08 INFO orm.CompilationManager: Writing jar file: /tmp/sqoop-hduser/compile/d04bbd8e1d4a8b0d174ff652f9ff3368/customer.jar
+16/06/18 22:33:08 INFO manager.DirectMySQLManager: Beginning mysqldump fast path import
+16/06/18 22:33:08 INFO mapreduce.ImportJobBase: Beginning import of customer
+16/06/18 22:33:09 INFO client.RMProxy: Connecting to ResourceManager at /0.0.0.0:8032
+16/06/18 22:33:09 INFO db.DBInputFormat: Using read commited transaction isolation
+16/06/18 22:33:09 INFO db.DataDrivenDBInputFormat: BoundingValsQuery: SELECT MIN(`custid`), MAX(`custid`) FROM customer
+16/06/18 22:33:09 INFO mapreduce.JobSubmitter: number of splits:4
+16/06/18 22:33:09 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1466257336502_0006
+16/06/18 22:33:10 INFO impl.YarnClientImpl: Submitted application application_1466257336502_0006
+16/06/18 22:33:10 INFO mapreduce.Job: The url to track the job: http://Inceptez:8088/proxy/application_1466257336502_0006/
+16/06/18 22:33:10 INFO mapreduce.Job: Running job: job_1466257336502_0006
+16/06/18 22:33:30 INFO mapreduce.Job: Job job_1466257336502_0006 running in uber mode : false
+16/06/18 22:33:30 INFO mapreduce.Job:  map 0% reduce 0%
+16/06/18 22:33:52 INFO mapreduce.Job:  map 25% reduce 0%
+16/06/18 22:33:55 INFO mapreduce.Job:  map 50% reduce 0%
+16/06/18 22:33:56 INFO mapreduce.Job:  map 100% reduce 0%
+16/06/18 22:33:56 INFO mapreduce.Job: Job job_1466257336502_0006 completed successfully
+16/06/18 22:33:56 INFO mapreduce.Job: Counters: 30
+	File System Counters
+		FILE: Number of bytes read=0
+		FILE: Number of bytes written=460856
+		FILE: Number of read operations=0
+		FILE: Number of large read operations=0
+		FILE: Number of write operations=0
+		HDFS: Number of bytes read=426
+		HDFS: Number of bytes written=555
+		HDFS: Number of read operations=16
+		HDFS: Number of large read operations=0
+		HDFS: Number of write operations=8
+	Job Counters 
+		Launched map tasks=4
+		Other local map tasks=4
+		Total time spent by all maps in occupied slots (ms)=86765
+		Total time spent by all reduces in occupied slots (ms)=0
+		Total time spent by all map tasks (ms)=86765
+		Total vcore-seconds taken by all map tasks=86765
+		Total megabyte-seconds taken by all map tasks=88847360
+	Map-Reduce Framework
+		Map input records=4
+		Map output records=10
+		Input split bytes=426
+		Spilled Records=0
+		Failed Shuffles=0
+		Merged Map outputs=0
+		GC time elapsed (ms)=849
+		CPU time spent (ms)=4230
+		Physical memory (bytes) snapshot=398036992
+		Virtual memory (bytes) snapshot=3905155072
+		Total committed heap usage (bytes)=95420416
+	File Input Format Counters 
+		Bytes Read=0
+	File Output Format Counters 
+		Bytes Written=555
+16/06/18 22:33:56 INFO mapreduce.ImportJobBase: Transferred 555 bytes in 47.6775 seconds (11.6407 bytes/sec)
+16/06/18 22:33:56 INFO mapreduce.ImportJobBase: Retrieved 10 records.
+
+[hduser@Inceptez ~]$ hadoop fs -ls -R;
+drwxr-xr-x   - hduser supergroup          0 2016-06-18 22:33 Employee
+-rw-r--r--   1 hduser supergroup          0 2016-06-18 22:33 Employee/_SUCCESS
+-rw-r--r--   1 hduser supergroup         38 2016-06-18 22:32 Employee/part-m-00000
+-rw-r--r--   1 hduser supergroup         40 2016-06-18 22:32 Employee/part-m-00001
+-rw-r--r--   1 hduser supergroup         39 2016-06-18 22:32 Employee/part-m-00002
+-rw-r--r--   1 hduser supergroup         41 2016-06-18 22:32 Employee/part-m-00003
+-rw-r--r--   1 hduser supergroup         41 2016-06-18 22:32 Employee/part-m-00004
+drwxr-xr-x   - hduser supergroup          0 2016-06-18 22:33 customer
+-rw-r--r--   1 hduser supergroup          0 2016-06-18 22:33 customer/_SUCCESS
+-rw-r--r--   1 hduser supergroup        158 2016-06-18 22:33 customer/part-m-00000
+-rw-r--r--   1 hduser supergroup        110 2016-06-18 22:33 customer/part-m-00001
+-rw-r--r--   1 hduser supergroup        118 2016-06-18 22:33 customer/part-m-00002
+-rw-r--r--   1 hduser supergroup        169 2016-06-18 22:33 customer/part-m-00003
+
+[hduser@Inceptez ~]$ hdfs dfs -cat Employee/part-m-00000
+1,Deepak,75000.00,2016-06-13 11:36:27
+[hduser@Inceptez ~]$ hdfs dfs -cat Employee/part-m-00001
+2,Sachin,1500000.00,2016-06-13 11:37:51
+[hduser@Inceptez ~]$ hdfs dfs -cat Employee/part-m-00002
+3,Messi,2500000.00,2016-06-13 11:38:04
+[hduser@Inceptez ~]$ hdfs dfs -cat Employee/part-m-00003
+4,Federer,2000000.00,2016-06-13 12:18:19
+[hduser@Inceptez ~]$ hdfs dfs -cat Employee/part-m-00004
+5,Ronaldo,2750000.00,2016-06-18 02:58:31
+
+[hduser@Inceptez ~]$ hdfs dfs -cat customer/part-m-00000
+1,Arun,Kumar,chennai,33,2015.00,0000-00-00 00:00:00
+2,srini,vasan,chennai,33,2015.00,0000-00-00 00:00:00
+3,vasu,devan,banglore,39,2015.00,0000-00-00 00:00:00
+[hduser@Inceptez ~]$ hdfs dfs -cat customer/part-m-00001
+4,mohamed,imran,hyderabad,33,2015.00,0000-00-00 00:00:00
+5,arun,basker,chennai,23,2015.00,0000-00-00 00:00:00
+[hduser@Inceptez ~]$ hdfs dfs -cat customer/part-m-00002
+6,ramesh,babu,manglore,39,2015.00,0000-00-00 00:00:00
+7,Deepak Kumar,Mahadevan,chennai,27,2016.00,0000-00-00 00:00:00
+[hduser@Inceptez ~]$ hdfs dfs -cat customer/part-m-00003
+8,Lionel,Messi,Barcelona,28,2016.00,0000-00-00 00:00:00
+9,Christiano,Ronaldo,Madrid,31,2016.00,0000-00-00 00:00:00
+10,Wayne,Rooney,ManUtd,30,2016.00,0000-00-00 00:00:00
+
+[hduser@Inceptez ~]$ hdfs dfs -mkdir import_all/DKMDB01
+[hduser@Inceptez ~]$ hdfs dfs -mv Employee import_all/DKMDB01
+[hduser@Inceptez ~]$ hdfs dfs -mv customer import_all/DKMDB01
+[hduser@Inceptez ~]$ hdfs dfs -ls -R import_all
+drwxr-xr-x   - hduser supergroup          0 2016-06-18 22:41 import_all/DKMDB01
+drwxr-xr-x   - hduser supergroup          0 2016-06-18 22:33 import_all/DKMDB01/Employee
+-rw-r--r--   1 hduser supergroup          0 2016-06-18 22:33 import_all/DKMDB01/Employee/_SUCCESS
+-rw-r--r--   1 hduser supergroup         38 2016-06-18 22:32 import_all/DKMDB01/Employee/part-m-00000
+-rw-r--r--   1 hduser supergroup         40 2016-06-18 22:32 import_all/DKMDB01/Employee/part-m-00001
+-rw-r--r--   1 hduser supergroup         39 2016-06-18 22:32 import_all/DKMDB01/Employee/part-m-00002
+-rw-r--r--   1 hduser supergroup         41 2016-06-18 22:32 import_all/DKMDB01/Employee/part-m-00003
+-rw-r--r--   1 hduser supergroup         41 2016-06-18 22:32 import_all/DKMDB01/Employee/part-m-00004
+drwxr-xr-x   - hduser supergroup          0 2016-06-18 22:33 import_all/DKMDB01/customer
+-rw-r--r--   1 hduser supergroup          0 2016-06-18 22:33 import_all/DKMDB01/customer/_SUCCESS
+-rw-r--r--   1 hduser supergroup        158 2016-06-18 22:33 import_all/DKMDB01/customer/part-m-00000
+-rw-r--r--   1 hduser supergroup        110 2016-06-18 22:33 import_all/DKMDB01/customer/part-m-00001
+-rw-r--r--   1 hduser supergroup        118 2016-06-18 22:33 import_all/DKMDB01/customer/part-m-00002
+-rw-r--r--   1 hduser supergroup        169 2016-06-18 22:33 import_all/DKMDB01/customer/part-m-00003
+drwxr-xr-x   - hduser supergroup          0 2016-06-18 21:54 import_all/test
+drwxr-xr-x   - hduser supergroup          0 2016-06-18 21:46 import_all/test/Employee
+-rw-r--r--   1 hduser supergroup          0 2016-06-18 21:46 import_all/test/Employee/_SUCCESS
+-rw-r--r--   1 hduser supergroup        199 2016-06-18 21:45 import_all/test/Employee/part-m-00000
+drwxr-xr-x   - hduser supergroup          0 2016-06-18 21:46 import_all/test/customer
+-rw-r--r--   1 hduser supergroup          0 2016-06-18 21:46 import_all/test/customer/_SUCCESS
+-rw-r--r--   1 hduser supergroup        453 2016-06-18 21:46 import_all/test/customer/part-m-00000
+drwxr-xr-x   - hduser supergroup          0 2016-06-18 21:46 import_all/test/customer1
+-rw-r--r--   1 hduser supergroup          0 2016-06-18 21:46 import_all/test/customer1/_SUCCESS
+-rw-r--r--   1 hduser supergroup        453 2016-06-18 21:46 import_all/test/customer1/part-m-00000
+
+====================================================================================================
+mysql> DROP database Deepak_DB01;
+Query OK, 2 rows affected (0.39 sec)
+
+mysql> create table DKMDB01.Emp_team (Team_id int(5) not null, Team_name varchar(25) not null default ' ', Emp_id int(11) not null);
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> desc Emp_team;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| Team_id   | int(5)      | NO   |     | NULL    |       |
+| Team_name | varchar(25) | NO   |     |         |       |
+| Emp_id    | int(11)     | NO   |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> select * from Emp_team;
++---------+-------------------+--------+
+| Team_id | Team_name         | Emp_id |
++---------+-------------------+--------+
+|       1 | Manchester United |      1 |
+|       2 | Team India        |      1 |
+|       2 | Team India        |      2 |
+|       3 | Barcelona         |      3 |
+|       4 | Switzerland       |      4 |
+|       5 | Real Madrid       |      5 |
+|       6 | Argentina         |      3 |
+|       7 | Portugal          |      5 |
+|       8 | Spain             |      6 |
+|       1 | Manchester United |      7 |
++---------+-------------------+--------+
+10 rows in set (0.00 sec)
+
+[hduser@Inceptez ~]$ sqoop import --connect jdbc:mysql://localhost/DKMDB01 --username root --P --direct --query 'select a.Emp_id, a.Emp_name, b.Team_name where a.Emp_id = b.Emp_id';
+Enter password: 
+Must specify destination with --target-dir. 
+Try --help for usage instructions.
+
+[hduser@Inceptez ~]$ sqoop import --connect jdbc:mysql://localhost/DKMDB01 --username root --P --direct --query 'select a.Emp_id, a.Emp_name, b.Team_name where a.Emp_id = b.Emp_id' --target-dir join_query_op;
+Enter password: 
+When importing query results in parallel, you must specify --split-by.
+Try --help for usage instructions.
+
+[hduser@Inceptez ~]$ sqoop import --connect jdbc:mysql://localhost/DKMDB01 --username root --P --direct --query 'select a.Emp_id, a.Emp_name, b.Team_name where a.Emp_id = b.Emp_id' --split-by a.Emp_id --target-dir join_query_op;
+Enter password: 
+16/06/18 23:28:34 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
+16/06/18 23:28:34 INFO tool.CodeGenTool: Beginning code generation
+16/06/18 23:28:34 ERROR tool.ImportTool: Encountered IOException running import job: java.io.IOException: Query [select a.Emp_id, a.Emp_name, b.Team_name where a.Emp_id = b.Emp_id] must contain '$CONDITIONS' in WHERE clause.
+	at org.apache.sqoop.manager.ConnManager.getColumnTypes(ConnManager.java:300)
+	at org.apache.sqoop.orm.ClassWriter.getColumnTypes(ClassWriter.java:1773)
+	at org.apache.sqoop.orm.ClassWriter.generate(ClassWriter.java:1578)
+	at org.apache.sqoop.tool.CodeGenTool.generateORM(CodeGenTool.java:96)
+	at org.apache.sqoop.tool.ImportTool.importTable(ImportTool.java:478)
+	at org.apache.sqoop.tool.ImportTool.run(ImportTool.java:601)
+	at org.apache.sqoop.Sqoop.run(Sqoop.java:143)
+	at org.apache.hadoop.util.ToolRunner.run(ToolRunner.java:70)
+	at org.apache.sqoop.Sqoop.runSqoop(Sqoop.java:179)
+	at org.apache.sqoop.Sqoop.runTool(Sqoop.java:218)
+	at org.apache.sqoop.Sqoop.runTool(Sqoop.java:227)
+	at org.apache.sqoop.Sqoop.main(Sqoop.java:236)
+
+[hduser@Inceptez ~]$ sqoop import --connect jdbc:mysql://localhost/DKMDB01 --username root --P --direct --query 'select a.Emp_id, a.Emp_name, b.Team_name from Employee a, Emp_team b where a.Emp_id = b.Emp_id and $CONDITIONS' --split-by a.Emp_id --target-dir join_query_op;
+Enter password: 
+16/06/18 23:32:02 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
+16/06/18 23:32:02 INFO tool.CodeGenTool: Beginning code generation
+16/06/18 23:32:03 INFO manager.SqlManager: Executing SQL statement: select a.Emp_id, a.Emp_name, b.Team_name from Employee a, Emp_team b where a.Emp_id = b.Emp_id and  (1 = 0) 
+16/06/18 23:32:03 INFO manager.SqlManager: Executing SQL statement: select a.Emp_id, a.Emp_name, b.Team_name from Employee a, Emp_team b where a.Emp_id = b.Emp_id and  (1 = 0) 
+16/06/18 23:32:03 INFO manager.SqlManager: Executing SQL statement: select a.Emp_id, a.Emp_name, b.Team_name from Employee a, Emp_team b where a.Emp_id = b.Emp_id and  (1 = 0) 
+16/06/18 23:32:03 INFO orm.CompilationManager: HADOOP_MAPRED_HOME is /usr/local/hadoop
+Note: /tmp/sqoop-hduser/compile/d6b0e61d429819038e36ed7de9eddcc1/QueryResult.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+16/06/18 23:32:10 INFO orm.CompilationManager: Writing jar file: /tmp/sqoop-hduser/compile/d6b0e61d429819038e36ed7de9eddcc1/QueryResult.jar
+16/06/18 23:32:10 INFO mapreduce.ImportJobBase: Beginning query import.
+16/06/18 23:32:12 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+16/06/18 23:32:12 INFO Configuration.deprecation: mapred.jar is deprecated. Instead, use mapreduce.job.jar
+16/06/18 23:32:14 INFO Configuration.deprecation: mapred.map.tasks is deprecated. Instead, use mapreduce.job.maps
+16/06/18 23:32:15 INFO client.RMProxy: Connecting to ResourceManager at /0.0.0.0:8032
+16/06/18 23:32:19 INFO db.DBInputFormat: Using read commited transaction isolation
+16/06/18 23:32:19 INFO db.DataDrivenDBInputFormat: BoundingValsQuery: SELECT MIN(t1.Emp_id), MAX(t1.Emp_id) FROM (select a.Emp_id, a.Emp_name, b.Team_name from Employee a, Emp_team b where a.Emp_id = b.Emp_id and  (1 = 1) ) AS t1
+16/06/18 23:32:19 INFO mapreduce.JobSubmitter: number of splits:5
+16/06/18 23:32:20 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1466257336502_0007
+16/06/18 23:32:21 INFO impl.YarnClientImpl: Submitted application application_1466257336502_0007
+16/06/18 23:32:21 INFO mapreduce.Job: The url to track the job: http://Inceptez:8088/proxy/application_1466257336502_0007/
+16/06/18 23:32:21 INFO mapreduce.Job: Running job: job_1466257336502_0007
+16/06/18 23:32:41 INFO mapreduce.Job: Job job_1466257336502_0007 running in uber mode : false
+16/06/18 23:32:41 INFO mapreduce.Job:  map 0% reduce 0%
+16/06/18 23:34:17 INFO mapreduce.Job:  map 100% reduce 0%
+16/06/18 23:34:20 INFO mapreduce.Job: Job job_1466257336502_0007 completed successfully
+16/06/18 23:34:23 INFO mapreduce.Job: Counters: 30
+	File System Counters
+		FILE: Number of bytes read=0
+		FILE: Number of bytes written=573830
+		FILE: Number of read operations=0
+		FILE: Number of large read operations=0
+		FILE: Number of write operations=0
+		HDFS: Number of bytes read=531
+		HDFS: Number of bytes written=166
+		HDFS: Number of read operations=20
+		HDFS: Number of large read operations=0
+		HDFS: Number of write operations=10
+	Job Counters 
+		Launched map tasks=5
+		Other local map tasks=5
+		Total time spent by all maps in occupied slots (ms)=459102
+		Total time spent by all reduces in occupied slots (ms)=0
+		Total time spent by all map tasks (ms)=459102
+		Total vcore-seconds taken by all map tasks=459102
+		Total megabyte-seconds taken by all map tasks=470120448
+	Map-Reduce Framework
+		Map input records=8
+		Map output records=8
+		Input split bytes=531
+		Spilled Records=0
+		Failed Shuffles=0
+		Merged Map outputs=0
+		GC time elapsed (ms)=4807
+		CPU time spent (ms)=12940
+		Physical memory (bytes) snapshot=461045760
+		Virtual memory (bytes) snapshot=4878237696
+		Total committed heap usage (bytes)=119275520
+	File Input Format Counters 
+		Bytes Read=0
+	File Output Format Counters 
+		Bytes Written=166
+16/06/18 23:34:23 INFO mapreduce.ImportJobBase: Transferred 166 bytes in 128.3722 seconds (1.2931 bytes/sec)
+16/06/18 23:34:23 INFO mapreduce.ImportJobBase: Retrieved 8 records.
+
+[hduser@Inceptez ~]$ hadoop fs -ls -R join_query_op
+-rw-r--r--   1 hduser supergroup          0 2016-06-18 23:34 join_query_op/_SUCCESS
+-rw-r--r--   1 hduser supergroup         47 2016-06-18 23:34 join_query_op/part-m-00000
+-rw-r--r--   1 hduser supergroup         20 2016-06-18 23:34 join_query_op/part-m-00001
+-rw-r--r--   1 hduser supergroup         36 2016-06-18 23:34 join_query_op/part-m-00002
+-rw-r--r--   1 hduser supergroup         22 2016-06-18 23:34 join_query_op/part-m-00003
+-rw-r--r--   1 hduser supergroup         41 2016-06-18 23:34 join_query_op/part-m-00004
+
+[hduser@Inceptez ~]$ hadoop fs -cat join_query_op/p*00000
+1,Deepak,Manchester United
+1,Deepak,Team India
+[hduser@Inceptez ~]$ hadoop fs -cat join_query_op/p*00001
+2,Sachin,Team India
+[hduser@Inceptez ~]$ hadoop fs -cat join_query_op/p*00002
+3,Messi,Barcelona
+3,Messi,Argentina
+[hduser@Inceptez ~]$ hadoop fs -cat join_query_op/p*00003
+4,Federer,Switzerland
+[hduser@Inceptez ~]$ hadoop fs -cat join_query_op/p*00004
+5,Ronaldo,Real Madrid
+5,Ronaldo,Portugal
+
+====================================================================================================
+[hduser@Inceptez ~]$ sqoop import --connect jdbc:mysql://localhost/DKMDB01 --username root --P --direct --query 'select a.Emp_id, a.Emp_name, b.Team_name from Employee a, Emp_team b where a.Emp_id = b.Emp_id and $CONDITIONS' --boundary-query 'select 3, max(a.Emp_id) from Employee a' --num-mappers 2 --split-by a.Emp_id --target-dir join_query_op1;
+Enter password: 
+16/06/18 23:44:21 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
+16/06/18 23:44:21 INFO tool.CodeGenTool: Beginning code generation
+16/06/18 23:44:22 INFO manager.SqlManager: Executing SQL statement: select a.Emp_id, a.Emp_name, b.Team_name from Employee a, Emp_team b where a.Emp_id = b.Emp_id and  (1 = 0) 
+16/06/18 23:44:22 INFO manager.SqlManager: Executing SQL statement: select a.Emp_id, a.Emp_name, b.Team_name from Employee a, Emp_team b where a.Emp_id = b.Emp_id and  (1 = 0) 
+16/06/18 23:44:22 INFO manager.SqlManager: Executing SQL statement: select a.Emp_id, a.Emp_name, b.Team_name from Employee a, Emp_team b where a.Emp_id = b.Emp_id and  (1 = 0) 
+16/06/18 23:44:22 INFO orm.CompilationManager: HADOOP_MAPRED_HOME is /usr/local/hadoop
+Note: /tmp/sqoop-hduser/compile/4979ba98e0b02b19ced05d9c44e04351/QueryResult.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+16/06/18 23:44:30 INFO orm.CompilationManager: Writing jar file: /tmp/sqoop-hduser/compile/4979ba98e0b02b19ced05d9c44e04351/QueryResult.jar
+16/06/18 23:44:30 INFO mapreduce.ImportJobBase: Beginning query import.
+16/06/18 23:44:31 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+16/06/18 23:44:32 INFO Configuration.deprecation: mapred.jar is deprecated. Instead, use mapreduce.job.jar
+16/06/18 23:44:34 INFO Configuration.deprecation: mapred.map.tasks is deprecated. Instead, use mapreduce.job.maps
+16/06/18 23:44:35 INFO client.RMProxy: Connecting to ResourceManager at /0.0.0.0:8032
+16/06/18 23:44:39 INFO db.DBInputFormat: Using read commited transaction isolation
+16/06/18 23:44:39 INFO db.DataDrivenDBInputFormat: BoundingValsQuery: select 3, max(a.Emp_id) from Employee a
+16/06/18 23:44:39 INFO mapreduce.JobSubmitter: number of splits:3
+16/06/18 23:44:40 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1466257336502_0008
+16/06/18 23:44:41 INFO impl.YarnClientImpl: Submitted application application_1466257336502_0008
+16/06/18 23:44:42 INFO mapreduce.Job: The url to track the job: http://Inceptez:8088/proxy/application_1466257336502_0008/
+16/06/18 23:44:42 INFO mapreduce.Job: Running job: job_1466257336502_0008
+16/06/18 23:45:01 INFO mapreduce.Job: Job job_1466257336502_0008 running in uber mode : false
+16/06/18 23:45:01 INFO mapreduce.Job:  map 0% reduce 0%
+16/06/18 23:45:43 INFO mapreduce.Job:  map 33% reduce 0%
+16/06/18 23:45:44 INFO mapreduce.Job:  map 67% reduce 0%
+16/06/18 23:45:45 INFO mapreduce.Job:  map 100% reduce 0%
+16/06/18 23:45:45 INFO mapreduce.Job: Job job_1466257336502_0008 completed successfully
+16/06/18 23:45:45 INFO mapreduce.Job: Counters: 30
+	File System Counters
+		FILE: Number of bytes read=0
+		FILE: Number of bytes written=343941
+		FILE: Number of read operations=0
+		FILE: Number of large read operations=0
+		FILE: Number of write operations=0
+		HDFS: Number of bytes read=319
+		HDFS: Number of bytes written=99
+		HDFS: Number of read operations=12
+		HDFS: Number of large read operations=0
+		HDFS: Number of write operations=6
+	Job Counters 
+		Launched map tasks=3
+		Other local map tasks=3
+		Total time spent by all maps in occupied slots (ms)=117355
+		Total time spent by all reduces in occupied slots (ms)=0
+		Total time spent by all map tasks (ms)=117355
+		Total vcore-seconds taken by all map tasks=117355
+		Total megabyte-seconds taken by all map tasks=120171520
+	Map-Reduce Framework
+		Map input records=5
+		Map output records=5
+		Input split bytes=319
+		Spilled Records=0
+		Failed Shuffles=0
+		Merged Map outputs=0
+		GC time elapsed (ms)=1266
+		CPU time spent (ms)=6900
+		Physical memory (bytes) snapshot=301961216
+		Virtual memory (bytes) snapshot=2926387200
+		Total committed heap usage (bytes)=71565312
+	File Input Format Counters 
+		Bytes Read=0
+	File Output Format Counters 
+		Bytes Written=99
+16/06/18 23:45:45 INFO mapreduce.ImportJobBase: Transferred 99 bytes in 70.6531 seconds (1.4012 bytes/sec)
+16/06/18 23:45:45 INFO mapreduce.ImportJobBase: Retrieved 5 records.
+
+[hduser@Inceptez ~]$ hadoop fs -ls -R join_query_*1
+-rw-r--r--   1 hduser supergroup          0 2016-06-18 23:45 join_query_op1/_SUCCESS
+-rw-r--r--   1 hduser supergroup         36 2016-06-18 23:45 join_query_op1/part-m-00000
+-rw-r--r--   1 hduser supergroup         22 2016-06-18 23:45 join_query_op1/part-m-00001
+-rw-r--r--   1 hduser supergroup         41 2016-06-18 23:45 join_query_op1/part-m-00002
+[hduser@Inceptez ~]$ hadoop fs -cat join_query_op1/p*00000
+3,Messi,Barcelona
+3,Messi,Argentina
+[hduser@Inceptez ~]$ hadoop fs -cat join_query_op1/p*00001
+4,Federer,Switzerland
+[hduser@Inceptez ~]$ hadoop fs -cat join_query_op1/p*00002
+5,Ronaldo,Real Madrid
+5,Ronaldo,Portugal
+
+====================================================================================================

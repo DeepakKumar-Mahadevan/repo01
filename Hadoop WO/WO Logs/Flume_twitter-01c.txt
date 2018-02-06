@@ -1,0 +1,310 @@
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/usr/local/flume/lib/slf4j-log4j12-1.6.1.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/usr/local/hbase/lib/slf4j-log4j12-1.6.4.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+16/08/16 22:24:18 INFO node.PollingPropertiesFileConfigurationProvider: Configuration provider starting
+16/08/16 22:24:18 INFO node.PollingPropertiesFileConfigurationProvider: Reloading configuration file:/usr/local/flume/conf/twitter.conf
+16/08/16 22:24:18 INFO conf.FlumeConfiguration: Processing:HDFS
+16/08/16 22:24:18 INFO conf.FlumeConfiguration: Processing:HDFS
+16/08/16 22:24:18 INFO conf.FlumeConfiguration: Processing:HDFS
+16/08/16 22:24:18 INFO conf.FlumeConfiguration: Processing:HDFS
+16/08/16 22:24:18 INFO conf.FlumeConfiguration: Added sinks: HDFS Agent: TwitterAgent
+16/08/16 22:24:18 INFO conf.FlumeConfiguration: Processing:HDFS
+16/08/16 22:24:18 INFO conf.FlumeConfiguration: Processing:HDFS
+16/08/16 22:24:18 INFO conf.FlumeConfiguration: Processing:HDFS
+16/08/16 22:24:18 INFO conf.FlumeConfiguration: Processing:HDFS
+16/08/16 22:24:18 INFO conf.FlumeConfiguration: Processing:HDFS
+16/08/16 22:24:18 INFO conf.FlumeConfiguration: Processing:HDFS
+16/08/16 22:24:18 INFO conf.FlumeConfiguration: Post-validation flume configuration contains configuration for agents: [TwitterAgent]
+16/08/16 22:24:18 INFO node.AbstractConfigurationProvider: Creating channels
+16/08/16 22:24:18 INFO channel.DefaultChannelFactory: Creating instance of channel MemChannel type memory
+16/08/16 22:24:18 INFO node.AbstractConfigurationProvider: Created channel MemChannel
+16/08/16 22:24:18 INFO source.DefaultSourceFactory: Creating instance of source Twitter, type org.apache.flume.source.twitter.TwitterSource
+16/08/16 22:24:18 INFO twitter.TwitterSource: Consumer Key:        'Z6ZNPyDA6deV8KYMskIhEM4Ze'
+16/08/16 22:24:18 INFO twitter.TwitterSource: Consumer Secret:     'SNtknAEpzEnYv4wMebQF1PseaGlqUq58kUHvdOc8IZN45miP93'
+16/08/16 22:24:18 INFO twitter.TwitterSource: Access Token:        '145580641-rpfUsxXoSfnadFdTdX9BNTcJ9YHthVwumkGuaDR2'
+16/08/16 22:24:18 INFO twitter.TwitterSource: Access Token Secret: 'VPV2gzkgN4xXqsutBj0WPuILazG9b3GTkqviuQXfI6SlU'
+16/08/16 22:24:18 INFO sink.DefaultSinkFactory: Creating instance of sink: HDFS, type: hdfs
+16/08/16 22:24:19 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+16/08/16 22:24:19 INFO hdfs.HDFSEventSink: Hadoop Security enabled: false
+16/08/16 22:24:19 INFO node.AbstractConfigurationProvider: Channel MemChannel connected to [Twitter, HDFS]
+16/08/16 22:24:19 INFO node.Application: Starting new configuration:{ sourceRunners:{Twitter=EventDrivenSourceRunner: { source:org.apache.flume.source.twitter.TwitterSource{name:Twitter,state:IDLE} }} sinkRunners:{HDFS=SinkRunner: { policy:org.apache.flume.sink.DefaultSinkProcessor@79080803 counterGroup:{ name:null counters:{} } }} channels:{MemChannel=org.apache.flume.channel.MemoryChannel{name: MemChannel}} }
+16/08/16 22:24:19 INFO node.Application: Starting Channel MemChannel
+16/08/16 22:24:19 INFO instrumentation.MonitoredCounterGroup: Monitoried counter group for type: CHANNEL, name: MemChannel, registered successfully.
+16/08/16 22:24:19 INFO instrumentation.MonitoredCounterGroup: Component type: CHANNEL, name: MemChannel started
+16/08/16 22:24:19 INFO node.Application: Starting Sink HDFS
+16/08/16 22:24:19 INFO node.Application: Starting Source Twitter
+16/08/16 22:24:19 INFO twitter.TwitterSource: Starting twitter source org.apache.flume.source.twitter.TwitterSource{name:Twitter,state:IDLE} ...
+16/08/16 22:24:19 INFO instrumentation.MonitoredCounterGroup: Monitoried counter group for type: SINK, name: HDFS, registered successfully.
+16/08/16 22:24:19 INFO instrumentation.MonitoredCounterGroup: Component type: SINK, name: HDFS started
+16/08/16 22:24:19 INFO twitter.TwitterSource: Twitter source Twitter started.
+16/08/16 22:24:19 INFO twitter4j.TwitterStreamImpl: Establishing connection.
+16/08/16 22:24:22 INFO twitter4j.TwitterStreamImpl: Connection established.
+16/08/16 22:24:22 INFO twitter4j.TwitterStreamImpl: Receiving status stream.
+16/08/16 22:24:22 INFO hdfs.HDFSDataStream: Serializer = TEXT, UseRawLocalFileSystem = false
+16/08/16 22:24:22 INFO hdfs.BucketWriter: Creating hdfs://localhost:54310/user/hduser/twitter_data//DKM_Twitter_App01-.1471366462330.tmp
+16/08/16 22:24:25 INFO twitter.TwitterSource: Processed 100 docs
+16/08/16 22:24:27 INFO twitter.TwitterSource: Processed 200 docs
+16/08/16 22:24:29 INFO twitter.TwitterSource: Processed 300 docs
+16/08/16 22:24:31 INFO twitter.TwitterSource: Processed 400 docs
+16/08/16 22:24:33 INFO hdfs.BucketWriter: Renaming hdfs://localhost:54310/user/hduser/twitter_data/DKM_Twitter_App01-.1471366462330.tmp to hdfs://localhost:54310/user/hduser/twitter_data/DKM_Twitter_App01-.1471366462330
+16/08/16 22:24:33 INFO hdfs.BucketWriter: Creating hdfs://localhost:54310/user/hduser/twitter_data//DKM_Twitter_App01-.1471366462331.tmp
+16/08/16 22:24:34 INFO twitter.TwitterSource: Processed 500 docs
+16/08/16 22:24:36 INFO twitter.TwitterSource: Processed 600 docs
+16/08/16 22:24:38 INFO twitter.TwitterSource: Processed 700 docs
+16/08/16 22:24:40 INFO twitter.TwitterSource: Processed 800 docs
+16/08/16 22:24:43 INFO twitter.TwitterSource: Processed 900 docs
+16/08/16 22:24:43 INFO hdfs.BucketWriter: Renaming hdfs://localhost:54310/user/hduser/twitter_data/DKM_Twitter_App01-.1471366462331.tmp to hdfs://localhost:54310/user/hduser/twitter_data/DKM_Twitter_App01-.1471366462331
+16/08/16 22:24:44 INFO hdfs.BucketWriter: Creating hdfs://localhost:54310/user/hduser/twitter_data//DKM_Twitter_App01-.1471366462332.tmp
+16/08/16 22:24:45 INFO twitter.TwitterSource: Processed 1,000 docs
+16/08/16 22:24:45 INFO twitter.TwitterSource: Total docs indexed: 1,000, total skipped docs: 0
+16/08/16 22:24:45 INFO twitter.TwitterSource:     40 docs/second
+16/08/16 22:24:45 INFO twitter.TwitterSource: Run took 25 seconds and processed:
+16/08/16 22:24:45 INFO twitter.TwitterSource:     0.011 MB/sec sent to index
+16/08/16 22:24:45 INFO twitter.TwitterSource:     0.265 MB text sent to index
+16/08/16 22:24:45 INFO twitter.TwitterSource: There were 0 exceptions ignored: 
+16/08/16 22:24:47 INFO twitter.TwitterSource: Processed 1,100 docs
+16/08/16 22:24:49 INFO twitter.TwitterSource: Processed 1,200 docs
+16/08/16 22:24:51 INFO twitter.TwitterSource: Processed 1,300 docs
+16/08/16 22:24:53 INFO twitter.TwitterSource: Processed 1,400 docs
+16/08/16 22:24:54 INFO hdfs.BucketWriter: Renaming hdfs://localhost:54310/user/hduser/twitter_data/DKM_Twitter_App01-.1471366462332.tmp to hdfs://localhost:54310/user/hduser/twitter_data/DKM_Twitter_App01-.1471366462332
+16/08/16 22:24:54 INFO hdfs.BucketWriter: Creating hdfs://localhost:54310/user/hduser/twitter_data//DKM_Twitter_App01-.1471366462333.tmp
+16/08/16 22:24:56 INFO twitter.TwitterSource: Processed 1,500 docs
+16/08/16 22:24:57 INFO twitter.TwitterSource: Processed 1,600 docs
+16/08/16 22:25:00 INFO twitter.TwitterSource: Processed 1,700 docs
+16/08/16 22:25:02 INFO twitter.TwitterSource: Processed 1,800 docs
+16/08/16 22:25:04 INFO twitter.TwitterSource: Processed 1,900 docs
+16/08/16 22:25:04 INFO hdfs.BucketWriter: Renaming hdfs://localhost:54310/user/hduser/twitter_data/DKM_Twitter_App01-.1471366462333.tmp to hdfs://localhost:54310/user/hduser/twitter_data/DKM_Twitter_App01-.1471366462333
+16/08/16 22:25:05 INFO hdfs.BucketWriter: Creating hdfs://localhost:54310/user/hduser/twitter_data//DKM_Twitter_App01-.1471366462334.tmp
+16/08/16 22:25:06 INFO twitter.TwitterSource: Processed 2,000 docs
+16/08/16 22:25:06 INFO twitter.TwitterSource: Total docs indexed: 2,000, total skipped docs: 0
+16/08/16 22:25:06 INFO twitter.TwitterSource:     43 docs/second
+16/08/16 22:25:06 INFO twitter.TwitterSource: Run took 46 seconds and processed:
+16/08/16 22:25:06 INFO twitter.TwitterSource:     0.011 MB/sec sent to index
+16/08/16 22:25:06 INFO twitter.TwitterSource:     0.526 MB text sent to index
+16/08/16 22:25:06 INFO twitter.TwitterSource: There were 0 exceptions ignored: 
+16/08/16 22:25:08 INFO twitter.TwitterSource: Processed 2,100 docs
+16/08/16 22:25:10 INFO twitter.TwitterSource: Processed 2,200 docs
+16/08/16 22:25:13 INFO twitter.TwitterSource: Processed 2,300 docs
+16/08/16 22:25:15 INFO twitter.TwitterSource: Processed 2,400 docs
+16/08/16 22:25:15 INFO hdfs.BucketWriter: Renaming hdfs://localhost:54310/user/hduser/twitter_data/DKM_Twitter_App01-.1471366462334.tmp to hdfs://localhost:54310/user/hduser/twitter_data/DKM_Twitter_App01-.1471366462334
+16/08/16 22:25:16 INFO hdfs.BucketWriter: Creating hdfs://localhost:54310/user/hduser/twitter_data//DKM_Twitter_App01-.1471366462335.tmp
+16/08/16 22:25:17 INFO twitter.TwitterSource: Processed 2,500 docs
+16/08/16 22:25:19 INFO twitter.TwitterSource: Processed 2,600 docs
+16/08/16 22:25:21 INFO twitter.TwitterSource: Processed 2,700 docs
+16/08/16 22:25:23 INFO twitter.TwitterSource: Processed 2,800 docs
+16/08/16 22:25:25 INFO twitter.TwitterSource: Processed 2,900 docs
+16/08/16 22:25:26 INFO hdfs.BucketWriter: Renaming hdfs://localhost:54310/user/hduser/twitter_data/DKM_Twitter_App01-.1471366462335.tmp to hdfs://localhost:54310/user/hduser/twitter_data/DKM_Twitter_App01-.1471366462335
+16/08/16 22:25:27 INFO hdfs.BucketWriter: Creating hdfs://localhost:54310/user/hduser/twitter_data//DKM_Twitter_App01-.1471366462336.tmp
+16/08/16 22:25:27 INFO twitter.TwitterSource: Processed 3,000 docs
+16/08/16 22:25:27 INFO twitter.TwitterSource: Total docs indexed: 3,000, total skipped docs: 0
+16/08/16 22:25:27 INFO twitter.TwitterSource:     44 docs/second
+16/08/16 22:25:27 INFO twitter.TwitterSource: Run took 68 seconds and processed:
+16/08/16 22:25:27 INFO twitter.TwitterSource:     0.012 MB/sec sent to index
+16/08/16 22:25:27 INFO twitter.TwitterSource:     0.788 MB text sent to index
+16/08/16 22:25:27 INFO twitter.TwitterSource: There were 0 exceptions ignored: 
+16/08/16 22:25:29 INFO twitter.TwitterSource: Processed 3,100 docs
+16/08/16 22:25:31 INFO twitter.TwitterSource: Processed 3,200 docs
+16/08/16 22:25:33 INFO twitter.TwitterSource: Processed 3,300 docs
+16/08/16 22:25:35 INFO twitter.TwitterSource: Processed 3,400 docs
+16/08/16 22:25:37 INFO hdfs.BucketWriter: Renaming hdfs://localhost:54310/user/hduser/twitter_data/DKM_Twitter_App01-.1471366462336.tmp to hdfs://localhost:54310/user/hduser/twitter_data/DKM_Twitter_App01-.1471366462336
+16/08/16 22:25:37 INFO hdfs.BucketWriter: Creating hdfs://localhost:54310/user/hduser/twitter_data//DKM_Twitter_App01-.1471366462337.tmp
+16/08/16 22:25:37 INFO twitter.TwitterSource: Processed 3,500 docs
+16/08/16 22:25:39 INFO twitter.TwitterSource: Processed 3,600 docs
+16/08/16 22:25:41 INFO twitter.TwitterSource: Processed 3,700 docs
+16/08/16 22:25:44 INFO twitter.TwitterSource: Processed 3,800 docs
+16/08/16 22:25:46 INFO twitter.TwitterSource: Processed 3,900 docs
+16/08/16 22:25:47 INFO hdfs.BucketWriter: Renaming hdfs://localhost:54310/user/hduser/twitter_data/DKM_Twitter_App01-.1471366462337.tmp to hdfs://localhost:54310/user/hduser/twitter_data/DKM_Twitter_App01-.1471366462337
+16/08/16 22:25:47 INFO hdfs.BucketWriter: Creating hdfs://localhost:54310/user/hduser/twitter_data//DKM_Twitter_App01-.1471366462338.tmp
+16/08/16 22:25:48 INFO twitter.TwitterSource: Processed 4,000 docs
+16/08/16 22:25:48 INFO twitter.TwitterSource: Total docs indexed: 4,000, total skipped docs: 0
+16/08/16 22:25:48 INFO twitter.TwitterSource:     45 docs/second
+16/08/16 22:25:48 INFO twitter.TwitterSource: Run took 88 seconds and processed:
+16/08/16 22:25:48 INFO twitter.TwitterSource:     0.012 MB/sec sent to index
+16/08/16 22:25:48 INFO twitter.TwitterSource:     1.045 MB text sent to index
+16/08/16 22:25:48 INFO twitter.TwitterSource: There were 0 exceptions ignored: 
+16/08/16 22:25:51 INFO twitter.TwitterSource: Processed 4,100 docs
+16/08/16 22:25:53 INFO twitter.TwitterSource: Processed 4,200 docs
+16/08/16 22:25:55 INFO twitter.TwitterSource: Processed 4,300 docs
+16/08/16 22:25:57 INFO hdfs.BucketWriter: Renaming hdfs://localhost:54310/user/hduser/twitter_data/DKM_Twitter_App01-.1471366462338.tmp to hdfs://localhost:54310/user/hduser/twitter_data/DKM_Twitter_App01-.1471366462338
+16/08/16 22:25:57 INFO twitter.TwitterSource: Processed 4,400 docs
+16/08/16 22:25:58 INFO hdfs.BucketWriter: Creating hdfs://localhost:54310/user/hduser/twitter_data//DKM_Twitter_App01-.1471366462339.tmp
+16/08/16 22:26:00 INFO twitter.TwitterSource: Processed 4,500 docs
+16/08/16 22:26:02 INFO twitter.TwitterSource: Processed 4,600 docs
+16/08/16 22:26:05 INFO twitter.TwitterSource: Processed 4,700 docs
+16/08/16 22:26:07 INFO twitter.TwitterSource: Processed 4,800 docs
+16/08/16 22:26:08 INFO hdfs.BucketWriter: Renaming hdfs://localhost:54310/user/hduser/twitter_data/DKM_Twitter_App01-.1471366462339.tmp to hdfs://localhost:54310/user/hduser/twitter_data/DKM_Twitter_App01-.1471366462339
+16/08/16 22:26:08 INFO hdfs.BucketWriter: Creating hdfs://localhost:54310/user/hduser/twitter_data//DKM_Twitter_App01-.1471366462340.tmp
+16/08/16 22:26:09 INFO twitter.TwitterSource: Processed 4,900 docs
+16/08/16 22:26:11 INFO twitter.TwitterSource: Processed 5,000 docs
+16/08/16 22:26:11 INFO twitter.TwitterSource: Total docs indexed: 5,000, total skipped docs: 0
+16/08/16 22:26:11 INFO twitter.TwitterSource:     45 docs/second
+16/08/16 22:26:11 INFO twitter.TwitterSource: Run took 111 seconds and processed:
+16/08/16 22:26:11 INFO twitter.TwitterSource:     0.012 MB/sec sent to index
+16/08/16 22:26:11 INFO twitter.TwitterSource:     1.302 MB text sent to index
+16/08/16 22:26:11 INFO twitter.TwitterSource: There were 0 exceptions ignored: 
+16/08/16 22:26:13 INFO twitter.TwitterSource: Processed 5,100 docs
+16/08/16 22:26:16 INFO twitter.TwitterSource: Processed 5,200 docs
+16/08/16 22:26:18 INFO twitter.TwitterSource: Processed 5,300 docs
+16/08/16 22:26:18 INFO hdfs.BucketWriter: Renaming hdfs://localhost:54310/user/hduser/twitter_data/DKM_Twitter_App01-.1471366462340.tmp to hdfs://localhost:54310/user/hduser/twitter_data/DKM_Twitter_App01-.1471366462340
+16/08/16 22:26:19 INFO hdfs.BucketWriter: Creating hdfs://localhost:54310/user/hduser/twitter_data//DKM_Twitter_App01-.1471366462341.tmp
+16/08/16 22:26:20 INFO twitter.TwitterSource: Processed 5,400 docs
+16/08/16 22:26:23 INFO twitter.TwitterSource: Processed 5,500 docs
+16/08/16 22:26:25 INFO twitter.TwitterSource: Processed 5,600 docs
+16/08/16 22:26:27 INFO twitter.TwitterSource: Processed 5,700 docs
+16/08/16 22:26:29 INFO hdfs.BucketWriter: Renaming hdfs://localhost:54310/user/hduser/twitter_data/DKM_Twitter_App01-.1471366462341.tmp to hdfs://localhost:54310/user/hduser/twitter_data/DKM_Twitter_App01-.1471366462341
+16/08/16 22:26:29 INFO hdfs.BucketWriter: Creating hdfs://localhost:54310/user/hduser/twitter_data//DKM_Twitter_App01-.1471366462342.tmp
+16/08/16 22:26:29 INFO twitter.TwitterSource: Processed 5,800 docs
+16/08/16 22:26:31 INFO twitter.TwitterSource: Processed 5,900 docs
+16/08/16 22:26:33 INFO twitter.TwitterSource: Processed 6,000 docs
+16/08/16 22:26:33 INFO twitter.TwitterSource: Total docs indexed: 6,000, total skipped docs: 0
+16/08/16 22:26:33 INFO twitter.TwitterSource:     44 docs/second
+16/08/16 22:26:33 INFO twitter.TwitterSource: Run took 134 seconds and processed:
+16/08/16 22:26:33 INFO twitter.TwitterSource:     0.012 MB/sec sent to index
+16/08/16 22:26:33 INFO twitter.TwitterSource:     1.564 MB text sent to index
+16/08/16 22:26:33 INFO twitter.TwitterSource: There were 0 exceptions ignored: 
+16/08/16 22:26:35 INFO twitter.TwitterSource: Processed 6,100 docs
+16/08/16 22:26:38 INFO twitter.TwitterSource: Processed 6,200 docs
+16/08/16 22:26:39 INFO hdfs.BucketWriter: Renaming hdfs://localhost:54310/user/hduser/twitter_data/DKM_Twitter_App01-.1471366462342.tmp to hdfs://localhost:54310/user/hduser/twitter_data/DKM_Twitter_App01-.1471366462342
+16/08/16 22:26:39 INFO hdfs.BucketWriter: Creating hdfs://localhost:54310/user/hduser/twitter_data//DKM_Twitter_App01-.1471366462343.tmp
+16/08/16 22:26:40 INFO twitter.TwitterSource: Processed 6,300 docs
+16/08/16 22:26:42 INFO twitter.TwitterSource: Processed 6,400 docs
+16/08/16 22:26:45 INFO twitter.TwitterSource: Processed 6,500 docs
+16/08/16 22:26:47 INFO twitter.TwitterSource: Processed 6,600 docs
+16/08/16 22:26:49 INFO hdfs.BucketWriter: Renaming hdfs://localhost:54310/user/hduser/twitter_data/DKM_Twitter_App01-.1471366462343.tmp to hdfs://localhost:54310/user/hduser/twitter_data/DKM_Twitter_App01-.1471366462343
+16/08/16 22:26:49 INFO twitter.TwitterSource: Processed 6,700 docs
+16/08/16 22:26:49 INFO hdfs.BucketWriter: Creating hdfs://localhost:54310/user/hduser/twitter_data//DKM_Twitter_App01-.1471366462344.tmp
+16/08/16 22:26:51 INFO twitter.TwitterSource: Processed 6,800 docs
+16/08/16 22:26:53 INFO twitter.TwitterSource: Processed 6,900 docs
+16/08/16 22:26:55 INFO twitter.TwitterSource: Processed 7,000 docs
+16/08/16 22:26:55 INFO twitter.TwitterSource: Total docs indexed: 7,000, total skipped docs: 0
+16/08/16 22:26:55 INFO twitter.TwitterSource:     44 docs/second
+16/08/16 22:26:55 INFO twitter.TwitterSource: Run took 156 seconds and processed:
+16/08/16 22:26:55 INFO twitter.TwitterSource:     0.012 MB/sec sent to index
+16/08/16 22:26:55 INFO twitter.TwitterSource:     1.824 MB text sent to index
+16/08/16 22:26:55 INFO twitter.TwitterSource: There were 0 exceptions ignored: 
+16/08/16 22:26:57 INFO twitter.TwitterSource: Processed 7,100 docs
+16/08/16 22:27:00 INFO hdfs.BucketWriter: Renaming hdfs://localhost:54310/user/hduser/twitter_data/DKM_Twitter_App01-.1471366462344.tmp to hdfs://localhost:54310/user/hduser/twitter_data/DKM_Twitter_App01-.1471366462344
+16/08/16 22:27:00 INFO hdfs.BucketWriter: Creating hdfs://localhost:54310/user/hduser/twitter_data//DKM_Twitter_App01-.1471366462345.tmp
+16/08/16 22:27:00 INFO twitter.TwitterSource: Processed 7,200 docs
+16/08/16 22:27:02 INFO twitter.TwitterSource: Processed 7,300 docs
+16/08/16 22:27:05 INFO twitter.TwitterSource: Processed 7,400 docs
+16/08/16 22:27:07 INFO twitter.TwitterSource: Processed 7,500 docs
+16/08/16 22:27:10 INFO hdfs.BucketWriter: Renaming hdfs://localhost:54310/user/hduser/twitter_data/DKM_Twitter_App01-.1471366462345.tmp to hdfs://localhost:54310/user/hduser/twitter_data/DKM_Twitter_App01-.1471366462345
+16/08/16 22:27:10 INFO hdfs.BucketWriter: Creating hdfs://localhost:54310/user/hduser/twitter_data//DKM_Twitter_App01-.1471366462346.tmp
+16/08/16 22:27:10 INFO twitter.TwitterSource: Processed 7,600 docs
+16/08/16 22:27:12 INFO twitter.TwitterSource: Processed 7,700 docs
+16/08/16 22:27:14 INFO twitter.TwitterSource: Processed 7,800 docs
+16/08/16 22:27:17 INFO twitter.TwitterSource: Processed 7,900 docs
+16/08/16 22:27:19 INFO twitter.TwitterSource: Processed 8,000 docs
+16/08/16 22:27:19 INFO twitter.TwitterSource: Total docs indexed: 8,000, total skipped docs: 0
+16/08/16 22:27:19 INFO twitter.TwitterSource:     44 docs/second
+16/08/16 22:27:19 INFO twitter.TwitterSource: Run took 179 seconds and processed:
+16/08/16 22:27:19 INFO twitter.TwitterSource:     0.012 MB/sec sent to index
+16/08/16 22:27:19 INFO twitter.TwitterSource:     2.093 MB text sent to index
+16/08/16 22:27:19 INFO twitter.TwitterSource: There were 0 exceptions ignored: 
+16/08/16 22:27:20 INFO hdfs.BucketWriter: Renaming hdfs://localhost:54310/user/hduser/twitter_data/DKM_Twitter_App01-.1471366462346.tmp to hdfs://localhost:54310/user/hduser/twitter_data/DKM_Twitter_App01-.1471366462346
+16/08/16 22:27:21 INFO hdfs.BucketWriter: Creating hdfs://localhost:54310/user/hduser/twitter_data//DKM_Twitter_App01-.1471366462347.tmp
+16/08/16 22:27:21 INFO twitter.TwitterSource: Processed 8,100 docs
+16/08/16 22:27:24 INFO twitter.TwitterSource: Processed 8,200 docs
+16/08/16 22:27:26 INFO twitter.TwitterSource: Processed 8,300 docs
+16/08/16 22:27:28 INFO twitter.TwitterSource: Processed 8,400 docs
+16/08/16 22:27:31 INFO hdfs.BucketWriter: Renaming hdfs://localhost:54310/user/hduser/twitter_data/DKM_Twitter_App01-.1471366462347.tmp to hdfs://localhost:54310/user/hduser/twitter_data/DKM_Twitter_App01-.1471366462347
+16/08/16 22:27:31 INFO twitter.TwitterSource: Processed 8,500 docs
+16/08/16 22:27:31 INFO hdfs.BucketWriter: Creating hdfs://localhost:54310/user/hduser/twitter_data//DKM_Twitter_App01-.1471366462348.tmp
+16/08/16 22:27:33 INFO twitter.TwitterSource: Processed 8,600 docs
+16/08/16 22:27:35 INFO twitter.TwitterSource: Processed 8,700 docs
+16/08/16 22:27:37 INFO twitter.TwitterSource: Processed 8,800 docs
+16/08/16 22:27:39 INFO twitter.TwitterSource: Processed 8,900 docs
+16/08/16 22:27:41 INFO twitter.TwitterSource: Processed 9,000 docs
+16/08/16 22:27:41 INFO twitter.TwitterSource: Total docs indexed: 9,000, total skipped docs: 0
+16/08/16 22:27:41 INFO twitter.TwitterSource:     44 docs/second
+16/08/16 22:27:41 INFO twitter.TwitterSource: Run took 201 seconds and processed:
+16/08/16 22:27:41 INFO twitter.TwitterSource:     0.012 MB/sec sent to index
+16/08/16 22:27:41 INFO twitter.TwitterSource:     2.357 MB text sent to index
+16/08/16 22:27:41 INFO twitter.TwitterSource: There were 0 exceptions ignored: 
+16/08/16 22:27:41 INFO hdfs.BucketWriter: Renaming hdfs://localhost:54310/user/hduser/twitter_data/DKM_Twitter_App01-.1471366462348.tmp to hdfs://localhost:54310/user/hduser/twitter_data/DKM_Twitter_App01-.1471366462348
+16/08/16 22:27:42 INFO hdfs.BucketWriter: Creating hdfs://localhost:54310/user/hduser/twitter_data//DKM_Twitter_App01-.1471366462349.tmp
+16/08/16 22:27:43 INFO twitter.TwitterSource: Processed 9,100 docs
+16/08/16 22:27:45 INFO twitter.TwitterSource: Processed 9,200 docs
+16/08/16 22:27:47 INFO twitter.TwitterSource: Processed 9,300 docs
+16/08/16 22:27:50 INFO twitter.TwitterSource: Processed 9,400 docs
+16/08/16 22:27:52 INFO twitter.TwitterSource: Processed 9,500 docs
+16/08/16 22:27:52 INFO hdfs.BucketWriter: Renaming hdfs://localhost:54310/user/hduser/twitter_data/DKM_Twitter_App01-.1471366462349.tmp to hdfs://localhost:54310/user/hduser/twitter_data/DKM_Twitter_App01-.1471366462349
+16/08/16 22:27:53 INFO hdfs.BucketWriter: Creating hdfs://localhost:54310/user/hduser/twitter_data//DKM_Twitter_App01-.1471366462350.tmp
+16/08/16 22:27:55 INFO twitter.TwitterSource: Processed 9,600 docs
+16/08/16 22:27:57 INFO twitter.TwitterSource: Processed 9,700 docs
+16/08/16 22:27:59 INFO twitter.TwitterSource: Processed 9,800 docs
+16/08/16 22:28:02 INFO twitter.TwitterSource: Processed 9,900 docs
+16/08/16 22:28:03 INFO hdfs.BucketWriter: Renaming hdfs://localhost:54310/user/hduser/twitter_data/DKM_Twitter_App01-.1471366462350.tmp to hdfs://localhost:54310/user/hduser/twitter_data/DKM_Twitter_App01-.1471366462350
+16/08/16 22:28:03 INFO hdfs.BucketWriter: Creating hdfs://localhost:54310/user/hduser/twitter_data//DKM_Twitter_App01-.1471366462351.tmp
+16/08/16 22:28:04 INFO twitter.TwitterSource: Processed 10,000 docs
+16/08/16 22:28:04 INFO twitter.TwitterSource: Total docs indexed: 10,000, total skipped docs: 0
+16/08/16 22:28:04 INFO twitter.TwitterSource:     44 docs/second
+16/08/16 22:28:04 INFO twitter.TwitterSource: Run took 224 seconds and processed:
+16/08/16 22:28:04 INFO twitter.TwitterSource:     0.012 MB/sec sent to index
+16/08/16 22:28:04 INFO twitter.TwitterSource:     2.617 MB text sent to index
+16/08/16 22:28:04 INFO twitter.TwitterSource: There were 0 exceptions ignored: 
+^C16/08/16 22:28:05 INFO lifecycle.LifecycleSupervisor: Stopping lifecycle supervisor 10
+16/08/16 22:28:05 INFO twitter.TwitterSource: Twitter source Twitter stopping...
+16/08/16 22:28:05 INFO twitter4j.TwitterStreamImpl: Inflater has been closed
+16/08/16 22:28:05 INFO twitter.TwitterSource: Twitter source Twitter stopped.
+16/08/16 22:28:05 INFO node.PollingPropertiesFileConfigurationProvider: Configuration provider stopping
+16/08/16 22:28:05 ERROR hdfs.HDFSEventSink: process failed
+java.lang.InterruptedException: Timed out before HDFS call was made. Your hdfs.callTimeout might be set too low or HDFS calls are taking too long.
+	at org.apache.flume.sink.hdfs.BucketWriter.checkAndThrowInterruptedException(BucketWriter.java:517)
+	at org.apache.flume.sink.hdfs.BucketWriter.flush(BucketWriter.java:317)
+	at org.apache.flume.sink.hdfs.HDFSEventSink.process(HDFSEventSink.java:405)
+	at org.apache.flume.sink.DefaultSinkProcessor.process(DefaultSinkProcessor.java:68)
+	at org.apache.flume.SinkRunner$PollingRunner.run(SinkRunner.java:147)
+	at java.lang.Thread.run(Thread.java:745)
+16/08/16 22:28:05 ERROR twitter.TwitterSource: Exception while streaming tweets
+java.lang.NullPointerException: Inflater has been closed
+	at java.util.zip.Inflater.ensureOpen(Inflater.java:389)
+	at java.util.zip.Inflater.inflate(Inflater.java:257)
+	at java.util.zip.InflaterInputStream.read(InflaterInputStream.java:152)
+	at java.util.zip.GZIPInputStream.read(GZIPInputStream.java:116)
+	at sun.nio.cs.StreamDecoder.readBytes(StreamDecoder.java:283)
+	at sun.nio.cs.StreamDecoder.implRead(StreamDecoder.java:325)
+	at sun.nio.cs.StreamDecoder.read(StreamDecoder.java:177)
+	at java.io.InputStreamReader.read(InputStreamReader.java:184)
+	at java.io.BufferedReader.fill(BufferedReader.java:154)
+	at java.io.BufferedReader.readLine(BufferedReader.java:317)
+	at java.io.BufferedReader.readLine(BufferedReader.java:382)
+	at twitter4j.StatusStreamBase.handleNextElement(StatusStreamBase.java:85)
+	at twitter4j.StatusStreamImpl.next(StatusStreamImpl.java:57)
+	at twitter4j.TwitterStreamImpl$TwitterStreamConsumer.run(TwitterStreamImpl.java:478)
+16/08/16 22:28:05 ERROR flume.SinkRunner: Unable to deliver event. Exception follows.
+org.apache.flume.EventDeliveryException: java.lang.InterruptedException: Timed out before HDFS call was made. Your hdfs.callTimeout might be set too low or HDFS calls are taking too long.
+	at org.apache.flume.sink.hdfs.HDFSEventSink.process(HDFSEventSink.java:426)
+	at org.apache.flume.sink.DefaultSinkProcessor.process(DefaultSinkProcessor.java:68)
+	at org.apache.flume.SinkRunner$PollingRunner.run(SinkRunner.java:147)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.lang.InterruptedException: Timed out before HDFS call was made. Your hdfs.callTimeout might be set too low or HDFS calls are taking too long.
+	at org.apache.flume.sink.hdfs.BucketWriter.checkAndThrowInterruptedException(BucketWriter.java:517)
+	at org.apache.flume.sink.hdfs.BucketWriter.flush(BucketWriter.java:317)
+	at org.apache.flume.sink.hdfs.HDFSEventSink.process(HDFSEventSink.java:405)
+	... 3 more
+16/08/16 22:28:10 INFO hdfs.HDFSEventSink: Closing hdfs://localhost:54310/user/hduser/twitter_data//DKM_Twitter_App01-
+16/08/16 22:28:10 INFO hdfs.BucketWriter: Renaming hdfs://localhost:54310/user/hduser/twitter_data/DKM_Twitter_App01-.1471366462351.tmp to hdfs://localhost:54310/user/hduser/twitter_data/DKM_Twitter_App01-.1471366462351
+16/08/16 22:28:10 INFO instrumentation.MonitoredCounterGroup: Component type: SINK, name: HDFS stopped
+16/08/16 22:28:10 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: SINK, name: HDFS. sink.start.time == 1471366459571
+16/08/16 22:28:10 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: SINK, name: HDFS. sink.stop.time == 1471366690890
+16/08/16 22:28:10 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: SINK, name: HDFS. sink.batch.complete == 21
+16/08/16 22:28:10 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: SINK, name: HDFS. sink.batch.empty == 0
+16/08/16 22:28:10 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: SINK, name: HDFS. sink.batch.underflow == 1
+16/08/16 22:28:10 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: SINK, name: HDFS. sink.connection.closed.count == 22
+16/08/16 22:28:10 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: SINK, name: HDFS. sink.connection.creation.count == 22
+16/08/16 22:28:10 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: SINK, name: HDFS. sink.connection.failed.count == 0
+16/08/16 22:28:10 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: SINK, name: HDFS. sink.event.drain.attempt == 211
+16/08/16 22:28:10 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: SINK, name: HDFS. sink.event.drain.sucess == 210
+16/08/16 22:28:10 INFO instrumentation.MonitoredCounterGroup: Component type: CHANNEL, name: MemChannel stopped
+16/08/16 22:28:10 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: CHANNEL, name: MemChannel. channel.start.time == 1471366459566
+16/08/16 22:28:10 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: CHANNEL, name: MemChannel. channel.stop.time == 1471366690891
+16/08/16 22:28:10 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: CHANNEL, name: MemChannel. channel.capacity == 10
+16/08/16 22:28:10 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: CHANNEL, name: MemChannel. channel.current.size == 1
+16/08/16 22:28:10 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: CHANNEL, name: MemChannel. channel.event.put.attempt == 211
+16/08/16 22:28:10 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: CHANNEL, name: MemChannel. channel.event.put.success == 211
+16/08/16 22:28:10 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: CHANNEL, name: MemChannel. channel.event.take.attempt == 212
+16/08/16 22:28:10 INFO instrumentation.MonitoredCounterGroup: Shutdown Metric for type: CHANNEL, name: MemChannel. channel.event.take.success == 210
+

@@ -1,0 +1,311 @@
+hive> list jars;
+hive> CREATE TABLE hbase_table_1(key int, value string) 
+    > STORED BY 'org.apache.hadoop.hive.hbase.HBaseStorageHandler'
+    > WITH SERDEPROPERTIES ("hbase.columns.mapping" = ":key,cf1:val")
+    > TBLPROPERTIES ("hbase.table.name" = "xyz", "hbase.mapred.output.outputtable" = "xyz");
+OK
+Time taken: 14.084 seconds
+--------------------------
+hbase(main):002:0> list
+TABLE                                                                                                                                                        
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/usr/local/hbase/lib/slf4j-log4j12-1.6.4.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/usr/local/hadoop/share/hadoop/common/lib/slf4j-log4j12-1.7.5.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+2016-08-13 22:38:30,315 WARN  [main] util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Patient1                                                                                                                                                     
+PigDataHTable                                                                                                                                                
+SYSTEM.CATALOG                                                                                                                                               
+SYSTEM.FUNCTION                                                                                                                                              
+SYSTEM.SEQUENCE                                                                                                                                              
+SYSTEM.STATS                                                                                                                                                 
+TEST                                                                                                                                                         
+TEST1                                                                                                                                                        
+xyz                                                                                                                                                          
+9 row(s) in 9.8640 seconds
+
+=> ["Patient1", "PigDataHTable", "SYSTEM.CATALOG", "SYSTEM.FUNCTION", "SYSTEM.SEQUENCE", "SYSTEM.STATS", "TEST", "TEST1", "xyz"]
+hbase(main):003:0> describe xyz
+NameError: undefined local variable or method `xyz' for #<Object:0x557479ec>
+
+hbase(main):004:0> describe xyz;
+hbase(main):005:0* describe "xyz"
+NameError: undefined local variable or method `xyz' for #<Object:0x557479ec>
+
+hbase(main):006:0> describe 'xyz'
+DESCRIPTION                                                                                           ENABLED                                                
+ 'xyz', {NAME => 'cf1', DATA_BLOCK_ENCODING => 'NONE', BLOOMFILTER => 'ROW', REPLICATION_SCOPE => '0' true                                                   
+ , VERSIONS => '1', COMPRESSION => 'NONE', MIN_VERSIONS => '0', TTL => 'FOREVER', KEEP_DELETED_CELLS                                                         
+ => 'false', BLOCKSIZE => '65536', IN_MEMORY => 'false', BLOCKCACHE => 'true'}                                                                               
+1 row(s) in 0.8680 seconds
+--------------------------
+hive> insert into table hbase_table_1 values (1,'Rec 1');
+Query ID = hduser_20160813224141_e68471ed-7f8a-4925-a7e1-ababe243ee68
+Total jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks is set to 0 since there's no reduce operator
+java.lang.NoClassDefFoundError: org/cliffc/high_scale_lib/Counter
+	at org.apache.hadoop.hive.hbase.HBaseStorageHandler.configureJobConf(HBaseStorageHandler.java:470)
+	at org.apache.hadoop.hive.ql.plan.PlanUtils.configureJobConf(PlanUtils.java:856)
+	at org.apache.hadoop.hive.ql.plan.MapWork.configureJobConf(MapWork.java:544)
+	at org.apache.hadoop.hive.ql.plan.MapredWork.configureJobConf(MapredWork.java:68)
+	at org.apache.hadoop.hive.ql.exec.mr.ExecDriver.execute(ExecDriver.java:370)
+	at org.apache.hadoop.hive.ql.exec.mr.MapRedTask.execute(MapRedTask.java:137)
+	at org.apache.hadoop.hive.ql.exec.Task.executeTask(Task.java:160)
+	at org.apache.hadoop.hive.ql.exec.TaskRunner.runSequential(TaskRunner.java:85)
+	at org.apache.hadoop.hive.ql.Driver.launchTask(Driver.java:1604)
+	at org.apache.hadoop.hive.ql.Driver.execute(Driver.java:1364)
+	at org.apache.hadoop.hive.ql.Driver.runInternal(Driver.java:1177)
+	at org.apache.hadoop.hive.ql.Driver.run(Driver.java:1004)
+	at org.apache.hadoop.hive.ql.Driver.run(Driver.java:994)
+	at org.apache.hadoop.hive.cli.CliDriver.processLocalCmd(CliDriver.java:247)
+	at org.apache.hadoop.hive.cli.CliDriver.processCmd(CliDriver.java:199)
+	at org.apache.hadoop.hive.cli.CliDriver.processLine(CliDriver.java:410)
+	at org.apache.hadoop.hive.cli.CliDriver.executeDriver(CliDriver.java:783)
+	at org.apache.hadoop.hive.cli.CliDriver.run(CliDriver.java:677)
+	at org.apache.hadoop.hive.cli.CliDriver.main(CliDriver.java:616)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.apache.hadoop.util.RunJar.run(RunJar.java:221)
+	at org.apache.hadoop.util.RunJar.main(RunJar.java:136)
+Caused by: java.lang.ClassNotFoundException: org.cliffc.high_scale_lib.Counter
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:366)
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:355)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.net.URLClassLoader.findClass(URLClassLoader.java:354)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:425)
+	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:308)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:358)
+	... 25 more
+FAILED: Execution Error, return code -101 from org.apache.hadoop.hive.ql.exec.mr.MapRedTask. org/cliffc/high_scale_lib/Counter
+
+hive> insert into table hbase_table_1 select 1,'Rec 1' from dummy1 limit 1;  
+Query ID = hduser_20160813224747_eb98edfb-4601-4c23-b543-1291faaf8b28
+Total jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks determined at compile time: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+java.lang.NoClassDefFoundError: org/cliffc/high_scale_lib/Counter
+	at org.apache.hadoop.hive.hbase.HBaseStorageHandler.configureJobConf(HBaseStorageHandler.java:470)
+	at org.apache.hadoop.hive.ql.plan.PlanUtils.configureJobConf(PlanUtils.java:856)
+	at org.apache.hadoop.hive.ql.plan.ReduceWork.configureJobConf(ReduceWork.java:214)
+	at org.apache.hadoop.hive.ql.plan.MapredWork.configureJobConf(MapredWork.java:70)
+	at org.apache.hadoop.hive.ql.exec.mr.ExecDriver.execute(ExecDriver.java:370)
+	at org.apache.hadoop.hive.ql.exec.mr.MapRedTask.execute(MapRedTask.java:137)
+	at org.apache.hadoop.hive.ql.exec.Task.executeTask(Task.java:160)
+	at org.apache.hadoop.hive.ql.exec.TaskRunner.runSequential(TaskRunner.java:85)
+	at org.apache.hadoop.hive.ql.Driver.launchTask(Driver.java:1604)
+	at org.apache.hadoop.hive.ql.Driver.execute(Driver.java:1364)
+	at org.apache.hadoop.hive.ql.Driver.runInternal(Driver.java:1177)
+	at org.apache.hadoop.hive.ql.Driver.run(Driver.java:1004)
+	at org.apache.hadoop.hive.ql.Driver.run(Driver.java:994)
+	at org.apache.hadoop.hive.cli.CliDriver.processLocalCmd(CliDriver.java:247)
+	at org.apache.hadoop.hive.cli.CliDriver.processCmd(CliDriver.java:199)
+	at org.apache.hadoop.hive.cli.CliDriver.processLine(CliDriver.java:410)
+	at org.apache.hadoop.hive.cli.CliDriver.executeDriver(CliDriver.java:783)
+	at org.apache.hadoop.hive.cli.CliDriver.run(CliDriver.java:677)
+	at org.apache.hadoop.hive.cli.CliDriver.main(CliDriver.java:616)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.apache.hadoop.util.RunJar.run(RunJar.java:221)
+	at org.apache.hadoop.util.RunJar.main(RunJar.java:136)
+FAILED: Execution Error, return code -101 from org.apache.hadoop.hive.ql.exec.mr.MapRedTask. org/cliffc/high_scale_lib/Counter
+--------------------
+/usr/local/hive/lib/hive-hbase-handler-0.14.0.jar
+/usr/local/hbase/lib/hbase-common-0.98.4-hadoop2.jar
+/usr/local/hbase/lib/zookeeper-3.4.6.jar
+/usr/local/hbase/lib/guava-12.0.1.jar
+/usr/local/hbase/lib/high-scale-lib-1.1.1.jar
+
+add jar /usr/local/hive/lib/hive-hbase-handler-0.14.0.jar;
+add jar /usr/local/hbase/lib/hbase-common-0.98.4-hadoop2.jar;
+add jar /usr/local/hbase/lib/zookeeper-3.4.6.jar;
+add jar /usr/local/hbase/lib/guava-12.0.1.jar;
+add jar /usr/local/hbase/lib/high-scale-lib-1.1.1.jar;
+
+hive> add jar /usr/local/hive/lib/hive-hbase-handler-0.14.0.jar;
+Added [/usr/local/hive/lib/hive-hbase-handler-0.14.0.jar] to class path
+Added resources: [/usr/local/hive/lib/hive-hbase-handler-0.14.0.jar]
+hive> add jar /usr/local/hbase/lib/hbase-common-0.98.4-hadoop2.jar;
+Added [/usr/local/hbase/lib/hbase-common-0.98.4-hadoop2.jar] to class path
+Added resources: [/usr/local/hbase/lib/hbase-common-0.98.4-hadoop2.jar]
+hive> add jar /usr/local/hbase/lib/zookeeper-3.4.6.jar;
+Added [/usr/local/hbase/lib/zookeeper-3.4.6.jar] to class path
+Added resources: [/usr/local/hbase/lib/zookeeper-3.4.6.jar]
+hive> add jar /usr/local/hbase/lib/guava-12.0.1.jar;
+Added [/usr/local/hbase/lib/guava-12.0.1.jar] to class path
+Added resources: [/usr/local/hbase/lib/guava-12.0.1.jar]
+hive> add jar /usr/local/hbase/lib/high-scale-lib-1.1.1.jar;
+Added [/usr/local/hbase/lib/high-scale-lib-1.1.1.jar] to class path
+Added resources: [/usr/local/hbase/lib/high-scale-lib-1.1.1.jar]
+hive> list jars;
+/usr/local/hbase/lib/guava-12.0.1.jar
+/usr/local/hbase/lib/hbase-common-0.98.4-hadoop2.jar
+/usr/local/hbase/lib/high-scale-lib-1.1.1.jar
+/usr/local/hbase/lib/zookeeper-3.4.6.jar
+/usr/local/hive/lib/hive-hbase-handler-0.14.0.jar
+-------------------
+hive> insert into table hbase_table_1 values (1,'Rec 1');                           
+Query ID = hduser_20160813230404_55ed8956-5157-4c6d-9073-a70cc562a87a
+Total jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks is set to 0 since there's no reduce operator
+java.lang.NoClassDefFoundError: org/cliffc/high_scale_lib/Counter
+	at org.apache.hadoop.hive.hbase.HBaseStorageHandler.configureJobConf(HBaseStorageHandler.java:470)
+	at org.apache.hadoop.hive.ql.plan.PlanUtils.configureJobConf(PlanUtils.java:856)
+	at org.apache.hadoop.hive.ql.plan.MapWork.configureJobConf(MapWork.java:544)
+	at org.apache.hadoop.hive.ql.plan.MapredWork.configureJobConf(MapredWork.java:68)
+	at org.apache.hadoop.hive.ql.exec.mr.ExecDriver.execute(ExecDriver.java:370)
+	at org.apache.hadoop.hive.ql.exec.mr.MapRedTask.execute(MapRedTask.java:137)
+	at org.apache.hadoop.hive.ql.exec.Task.executeTask(Task.java:160)
+	at org.apache.hadoop.hive.ql.exec.TaskRunner.runSequential(TaskRunner.java:85)
+	at org.apache.hadoop.hive.ql.Driver.launchTask(Driver.java:1604)
+	at org.apache.hadoop.hive.ql.Driver.execute(Driver.java:1364)
+	at org.apache.hadoop.hive.ql.Driver.runInternal(Driver.java:1177)
+	at org.apache.hadoop.hive.ql.Driver.run(Driver.java:1004)
+	at org.apache.hadoop.hive.ql.Driver.run(Driver.java:994)
+	at org.apache.hadoop.hive.cli.CliDriver.processLocalCmd(CliDriver.java:247)
+	at org.apache.hadoop.hive.cli.CliDriver.processCmd(CliDriver.java:199)
+	at org.apache.hadoop.hive.cli.CliDriver.processLine(CliDriver.java:410)
+	at org.apache.hadoop.hive.cli.CliDriver.executeDriver(CliDriver.java:783)
+	at org.apache.hadoop.hive.cli.CliDriver.run(CliDriver.java:677)
+	at org.apache.hadoop.hive.cli.CliDriver.main(CliDriver.java:616)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.apache.hadoop.util.RunJar.run(RunJar.java:221)
+	at org.apache.hadoop.util.RunJar.main(RunJar.java:136)
+FAILED: Execution Error, return code -101 from org.apache.hadoop.hive.ql.exec.mr.MapRedTask. org/cliffc/high_scale_lib/Counter
+hive> set hbase.zookeeper.quorum=localhost;
+hive> insert into table hbase_table_1 values (1,'Rec 1');
+Query ID = hduser_20160813230909_71ede3bd-60c1-4ed3-9c59-2ee942b04bc2
+Total jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks is set to 0 since there's no reduce operator
+java.lang.NoClassDefFoundError: org/cliffc/high_scale_lib/Counter
+FAILED: Execution Error, return code -101 from org.apache.hadoop.hive.ql.exec.mr.MapRedTask. org/cliffc/high_scale_lib/Counter
+hive> exit
+    > ;
+-----------------------
+[hduser@Inceptez bin]$ vi hive-config.sh
+
+#export HIVE_AUX_JARS_PATH=$HIVE_AUX_JARS_PATH
+export HIVE_AUX_JARS_PATH=/usr/local/hbase/lib
+
+[hduser@Inceptez ~]$ hive --auxpath
+
+Logging initialized using configuration in jar:file:/usr/local/hive/lib/hive-common-0.14.0.jar!/hive-log4j.properties
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/usr/local/hadoop/share/hadoop/common/lib/slf4j-log4j12-1.7.5.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/usr/local/hive/lib/hive-jdbc-0.14.0-standalone.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/usr/local/hbase/lib/slf4j-log4j12-1.6.4.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.Log4jLoggerFactory]
+hive> 
+hive> show tables;
+OK
+array
+clickstr
+clickstrpart
+cust_trxn
+customer
+dummy1
+dummy2
+hbase_table_1
+hivetest
+map1
+struct
+txnrecords
+u_data
+union1
+xml_emp1
+Time taken: 1.126 seconds, Fetched: 15 row(s)
+hive> list jars;  
+
+hive> add jar /usr/local/hive/lib/hive-hbase-handler-0.14.0.jar;
+Added [/usr/local/hive/lib/hive-hbase-handler-0.14.0.jar] to class path
+Added resources: [/usr/local/hive/lib/hive-hbase-handler-0.14.0.jar]
+hive> add jar /usr/local/hbase/lib/hbase-common-0.98.4-hadoop2.jar;
+Added [/usr/local/hbase/lib/hbase-common-0.98.4-hadoop2.jar] to class path
+Added resources: [/usr/local/hbase/lib/hbase-common-0.98.4-hadoop2.jar]
+hive> add jar /usr/local/hbase/lib/zookeeper-3.4.6.jar;
+Added [/usr/local/hbase/lib/zookeeper-3.4.6.jar] to class path
+Added resources: [/usr/local/hbase/lib/zookeeper-3.4.6.jar]
+hive> add jar /usr/local/hbase/lib/guava-12.0.1.jar;
+Added [/usr/local/hbase/lib/guava-12.0.1.jar] to class path
+Added resources: [/usr/local/hbase/lib/guava-12.0.1.jar]
+hive> add jar /usr/local/hbase/lib/high-scale-lib-1.1.1.jar;
+Added [/usr/local/hbase/lib/high-scale-lib-1.1.1.jar] to class path
+Added resources: [/usr/local/hbase/lib/high-scale-lib-1.1.1.jar]
+hive> list jars;
+/usr/local/hbase/lib/guava-12.0.1.jar
+/usr/local/hbase/lib/hbase-common-0.98.4-hadoop2.jar
+/usr/local/hbase/lib/high-scale-lib-1.1.1.jar
+/usr/local/hbase/lib/zookeeper-3.4.6.jar
+/usr/local/hive/lib/hive-hbase-handler-0.14.0.jar
+hive> insert into table hbase_table_1 values (1,'Rec 1');          
+Query ID = hduser_20160813231414_f2666f54-b565-4c2a-ba8e-b549c0fc4934
+Total jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_1471107744189_0001, Tracking URL = http://Inceptez:8088/proxy/application_1471107744189_0001/
+Kill Command = /usr/local/hadoop/bin/hadoop job  -kill job_1471107744189_0001
+Hadoop job information for Stage-0: number of mappers: 1; number of reducers: 0
+2016-08-13 23:16:39,365 Stage-0 map = 0%,  reduce = 0%
+2016-08-13 23:17:40,258 Stage-0 map = 0%,  reduce = 0%
+2016-08-13 23:17:50,757 Stage-0 map = 100%,  reduce = 0%, Cumulative CPU 3.38 sec
+MapReduce Total cumulative CPU time: 3 seconds 380 msec
+Ended Job = job_1471107744189_0001
+MapReduce Jobs Launched: 
+Stage-Stage-0: Map: 1   Cumulative CPU: 3.48 sec   HDFS Read: 283 HDFS Write: 0 SUCCESS
+Total MapReduce CPU Time Spent: 3 seconds 480 msec
+OK
+Time taken: 202.947 seconds
+hive> select * from hase_table_1;
+FAILED: SemanticException [Error 10001]: Line 1:14 Table not found 'hase_table_1'
+hive> select * from hbase_table_1;
+OK
+1	Rec 1
+Time taken: 0.988 seconds, Fetched: 1 row(s)
+------------------------------
+hbase(main):007:0> scan 'xyz'
+ROW                                      COLUMN+CELL                                                                                                         
+ 1                                       column=cf1:val, timestamp=1471110470051, value=Rec 1                                                                
+1 row(s) in 4.1220 seconds
+
+hbase(main):009:0> put 'xyz','2','cf1:val','Rec 2'
+0 row(s) in 0.1230 seconds
+
+hbase(main):010:0> scan 'xyz'
+ROW                                      COLUMN+CELL                                                                                                         
+ 1                                       column=cf1:val, timestamp=1471110470051, value=Rec 1                                                                
+ 2                                       column=cf1:val, timestamp=1471110965507, value=Rec 2                                                                
+2 row(s) in 0.0370 seconds
+
+hbase(main):011:0> put 'xyz','3','cf1:val','Rec 3'
+0 row(s) in 0.0800 seconds
+
+hbase(main):012:0> scan 'xyz'
+ROW                                      COLUMN+CELL                                                                                                         
+ 1                                       column=cf1:val, timestamp=1471110470051, value=Rec 1                                                                
+ 2                                       column=cf1:val, timestamp=1471110965507, value=Rec 2                                                                
+ 3                                       column=cf1:val, timestamp=1471110991432, value=Rec 3                                                                
+3 row(s) in 0.0820 seconds
+
+hive> select * from hbase_table_1;
+OK
+1	Rec 1
+2	Rec 2
+3	Rec 3
+Time taken: 1.178 seconds, Fetched: 3 row(s)
+------------------------------

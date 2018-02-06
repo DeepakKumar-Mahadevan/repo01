@@ -1,0 +1,344 @@
+Hortonworks-Sandbox
+
+hive> show tables;
+OK
+a
+sample_07
+sample_08
+Time taken: 2.572 seconds, Fetched: 3 row(s)
+hive> create table employee (emp_id int(3), emp_name varchar(10), emp_sal decimal(9,2)) row format delimited fields terminated by ',';
+FAILED: ParseException line 1:33 mismatched input '(' expecting ) near 'int' in create table statement
+
+hive> create table employee (emp_id int, emp_name varchar(10), emp_sal decimal(9,2)) row format delimited fields terminated by ',';
+FAILED: ParseException line 1:72 mismatched input '(' expecting ) near 'decimal' in create table statement
+
+hive> create table employee (emp_id int, emp_name varchar(10), emp_sal decimal) row format delimited fields terminated by ',';
+OK
+Time taken: 3.069 seconds
+hive> show tables;
+OK
+a
+employee
+sample_07
+sample_08
+Time taken: 0.106 seconds, Fetched: 4 row(s)
+hive> drop table employee;
+OK
+Time taken: 2.704 seconds
+hive> create table employee (emp_id int, emp_name varchar(10), emp_sal decimal, org_id int) row format delimited fields terminated by ',';
+OK
+Time taken: 0.052 seconds
+hive> create table emp_org (org_id int, org_name varchar(10)) row format delimited fields terminated by ',';
+OK
+Time taken: 0.193 seconds
+hive> insert into table employee values(1,'Deepak',82000.00,1);
+FAILED: ParseException line 1:27 cannot recognize input near 'values' '(' '1' in select clause
+
+hive> exit;
+[root@sandbox ~]# locate hive-cli
+/usr/lib/hive/lib/hive-cli-0.12.0.2.0.6.0-76.jar
+/usr/lib/oozie/share/lib/hive/hive-cli-0.12.0.2.0.6.0-76.jar
+/var/lib/oozie/oozie-server/webapps/oozie/WEB-INF/lib/hive-cli-0.12.0.2.0.6.0-76.jar
+====================================================================================================
+apache hadoop
+
+hive> create table employee (emp_id int(3), emp_name varchar(10), emp_sal decimal(9,2)) row format delimited fields terminated by ',';
+FAILED: ParseException line 1:33 mismatched input '(' expecting ) near 'int' in create table statement
+
+hive (dkmdb01)> create table employee (emp_id int, emp_name varchar(10), emp_sal decimal(9,2), emp_org_id int) row format delimited fields terminated by ',';
+OK
+Time taken: 0.102 seconds
+
+hive (dkmdb01)> create table org (org_id int, org_name varchar(10)) row format delimited fields terminated by ',';
+OK
+Time taken: 0.076 seconds
+
+hive (dkmdb01)> insert into table employee values(1,'Deepak',82000.00,1);
+hive (dkmdb01)> select * from employee;
+OK
+employee.emp_id employee.emp_name       employee.emp_sal        employee.emp_org_id
+1       Deepak  82000   1
+Time taken: 0.088 seconds, Fetched: 1 row(s)
+
+[hduser@Inceptez hive_data_01]$ vi employee.data1
+[hduser@Inceptez hive_data_01]$ cat employee.data1
+2,Farooq,70000,1
+3,Kathick,96000,1
+4,Hari,90000,2
+5,Vadivel,100000,3
+6,Mani,75000,4
+7,Vignesh,75000,2
+[hduser@Inceptez hive_data_01]$ vi org.data1
+[hduser@Inceptez hive_data_01]$ cat org.data1
+1,RBS
+2,CTS
+3,VDSI
+4,HCL
+
+hive> load data local inpath '/home/hduser/hive_data_01/employee.data1' into table dkmdb01.employee;
+Loading data to table dkmdb01.employee
+Table dkmdb01.employee stats: [numFiles=2, totalSize=119]
+OK
+Time taken: 1.127 seconds
+
+hive> load data local inpath '/home/hduser/hive_data_01/org.data1' into table dkmdb01.org;
+Loading data to table dkmdb01.org
+Table dkmdb01.org stats: [numFiles=1, totalSize=25]
+OK
+Time taken: 0.496 seconds
+
+hive> insert into table dkmdb01.org values (5,'TCS');
+hive> insert into table dkmdb01.employee values (8,'XXX',10000,6);
+
+hive> select * from dkmdb01.org;
+OK
+5       TCS
+1       RBS
+2       CTS
+3       VDSI
+4       HCL
+Time taken: 0.193 seconds, Fetched: 5 row(s)
+hive> select * from dkmdb01.org order by 1;
+Query ID = hduser_20160811223535_81dc879a-6606-43d7-a8ca-2a643daf2fb5
+Total jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks determined at compile time: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1470933255521_0004, Tracking URL = http://Inceptez:8088/proxy/application_1470933255521_0004/
+Kill Command = /usr/local/hadoop/bin/hadoop job  -kill job_1470933255521_0004
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2016-08-11 22:35:15,578 Stage-1 map = 0%,  reduce = 0%
+2016-08-11 22:35:24,743 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.1 sec
+2016-08-11 22:35:35,672 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 2.5 sec
+MapReduce Total cumulative CPU time: 2 seconds 500 msec
+Ended Job = job_1470933255521_0004
+MapReduce Jobs Launched:
+Stage-Stage-1: Map: 1  Reduce: 1   Cumulative CPU: 2.5 sec   HDFS Read: 335 HDFS Write: 31 SUCCESS
+Total MapReduce CPU Time Spent: 2 seconds 500 msec
+OK
+4       HCL
+3       VDSI
+2       CTS
+1       RBS
+5       TCS
+Time taken: 31.113 seconds, Fetched: 5 row(s)
+hive> select * from dkmdb01.org order by org_id asc;
+Query ID = hduser_20160811223535_8b9bb167-5842-49d5-a89d-48006ccc1344
+Total jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks determined at compile time: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1470933255521_0005, Tracking URL = http://Inceptez:8088/proxy/application_1470933255521_0005/
+Kill Command = /usr/local/hadoop/bin/hadoop job  -kill job_1470933255521_0005
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2016-08-11 22:36:05,859 Stage-1 map = 0%,  reduce = 0%
+2016-08-11 22:36:15,071 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.07 sec
+2016-08-11 22:36:25,900 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 2.52 sec
+MapReduce Total cumulative CPU time: 2 seconds 520 msec
+Ended Job = job_1470933255521_0005
+MapReduce Jobs Launched:
+Stage-Stage-1: Map: 1  Reduce: 1   Cumulative CPU: 2.52 sec   HDFS Read: 335 HDFS Write: 31 SUCCESS
+Total MapReduce CPU Time Spent: 2 seconds 520 msec
+OK
+1       RBS
+2       CTS
+3       VDSI
+4       HCL
+5       TCS
+Time taken: 30.293 seconds, Fetched: 5 row(s)
+
+hive> select * from dkmdb01.employee order by emp_id asc;
+Query ID = hduser_20160811224040_2ab77178-afd6-4242-a703-5b045fd2e4c0
+Total jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks determined at compile time: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1470933255521_0007, Tracking URL = http://Inceptez:8088/proxy/application_1470933255521_0007/
+Kill Command = /usr/local/hadoop/bin/hadoop job  -kill job_1470933255521_0007
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2016-08-11 22:40:22,673 Stage-1 map = 0%,  reduce = 0%
+2016-08-11 22:40:31,324 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 0.99 sec
+2016-08-11 22:40:40,029 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 2.33 sec
+MapReduce Total cumulative CPU time: 2 seconds 330 msec
+Ended Job = job_1470933255521_0007
+MapReduce Jobs Launched:
+Stage-Stage-1: Map: 1  Reduce: 1   Cumulative CPU: 2.33 sec   HDFS Read: 547 HDFS Write: 133 SUCCESS
+Total MapReduce CPU Time Spent: 2 seconds 330 msec
+OK
+1       Deepak  82000   1
+2       Farooq  70000   1
+3       Kathick 96000   1
+4       Hari    90000   2
+5       Vadivel 100000  3
+6       Mani    75000   4
+7       Vignesh 75000   2
+8       XXX     10000   6
+Time taken: 27.897 seconds, Fetched: 8 row(s)
+====================================================================================================
+hive> set hive.groupby.orderby.position.alias=true;
+hive> select * from dkmdb01.employee order by 1;
+FAILED: SemanticException [Error 10219]: Position in ORDER BY is not supported when using SELECT *
+hive> select emp_id, emp_name, emp_sal, emp_org_id from dkmdb01.employee order by 1;
+Query ID = hduser_20160811225353_0c7e2dc5-8cf4-41dc-9e1c-8f8cb24d94ce
+Total jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks determined at compile time: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1470933255521_0009, Tracking URL = http://Inceptez:8088/proxy/application_1470933255521_0009/
+Kill Command = /usr/local/hadoop/bin/hadoop job  -kill job_1470933255521_0009
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2016-08-11 22:53:24,778 Stage-1 map = 0%,  reduce = 0%
+2016-08-11 22:53:40,369 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 2.03 sec
+2016-08-11 22:53:58,461 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 4.76 sec
+MapReduce Total cumulative CPU time: 4 seconds 760 msec
+Ended Job = job_1470933255521_0009
+MapReduce Jobs Launched:
+Stage-Stage-1: Map: 1  Reduce: 1   Cumulative CPU: 4.76 sec   HDFS Read: 547 HDFS Write: 133 SUCCESS
+Total MapReduce CPU Time Spent: 4 seconds 760 msec
+OK
+1       Deepak  82000   1
+2       Farooq  70000   1
+3       Kathick 96000   1
+4       Hari    90000   2
+5       Vadivel 100000  3
+6       Mani    75000   4
+7       Vignesh 75000   2
+8       XXX     10000   6
+Time taken: 55.614 seconds, Fetched: 8 row(s)
+====================================================================================================
+hive> select * from employee, org where emp_org_id = org_id;
+Query ID = hduser_20160811225656_502bb1d9-b40d-4049-a26a-51bdf6791461
+Total jobs = 1
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/usr/local/hadoop/share/hadoop/common/lib/slf4j-log4j12-1.7.5.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/usr/local/hive/lib/hive-jdbc-0.14.0-standalone.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.Log4jLoggerFactory]
+16/08/11 22:56:30 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Execution log at: /tmp/hduser/hduser_20160811225656_502bb1d9-b40d-4049-a26a-51bdf6791461.log
+2016-08-11 10:56:35     Starting to launch local task to process map join;      maximum memory = 518979584
+2016-08-11 10:56:39     Dump the side-table for tag: 1 with group count: 5 into file: file:/tmp/hivelog/36c3ba3c-27dd-4446-9d9c-7544c71d4bed/hive_2016-08-11_22-56-19_921_184737372033651559-1/-local-10002/HashTable-Stage-3/MapJoin-mapfile01--.hashtable
+2016-08-11 10:56:39     Uploaded 1 File to: file:/tmp/hivelog/36c3ba3c-27dd-4446-9d9c-7544c71d4bed/hive_2016-08-11_22-56-19_921_184737372033651559-1/-local-10002/HashTable-Stage-3/MapJoin-mapfile01--.hashtable (376 bytes)
+2016-08-11 10:56:39     End of local task; Time Taken: 3.973 sec.
+Execution completed successfully
+MapredLocal task succeeded
+Launching Job 1 out of 1
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_1470933255521_0010, Tracking URL = http://Inceptez:8088/proxy/application_1470933255521_0010/
+Kill Command = /usr/local/hadoop/bin/hadoop job  -kill job_1470933255521_0010
+Hadoop job information for Stage-3: number of mappers: 1; number of reducers: 0
+2016-08-11 22:57:02,231 Stage-3 map = 0%,  reduce = 0%
+2016-08-11 22:57:22,132 Stage-3 map = 100%,  reduce = 0%, Cumulative CPU 3.99 sec
+MapReduce Total cumulative CPU time: 3 seconds 990 msec
+Ended Job = job_1470933255521_0010
+MapReduce Jobs Launched:
+Stage-Stage-3: Map: 1   Cumulative CPU: 3.99 sec   HDFS Read: 547 HDFS Write: 162 SUCCESS
+Total MapReduce CPU Time Spent: 3 seconds 990 msec
+OK
+1       Deepak  82000   1       1       RBS
+2       Farooq  70000   1       1       RBS
+3       Kathick 96000   1       1       RBS
+4       Hari    90000   2       2       CTS
+5       Vadivel 100000  3       3       VDSI
+6       Mani    75000   4       4       HCL
+7       Vignesh 75000   2       2       CTS
+Time taken: 64.555 seconds, Fetched: 7 row(s)
+====================================================================================================
+hive> select * from employee where emp_org_id <> 1;
+OK
+8       XXX     10000   6
+4       Hari    90000   2
+5       Vadivel 100000  3
+6       Mani    75000   4
+7       Vignesh 75000   2
+Time taken: 0.24 seconds, Fetched: 5 row(s)
+====================================================================================================
+hive> select * from employee, org where emp_org_id <> org_id;
+Warning: Map Join MAPJOIN[8][bigTable=employee] in task 'Stage-3:MAPRED' is a cross product
+Query ID = hduser_20160811225959_1e26d2bd-8422-4133-9d07-2526f3d55e39
+Total jobs = 1
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/usr/local/hadoop/share/hadoop/common/lib/slf4j-log4j12-1.7.5.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/usr/local/hive/lib/hive-jdbc-0.14.0-standalone.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.Log4jLoggerFactory]
+16/08/11 22:59:40 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Execution log at: /tmp/hduser/hduser_20160811225959_1e26d2bd-8422-4133-9d07-2526f3d55e39.log
+2016-08-11 10:59:45     Starting to launch local task to process map join;      maximum memory = 518979584
+2016-08-11 10:59:48     Dump the side-table for tag: 1 with group count: 1 into file: file:/tmp/hivelog/36c3ba3c-27dd-4446-9d9c-7544c71d4bed/hive_2016-08-11_22-59-30_992_4943961699791793607-1/-local-10002/HashTable-Stage-3/MapJoin-mapfile11--.hashtable
+2016-08-11 10:59:48     Uploaded 1 File to: file:/tmp/hivelog/36c3ba3c-27dd-4446-9d9c-7544c71d4bed/hive_2016-08-11_22-59-30_992_4943961699791793607-1/-local-10002/HashTable-Stage-3/MapJoin-mapfile11--.hashtable (323 bytes)
+2016-08-11 10:59:48     End of local task; Time Taken: 2.994 sec.
+Execution completed successfully
+MapredLocal task succeeded
+Launching Job 1 out of 1
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_1470933255521_0011, Tracking URL = http://Inceptez:8088/proxy/application_1470933255521_0011/
+Kill Command = /usr/local/hadoop/bin/hadoop job  -kill job_1470933255521_0011
+Hadoop job information for Stage-3: number of mappers: 1; number of reducers: 0
+2016-08-11 23:00:14,177 Stage-3 map = 0%,  reduce = 0%
+2016-08-11 23:00:38,181 Stage-3 map = 100%,  reduce = 0%, Cumulative CPU 5.44 sec
+MapReduce Total cumulative CPU time: 5 seconds 440 msec
+Ended Job = job_1470933255521_0011
+MapReduce Jobs Launched:
+Stage-Stage-3: Map: 1   Cumulative CPU: 5.44 sec   HDFS Read: 547 HDFS Write: 751 SUCCESS
+Total MapReduce CPU Time Spent: 5 seconds 440 msec
+OK
+1       Deepak  82000   1       5       TCS
+1       Deepak  82000   1       2       CTS
+1       Deepak  82000   1       3       VDSI
+1       Deepak  82000   1       4       HCL
+8       XXX     10000   6       5       TCS
+8       XXX     10000   6       1       RBS
+8       XXX     10000   6       2       CTS
+8       XXX     10000   6       3       VDSI
+8       XXX     10000   6       4       HCL
+2       Farooq  70000   1       5       TCS
+2       Farooq  70000   1       2       CTS
+2       Farooq  70000   1       3       VDSI
+2       Farooq  70000   1       4       HCL
+3       Kathick 96000   1       5       TCS
+3       Kathick 96000   1       2       CTS
+3       Kathick 96000   1       3       VDSI
+3       Kathick 96000   1       4       HCL
+4       Hari    90000   2       5       TCS
+4       Hari    90000   2       1       RBS
+4       Hari    90000   2       3       VDSI
+4       Hari    90000   2       4       HCL
+5       Vadivel 100000  3       5       TCS
+5       Vadivel 100000  3       1       RBS
+5       Vadivel 100000  3       2       CTS
+5       Vadivel 100000  3       4       HCL
+6       Mani    75000   4       5       TCS
+6       Mani    75000   4       1       RBS
+6       Mani    75000   4       2       CTS
+6       Mani    75000   4       3       VDSI
+7       Vignesh 75000   2       5       TCS
+7       Vignesh 75000   2       1       RBS
+7       Vignesh 75000   2       3       VDSI
+7       Vignesh 75000   2       4       HCL
+Time taken: 69.485 seconds, Fetched: 33 row(s)
+====================================================================================================
+hive> select * from employee join org on emp_org_id <> org_id;
+FAILED: SemanticException [Error 10017]: Line 1:35 Both left and right aliases encountered in JOIN 'org_id'
+====================================================================================================
+====================================================================================================

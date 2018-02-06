@@ -1,0 +1,39 @@
+[hduser@Inceptez ~]$ cd install/
+[hduser@Inceptez install]$ ls
+all_docs                            hbase-0.98.4-hadoop2-bin.tar.gz  mysql-connector-java.jar                    squirrelsql-3.7.1-standard.zip
+apache-flume-1.4.0-bin.tar.gz       hdfs.conf                        netcat_flume.conf                           tail_exec.conf
+apache-hive-0.14.0-bin.tar.gz       helloword.java                   phoenix                                     twitter.conf
+flume-sources-1.0-SNAPSHOT.jar      hive-exec-0.14.0.jar             pig-0.15.0.tar.gz                           zookeeper-3.4.6.tar.gz
+flume-sources-1.0-SNAPSHOT_old.jar  hive-site_rms_transction.xml     sqoop-1.4.5.bin__hadoop-2.0.4-alpha.tar.gz
+hadoop-2.6.0.tar.gz                 hivexmlserde-1.0.5.3.jar         squirrelsql-3.7.1-standard
+[hduser@Inceptez install]$ cd squirrelsql-3.7.1-standard
+[hduser@Inceptez squirrelsql-3.7.1-standard]$ ls
+addpath.bat  icons  lib  log4j.properties  plugins  restore.sh  squirrel-sql.bat  squirrel-sql.jar  squirrel-sql.sh  update-log4j.properties
+[hduser@Inceptez squirrelsql-3.7.1-standard]$ sh squirrel-sql.sh 
+
+select * from "PigDataHTable";
+Error: ERROR 1012 (42M03): Table undefined. tableName=PigDataHTable
+SQLState:  42M03
+ErrorCode: 1012
+
+--create view "PigDataHTable" ( User_id varchar primary key, "UserColFamily"."name" varchar,"UserColFamily"."age" varchar,"UserColFamily"."place" varchar);
+select * from "PigDataHTable";
+/*
+user_01	Arun	30	Chennai
+user_02	Bala	40	Madurai
+user_03	Devi	50	Trichy
+user_04	Faizal	60	Chennai
+*/
+
+0: jdbc:phoenix:localhost> !tables
++------------------------------------------+------------------------------------------+------------------------------------------+--------------------------+
+|                TABLE_CAT                 |               TABLE_SCHEM                |                TABLE_NAME                |                TABLE_TYP |
++------------------------------------------+------------------------------------------+------------------------------------------+--------------------------+
+|                                          | SYSTEM                                   | CATALOG                                  | SYSTEM TABLE             |
+|                                          | SYSTEM                                   | FUNCTION                                 | SYSTEM TABLE             |
+|                                          | SYSTEM                                   | SEQUENCE                                 | SYSTEM TABLE             |
+|                                          | SYSTEM                                   | STATS                                    | SYSTEM TABLE             |
+|                                          |                                          | TEST                                     | TABLE                    |
+|                                          |                                          | TEST1                                    | TABLE                    |
+|                                          |                                          | PigDataHTable                            | VIEW                     |
++------------------------------------------+------------------------------------------+------------------------------------------+--------------------------+

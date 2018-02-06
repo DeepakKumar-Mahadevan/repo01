@@ -1,0 +1,31 @@
+select * from ${tab_name};
+[root@sandbox myhqls]# hive -hiveconf tab_name=employee -f sel_parm_tab.hql
+FAILED: ParseException line 1:14 cannot recognize input near '$' '{' 'tab_name' in join source
+-------------------------------------------
+[root@sandbox myhqls]# cat sel_parm_tab.hql
+select * from ${hiveconf:tab_name};
+
+[root@sandbox myhqls]# hive -hiveconf tab_name=employee -f sel_parm_tab.hql
+16/08/21 01:42:20 INFO Configuration.deprecation: mapred.input.dir.recursive is deprecated. Instead, use mapreduce.input.fileinputformat.input.dir.recursive
+16/08/21 01:42:20 INFO Configuration.deprecation: mapred.max.split.size is deprecated. Instead, use mapreduce.input.fileinputformat.split.maxsize
+16/08/21 01:42:20 INFO Configuration.deprecation: mapred.min.split.size is deprecated. Instead, use mapreduce.input.fileinputformat.split.minsize
+16/08/21 01:42:20 INFO Configuration.deprecation: mapred.min.split.size.per.rack is deprecated. Instead, use mapreduce.input.fileinputformat.split.minsize.per.rack
+16/08/21 01:42:20 INFO Configuration.deprecation: mapred.min.split.size.per.node is deprecated. Instead, use mapreduce.input.fileinputformat.split.minsize.per.node
+16/08/21 01:42:20 INFO Configuration.deprecation: mapred.reduce.tasks is deprecated. Instead, use mapreduce.job.reduces
+16/08/21 01:42:20 INFO Configuration.deprecation: mapred.reduce.tasks.speculative.execution is deprecated. Instead, use mapreduce.reduce.speculative
+
+Logging initialized using configuration in jar:file:/usr/lib/hive/lib/hive-common-0.12.0.2.0.6.0-76.jar!/hive-log4j.properties
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/usr/lib/hadoop/lib/slf4j-log4j12-1.7.5.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/usr/lib/hive/lib/slf4j-log4j12-1.7.5.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.Log4jLoggerFactory]
+OK
+1       Deepak  82000   1
+2       Farooq  70000   1
+3       Kathick 96000   1
+4       Hari    90000   2
+5       Vadivel 100000  3
+6       Mani    75000   4
+7       Vignesh 75000   2
+Time taken: 6.537 seconds, Fetched: 7 row(s)

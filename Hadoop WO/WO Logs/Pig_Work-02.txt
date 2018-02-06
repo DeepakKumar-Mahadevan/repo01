@@ -1,0 +1,649 @@
+grunt> a = load '/home/hduser/pigdata/bag.txt' as (c1:chararray,c2:chararray);
+grunt> dump a;
+(NAMENODE,addressvalue: 192.168.1.2)
+(DATANODE,addressvalue: 192.168.1.3)
+(DATANODE,addressvalue: 192.168.1.4)
+(DATANODE,addressvalue: 192.168.1.5)
+(DATANODE,addressvalue: 192.168.1.7)
+(EDGENODE,addressvalue: 192.168.1.9)
+
+grunt> b = foreach a generate $0;                                             
+grunt> dump b;                   
+(NAMENODE)
+(DATANODE)
+(DATANODE)
+(DATANODE)
+(DATANODE)
+(EDGENODE)
+
+grunt> describe a;
+a: {c1: chararray,c2: chararray}
+grunt> describe b;
+b: {c1: chararray}
+
+grunt> dump c;                   
+(NAMENODE,addressvalue: 192.168.1.2)
+
+grunt> c = filter a by $0 == 'NAMENODE' or 'EDGENODE';
+2016-07-16 19:30:30,144 [main] ERROR org.apache.pig.tools.grunt.Grunt - ERROR 1038: 
+<line 4, column 33> Operands of AND/OR can be boolean only
+Details at logfile: /home/hduser/pig_1468677083233.log
+grunt> c = filter a by $0 == 'NAMENODE' or $0 == 'EDGENODE';
+grunt> dump c;
+(NAMENODE,addressvalue: 192.168.1.2)
+(EDGENODE,addressvalue: 192.168.1.9)
+====================================================================================================
+[hduser@Inceptez pigdata]$ cat coursedetails.txt 
+informatica hadoop datastage sql oracle bigdata SAP
+teradata bigdata hadoop java .net SAP hadoop datascience
+hadoop datascience bigdata java SAP sql plsql hadoop
+java hadoop datascience hadoop bigdata .net
+
+grunt> lines = load '/home/hduser/pigdata/coursedetails.txt' as (line:chararray);  
+grunt> dump lines;
+(informatica hadoop datastage sql oracle bigdata SAP)
+(teradata bigdata hadoop java .net SAP hadoop datascience)
+(hadoop datascience bigdata java SAP sql plsql hadoop)
+(java hadoop datascience hadoop bigdata .net)
+
+grunt> words = foreach lines generate flatten(tokenize(line)) as word;
+2016-07-16 19:38:33,714 [main] ERROR org.apache.pig.tools.grunt.Grunt - ERROR 1070: Could not resolve tokenize using imports: [, java.lang., org.apache.pig.builtin., org.apache.pig.impl.builtin.]
+Details at logfile: /home/hduser/pig_1468677083233.log
+grunt> words = foreach lines generate flatten(TOKENIZE(line)) as word;
+grunt> dump words;
+(informatica)
+(hadoop)
+(datastage)
+(sql)
+(oracle)
+(bigdata)
+(SAP)
+(teradata)
+(bigdata)
+(hadoop)
+(java)
+(.net)
+(SAP)
+(hadoop)
+(datascience)
+(hadoop)
+(datascience)
+(bigdata)
+(java)
+(SAP)
+(sql)
+(plsql)
+(hadoop)
+(java)
+(hadoop)
+(datascience)
+(hadoop)
+(bigdata)
+(.net)
+
+grunt> grouped_words = group words by word;
+grunt> dump grouped_words;
+(SAP,{(SAP),(SAP),(SAP)})
+(sql,{(sql),(sql)})
+(.net,{(.net),(.net)})
+(java,{(java),(java),(java)})
+(plsql,{(plsql)})
+(hadoop,{(hadoop),(hadoop),(hadoop),(hadoop),(hadoop),(hadoop),(hadoop)})
+(oracle,{(oracle)})
+(bigdata,{(bigdata),(bigdata),(bigdata),(bigdata)})
+(teradata,{(teradata)})
+(datastage,{(datastage)})
+(datascience,{(datascience),(datascience),(datascience)})
+(informatica,{(informatica)})
+
+grunt> wordcount = foreach grouped_words generate group,count(words);
+2016-07-16 19:44:08,033 [main] ERROR org.apache.pig.tools.grunt.Grunt - ERROR 1070: Could not resolve count using imports: [, java.lang., org.apache.pig.builtin., org.apache.pig.impl.builtin.]
+Details at logfile: /home/hduser/pig_1468677083233.log
+grunt> wordcount = foreach grouped_words generate group,COUNT(words);
+grunt> dump wordcount;
+(SAP,3)
+(sql,2)
+(.net,2)
+(java,3)
+(plsql,1)
+(hadoop,7)
+(oracle,1)
+(bigdata,4)
+(teradata,1)
+(datastage,1)
+(datascience,3)
+(informatica,1)
+grunt> describe wordcount;
+wordcount: {group: chararray,long}
+
+grunt> order_count = order wordcount by $1;
+grunt> dump order_count;
+(informatica,1)
+(datastage,1)
+(teradata,1)
+(oracle,1)
+(plsql,1)
+(.net,2)
+(sql,2)
+(datascience,3)
+(java,3)
+(SAP,3)
+(bigdata,4)
+(hadoop,7)
+
+grunt> distinct_words = distinct(words);
+2016-07-16 19:48:05,519 [main] ERROR org.apache.pig.tools.grunt.Grunt - ERROR 1200: <line 10, column 25>  Syntax error, unexpected symbol at or near '('
+Details at logfile: /home/hduser/pig_1468677083233.log
+grunt> distinct_words = distinct words ;
+grunt> dump distinct_words;
+(SAP)
+(sql)
+(.net)
+(java)
+(plsql)
+(hadoop)
+(oracle)
+(bigdata)
+(teradata)
+(datastage)
+(datascience)
+(informatica)
+====================================================================================================
+[hduser@Inceptez pigdata]$ wc -l custs 
+9998 custs
+
+grunt> cust = LOAD '/home/hduser/pigdata/custs' using PigStorage(',') AS (
+>> custid:chararray,firstname:chararray, lastname:chararray, age:long, profession:chararray);
+2016-07-16 19:51:02,508 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+2016-07-16 19:51:02,509 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - io.bytes.per.checksum is deprecated. Instead, use dfs.bytes-per-checksum
+
+grunt> 100_custs = LIMIT cust 100; <<< Won't work as variable name starts with a number!
+grunt> custs_100 = limit cust 100;
+grunt> dump COUNT(custs_100);     
+2016-07-16 19:54:52,476 [main] INFO  org.apache.pig.tools.pigstats.ScriptState - Pig features used in the script: LIMIT
+2016-07-16 19:54:52,523 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - io.bytes.per.checksum is deprecated. Instead, use dfs.bytes-per-checksum
+2016-07-16 19:54:52,524 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+2016-07-16 19:54:52,525 [main] INFO  org.apache.pig.data.SchemaTupleBackend - Key [pig.schematuple] was not set... will not generate code.
+2016-07-16 19:54:52,525 [main] INFO  org.apache.pig.newplan.logical.optimizer.LogicalPlanOptimizer - {RULES_ENABLED=[AddForEach, ColumnMapKeyPrune, ConstantCalculator, GroupByConstParallelSetter, LimitOptimizer, LoadTypeCastInserter, MergeFilter, MergeForEach, PartitionFilterOptimizer, PredicatePushdownOptimizer, PushDownForEachFlatten, PushUpFilter, SplitFilter, StreamTypeCastInserter]}
+2016-07-16 19:54:52,827 [main] INFO  org.apache.hadoop.mapreduce.lib.input.FileInputFormat - Total input paths to process : 1
+2016-07-16 19:54:52,827 [main] INFO  org.apache.pig.backend.hadoop.executionengine.util.MapRedUtil - Total input paths to process : 1
+2016-07-16 19:54:52,890 [main] INFO  org.apache.hadoop.mapreduce.lib.output.FileOutputCommitter - Saved output of task 'attempt__0001_m_000001_1' to file:/tmp/temp1711126382/tmp1136830619/_temporary/0/task__0001_m_000001
+2016-07-16 19:54:52,914 [main] WARN  org.apache.pig.data.SchemaTupleBackend - SchemaTupleBackend has already been initialized
+2016-07-16 19:54:52,945 [main] INFO  org.apache.hadoop.mapreduce.lib.input.FileInputFormat - Total input paths to process : 1
+2016-07-16 19:54:52,945 [main] INFO  org.apache.pig.backend.hadoop.executionengine.util.MapRedUtil - Total input paths to process : 1
+(4000001,Kristina,Chung,55,Pilot)
+(4000002,Paige,Chen,74,Teacher)
+(4000003,Sherri,Melton,34,Firefighter)
+(4000004,Gretchen,Hill,66,Computer hardware engineer)
+(4000005,Karen,Puckett,74,Lawyer)
+(4000006,Patrick,Song,42,Veterinarian)
+(4000007,Elsie,Hamilton,43,Pilot)
+(4000008,Hazel,Bender,63,Carpenter)
+(4000009,Malcolm,Wagner,39,Artist)
+(4000010,Dolores,McLaughlin,60,Writer)
+(4000011,Francis,McNamara,47,Therapist)
+(4000012,Sandy,Raynor,26,Writer)
+(4000013,Marion,Moon,41,Carpenter)
+(4000014,Beth,Woodard,65,)
+(4000015,Julia,Desai,49,Musician)
+(4000016,Jerome,Wallace,52,Pharmacist)
+(4000017,Neal,Lawrence,72,Computer support specialist)
+(4000018,Jean,Griffin,45,Childcare worker)
+(4000019,Kristine,Dougherty,63,Financial analyst)
+(4000020,Crystal,Powers,67,Engineering technician)
+(4000021,Alex,May,39,Environmental scientist)
+(4000022,Eric,Steele,66,Doctor)
+(4000023,Wesley,Teague,42,Carpenter)
+(4000024,Franklin,Vick,28,Dancer)
+(4000025,Claire,Gallagher,42,Musician)
+(4000026,Marian,Solomon,27,Lawyer)
+(4000027,Marcia,Walsh,64,Accountant)
+(4000028,Dwight,Monroe,45,Economist)
+(4000029,Wayne,Connolly,40,Real estate agent)
+(4000030,Stephanie,Hawkins,50,Human resources assistant)
+(4000031,Neal,Middleton,59,Civil engineer)
+(4000032,Gretchen,Goldstein,24,Engineering technician)
+(4000033,Tim,Watts,58,Lawyer)
+(4000034,Jerome,Johnston,38,Childcare worker)
+(4000035,Shelley,Weeks,25,Reporter)
+(4000036,Priscilla,Wilkerson,35,Agricultural and food scientist)
+(4000037,Elsie,Barton,27,Childcare worker)
+(4000038,Beth,Walton,73,Firefighter)
+(4000039,Erica,Hall,33,Police officer)
+(4000040,Douglas,Ross,27,Secretary)
+(4000041,Donald,Chung,65,Computer hardware engineer)
+(4000042,Katherine,Bender,44,Physicist)
+(4000043,Paul,Woods,63,Doctor)
+(4000044,Patricia,Mangum,67,Civil engineer)
+(4000045,Lois,Joseph,44,Musician)
+(4000046,Louis,Rosenthal,31,)
+(4000047,Christina,Bowden,47,Computer software engineer)
+(4000048,Darlene,Barton,54,Doctor)
+(4000049,Harvey,Underwood,70,Engineering technician)
+(4000050,William,Jones,53,Photographer)
+(4000051,Frederick,Baker,52,Writer)
+(4000052,Shirley,Merritt,21,Reporter)
+(4000053,Jason,Cross,56,Civil engineer)
+(4000054,Judith,Cooper,22,Economist)
+(4000055,Gretchen,Holmes,39,Childcare worker)
+(4000056,Don,Sharpe,53,Social worker)
+(4000057,Glenda,Morgan,37,Real estate agent)
+(4000058,Scott,Hoyle,40,Doctor)
+(4000059,Pat,Allen,45,Secretary)
+(4000060,Michelle,Rich,44,Artist)
+(4000061,Jessica,Rich,37,Actor)
+(4000062,Evan,Grant,66,Agricultural and food scientist)
+(4000063,Melinda,Proctor,27,Teacher)
+(4000064,Calvin,Diaz,65,Athlete)
+(4000065,Eugene,Graham,52,Police officer)
+(4000066,Vickie,Watkins,55,Computer support specialist)
+(4000067,Luis,Hinton,69,Childcare worker)
+(4000068,Allan,Marsh,67,Athlete)
+(4000069,Melanie,Hewitt,47,Real estate agent)
+(4000070,Marianne,Branch,53,Judge)
+(4000071,Natalie,Walton,24,Recreation and fitness worker)
+(4000072,Caroline,O'Brien,44,Computer support specialist)
+(4000073,Arlene,Case,62,Musician)
+(4000074,Kyle,Watts,39,Engineering technician)
+(4000075,Calvin,Christensen,54,Architect)
+(4000076,Gary,Parks,65,Pharmacist)
+(4000077,Samantha,Hardin,27,Doctor)
+(4000078,Sara,Lucas,44,Loan officer)
+(4000079,Stacy,Eason,31,Musician)
+(4000080,Gladys,Davidson,52,Recreation and fitness worker)
+(4000081,Mike,Whitehead,26,Politician)
+(4000082,Lynne,Rose,36,Loan officer)
+(4000083,Faye,Sparks,61,Civil engineer)
+(4000084,Diana,Moore,44,Computer support specialist)
+(4000085,Leon,Pearson,24,Physicist)
+(4000086,Ethel,Rodgers,30,Librarian)
+(4000087,Steve,Graves,73,Nurse)
+(4000088,Alison,Scarborough,66,Designer)
+(4000089,Sherri,Sutton,75,Social worker)
+(4000090,Patsy,Sinclair,48,Police officer)
+(4000091,Kelly,Bowman,69,Childcare worker)
+(4000092,Stacy,Olsen,25,Veterinarian)
+(4000093,Curtis,Love,45,Secretary)
+(4000094,Dana,McLean,61,Artist)
+(4000095,Jennifer,Christian,54,Human resources assistant)
+(4000096,Brett,Lamb,39,Engineering technician)
+(4000097,Brandon,James,29,Musician)
+(4000098,Keith,Chandler,25,Coach)
+(4000099,Joann,Stout,32,Real estate agent)
+(4000100,Ronnie,Cowan,71,Photographer)
+2016-07-16 19:54:53,017 [main] ERROR org.apache.pig.tools.grunt.Grunt - ERROR 1200: <file , line 14> Cannot expand macro 'COUNT'. Reason: Macro must be defined before expansion.
+Details at logfile: /home/hduser/pig_1468677083233.log
+
+grunt> groupbyprofession = GROUP cust BY profession;
+grunt> dump groupbyprofession; >>> lot of records;
+
+grunt> groupbyprofession = limit groupbyprofession 10; <<< doesn't override!
+grunt> dump;
+
+grunt> custs_10 = limit cust 10;                      
+grunt> groupbyprofession = GROUP custs_10 BY profession;
+grunt> dump groupbyprofession;   
+(Pilot,{(4000007,Elsie,Hamilton,43,Pilot),(4000001,Kristina,Chung,55,Pilot)})
+(Artist,{(4000009,Malcolm,Wagner,39,Artist)})
+(Lawyer,{(4000005,Karen,Puckett,74,Lawyer)})
+(Writer,{(4000010,Dolores,McLaughlin,60,Writer)})
+(Teacher,{(4000002,Paige,Chen,74,Teacher)})
+(Carpenter,{(4000008,Hazel,Bender,63,Carpenter)})
+(Firefighter,{(4000003,Sherri,Melton,34,Firefighter)})
+(Veterinarian,{(4000006,Patrick,Song,42,Veterinarian)})
+(Computer hardware engineer,{(4000004,Gretchen,Hill,66,Computer hardware engineer)})
+====================================================================================================
+grunt> txn = LOAD '/home/hduser/pigdata/txns' using PigStorage(',') AS ( txnid:chararray,
+>> date:chararray,custid:chararray, amount:double, category:chararray, product:chararray,city:chararray,
+>> state:chararray, type:chararray);
+
+grunt> txn_count = foreach txn generate count(txn);
+2016-07-16 20:10:21,052 [main] ERROR org.apache.pig.tools.grunt.Grunt - ERROR 1200: Pig script failed to parse: 
+<line 21, column 39> Invalid scalar projection: txn : A column needs to be projected from a relation for it to be used as a scalar
+Details at logfile: /home/hduser/pig_1468677083233.log
+grunt> group_all_txn = group txn all;              
+grunt> txn_count = foreach group_all_txn generate count(txn);
+2016-07-16 20:11:40,382 [main] ERROR org.apache.pig.tools.grunt.Grunt - ERROR 1070: Could not resolve count using imports: [, java.lang., org.apache.pig.builtin., org.apache.pig.impl.builtin.]
+Details at logfile: /home/hduser/pig_1468677083233.log
+grunt> txn_count = foreach group_all_txn generate COUNT(txn);
+grunt> dump txn_count;
+(95904)
+
+[hduser@Inceptez pigdata]$ wc -l txns 
+95904 txns
+====================================================================================================
+grunt> txnbycust = group txn by custid; 
+grunt> txnbycust10 = limit txnbycust 10; 
+grunt> dump txnbycust10; >>>so many records, cant ger a clear picture!
+
+grunt> ordtxnbycust = order txn by custid;
+grunt> txn17 = limit ordtxnbycust 17;
+grunt> dump txn17;
+(00019757,10-30-2011,4000000,19.96,Outdoor Recreation,Running,St. Petersburg,Florida,cash)
+(00049461,07-12-2011,4000000,188.13,Winter Sports,Cross-Country Skiing,El Paso,Texas,credit)
+(00060535,10-20-2011,4000000,58.55,Jumping,Jumping Stilts,Des Moines,Iowa,credit)
+(00054878,07-03-2011,4000000,172.84,Team Sports,Football,Tampa,Florida,credit)
+(00078981,08-20-2011,4000000,6.58,Gymnastics,Pommel Horses,Louisville,Kentucky,cash)
+(00068377,02-08-2011,4000000,151.63,Exercise & Fitness,Free Weight Bars,Las Vegas,Nevada,credit)
+(00044544,06-08-2011,4000000,150.06,Outdoor Recreation,Riding Scooters,Newark,New Jersey,credit)
+(00055864,04-05-2011,4000000,96.38,Exercise & Fitness,Exercise Balls,Rockford,Illinois,credit)
+(00005483,07-17-2011,4000000,103.79,Indoor Games,Bowling,Flint,Michigan,credit)
+(00050568,04-15-2011,4000000,129.59,Winter Sports,Snowboarding,Pittsburgh,Pennsylvania,credit)
+(00080635,05-20-2011,4000000,105.21,Team Sports,Cricket,Washington,District of Columbia,credit)
+(00019041,08-01-2011,4000000,175.28,Games,Portable Electronic Games,Irvine,California,credit)
+(00091481,05-26-2011,4000001,164.93,Exercise & Fitness,Cardio Machine Accessories,Columbus,Georgia,credit)
+(00000551,12-30-2011,4000001,92.88,Games,Dice & Dice Sets,Buffalo,New York,credit)
+(00019234,01-02-2011,4000001,187.55,Outdoor Recreation,Riding Scooters,Brownsville,Texas,credit)
+(00044658,10-11-2011,4000001,141.61,Water Sports,Windsurfing,Orange,California,credit)
+(00007899,12-09-2011,4000001,51.18,Racquet Sports,Racquetball,Phoenix,Arizona,credit)
+
+grunt> grptxn17 = group txn17 by custid;
+grunt> dump grptxn17;      
+(4000000,{(00019757,10-30-2011,4000000,19.96,Outdoor Recreation,Running,St. Petersburg,Florida,cash),(00019041,08-01-2011,4000000,175.28,Games,Portable Electronic Games,Irvine,California,credit),(00080635,05-20-2011,4000000,105.21,Team Sports,Cricket,Washington,District of Columbia,credit),(00050568,04-15-2011,4000000,129.59,Winter Sports,Snowboarding,Pittsburgh,Pennsylvania,credit),(00005483,07-17-2011,4000000,103.79,Indoor Games,Bowling,Flint,Michigan,credit),(00055864,04-05-2011,4000000,96.38,Exercise & Fitness,Exercise Balls,Rockford,Illinois,credit),(00044544,06-08-2011,4000000,150.06,Outdoor Recreation,Riding Scooters,Newark,New Jersey,credit),(00068377,02-08-2011,4000000,151.63,Exercise & Fitness,Free Weight Bars,Las Vegas,Nevada,credit),(00078981,08-20-2011,4000000,6.58,Gymnastics,Pommel Horses,Louisville,Kentucky,cash),(00054878,07-03-2011,4000000,172.84,Team Sports,Football,Tampa,Florida,credit),(00060535,10-20-2011,4000000,58.55,Jumping,Jumping Stilts,Des Moines,Iowa,credit),(00049461,07-12-2011,4000000,188.13,Winter Sports,Cross-Country Skiing,El Paso,Texas,credit)})
+(4000001,{(00019234,01-02-2011,4000001,187.55,Outdoor Recreation,Riding Scooters,Brownsville,Texas,credit),(00000551,12-30-2011,4000001,92.88,Games,Dice & Dice Sets,Buffalo,New York,credit),(00091481,05-26-2011,4000001,164.93,Exercise & Fitness,Cardio Machine Accessories,Columbus,Georgia,credit),(00007899,12-09-2011,4000001,51.18,Racquet Sports,Racquetball,Phoenix,Arizona,credit),(00044658,10-11-2011,4000001,141.61,Water Sports,Windsurfing,Orange,California,credit)})
+
+grunt> spendbycust17 = foreach grptxn17 generate group,SUM(txn17.amount);
+grunt> dump spendbycust17;
+(4000000,1358.0)
+(4000001,638.1500000000001)     
+====================================================================================================
+grunt> spendbycust = foreach txnbycust generate group, SUM(txn.amount);
+grunt> custorder = order spendbycust by $1 desc;
+grunt> custorderleast = order spendbycust by $1;
+grunt> top10 = limit custorder 10;
+grunt> bot10 = limit custorderleast 10;
+grunt> describe top10
+top10: {group: chararray,double}
+grunt> dump
+(4006425,2543.16)
+(4001389,2521.62)
+(4000663,2481.3800000000006)
+(4005227,2457.17)
+(4001779,2434.21)
+(4007790,2433.72)
+(4001051,2401.4300000000003)
+(4001740,2401.43)
+(4008933,2388.4300000000003)
+(4006467,2376.45)
+
+grunt> topcust = filter txn by custid = '4006425';
+2016-07-16 20:46:28,414 [main] ERROR org.apache.pig.tools.grunt.Grunt - ERROR 1200: <line 40, column 31>  Syntax error, unexpected symbol at or near '='
+Details at logfile: /home/hduser/pig_1468677083233.log
+grunt> topcust = filter txn by custid == '4006425';
+grunt> dump
+(00000093,02-01-2011,4006425,193.11,Winter Sports,Sledding,Irvine,California,credit)
+(00006739,11-29-2011,4006425,190.96,Gymnastics,Pommel Horses,Colorado Springs,Colorado,credit)
+(00014382,10-18-2011,4006425,117.13,Winter Sports,Bobsledding,St. Petersburg,Florida,credit)
+(00018568,02-23-2011,4006425,76.04,Team Sports,Soccer,Omaha,Nebraska,credit)
+(00021485,03-28-2011,4006425,69.34,Jumping,Bungee Jumping,Jacksonville ,Florida,credit)
+(00021787,05-19-2011,4006425,191.49,Indoor Games,Billiards,Scottsdale,Arizona,credit)
+(00036327,02-10-2011,4006425,196.59,Team Sports,Soccer,Brownsville,Texas,credit)
+(00038449,04-01-2011,4006425,195.32,Team Sports,Baseball,Anaheim,California,credit)
+(00040743,10-21-2011,4006425,169.39,Outdoor Recreation,Running,Gresham,Oregon,credit)
+(00045405,03-29-2011,4006425,179.98,Exercise & Fitness,Cardio Machines,Montgomery,Alabama,credit)
+(00046638,02-25-2011,4006425,32.96,Winter Sports,Sledding,St. Louis  ,Missouri,credit)
+(00049695,12-28-2011,4006425,119.78,Puzzles,Jigsaw Puzzles,Saint Paul,Minnesota,credit)
+(00051517,07-26-2011,4006425,159.93,Outdoor Play Equipment,Sandboxes,Sacramento,California,credit)
+(00051573,10-09-2011,4006425,131.46,Outdoor Recreation,Riding Scooters,Buffalo,New York,credit)
+(00070071,04-11-2011,4006425,74.25,Gymnastics,Gymnastics Mats,Jackson,Mississippi,credit)
+(00072284,07-14-2011,4006425,162.13,Jumping,Trampoline Accessories,Hartford,Connecticut,credit)
+(00081857,09-18-2011,4006425,155.38,Games,Dominoes,Montgomery,Alabama,credit)
+(00092915,12-20-2011,4006425,21.99,Team Sports,Cricket,Plano,Texas,credit)
+(00093072,03-22-2011,4006425,105.93,Outdoor Play Equipment,Lawn Water Slides,Philadelphia,Pennsylvania,credit)
+====================================================================================================
+grunt> describe top10;                                  
+top10: {group: chararray,double}
+grunt> describe bot10;                                  
+bot10: {group: chararray,double}
+grunt> describe cust;                                   
+cust: {custid: chararray,firstname: chararray,lastname: chararray,age: long,profession: chararray}
+
+grunt> top10custinfo = join top10 by $0, cust by custid;
+grunt> dump 
+(4000663,2481.3800000000006,4000663,Claire,Henry,29,Police officer)
+(4001051,2401.4300000000003,4001051,Arlene,Higgins,62,Police officer)
+(4001389,2521.62,4001389,Maureen,Dixon,31,Electrical engineer)
+(4001740,2401.43,4001740,Melanie,Kirkland,45,Civil engineer)
+(4001779,2434.21,4001779,William,Cross,35,Writer)
+(4005227,2457.17,4005227,Diane,Allred,57,Firefighter)
+(4006425,2543.16,4006425,Joe,Burns,30,Economist)
+(4006467,2376.45,4006467,Evelyn,Monroe,37,Financial analyst)
+(4007790,2433.72,4007790,Clifford,Wooten,24,Librarian)
+(4008933,2388.4300000000003,4008933,Regina,Conner,39,Automotive mechanic)
+
+grunt> describe top10custinfo
+top10custinfo: {top10::group: chararray,double,cust::custid: chararray,cust::firstname: chararray,cust::lastname: chararray,cust::age: long,cust::profession: chararray}
+
+grunt> bot10custinfo = join cust by $0, bot10 by $0;    
+grunt> dump 
+(4000472,Kristin,Drake,22,Financial analyst,4000472,85.00000000000001)
+(4000590,Cheryl,Chase,53,Secretary,4000590,37.650000000000006)
+(4000832,Brian,Copeland,72,Loan officer,4000832,112.87)
+(4001378,Victoria,Hendricks,60,Computer software engineer,4001378,81.0)
+(4001599,Marianne,Perez,58,Writer,4001599,77.65)
+(4002066,Megan,Perkins,70,Environmental scientist,4002066,34.47)
+(4002571,Stacy,Ferguson,39,Physicist,4002571,73.75)
+(4006071,Renee,Page,56,Statistician,4006071,71.43)
+(4006156,Jessie,Barnett,62,Computer hardware engineer,4006156,80.50999999999999)
+(4008007,Hugh,Chu,52,Therapist,4008007,76.32)
+grunt> dump bot10
+(4002066,34.47)
+(4000590,37.650000000000006)
+(4006071,71.43)
+(4002571,73.75)
+(4008007,76.32)
+(4001599,77.65)
+(4006156,80.50999999999999)
+(4001378,81.0)
+(4000472,85.00000000000001)
+(4000832,112.87)
+
+grunt> describe bot10custinfo
+bot10custinfo: {cust::custid: chararray,cust::firstname: chararray,cust::lastname: chararray,cust::age: long,cust::profession: chararray,bot10::group: chararray,double}
+====================================================================================================
+grunt> describe top10custinfo
+top10custinfo: {top10::group: chararray,double,cust::custid: chararray,cust::firstname: chararray,cust::lastname: chararray,cust::age: long,cust::profession: chararray}
+grunt> describe bot10custinfo
+bot10custinfo: {cust::custid: chararray,cust::firstname: chararray,cust::lastname: chararray,cust::age: long,cust::profession: chararray,bot10::group: chararray,double}
+grunt> top10list = order top10custinfo by $1;
+grunt> bot10list = order bot10custinfo by $6;     
+
+grunt> dump top10list
+(4006467,2376.45,4006467,Evelyn,Monroe,37,Financial analyst)
+(4008933,2388.4300000000003,4008933,Regina,Conner,39,Automotive mechanic)
+(4001740,2401.43,4001740,Melanie,Kirkland,45,Civil engineer)
+(4001051,2401.4300000000003,4001051,Arlene,Higgins,62,Police officer)
+(4007790,2433.72,4007790,Clifford,Wooten,24,Librarian)
+(4001779,2434.21,4001779,William,Cross,35,Writer)
+(4005227,2457.17,4005227,Diane,Allred,57,Firefighter)
+(4000663,2481.3800000000006,4000663,Claire,Henry,29,Police officer)
+(4001389,2521.62,4001389,Maureen,Dixon,31,Electrical engineer)
+(4006425,2543.16,4006425,Joe,Burns,30,Economist)
+
+grunt> top10list = order top10custinfo by $1 desc;
+(4006425,2543.16,4006425,Joe,Burns,30,Economist)
+(4001389,2521.62,4001389,Maureen,Dixon,31,Electrical engineer)
+(4000663,2481.3800000000006,4000663,Claire,Henry,29,Police officer)
+(4005227,2457.17,4005227,Diane,Allred,57,Firefighter)
+(4001779,2434.21,4001779,William,Cross,35,Writer)
+(4007790,2433.72,4007790,Clifford,Wooten,24,Librarian)
+(4001051,2401.4300000000003,4001051,Arlene,Higgins,62,Police officer)
+(4001740,2401.43,4001740,Melanie,Kirkland,45,Civil engineer)
+(4008933,2388.4300000000003,4008933,Regina,Conner,39,Automotive mechanic)
+(4006467,2376.45,4006467,Evelyn,Monroe,37,Financial analyst)
+
+grunt> dump bot10list
+(4002066,Megan,Perkins,70,Environmental scientist,4002066,34.47)
+(4000590,Cheryl,Chase,53,Secretary,4000590,37.650000000000006)
+(4006071,Renee,Page,56,Statistician,4006071,71.43)
+(4002571,Stacy,Ferguson,39,Physicist,4002571,73.75)
+(4008007,Hugh,Chu,52,Therapist,4008007,76.32)
+(4001599,Marianne,Perez,58,Writer,4001599,77.65)
+(4006156,Jessie,Barnett,62,Computer hardware engineer,4006156,80.50999999999999)
+(4001378,Victoria,Hendricks,60,Computer software engineer,4001378,81.0)
+(4000472,Kristin,Drake,22,Financial analyst,4000472,85.00000000000001)
+(4000832,Brian,Copeland,72,Loan officer,4000832,112.87)
+====================================================================================================
+grunt> fnln = stream top10 through 'cut -f 2-3';
+2016-07-16 21:33:10,828 [main] ERROR org.apache.pig.tools.grunt.Grunt - ERROR 1200: <line 47, column 28>  Syntax error, unexpected symbol at or near ''cut -f 2-3''
+Details at logfile: /home/hduser/pig_1468677083233.log
+grunt> fnln = stream top10 THROUGH `cut -f 2-3`;;
+grunt> fnln = stream top10 THROUGH 'cut -f 2-3'; 
+2016-07-16 21:34:19,230 [main] ERROR org.apache.pig.tools.grunt.Grunt - ERROR 1200: <line 48, column 28>  Syntax error, unexpected symbol at or near ''cut -f 2-3''
+Details at logfile: /home/hduser/pig_1468677083233.log
+grunt> fnln = stream top10 THROUGH "cut -f 2-3"; 
+<line 48, column 28>  Unexpected character '"'
+2016-07-16 21:34:38,751 [main] ERROR org.apache.pig.tools.grunt.Grunt - ERROR 1200: <line 48, column 28>  Unexpected character '"'
+Details at logfile: /home/hduser/pig_1468677083233.log
+
+grunt> fnln = stream top10 THROUGH `cut -f 2-3`;
+(2543.16)
+(2521.62)
+(2481.3800000000006)
+(2457.17)
+(2434.21)
+(2433.72)
+(2401.4300000000003)
+(2401.43)
+(2388.4300000000003)
+(2376.45)
+
+grunt> fnln2 = stream bot10 THROUGH `cut -f 2-3`;
+(34.47)
+(37.650000000000006)
+(71.43)
+(73.75)
+(76.32)
+(77.65)
+(80.50999999999999)
+(81.0)
+(85.00000000000001)
+(112.87)
+
+[hduser@Inceptez mydata01]$ cat cutip.txt 
+1,2,3,4,5
+a,2,c,4,e
+6,7,8,9
+[hduser@Inceptez mydata01]$ cut cutip.txt -d',' -f 1
+1
+a
+6
+[hduser@Inceptez mydata01]$ cut cutip.txt -d',' -f 2-3
+2,3
+2,c
+7,8
+[hduser@Inceptez mydata01]$ cut cutip.txt -d ',' -f 2-3
+2,3
+2,c
+7,8
+
+grunt> STORE top10list INTO '/home/hduser/pigdata/rawstorageT';
+[hduser@Inceptez rawstorageT]$ cat part-r-00000 
+4006425	2543.16	4006425	Joe	Burns	30	Economist
+4001389	2521.62	4001389	Maureen	Dixon	31	Electrical engineer
+4000663	2481.3800000000006	4000663	Claire	Henry	29	Police officer
+4005227	2457.17	4005227	Diane	Allred	57	Firefighter
+4001779	2434.21	4001779	William	Cross	35	Writer
+4007790	2433.72	4007790	Clifford	Wooten	24	Librarian
+4001051	2401.4300000000003	4001051	Arlene	Higgins	62	Police officer
+4001740	2401.43	4001740	Melanie	Kirkland	45	Civil engineer
+4008933	2388.4300000000003	4008933	Regina	Conner	39	Automotive mechanic
+4006467	2376.45	4006467	Evelyn	Monroe	37	Financial analyst
+[hduser@Inceptez rawstorageT]$ cut part-r-00000 -f 4-5
+Joe	Burns
+Maureen	Dixon
+Claire	Henry
+Diane	Allred
+William	Cross
+Clifford	Wooten
+Arlene	Higgins
+Melanie	Kirkland
+Regina	Conner
+Evelyn	Monroe
+
+grunt> top10fnln = stream top10list THROUGH `cut -f 4-5`;       
+(Joe,Burns)
+(Maureen,Dixon)
+(Claire,Henry)
+(Diane,Allred)
+(William,Cross)
+(Clifford,Wooten)
+(Arlene,Higgins)
+(Melanie,Kirkland)
+(Regina,Conner)
+(Evelyn,Monroe)
+====================================================================================================
+grunt> topnbot10 = union top10, bot10;        
+(4006425,2543.16)
+(4001389,2521.62)
+(4000663,2481.3800000000006)
+(4005227,2457.17)
+(4001779,2434.21)
+(4007790,2433.72)
+(4001051,2401.4300000000003)
+(4001740,2401.43)
+(4008933,2388.4300000000003)
+(4006467,2376.45)
+(4002066,34.47)
+(4000590,37.650000000000006)
+(4006071,71.43)
+(4002571,73.75)
+(4008007,76.32)
+(4001599,77.65)
+(4006156,80.50999999999999)
+(4001378,81.0)
+(4000472,85.00000000000001)
+(4000832,112.87)
+
+grunt> topnbot10 = union top10list, bot10list;
+2016-07-16 21:58:40,972 [main] ERROR org.apache.pig.tools.grunt.Grunt - ERROR 1108: 
+<line 56, column 12> Duplicate schema alias: cust::firstname in "topnbot10"
+Details at logfile: /home/hduser/pig_1468677083233.log
+
+grunt> top10listnew = foreach top10list generate $2..$6,$1;
+(4006425,Joe,Burns,30,Economist,2543.16)
+(4001389,Maureen,Dixon,31,Electrical engineer,2521.62)
+(4000663,Claire,Henry,29,Police officer,2481.3800000000006)
+(4005227,Diane,Allred,57,Firefighter,2457.17)
+(4001779,William,Cross,35,Writer,2434.21)
+(4007790,Clifford,Wooten,24,Librarian,2433.72)
+(4001051,Arlene,Higgins,62,Police officer,2401.4300000000003)
+(4001740,Melanie,Kirkland,45,Civil engineer,2401.43)
+(4008933,Regina,Conner,39,Automotive mechanic,2388.4300000000003)
+(4006467,Evelyn,Monroe,37,Financial analyst,2376.45)
+
+grunt> bot10listnew = foreach bot10list generate $0..$4,$6;
+(4002066,Megan,Perkins,70,Environmental scientist,34.47)
+(4000590,Cheryl,Chase,53,Secretary,37.650000000000006)
+(4006071,Renee,Page,56,Statistician,71.43)
+(4002571,Stacy,Ferguson,39,Physicist,73.75)
+(4008007,Hugh,Chu,52,Therapist,76.32)
+(4001599,Marianne,Perez,58,Writer,77.65)
+(4006156,Jessie,Barnett,62,Computer hardware engineer,80.50999999999999)
+(4001378,Victoria,Hendricks,60,Computer software engineer,81.0)
+(4000472,Kristin,Drake,22,Financial analyst,85.00000000000001)
+(4000832,Brian,Copeland,72,Loan officer,112.87)
+
+grunt> topnbot10 = union top10listnew, bot10listnew        
+>> ;
+(4002066,Megan,Perkins,70,Environmental scientist,34.47)
+(4000590,Cheryl,Chase,53,Secretary,37.650000000000006)
+(4006071,Renee,Page,56,Statistician,71.43)
+(4002571,Stacy,Ferguson,39,Physicist,73.75)
+(4008007,Hugh,Chu,52,Therapist,76.32)
+(4001599,Marianne,Perez,58,Writer,77.65)
+(4006156,Jessie,Barnett,62,Computer hardware engineer,80.50999999999999)
+(4001378,Victoria,Hendricks,60,Computer software engineer,81.0)
+(4000472,Kristin,Drake,22,Financial analyst,85.00000000000001)
+(4000832,Brian,Copeland,72,Loan officer,112.87)
+(4006425,Joe,Burns,30,Economist,2543.16)
+(4001389,Maureen,Dixon,31,Electrical engineer,2521.62)
+(4000663,Claire,Henry,29,Police officer,2481.3800000000006)
+(4005227,Diane,Allred,57,Firefighter,2457.17)
+(4001779,William,Cross,35,Writer,2434.21)
+(4007790,Clifford,Wooten,24,Librarian,2433.72)
+(4001051,Arlene,Higgins,62,Police officer,2401.4300000000003)
+(4001740,Melanie,Kirkland,45,Civil engineer,2401.43)
+(4008933,Regina,Conner,39,Automotive mechanic,2388.4300000000003)
+(4006467,Evelyn,Monroe,37,Financial analyst,2376.45)
+====================================================================================================

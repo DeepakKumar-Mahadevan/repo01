@@ -1,0 +1,100 @@
+scala> orgz_02.groupByKey().collect
+res9: Array[(String, Iterable[String])] = Array((Finland,CompactBuffer(21-Sibelius)), (Germany,CompactBuffer(16-SAP)), (Sweden,CompactBuffer(19-Lavasoft)), (US,CompactBuffer(10-Microsoft, 11-Macromedia, 12-Google, 13-Yahoo, 14-Lycos, 15-IBM, 17-Adobe, 18-Amazon, 20-Cakewalk, 22-Oracle, 23-Apple Systems)))
+
+scala> orgz_02.reduceByKey().collect
+<console>:26: error: overloaded method value reduceByKey with alternatives:
+  (func: (String, String) => String)org.apache.spark.rdd.RDD[(String, String)] <and>
+  (func: (String, String) => String,numPartitions: Int)org.apache.spark.rdd.RDD[(String, String)] <and>
+  (partitioner: org.apache.spark.Partitioner,func: (String, String) => String)org.apache.spark.rdd.RDD[(String, String)]
+ cannot be applied to ()
+              orgz_02.reduceByKey().collect
+                      ^
+
+scala> orgz_02.reduceByKey(_+_).collect
+res11: Array[(String, String)] = Array((Finland,21-Sibelius), (Germany,16-SAP), (Sweden,19-Lavasoft), (US,10-Microsoft11-Macromedia12-Google13-Yahoo14-Lycos15-IBM17-Adobe18-Amazon20-Cakewalk22-Oracle23-Apple Systems))
+====================================================================================================
+scala> val CanEmp_kv = CanEmp.map(_.split(",")(8), _.split(",")(1) + "|" + _.split(",")(3) + "|" + _.split(",")(6))
+<console>:23: error: too many arguments for method map: (f: String => U)(implicit evidence$3: scala.reflect.ClassTag[U])org.apache.spark.rdd.RDD[U]
+         val CanEmp_kv = CanEmp.map(_.split(",")(8), _.split(",")(1) + "|" + _.split(",")(3) + "|" + _.split(",")(6))
+                                   ^
+
+scala> val CanEmp_kv = CanEmp.map(_ => _.split(",")(8), _.split(",")(1) + "|" + _.split(",")(3) + "|" + _.split(",")(6))
+<console>:23: error: too many arguments for method map: (f: String => U)(implicit evidence$3: scala.reflect.ClassTag[U])org.apache.spark.rdd.RDD[U]
+         val CanEmp_kv = CanEmp.map(_ => _.split(",")(8), _.split(",")(1) + "|" + _.split(",")(3) + "|" + _.split(",")(6))
+                                   ^
+
+scala> val CanEmp_kv = CanEmp.map(_ => (_.split(",")(8), _.split(",")(1) + "|" + _.split(",")(3) + "|" + _.split(",")(6)))
+<console>:23: error: missing parameter type for expanded function ((x$2) => x$2.split(",")(8))
+         val CanEmp_kv = CanEmp.map(_ => (_.split(",")(8), _.split(",")(1) + "|" + _.split(",")(3) + "|" + _.split(",")(6)))
+                                          ^
+<console>:23: error: missing parameter type for expanded function ((x$3, x$4, x$5) => x$3.split(",")(1).$plus("|").$plus(x$4.split(",")(3)).$plus("|").$plus(x$5.split(",")(6)))
+         val CanEmp_kv = CanEmp.map(_ => (_.split(",")(8), _.split(",")(1) + "|" + _.split(",")(3) + "|" + _.split(",")(6)))
+                                                           ^
+<console>:23: error: missing parameter type for expanded function ((x$3: <error>, x$4, x$5) => x$3.split(",")(1).$plus("|").$plus(x$4.split(",")(3)).$plus("|").$plus(x$5.split(",")(6)))
+         val CanEmp_kv = CanEmp.map(_ => (_.split(",")(8), _.split(",")(1) + "|" + _.split(",")(3) + "|" + _.split(",")(6)))
+                                                                                   ^
+<console>:23: error: missing parameter type for expanded function ((x$3: <error>, x$4: <error>, x$5) => x$3.split(",")(1).$plus("|").$plus(x$4.split(",")(3)).$plus("|").$plus(x$5.split(",")(6)))
+         val CanEmp_kv = CanEmp.map(_ => (_.split(",")(8), _.split(",")(1) + "|" + _.split(",")(3) + "|" + _.split(",")(6)))
+                                                                                                           ^
+
+scala> val CanEmp_kv = CanEmp.map(x => (x.split(",")(8), x.split(",")(1) + "|" + x.split(",")(3) + "|" + x.split(",")(6)))
+CanEmp_kv: org.apache.spark.rdd.RDD[(String, String)] = MapPartitionsRDD[11] at map at <console>:23
+
+CanEmp_kv.take(3)
+res14: Array[(String, String)] = Array((org_id,name|city|phone), (11380.73,Isaac Mack| 7414 Dapibus Ave"|Canada), (11,Barrett Herrera|Daly|(232) 932-3742))
+====================================================================================================
+Remove header
+-------------
+scala> val CanEmp_kv = CanEmp.map(x => (x.split(",")(8), x.split(",")(1) + "|" + x.split(",")(3) + "|" + x.split(",")(6))).filter(_(0) != "org_id")
+<console>:23: error: (String, String) does not take parameters
+         val CanEmp_kv = CanEmp.map(x => (x.split(",")(8), x.split(",")(1) + "|" + x.split(",")(3) + "|" + x.split(",")(6))).filter(_(0) != "org_id")
+                                                                                                                                     ^
+scala> val CanEmp_kv_no_hdr = CanEmp_kv.filter(_(0) != "org_id")
+<console>:25: error: (String, String) does not take parameters
+         val CanEmp_kv_no_hdr = CanEmp_kv.filter(_(0) != "org_id")
+                                                  ^
+scala> val CanEmp_no_hdr = CanEmp.filter(_.charAt(0) != "o")
+<console>:23: warning: comparing values of types Char and String using `!=' will always yield true
+         val CanEmp_no_hdr = CanEmp.filter(_.charAt(0) != "o")
+                                                       ^
+CanEmp_no_hdr: org.apache.spark.rdd.RDD[String] = MapPartitionsRDD[13] at filter at <console>:23
+
+scala> val CanEmp_no_hdr = CanEmp.filter(_.charAt(0) != 'o')
+CanEmp_no_hdr: org.apache.spark.rdd.RDD[String] = MapPartitionsRDD[14] at filter at <console>:23
+
+scala> CanEmp_no_hdr.first
+res15: String = id,name,addr,city,zip,country,phone,salary,org_id
+
+scala> val CanEmp_no_hdr = CanEmp.filter(_.charAt(0) != 'i')
+CanEmp_no_hdr: org.apache.spark.rdd.RDD[String] = MapPartitionsRDD[15] at filter at <console>:23
+
+scala> CanEmp_no_hdr.first
+res16: String = 1730,Isaac Mack,"P.O. Box 248, 7414 Dapibus Ave",Mundare,P1H 2A1,Canada,(666) 753-5715,11380.73,13
+
+scala> val CanEmp_kv = CanEmp_no_hdr.map(x => (x.split(",")(8), x.split(",")(1) + "|" + x.split(",")(3) + "|" + x.split(",")(6)))
+CanEmp_kv: org.apache.spark.rdd.RDD[(String, String)] = MapPartitionsRDD[16] at map at <console>:25
+
+scala> CanEmp_kv.take(10)
+res17: Array[(String, String)] = Array((11380.73,Isaac Mack| 7414 Dapibus Ave"|Canada), (11,Barrett Herrera|Daly|(232) 932-3742), (244760.14,Louis Sharp| 4042 Facilisis Av."|Canada), (13,Samson Ramirez|Isle-aux-Coudres|(172) 805-2137), (438969.41,Griffith Perkins| Road"|Canada), (21,Lester Moses|Midlands|(864) 341-9449), (13,Odysseus Frost|Whitehorse|(733) 578-2890), (12,Akeem Fuentes|Stonewall|(262) 175-7888), (20,Isaiah Gates|Verdun|(412) 872-6188), (13,Quinlan Mathews|Barrhead|(132) 488-2432))
+====================================================================================================
+scala> val orgz_kv = orgz.map(x => (x.split(",")(0) , x.split(",")(1)))
+orgz_kv: org.apache.spark.rdd.RDD[(String, String)] = MapPartitionsRDD[17] at map at <console>:23
+
+scala> orgz_kv.take(3)
+res18: Array[(String, String)] = Array((10,Microsoft), (11,Macromedia), (12,Google))
+====================================================================================================
+Join
+----
+scala> val CanEmp_Org_JoinOP = CanEmp_kv.join(orgz_kv)
+CanEmp_Org_JoinOP: org.apache.spark.rdd.RDD[(String, (String, String))] = MapPartitionsRDD[20] at join at <console>:31
+
+scala> CanEmp_Org_JoinOP.foreach(println)
+(21,(Lester Moses|Midlands|(864) 341-9449,Sibelius))
+(20,(Isaiah Gates|Verdun|(412) 872-6188,Cakewalk))
+(12,(Akeem Fuentes|Stonewall|(262) 175-7888,Google))
+(13,(Samson Ramirez|Isle-aux-Coudres|(172) 805-2137,Yahoo))
+(13,(Odysseus Frost|Whitehorse|(733) 578-2890,Yahoo))
+(13,(Quinlan Mathews|Barrhead|(132) 488-2432,Yahoo))
+(11,(Barrett Herrera|Daly|(232) 932-3742,Macromedia))
+
+====================================================================================================

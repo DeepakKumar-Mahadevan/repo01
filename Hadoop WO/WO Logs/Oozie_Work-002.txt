@@ -1,0 +1,271 @@
+[root@sandbox myhqls]# ls -l
+total 4
+-rw-r--r-- 1 root root 13 Aug 18 02:07 showtables.hql
+[root@sandbox myhqls]# chown hue
+chown: missing operand after `hue'
+Try `chown --help' for more information.
+[root@sandbox myhqls]# chown showtables.hql hue
+chown: invalid user: `showtables.hql'
+[root@sandbox myhqls]# chown hue showtables.hql
+[root@sandbox myhqls]# ls -l
+total 4
+-rw-r--r-- 1 hue root 13 Aug 18 02:07 showtables.hql
+[root@sandbox myhqls]# chgrp hue showtables.hql
+[root@sandbox myhqls]# ls -l
+total 4
+-rw-r--r-- 1 hue hue 13 Aug 18 02:07 showtables.hql
+[root@sandbox myhqls]# chmod 755 showtables.hql
+[root@sandbox myhqls]# ls -l
+total 4
+-rwxr-xr-x 1 hue hue 13 Aug 18 02:07 showtables.hql
+[root@sandbox myhqls]# hdfs dfs -put showtables.hql /user/hue/MyWork01/
+put: `/user/hue/MyWork01/showtables.hql': File exists
+[root@sandbox myhqls]# hdfs dfs -put -f showtables.hql /user/hue/MyWork01/
+[root@sandbox myhqls]# hdfs dfs -ls /user/hue/MyWork01/
+Found 3 items
+-rwxr-xr-x   3 hue  hue       3545 2016-07-25 00:23 /user/hue/MyWork01/hive-site.xml
+-rw-r--r--   3 root hue         13 2016-08-18 02:10 /user/hue/MyWork01/showtables.hql
+-rwxr-xr-x   3 hue  hue         33 2016-07-24 23:42 /user/hue/MyWork01/test.hql
+[root@sandbox myhqls]# hdfs dfs -chown hue /user/hue/MyWork01/showtables.hql
+chown: changing ownership of '/user/hue/MyWork01/showtables.hql': Non-super user cannot change owner
+[root@sandbox myhqls]# sudo -u hdfs hdfs dfs -chown hue /user/hue/MyWork01/showtables.hql
+[root@sandbox myhqls]# sudo -u hdfs hdfs dfs -chmod 755 /user/hue/MyWork01/showtables.hql
+[root@sandbox myhqls]# hdfs dfs -ls /user/hue/MyWork01/
+Found 3 items
+-rwxr-xr-x   3 hue hue       3545 2016-07-25 00:23 /user/hue/MyWork01/hive-site.xml
+-rwxr-xr-x   3 hue hue         13 2016-08-18 02:10 /user/hue/MyWork01/showtables.hql
+-rwxr-xr-x   3 hue hue         33 2016-07-24 23:42 /user/hue/MyWork01/test.hql
+===============================================================================
+/user/hue/oozie/deployments/_hue_-oozie-10-1449525063.51/hive.sql
+
+[root@sandbox action-conf]# hdfs dfs -ls -R /user/hue/MyWork01
+-rwxr-xr-x   3 hue hue       3545 2016-07-25 00:23 /user/hue/MyWork01/hive-site.xml
+-rwxr-xr-x   3 hue hue         13 2016-08-18 02:10 /user/hue/MyWork01/showtables.hql
+-rwxr-xr-x   3 hue hue         33 2016-07-24 23:42 /user/hue/MyWork01/test.hql
+===============================================================================
+WORKING FINE:
+-------------
+<workflow-app name="DKM-Hive-WF-001" xmlns="uri:oozie:workflow:0.4">
+    <start to="DKM-Hive-WF-001a"/>
+    <action name="DKM-Hive-WF-001a">
+        <hive xmlns="uri:oozie:hive-action:0.2">
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+              <job-xml>/user/hue/MyWork01/hive-site.xml</job-xml>
+            <script>/user/hue/MyWork01/test.hql</script>
+        </hive>
+        <ok to="end"/>
+        <error to="kill"/>
+    </action>
+    <kill name="kill">
+        <message>Action failed, error message[${wf:errorMessage(wf:lastErrorNode())}]</message>
+    </kill>
+    <end name="end"/>
+</workflow-app>
+
+Completion	Status	Name	Duration	Submitter	Created	Last Modified	Run	Id
+Wed, 17 Aug 2016 15:27:01	SUCCEEDED	DKM-Hive-WF-001	3m:15s	hue	Wed, 17 Aug 2016 15:23:46	Wed, 17 Aug 2016 15:27:01	0	0000003-160818015042877-oozie-oozi-W
+====================================================================================================
+<workflow-app name="DKM-Hive-WF-001" xmlns="uri:oozie:workflow:0.4">
+    <start to="DKM-Hive-WF-Fork-001"/>
+    <fork name="DKM-Hive-WF-Fork-001">
+        <path start="DKM-Hive-WF-001a" />
+        <path start="DKM-Hive-WF-001b" />
+    </fork>
+    <action name="DKM-Hive-WF-001a">
+        <hive xmlns="uri:oozie:hive-action:0.2">
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+              <job-xml>/user/hue/MyWork01/hive-site.xml</job-xml>
+            <script>/user/hue/MyWork01/showtables.hql</script>
+        </hive>
+        <ok to="join-284"/>
+        <error to="kill"/>
+    </action>
+    <action name="DKM-Hive-WF-001b">
+        <hive xmlns="uri:oozie:hive-action:0.2">
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+              <job-xml>/user/hue/MyWork01/hive-site.xml</job-xml>
+            <script>/user/hue/MyWork01/test.hql</script>
+        </hive>
+        <ok to="join-284"/>
+        <error to="kill"/>
+    </action>
+    <join name="join-284" to="end"/>
+    <kill name="kill">
+        <message>Action failed, error message[${wf:errorMessage(wf:lastErrorNode())}]</message>
+    </kill>
+    <end name="end"/>
+</workflow-app>
+
+
+Completion	Status	Name	Duration	Submitter	Created	Last Modified	Run	Id
+Wed, 17 Aug 2016 15:44:19	SUCCEEDED	DKM-Hive-WF-001	8m:6s	hue	Wed, 17 Aug 2016 15:36:13	Wed, 17 Aug 2016 15:44:19	0	0000004-160818015042877-oozie-oozi-W
+
+
+Script [showtables.hql] content:
+------------------------
+show tables;
+
+------------------------
+
+Hive command arguments :
+-f
+showtables.hql
+
+=================================================================
+
+>>> Invoking Hive command line now >>>
+
+163089 [main] INFO  org.apache.hadoop.hive.ql.Driver  - <PERFLOG method=Driver.run>
+163121 [main] INFO  org.apache.hadoop.hive.ql.Driver  - <PERFLOG method=TimeToSubmit>
+163121 [main] INFO  org.apache.hadoop.hive.ql.Driver  - <PERFLOG method=compile>
+167095 [main] INFO  org.apache.hadoop.hive.ql.Driver  - <PERFLOG method=parse>
+168010 [main] INFO  hive.ql.parse.ParseDriver  - Parsing command: show tables
+170105 [main] INFO  hive.ql.parse.ParseDriver  - Parse Completed
+170112 [main] INFO  org.apache.hadoop.hive.ql.Driver  - </PERFLOG method=parse start=1471473721444 end=1471473724461 duration=3017>
+170112 [main] INFO  org.apache.hadoop.hive.ql.Driver  - <PERFLOG method=semanticAnalyze>
+Heart beat
+173869 [main] INFO  org.apache.hadoop.hive.ql.Driver  - Semantic Analysis Completed
+173869 [main] INFO  org.apache.hadoop.hive.ql.Driver  - </PERFLOG method=semanticAnalyze start=1471473724461 end=1471473728218 duration=3757>
+180568 [main] INFO  org.apache.hadoop.hive.ql.exec.ListSinkOperator  - Initializing Self 0 OP
+188707 [main] INFO  org.apache.hadoop.hive.ql.exec.ListSinkOperator  - Operator 0 OP initialized
+188707 [main] INFO  org.apache.hadoop.hive.ql.exec.ListSinkOperator  - Initialization Done 0 OP
+190143 [main] INFO  org.apache.hadoop.hive.ql.Driver  - Returning Hive schema: Schema(fieldSchemas:[FieldSchema(name:tab_name, type:string, comment:from deserializer)], properties:null)
+190144 [main] INFO  org.apache.hadoop.hive.ql.Driver  - </PERFLOG method=compile start=1471473717470 end=1471473744493 duration=27023>
+190144 [main] INFO  org.apache.hadoop.hive.ql.Driver  - <PERFLOG method=Driver.execute>
+190144 [main] INFO  org.apache.hadoop.hive.ql.Driver  - Starting command: show tables
+193686 [main] INFO  org.apache.hadoop.hive.ql.Driver  - </PERFLOG method=TimeToSubmit start=1471473717470 end=1471473748035 duration=30565>
+193686 [main] INFO  org.apache.hadoop.hive.ql.Driver  - <PERFLOG method=runTasks>
+193686 [main] INFO  org.apache.hadoop.hive.ql.Driver  - <PERFLOG method=task.DDL.Stage-0>
+194302 [main] INFO  hive.metastore  - Trying to connect to metastore with URI thrift://sandbox.hortonworks.com:9083
+Heart beat
+202381 [main] INFO  hive.metastore  - Waiting 1 seconds before next connection attempt.
+203382 [main] INFO  hive.metastore  - Connected to metastore.
+Heart beat
+236424 [main] INFO  org.apache.hadoop.hive.ql.Driver  - </PERFLOG method=task.DDL.Stage-0 start=1471473748035 end=1471473790773 duration=42738>
+236424 [main] INFO  org.apache.hadoop.hive.ql.Driver  - </PERFLOG method=runTasks start=1471473748035 end=1471473790773 duration=42738>
+236424 [main] INFO  org.apache.hadoop.hive.ql.Driver  - </PERFLOG method=Driver.execute start=1471473744493 end=1471473790773 duration=46280>
+236595 [main] INFO  org.apache.hadoop.hive.ql.Driver  - OK
+236595 [main] INFO  org.apache.hadoop.hive.ql.Driver  - <PERFLOG method=releaseLocks>
+236595 [main] INFO  org.apache.hadoop.hive.ql.Driver  - </PERFLOG method=releaseLocks start=1471473790944 end=1471473790944 duration=0>
+236595 [main] INFO  org.apache.hadoop.hive.ql.Driver  - </PERFLOG method=Driver.run start=1471473717438 end=1471473790944 duration=73506>
+a
+emp_org
+employee
+sample_07
+sample_08
+239448 [main] INFO  org.apache.hadoop.hive.ql.exec.ListSinkOperator  - 0 finished. closing...
+239448 [main] INFO  org.apache.hadoop.hive.ql.exec.ListSinkOperator  - 0 forwarded 0 rows
+239966 [main] INFO  org.apache.hadoop.hive.ql.Driver  - <PERFLOG method=releaseLocks>
+239966 [main] INFO  org.apache.hadoop.hive.ql.Driver  - </PERFLOG method=releaseLocks start=1471473794315 end=1471473794315 duration=0>
+
+<<< Invocation of Hive command completed <<<
+
+
+Script [test.hql] content:
+------------------------
+select * from sample_07 limit 10;
+
+------------------------
+
+Hive command arguments :
+-f
+test.hql
+
+=================================================================
+
+>>> Invoking Hive command line now >>>
+
+163094 [main] INFO  org.apache.hadoop.hive.ql.Driver  - <PERFLOG method=Driver.run>
+163129 [main] INFO  org.apache.hadoop.hive.ql.Driver  - <PERFLOG method=TimeToSubmit>
+163129 [main] INFO  org.apache.hadoop.hive.ql.Driver  - <PERFLOG method=compile>
+167099 [main] INFO  org.apache.hadoop.hive.ql.Driver  - <PERFLOG method=parse>
+168021 [main] INFO  hive.ql.parse.ParseDriver  - Parsing command: select * from sample_07 limit 10
+170128 [main] INFO  hive.ql.parse.ParseDriver  - Parse Completed
+170129 [main] INFO  org.apache.hadoop.hive.ql.Driver  - </PERFLOG method=parse start=1471473721443 end=1471473724473 duration=3030>
+170129 [main] INFO  org.apache.hadoop.hive.ql.Driver  - <PERFLOG method=semanticAnalyze>
+Heart beat
+172558 [main] INFO  org.apache.hadoop.hive.ql.parse.SemanticAnalyzer  - Starting Semantic Analysis
+172559 [main] INFO  org.apache.hadoop.hive.ql.parse.SemanticAnalyzer  - Completed phase 1 of Semantic Analysis
+172559 [main] INFO  org.apache.hadoop.hive.ql.parse.SemanticAnalyzer  - Get metadata for source tables
+175406 [main] INFO  hive.metastore  - Trying to connect to metastore with URI thrift://sandbox.hortonworks.com:9083
+Heart beat
+202386 [main] INFO  hive.metastore  - Waiting 1 seconds before next connection attempt.
+203387 [main] INFO  hive.metastore  - Connected to metastore.
+Heart beat
+243673 [main] INFO  org.apache.hadoop.hive.ql.parse.SemanticAnalyzer  - Get metadata for subqueries
+245432 [main] INFO  org.apache.hadoop.hive.ql.parse.SemanticAnalyzer  - Get metadata for destination tables
+250710 [main] INFO  hive.ql.Context  - New scratch dir is hdfs://sandbox.hortonworks.com:8020/tmp/hive-yarn/hive_2016-08-18_04-12-01_442_8726813924211389438-1
+250828 [main] INFO  org.apache.hadoop.hive.ql.parse.SemanticAnalyzer  - Completed getting MetaData in Semantic Analysis
+256173 [main] INFO  org.apache.hadoop.hive.ql.ppd.OpProcFactory  - Processing for FS(3)
+256173 [main] INFO  org.apache.hadoop.hive.ql.ppd.OpProcFactory  - Processing for LIM(2)
+256178 [main] INFO  org.apache.hadoop.hive.ql.ppd.OpProcFactory  - Processing for SEL(1)
+256178 [main] INFO  org.apache.hadoop.hive.ql.ppd.OpProcFactory  - Processing for TS(0)
+256774 [main] INFO  org.apache.hadoop.hive.ql.parse.SemanticAnalyzer  - Completed plan generation
+256775 [main] INFO  org.apache.hadoop.hive.ql.Driver  - Semantic Analysis Completed
+256775 [main] INFO  org.apache.hadoop.hive.ql.Driver  - </PERFLOG method=semanticAnalyze start=1471473724473 end=1471473811119 duration=86646>
+257367 [main] INFO  org.apache.hadoop.hive.ql.exec.TableScanOperator  - Initializing Self 0 TS
+257367 [main] INFO  org.apache.hadoop.hive.ql.exec.TableScanOperator  - Operator 0 TS initialized
+257368 [main] INFO  org.apache.hadoop.hive.ql.exec.TableScanOperator  - Initializing children of 0 TS
+257368 [main] INFO  org.apache.hadoop.hive.ql.exec.SelectOperator  - Initializing child 1 SEL
+257368 [main] INFO  org.apache.hadoop.hive.ql.exec.SelectOperator  - Initializing Self 1 SEL
+257962 [main] INFO  org.apache.hadoop.hive.ql.exec.SelectOperator  - SELECT struct<code:string,description:string,total_emp:int,salary:int>
+257968 [main] INFO  org.apache.hadoop.hive.ql.exec.SelectOperator  - Operator 1 SEL initialized
+257968 [main] INFO  org.apache.hadoop.hive.ql.exec.SelectOperator  - Initializing children of 1 SEL
+257968 [main] INFO  org.apache.hadoop.hive.ql.exec.LimitOperator  - Initializing child 2 LIM
+257968 [main] INFO  org.apache.hadoop.hive.ql.exec.LimitOperator  - Initializing Self 2 LIM
+257968 [main] INFO  org.apache.hadoop.hive.ql.exec.LimitOperator  - Operator 2 LIM initialized
+257968 [main] INFO  org.apache.hadoop.hive.ql.exec.LimitOperator  - Initializing children of 2 LIM
+257968 [main] INFO  org.apache.hadoop.hive.ql.exec.ListSinkOperator  - Initializing child 4 OP
+257968 [main] INFO  org.apache.hadoop.hive.ql.exec.ListSinkOperator  - Initializing Self 4 OP
+257970 [main] INFO  org.apache.hadoop.hive.ql.exec.ListSinkOperator  - Operator 4 OP initialized
+257970 [main] INFO  org.apache.hadoop.hive.ql.exec.ListSinkOperator  - Initialization Done 4 OP
+257970 [main] INFO  org.apache.hadoop.hive.ql.exec.LimitOperator  - Initialization Done 2 LIM
+257970 [main] INFO  org.apache.hadoop.hive.ql.exec.SelectOperator  - Initialization Done 1 SEL
+257970 [main] INFO  org.apache.hadoop.hive.ql.exec.TableScanOperator  - Initialization Done 0 TS
+258054 [main] INFO  org.apache.hadoop.hive.ql.Driver  - Returning Hive schema: Schema(fieldSchemas:[FieldSchema(name:code, type:string, comment:null), FieldSchema(name:description, type:string, comment:null), FieldSchema(name:total_emp, type:int, comment:null), FieldSchema(name:salary, type:int, comment:null)], properties:null)
+258054 [main] INFO  org.apache.hadoop.hive.ql.Driver  - </PERFLOG method=compile start=1471473717473 end=1471473812398 duration=94925>
+258054 [main] INFO  org.apache.hadoop.hive.ql.Driver  - <PERFLOG method=Driver.execute>
+258054 [main] INFO  org.apache.hadoop.hive.ql.Driver  - Starting command: select * from sample_07 limit 10
+258077 [main] INFO  org.apache.hadoop.hive.ql.Driver  - </PERFLOG method=TimeToSubmit start=1471473717473 end=1471473812421 duration=94948>
+258077 [main] INFO  org.apache.hadoop.hive.ql.Driver  - <PERFLOG method=runTasks>
+258077 [main] INFO  org.apache.hadoop.hive.ql.Driver  - </PERFLOG method=runTasks start=1471473812421 end=1471473812421 duration=0>
+258077 [main] INFO  org.apache.hadoop.hive.ql.Driver  - </PERFLOG method=Driver.execute start=1471473812398 end=1471473812421 duration=23>
+258137 [main] INFO  org.apache.hadoop.hive.ql.Driver  - OK
+258138 [main] INFO  org.apache.hadoop.hive.ql.Driver  - <PERFLOG method=releaseLocks>
+258138 [main] INFO  org.apache.hadoop.hive.ql.Driver  - </PERFLOG method=releaseLocks start=1471473812482 end=1471473812482 duration=0>
+258138 [main] INFO  org.apache.hadoop.hive.ql.Driver  - </PERFLOG method=Driver.run start=1471473717438 end=1471473812482 duration=95044>
+261318 [main] INFO  org.apache.hadoop.hive.ql.exec.TableScanOperator  - 0 forwarding 1 rows
+Heart beat
+261377 [main] INFO  org.apache.hadoop.hive.ql.exec.SelectOperator  - 1 forwarding 1 rows
+261377 [main] INFO  org.apache.hadoop.hive.ql.exec.LimitOperator  - 2 forwarding 1 rows
+261382 [main] INFO  org.apache.hadoop.hive.ql.exec.TableScanOperator  - 0 forwarding 10 rows
+261383 [main] INFO  org.apache.hadoop.hive.ql.exec.SelectOperator  - 1 forwarding 10 rows
+261383 [main] INFO  org.apache.hadoop.hive.ql.exec.LimitOperator  - 2 forwarding 10 rows
+00-0000	All Occupations	134354250	40690
+11-0000	Management occupations	6003930	96150
+11-1011	Chief executives	299160	151370
+11-1021	General and operations managers	1655410	103780
+11-1031	Legislators	61110	33880
+11-2011	Advertising and promotions managers	36300	91100
+11-2021	Marketing managers	165240	113400
+11-2022	Sales managers	322170	106790
+11-2031	Public relations managers	47210	97170
+11-3011	Administrative services managers	239360	76370
+261384 [main] INFO  org.apache.hadoop.hive.ql.exec.TableScanOperator  - 0 finished. closing...
+261384 [main] INFO  org.apache.hadoop.hive.ql.exec.TableScanOperator  - 0 forwarded 10 rows
+261384 [main] INFO  org.apache.hadoop.hive.ql.exec.SelectOperator  - 1 finished. closing...
+261384 [main] INFO  org.apache.hadoop.hive.ql.exec.SelectOperator  - 1 forwarded 10 rows
+261384 [main] INFO  org.apache.hadoop.hive.ql.exec.LimitOperator  - 2 finished. closing...
+261385 [main] INFO  org.apache.hadoop.hive.ql.exec.LimitOperator  - 2 forwarded 10 rows
+261385 [main] INFO  org.apache.hadoop.hive.ql.exec.ListSinkOperator  - 4 finished. closing...
+261385 [main] INFO  org.apache.hadoop.hive.ql.exec.ListSinkOperator  - 4 forwarded 0 rows
+261385 [main] INFO  org.apache.hadoop.hive.ql.exec.LimitOperator  - 2 Close done
+261385 [main] INFO  org.apache.hadoop.hive.ql.exec.SelectOperator  - 1 Close done
+261385 [main] INFO  org.apache.hadoop.hive.ql.exec.TableScanOperator  - 0 Close done
+262160 [main] INFO  org.apache.hadoop.hive.ql.Driver  - <PERFLOG method=releaseLocks>
+262160 [main] INFO  org.apache.hadoop.hive.ql.Driver  - </PERFLOG method=releaseLocks start=1471473816504 end=1471473816504 duration=0>
+
+<<< Invocation of Hive command completed <<<

@@ -1,0 +1,149 @@
+1) Sqoop to employee
+2) Sqoop to emp_org
+2) Hive Join out file	
+2) file exists
+3) pig extract RBS
+====================================================================================================
+CREATE EXTERNAL TABLE employee(
+  emp_id int,
+  emp_name varchar(10),
+  emp_sal decimal,
+  emp_org int)
+ROW FORMAT DELIMITED
+  FIELDS TERMINATED BY ','
+STORED AS INPUTFORMAT
+  'org.apache.hadoop.mapred.TextInputFormat'
+OUTPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION
+  'hdfs://sandbox.hortonworks.com:8020/user/root/hive_external_directory/employee'
+TBLPROPERTIES (
+  'transient_lastDdlTime'='1471810368')
+Time taken: 0.084 seconds, Fetched: 15 row(s)
+
+CREATE EXTERNAL TABLE emp_org(
+  org_id int,
+  org_name varchar(10))
+ROW FORMAT DELIMITED
+  FIELDS TERMINATED BY ','
+STORED AS INPUTFORMAT
+  'org.apache.hadoop.mapred.TextInputFormat'
+OUTPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION
+  'hdfs://sandbox.hortonworks.com:8020/user/root/hive_external_directory/emp_org'
+TBLPROPERTIES (
+  'transient_lastDdlTime'='1471809369')
+Time taken: 0.184 seconds, Fetched: 13 row(s)
+
+hive> select * from employee;
+OK
+Time taken: 2.72 seconds
+hive> select * from emp_org;
+OK
+Time taken: 0.08 seconds
+
+mysql> select * from dkmdb01.employee;
++--------+----------+---------+-----------+
+| emp_id | emp_name | emp_org | emp_sal   |
++--------+----------+---------+-----------+
+|      1 | Deepak   |       1 |  82000.00 |
+|      2 | Farooq   |       1 |  75000.00 |
+|      3 | Karthick |       1 | 100000.00 |
+|      4 | Hari     |       2 | 100000.00 |
+|      5 | Shiva    |       5 | 250000.00 |
+|      6 | Vadivel  |       3 | 110000.00 |
+|      7 | Mani     |       4 |  75000.00 |
+|      8 | Vignesh  |       2 |  75000.00 |
++--------+----------+---------+-----------+
+8 rows in set (0.17 sec)
+
+mysql> select * from dkmdb01.emp_org;
++--------+----------+
+| org_id | org_name |
++--------+----------+
+|      1 | RBS      |
+|      2 | CTS      |
+|      3 | VDSI     |
+|      4 | HCL      |
+|      5 | L&T      |
+|      6 | TCS      |
++--------+----------+
+
+6 rows in set (0.14 sec)
+====================================================================================================
+import --connect jdbc:mysql://localhost/dkmdb01 --username root --direct --table employee --m 1 --target-dir /user/root/hive_external_directory/employee
+import --connect jdbc:mysql://localhost/dkmdb01 --username root --direct --table emp_org --m 1 --target-dir /user/root/hive_external_directory/emp_org
+[root@sandbox myhqls]# cat emp_org_join.hql
+insert overwrite directory '/user/root/hive2hdfs' select * from employee a join emp_org b on a.emp_org = b.org_id;
+[root@sandbox myhqls]# hdfs dfs -ls my_hqls
+Found 4 items
+-rw-r--r--   3 root hdfs        142 2016-08-21 11:20 my_hqls/create_ext_emp.hql
+-rw-r--r--   3 root hdfs        115 2016-08-21 13:27 my_hqls/emp_org_join.hql
+-rw-r--r--   3 root hdfs        160 2016-08-20 11:56 my_hqls/exp_emp.hql
+-rw-r--r--   3 root hdfs        105 2016-08-20 14:13 my_hqls/exp_emp2.hql
+
+[root@sandbox myhqls]# hdfs dfs -ls /user/root/hive2hdfs
+Found 1 items
+-rw-r--r--   3 root hdfs          0 2016-08-21 13:27 /user/root/hive2hdfs/000000_0
+====================================================================================================
+<workflow-app name="DKM-Complex-WF-001" xmlns="uri:oozie:workflow:0.4">
+    <start to="DKM-Decision-WF-001a"/>
+    <action name="DKM-Decision-WF-001a">
+        <sqoop xmlns="uri:oozie:sqoop-action:0.2">
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <command>import --connect jdbc:mysql://localhost/dkmdb01 --username root --direct --table employee --m 1 --target-dir /user/root/hive_external_directory/employee</command>
+        </sqoop>
+        <ok to="DKM-Decision-WF-001b"/>
+        <error to="kill"/>
+    </action>
+    <action name="DKM-Decision-WF-001b">
+        <sqoop xmlns="uri:oozie:sqoop-action:0.2">
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <command>import --connect jdbc:mysql://localhost/dkmdb01 --username root --direct --table emp_org --m 1 --target-dir /user/root/hive_external_directory/emp_org</command>
+        </sqoop>
+        <ok to="DKM-Decision-WF-001c"/>
+        <error to="kill"/>
+    </action>
+    <action name="DKM-Decision-WF-001c">
+        <hive xmlns="uri:oozie:hive-action:0.2">
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+              <job-xml>/user/hue/MyWork01/hive-site.xml</job-xml>
+            <script>/user/root/my_hqls/emp_org_join.hql</script>
+        </hive>
+        <ok to="end"/>
+        <error to="kill"/>
+    </action>
+    <kill name="kill">
+        <message>Action failed, error message[${wf:errorMessage(wf:lastErrorNode())}]</message>
+    </kill>
+    <end name="end"/>
+</workflow-app>
+
+>>> WF completed but join op file is empty. Reason is emp_org saved in emp_sal & vice-versa
+
+hive> select * from employee;
+OK
+emp_id  emp_name        emp_sal emp_org
+1       Deepak  1       82000
+2       Farooq  1       75000
+3       Karthick        1       100000
+4       Hari    2       100000
+5       Shiva   5       250000
+6       Vadivel 3       110000
+7       Mani    4       75000
+8       Vignesh 2       75000
+Time taken: 3.645 seconds, Fetched: 8 row(s)
+hive> select * from emp_org;
+OK
+org_id  org_name
+1       RBS
+2       CTS
+3       VDSI
+4       HCL
+5       L&T
+6       TCS
+Time taken: 0.82 seconds, Fetched: 6 row(s)

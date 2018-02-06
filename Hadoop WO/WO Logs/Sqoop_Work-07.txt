@@ -1,0 +1,381 @@
+mysql> create table rec_hist_clone2 like record_hist;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> create table rec_hist_stg1 like record_hist;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> desc rec_hist_clone2;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| rec_num   | int(4)      | NO   | PRI | NULL    |       |
+| rec_text1 | varchar(10) | YES  |     |         |       |
+| rec_text2 | varchar(7)  | YES  |     |         |       |
++-----------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> desc rec_hist_stg1;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| rec_num   | int(4)      | NO   | PRI | NULL    |       |
+| rec_text1 | varchar(10) | YES  |     |         |       |
+| rec_text2 | varchar(7)  | YES  |     |         |       |
++-----------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+====================================================================================================
+[hduser@Inceptez ~]$ sqoop job --create exp_job1 -- export --connect jdbc:mysql://localhost/DKMDB01 --username root --password root --direct --table rec_hist_clone2 --staging-table rec_hist_stg1 --export-dir sqoopdb/DKMDB01/record_hist_merged;
+
+[hduser@Inceptez ~]$ sqoop job --list
+
+Available jobs:
+  exp_job1
+  import_all_DKMDB01
+  inc_imp_lm
+  myjob1
+  myjob2
+
+[hduser@Inceptez ~]$ sqoop job --show exp_job1
+Enter password: 
+Job: exp_job1
+Tool: export
+Options:
+----------------------------
+verbose = false
+db.connect.string = jdbc:mysql://localhost/DKMDB01
+codegen.output.delimiters.escape = 0
+codegen.output.delimiters.enclose.required = false
+codegen.input.delimiters.field = 0
+hbase.create.table = false
+db.require.password = true
+hdfs.append.dir = false
+db.table = rec_hist_clone2
+codegen.input.delimiters.escape = 0
+import.fetch.size = null
+accumulo.create.table = false
+codegen.input.delimiters.enclose.required = false
+db.username = root
+codegen.output.delimiters.record = 10
+import.max.inline.lob.size = 16777216
+hbase.bulk.load.enabled = false
+hcatalog.create.table = false
+db.clear.staging.table = false
+codegen.input.delimiters.record = 0
+enable.compression = false
+hive.overwrite.table = false
+hive.import = false
+codegen.input.delimiters.enclose = 0
+accumulo.batch.size = 10240000
+hive.drop.delims = false
+db.export.staging.table = rec_hist_stg1
+codegen.output.delimiters.enclose = 0
+hdfs.delete-target.dir = false
+codegen.output.dir = .
+codegen.auto.compile.dir = true
+relaxed.isolation = false
+mapreduce.num.mappers = 4
+accumulo.max.latency = 5000
+import.direct.split.size = 0
+export.source.dir = sqoopdb/DKMDB01/record_hist_merged
+codegen.output.delimiters.field = 44
+export.new.update = UpdateOnly
+incremental.mode = None
+hdfs.file.format = TextFile
+codegen.compile.dir = /tmp/sqoop-hduser/compile/b7d7483bcc24171637d8923bcbdae250
+direct.import = true
+hive.fail.table.exists = false
+db.batch = false
+
+[hduser@Inceptez ~]$ sqoop job --exec exp_job1
+Enter password: 
+16/06/29 20:40:55 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
+16/06/29 20:40:55 INFO tool.CodeGenTool: Beginning code generation
+16/06/29 20:40:55 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `rec_hist_clone2` AS t LIMIT 1
+16/06/29 20:40:55 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `rec_hist_clone2` AS t LIMIT 1
+16/06/29 20:40:55 INFO orm.CompilationManager: HADOOP_MAPRED_HOME is /usr/local/hadoop
+Note: /tmp/sqoop-hduser/compile/84077be2a3914f88cbe63466414ca5b6/rec_hist_clone2.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+16/06/29 20:41:00 INFO orm.CompilationManager: Writing jar file: /tmp/sqoop-hduser/compile/84077be2a3914f88cbe63466414ca5b6/rec_hist_clone2.jar
+16/06/29 20:41:00 ERROR tool.ExportTool: Error during export: The active connection manager (org.apache.sqoop.manager.DirectMySQLManager) does not support staging of data for export. Please retry without specifying the --staging-table option.
+====================================================================================================
+[hduser@Inceptez ~]$ sqoop job --create exp_job1 -- export --connect jdbc:mysql://localhost/DKMDB01 --username root --password root --table rec_hist_clone2 --staging-table rec_hist_stg1 --export-dir sqoopdb/DKMDB01/record_hist_merged;
+
+[hduser@Inceptez ~]$ sqoop job --exec exp_job1
+Enter password: 
+16/06/29 20:48:10 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
+16/06/29 20:48:10 INFO tool.CodeGenTool: Beginning code generation
+16/06/29 20:48:11 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `rec_hist_clone2` AS t LIMIT 1
+16/06/29 20:48:11 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `rec_hist_clone2` AS t LIMIT 1
+16/06/29 20:48:11 INFO orm.CompilationManager: HADOOP_MAPRED_HOME is /usr/local/hadoop
+Note: /tmp/sqoop-hduser/compile/eb142baf5ecda3bc8062e9735cee7dd6/rec_hist_clone2.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+16/06/29 20:48:13 INFO orm.CompilationManager: Writing jar file: /tmp/sqoop-hduser/compile/eb142baf5ecda3bc8062e9735cee7dd6/rec_hist_clone2.jar
+16/06/29 20:48:13 INFO mapreduce.ExportJobBase: Data will be staged in the table: rec_hist_stg1
+16/06/29 20:48:13 INFO mapreduce.ExportJobBase: Beginning export of rec_hist_clone2
+16/06/29 20:48:14 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+16/06/29 20:48:14 INFO Configuration.deprecation: mapred.jar is deprecated. Instead, use mapreduce.job.jar
+16/06/29 20:48:15 INFO Configuration.deprecation: mapred.reduce.tasks.speculative.execution is deprecated. Instead, use mapreduce.reduce.speculative
+16/06/29 20:48:15 INFO Configuration.deprecation: mapred.map.tasks.speculative.execution is deprecated. Instead, use mapreduce.map.speculative
+16/06/29 20:48:15 INFO Configuration.deprecation: mapred.map.tasks is deprecated. Instead, use mapreduce.job.maps
+16/06/29 20:48:15 INFO client.RMProxy: Connecting to ResourceManager at /0.0.0.0:8032
+16/06/29 20:48:17 INFO input.FileInputFormat: Total input paths to process : 1
+16/06/29 20:48:17 INFO input.FileInputFormat: Total input paths to process : 1
+16/06/29 20:48:18 INFO mapreduce.JobSubmitter: number of splits:4
+16/06/29 20:48:18 INFO Configuration.deprecation: mapred.map.tasks.speculative.execution is deprecated. Instead, use mapreduce.map.speculative
+16/06/29 20:48:18 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1467212049449_0001
+16/06/29 20:48:19 INFO impl.YarnClientImpl: Submitted application application_1467212049449_0001
+16/06/29 20:48:19 INFO mapreduce.Job: The url to track the job: http://Inceptez:8088/proxy/application_1467212049449_0001/
+16/06/29 20:48:19 INFO mapreduce.Job: Running job: job_1467212049449_0001
+16/06/29 20:48:33 INFO mapreduce.Job: Job job_1467212049449_0001 running in uber mode : false
+16/06/29 20:48:33 INFO mapreduce.Job:  map 0% reduce 0%
+16/06/29 20:49:01 INFO mapreduce.Job:  map 100% reduce 0%
+16/06/29 20:49:02 INFO mapreduce.Job: Job job_1467212049449_0001 completed successfully
+16/06/29 20:49:02 INFO mapreduce.Job: Counters: 30
+	File System Counters
+		FILE: Number of bytes read=0
+		FILE: Number of bytes written=458160
+		FILE: Number of read operations=0
+		FILE: Number of large read operations=0
+		FILE: Number of write operations=0
+		HDFS: Number of bytes read=814
+		HDFS: Number of bytes written=0
+		HDFS: Number of read operations=16
+		HDFS: Number of large read operations=0
+		HDFS: Number of write operations=0
+	Job Counters 
+		Launched map tasks=4
+		Data-local map tasks=4
+		Total time spent by all maps in occupied slots (ms)=102633
+		Total time spent by all reduces in occupied slots (ms)=0
+		Total time spent by all map tasks (ms)=102633
+		Total vcore-seconds taken by all map tasks=102633
+		Total megabyte-seconds taken by all map tasks=105096192
+	Map-Reduce Framework
+		Map input records=5
+		Map output records=5
+		Input split bytes=652
+		Spilled Records=0
+		Failed Shuffles=0
+		Merged Map outputs=0
+		GC time elapsed (ms)=226
+		CPU time spent (ms)=3220
+		Physical memory (bytes) snapshot=401264640
+		Virtual memory (bytes) snapshot=3893428224
+		Total committed heap usage (bytes)=95158272
+	File Input Format Counters 
+		Bytes Read=0
+	File Output Format Counters 
+		Bytes Written=0
+16/06/29 20:49:02 INFO mapreduce.ExportJobBase: Transferred 814 bytes in 47.1992 seconds (17.2461 bytes/sec)
+16/06/29 20:49:02 INFO mapreduce.ExportJobBase: Exported 5 records.
+16/06/29 20:49:02 INFO mapreduce.ExportJobBase: Starting to migrate data from staging table to destination.
+16/06/29 20:49:02 INFO manager.SqlManager: Migrated 5 records from `rec_hist_stg1` to `rec_hist_clone2`
+
+mysql> select * from rec_hist_clone2;
+Empty set (0.00 sec)
+
+mysql> select * from rec_hist_stg1;
+Empty set (0.00 sec)
+
+mysql> select * from rec_hist_clone2;
++---------+-----------+-----------+
+| rec_num | rec_text1 | rec_text2 |
++---------+-----------+-----------+
+|       3 | rec3      | r3t2      |
+|       5 | rec5      | r5t2      |
+|       1 | rec1      | r1t2      |
+|       2 | rec2      | r2t2      |
+|       4 | rec4      | r4t2      |
++---------+-----------+-----------+
+5 rows in set (0.00 sec)
+
+mysql> select * from rec_hist_stg1;
+Empty set (0.00 sec)
+====================================================================================================
+[hduser@Inceptez ~]$ sqoop export --connect jdbc:mysql://localhost/DKMDB01 --username root --password root --table rec_hist_stg1 --export-dir sqoopdb/DKMDB01/record_hist_merged --batch;
+
+Please set $ZOOKEEPER_HOME to the root of your Zookeeper installation.
+16/06/29 21:00:16 INFO sqoop.Sqoop: Running Sqoop version: 1.4.5
+16/06/29 21:00:16 WARN tool.BaseSqoopTool: Setting your password on the command-line is insecure. Consider using -P instead.
+16/06/29 21:00:17 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
+16/06/29 21:00:17 INFO tool.CodeGenTool: Beginning code generation
+16/06/29 21:00:17 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `rec_hist_stg1` AS t LIMIT 1
+16/06/29 21:00:17 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `rec_hist_stg1` AS t LIMIT 1
+16/06/29 21:00:17 INFO orm.CompilationManager: HADOOP_MAPRED_HOME is /usr/local/hadoop
+Note: /tmp/sqoop-hduser/compile/9f1f2166a22443ecc1b3422ba74a4886/rec_hist_stg1.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+16/06/29 21:00:20 INFO orm.CompilationManager: Writing jar file: /tmp/sqoop-hduser/compile/9f1f2166a22443ecc1b3422ba74a4886/rec_hist_stg1.jar
+16/06/29 21:00:20 INFO mapreduce.ExportJobBase: Beginning export of rec_hist_stg1
+16/06/29 21:00:21 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+16/06/29 21:00:21 INFO Configuration.deprecation: mapred.jar is deprecated. Instead, use mapreduce.job.jar
+16/06/29 21:00:22 INFO Configuration.deprecation: mapred.reduce.tasks.speculative.execution is deprecated. Instead, use mapreduce.reduce.speculative
+16/06/29 21:00:22 INFO Configuration.deprecation: mapred.map.tasks.speculative.execution is deprecated. Instead, use mapreduce.map.speculative
+16/06/29 21:00:22 INFO Configuration.deprecation: mapred.map.tasks is deprecated. Instead, use mapreduce.job.maps
+16/06/29 21:00:23 INFO client.RMProxy: Connecting to ResourceManager at /0.0.0.0:8032
+16/06/29 21:00:24 INFO input.FileInputFormat: Total input paths to process : 1
+16/06/29 21:00:24 INFO input.FileInputFormat: Total input paths to process : 1
+16/06/29 21:00:24 INFO mapreduce.JobSubmitter: number of splits:4
+16/06/29 21:00:24 INFO Configuration.deprecation: mapred.map.tasks.speculative.execution is deprecated. Instead, use mapreduce.map.speculative
+16/06/29 21:00:25 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1467212049449_0002
+16/06/29 21:00:25 INFO impl.YarnClientImpl: Submitted application application_1467212049449_0002
+16/06/29 21:00:25 INFO mapreduce.Job: The url to track the job: http://Inceptez:8088/proxy/application_1467212049449_0002/
+16/06/29 21:00:25 INFO mapreduce.Job: Running job: job_1467212049449_0002
+16/06/29 21:00:36 INFO mapreduce.Job: Job job_1467212049449_0002 running in uber mode : false
+16/06/29 21:00:36 INFO mapreduce.Job:  map 0% reduce 0%
+16/06/29 21:01:01 INFO mapreduce.Job:  map 100% reduce 0%
+16/06/29 21:01:02 INFO mapreduce.Job: Job job_1467212049449_0002 completed successfully
+16/06/29 21:01:02 INFO mapreduce.Job: Counters: 30
+	File System Counters
+		FILE: Number of bytes read=0
+		FILE: Number of bytes written=457184
+		FILE: Number of read operations=0
+		FILE: Number of large read operations=0
+		FILE: Number of write operations=0
+		HDFS: Number of bytes read=814
+		HDFS: Number of bytes written=0
+		HDFS: Number of read operations=16
+		HDFS: Number of large read operations=0
+		HDFS: Number of write operations=0
+	Job Counters 
+		Launched map tasks=4
+		Data-local map tasks=4
+		Total time spent by all maps in occupied slots (ms)=95061
+		Total time spent by all reduces in occupied slots (ms)=0
+		Total time spent by all map tasks (ms)=95061
+		Total vcore-seconds taken by all map tasks=95061
+		Total megabyte-seconds taken by all map tasks=97342464
+	Map-Reduce Framework
+		Map input records=5
+		Map output records=5
+		Input split bytes=652
+		Spilled Records=0
+		Failed Shuffles=0
+		Merged Map outputs=0
+		GC time elapsed (ms)=227
+		CPU time spent (ms)=3380
+		Physical memory (bytes) snapshot=392667136
+		Virtual memory (bytes) snapshot=3893428224
+		Total committed heap usage (bytes)=95158272
+	File Input Format Counters 
+		Bytes Read=0
+	File Output Format Counters 
+		Bytes Written=0
+16/06/29 21:01:02 INFO mapreduce.ExportJobBase: Transferred 814 bytes in 39.7272 seconds (20.4897 bytes/sec)
+16/06/29 21:01:02 INFO mapreduce.ExportJobBase: Exported 5 records.
+
+mysql> select * from rec_hist_stg1;
++---------+-----------+-----------+
+| rec_num | rec_text1 | rec_text2 |
++---------+-----------+-----------+
+|       3 | rec3      | r3t2      |
+|       1 | rec1      | r1t2      |
+|       2 | rec2      | r2t2      |
+|       4 | rec4      | r4t2      |
+|       5 | rec5      | r5t2      |
++---------+-----------+-----------+
+5 rows in set (0.00 sec)
+====================================================================================================
+[hduser@Inceptez ~]$ echo "--connect jdbc:mysql://localhost/DKMDB01 --username root --password root --direct" > dkmdb01_dir.txt
+[hduser@Inceptez ~]$ sqoop import --options-file dkmdb01_dir.txt --table rec_hist_stg1 --m 1 --export-dir sqoopdb/DKMDB01/rec_hist_stg1;
+16/06/29 21:20:44 INFO sqoop.Sqoop: Running Sqoop version: 1.4.5
+16/06/29 21:20:44 ERROR tool.BaseSqoopTool: Error parsing arguments for import:
+16/06/29 21:20:44 ERROR tool.BaseSqoopTool: Unrecognized argument: --connect jdbc:mysql://localhost/DKMDB01 --username root --password root --direct
+16/06/29 21:20:44 ERROR tool.BaseSqoopTool: Unrecognized argument: --table
+16/06/29 21:20:44 ERROR tool.BaseSqoopTool: Unrecognized argument: rec_hist_stg1
+16/06/29 21:20:44 ERROR tool.BaseSqoopTool: Unrecognized argument: --m
+16/06/29 21:20:44 ERROR tool.BaseSqoopTool: Unrecognized argument: 1
+16/06/29 21:20:44 ERROR tool.BaseSqoopTool: Unrecognized argument: --export-dir
+16/06/29 21:20:44 ERROR tool.BaseSqoopTool: Unrecognized argument: sqoopdb/DKMDB01/rec_hist_stg1
+Try --help for usage instructions.
+
+[hduser@Inceptez ~]$ echo "import --connect jdbc:mysql://localhost/DKMDB01 --username root --password root --direct" > dkmdb01_dir.txt
+[hduser@Inceptez ~]$ sqoop --options-file dkmdb01_dir.txt --table rec_hist_stg1 --m 1 --export-dir sqoopdb/DKMDB01/rec_hist_stg1;
+No such sqoop tool: import --connect jdbc:mysql://localhost/DKMDB01 --username root --password root --direct. See 'sqoop help'.
+
+[hduser@Inceptez ~]$ vi dkmdb01_dir.txt 
+[hduser@Inceptez ~]$ cat dkmdb01_dir.txt 
+import 
+--connect 
+jdbc:mysql://localhost/DKMDB01 
+--username 
+root 
+--password 
+root 
+--direct
+
+[hduser@Inceptez ~]$ sqoop --options-file dkmdb01_dir.txt --table rec_hist_stg1 --m 1 --export-dir sqoopdb/DKMDB01/rec_hist_stg1;
+16/06/29 21:26:53 ERROR tool.BaseSqoopTool: Error parsing arguments for import:
+16/06/29 21:26:53 ERROR tool.BaseSqoopTool: Unrecognized argument: --export-dir
+16/06/29 21:26:53 ERROR tool.BaseSqoopTool: Unrecognized argument: sqoopdb/DKMDB01/rec_hist_stg1
+
+[hduser@Inceptez ~]$ sqoop --options-file dkmdb01_dir.txt --table rec_hist_stg1 --m 1 --import-dir sqoopdb/DKMDB01/rec_hist_stg1;
+16/06/29 21:27:14 ERROR tool.BaseSqoopTool: Error parsing arguments for import:
+16/06/29 21:27:14 ERROR tool.BaseSqoopTool: Unrecognized argument: --import-dir
+16/06/29 21:27:14 ERROR tool.BaseSqoopTool: Unrecognized argument: sqoopdb/DKMDB01/rec_hist_stg1
+
+[hduser@Inceptez ~]$ sqoop --options-file dkmdb01_dir.txt --table rec_hist_stg1 --m 1 --target-dir sqoopdb/DKMDB01/rec_hist_stg1;
+16/06/29 21:27:49 INFO sqoop.Sqoop: Running Sqoop version: 1.4.5
+16/06/29 21:27:49 WARN tool.BaseSqoopTool: Setting your password on the command-line is insecure. Consider using -P instead.
+16/06/29 21:27:50 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
+16/06/29 21:27:50 INFO tool.CodeGenTool: Beginning code generation
+16/06/29 21:27:51 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `rec_hist_stg1` AS t LIMIT 1
+16/06/29 21:27:51 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `rec_hist_stg1` AS t LIMIT 1
+16/06/29 21:27:51 INFO orm.CompilationManager: HADOOP_MAPRED_HOME is /usr/local/hadoop
+Note: /tmp/sqoop-hduser/compile/5916d5c385c08eed24412154ea64a5b5/rec_hist_stg1.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+16/06/29 21:27:59 INFO orm.CompilationManager: Writing jar file: /tmp/sqoop-hduser/compile/5916d5c385c08eed24412154ea64a5b5/rec_hist_stg1.jar
+16/06/29 21:27:59 INFO manager.DirectMySQLManager: Beginning mysqldump fast path import
+16/06/29 21:27:59 INFO mapreduce.ImportJobBase: Beginning import of rec_hist_stg1
+16/06/29 21:28:00 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+16/06/29 21:28:00 INFO Configuration.deprecation: mapred.jar is deprecated. Instead, use mapreduce.job.jar
+16/06/29 21:28:03 INFO Configuration.deprecation: mapred.map.tasks is deprecated. Instead, use mapreduce.job.maps
+16/06/29 21:28:03 INFO client.RMProxy: Connecting to ResourceManager at /0.0.0.0:8032
+16/06/29 21:28:08 INFO db.DBInputFormat: Using read commited transaction isolation
+16/06/29 21:28:08 INFO mapreduce.JobSubmitter: number of splits:1
+16/06/29 21:28:09 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1467212049449_0003
+16/06/29 21:28:10 INFO impl.YarnClientImpl: Submitted application application_1467212049449_0003
+16/06/29 21:28:11 INFO mapreduce.Job: The url to track the job: http://Inceptez:8088/proxy/application_1467212049449_0003/
+16/06/29 21:28:11 INFO mapreduce.Job: Running job: job_1467212049449_0003
+16/06/29 21:28:31 INFO mapreduce.Job: Job job_1467212049449_0003 running in uber mode : false
+16/06/29 21:28:31 INFO mapreduce.Job:  map 0% reduce 0%
+16/06/29 21:28:48 INFO mapreduce.Job:  map 100% reduce 0%
+16/06/29 21:28:48 INFO mapreduce.Job: Job job_1467212049449_0003 completed successfully
+16/06/29 21:28:49 INFO mapreduce.Job: Counters: 30
+	File System Counters
+		FILE: Number of bytes read=0
+		FILE: Number of bytes written=114959
+		FILE: Number of read operations=0
+		FILE: Number of large read operations=0
+		FILE: Number of write operations=0
+		HDFS: Number of bytes read=87
+		HDFS: Number of bytes written=60
+		HDFS: Number of read operations=4
+		HDFS: Number of large read operations=0
+		HDFS: Number of write operations=2
+	Job Counters 
+		Launched map tasks=1
+		Other local map tasks=1
+		Total time spent by all maps in occupied slots (ms)=13774
+		Total time spent by all reduces in occupied slots (ms)=0
+		Total time spent by all map tasks (ms)=13774
+		Total vcore-seconds taken by all map tasks=13774
+		Total megabyte-seconds taken by all map tasks=14104576
+	Map-Reduce Framework
+		Map input records=1
+		Map output records=5
+		Input split bytes=87
+		Spilled Records=0
+		Failed Shuffles=0
+		Merged Map outputs=0
+		GC time elapsed (ms)=196
+		CPU time spent (ms)=2140
+		Physical memory (bytes) snapshot=98824192
+		Virtual memory (bytes) snapshot=976515072
+		Total committed heap usage (bytes)=23855104
+	File Input Format Counters 
+		Bytes Read=0
+	File Output Format Counters 
+		Bytes Written=60
+16/06/29 21:28:49 INFO mapreduce.ImportJobBase: Transferred 60 bytes in 45.5255 seconds (1.3179 bytes/sec)
+16/06/29 21:28:49 INFO mapreduce.ImportJobBase: Retrieved 5 records.
+====================================================================================================

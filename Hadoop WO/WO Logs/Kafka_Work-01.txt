@@ -1,0 +1,180 @@
+/usr/local/kafka/bin
+[hduser@Inceptez bin]$ ./zookeeper-server-start.sh -daemon ../config/zookeeper.properties
+[hduser@Inceptez bin]$ ./kafka-server-start.sh -daemon ../config/server.properties
+
+[hduser@Inceptez bin]$ ./kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic tk1
+Created topic "tk1".
+[hduser@Inceptez bin]$ ./kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic tk1
+Error while executing topic command : Topic "tk1" already exists.
+[2016-07-31 10:02:31,115] ERROR kafka.common.TopicExistsException: Topic "tk1" already exists.
+	at kafka.admin.AdminUtils$.createOrUpdateTopicPartitionAssignmentPathInZK(AdminUtils.scala:253)
+	at kafka.admin.AdminUtils$.createTopic(AdminUtils.scala:237)
+	at kafka.admin.TopicCommand$.createTopic(TopicCommand.scala:105)
+	at kafka.admin.TopicCommand$.main(TopicCommand.scala:60)
+	at kafka.admin.TopicCommand.main(TopicCommand.scala)
+ (kafka.admin.TopicCommand$)
+[hduser@Inceptez ~]$ kafka-topics.sh --list --zookeeper localhost:2181
+tk1
+
+[hduser@Inceptez ~]$ locate server.properties
+/usr/local/kafka/config/server.properties
+[hduser@Inceptez ~]$ cat /usr/local/kafka/config/server.properties
+# A comma seperated list of directories under which to store log files
+log.dirs=/tmp/kafka-logs
+
+[hduser@Inceptez ~]$ ls -l /tmp/kafka-logs
+total 16
+-rw-rw-r-- 1 hduser hduser    0 Jul 31 10:00 cleaner-offset-checkpoint
+-rw-rw-r-- 1 hduser hduser   54 Jul 31 10:00 meta.properties
+-rw-rw-r-- 1 hduser hduser   12 Jul 31 10:09 recovery-point-offset-checkpoint
+-rw-rw-r-- 1 hduser hduser   12 Jul 31 10:09 replication-offset-checkpoint
+drwxrwxr-x 2 hduser hduser 4096 Jul 31 10:02 tk1-0
+
+[hduser@Inceptez ~]$ kafka-topics.sh --delete --zookeeper localhost:2181 --topic tk1
+Topic tk1 is marked for deletion.
+Note: This will have no impact if delete.topic.enable is not set to true.
+
+[hduser@Inceptez ~]$ kafka-console-producer.sh --broker-list localhost:9092 --topic tk1
+adsad
+sdslkjsf
+Hi
+Hello
+^CProcessed a total of 5 messages
+
+[hduser@Inceptez ~]$ kafka-console-consumer.sh --zookeeper localhost:2181 --topic tk1 --from-beginning
+adsad
+sdslkjsf
+Hi
+Hello
+
+[hduser@Inceptez ~]$ kafka-console-consumer.sh --zookeeper localhost:2181 --topic tk1 --from-beginning
+kafka-console-consumer.sh --zookeeper localhost:2181 --topic tk1 --from-beginning
+adsad
+sdslkjsf
+Hi
+Hello
+
+^CProcessed a total of 6 messages
+
+[hduser@Inceptez ~]$ kafka-console-consumer.sh --zookeeper localhost:2181 --topic tk1
+This is incremental log
+1
+1
+3
+^CProcessed a total of 3 messages
+====================================================================================================
+[hduser@Inceptez kafka]$ cp config/server.properties config/server-1.properties
+[hduser@Inceptez kafka]$ cp config/server.properties config/server-2.properties
+[hduser@Inceptez kafka]$ cd config/
+[hduser@Inceptez config]$ vi server-1.properties 
+[hduser@Inceptez config]$ vi server-2.properties 
+[hduser@Inceptez config]$ cd ../bin/
+[hduser@Inceptez bin]$ ./kafka-server-start.sh -daemon ../config/server-1.properties
+[hduser@Inceptez bin]$ ./kafka-server-start.sh -daemon ../config/server-2.properties
+[hduser@Inceptez bin]$ cd ..
+[hduser@Inceptez kafka]$ ./bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 3 --partitions 1 --topic tr43
+Error while executing topic command : replication factor: 3 larger than available brokers: 2
+[2016-07-31 19:51:56,574] ERROR kafka.admin.AdminOperationException: replication factor: 3 larger than available brokers: 2
+	at kafka.admin.AdminUtils$.assignReplicasToBrokers(AdminUtils.scala:77)
+	at kafka.admin.AdminUtils$.createTopic(AdminUtils.scala:236)
+	at kafka.admin.TopicCommand$.createTopic(TopicCommand.scala:105)
+	at kafka.admin.TopicCommand$.main(TopicCommand.scala:60)
+	at kafka.admin.TopicCommand.main(TopicCommand.scala)
+ (kafka.admin.TopicCommand$)
+[hduser@Inceptez kafka]$ cd bin/
+[hduser@Inceptez bin]$ ./kafka-server-start.sh -daemon ../config/server.properties
+[hduser@Inceptez bin]$ ./kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 3 --partitions 1 --topic tr43
+Created topic "tr43".
+[hduser@Inceptez bin]$ kafka-topics.sh --list --zookeeper localhost:2181
+tk1 - marked for deletion
+tr43
+[hduser@Inceptez bin]$ kafka-topics.sh --zookeeper localhost:2181 --alter --topic tr43 --partitions 4
+WARNING: If partitions are increased for a topic that has a key, the partition logic or ordering of the messages will be affected
+Adding partitions succeeded!
+[hduser@Inceptez bin]$ kafka-topics.sh --describe --zookeeper localhost:2181 --topic tr43
+Topic:tr43	PartitionCount:4	ReplicationFactor:3	Configs:
+	Topic: tr43	Partition: 0	Leader: 2	Replicas: 2,0,1	Isr: 2,0,1
+	Topic: tr43	Partition: 1	Leader: 0	Replicas: 0,1,2	Isr: 0,1,2
+	Topic: tr43	Partition: 2	Leader: 1	Replicas: 1,2,0	Isr: 1,2,0
+	Topic: tr43	Partition: 3	Leader: 2	Replicas: 2,1,0	Isr: 2,1,0
+[hduser@Inceptez bin]$ kafka-topics.sh --describe --zookeeper localhost:2181 --topic tk1
+Topic:tk1	PartitionCount:1	ReplicationFactor:1	Configs:
+	Topic: tk1	Partition: 0	Leader: 0	Replicas: 0	Isr: 0
+
+[hduser@Inceptez bin]$ kafka-console-producer.sh --broker-list localhost:9092 --topic tr43
+Hi
+Whatsup man ?
+finally...
+we've made it work
+[hduser@Inceptez bin]$ kafka-console-consumer.sh --zookeeper localhost:2181 --topic tr43 --from-beginning
+Hi
+Whatsup man ?
+finally...
+we've made it work
+^CProcessed a total of 4 messages
+====================================================================================================
+[hduser@Inceptez bin]$ ps -ef | grep server-1.properties
+hduser     5482      1  2 19:50 pts/0    00:00:26 /usr/lib/jvm/java-1.7.0-openjdk-1.7.0.85.x86_64/bin/java -Xmx1G -Xms1G -server -XX:+UseG1GC -XX:MaxGCPauseMillis=20 -XX:InitiatingHeapOccupancyPercent=35 -XX:+DisableExplicitGC -Djava.awt.headless=true -Xloggc:/usr/local/kafka/bin/../logs/kafkaServer-gc.log -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dkafka.logs.dir=/usr/local/kafka/bin/../logs -Dlog4j.configuration=file:./../config/log4j.properties -cp :/usr/local/kafka/bin/../libs/* kafka.Kafka ../config/server-1.properties
+hduser     6015   2599  0 20:05 pts/0    00:00:00 grep server-1.properties
+[hduser@Inceptez bin]$ kill -9 5482
+[hduser@Inceptez bin]$ kafka-topics.sh --describe --zookeeper localhost:2181 --topic tr43
+Topic:tr43	PartitionCount:4	ReplicationFactor:3	Configs:
+	Topic: tr43	Partition: 0	Leader: 2	Replicas: 2,0,1	Isr: 2,0
+	Topic: tr43	Partition: 1	Leader: 0	Replicas: 0,1,2	Isr: 0,2
+	Topic: tr43	Partition: 2	Leader: 2	Replicas: 1,2,0	Isr: 2,0
+	Topic: tr43	Partition: 3	Leader: 2	Replicas: 2,1,0	Isr: 2,0
+
+[hduser@Inceptez bin]$ kafka-console-consumer.sh --zookeeper localhost:2181 --topic tr43 --from-beginning
+Whatsup man ?
+finally...
+Hi
+we've made it work
+
+[hduser@Inceptez ~]$ cd /tmp/kafka-logs*
+[hduser@Inceptez kafka-logs]$ ls
+cleaner-offset-checkpoint  meta.properties  recovery-point-offset-checkpoint  replication-offset-checkpoint  tk1-0  tr43-0  tr43-1  tr43-2  tr43-3
+[hduser@Inceptez kafka-logs]$ ls -l
+total 32
+-rw-rw-r-- 1 hduser hduser    0 Jul 31 10:00 cleaner-offset-checkpoint
+-rw-rw-r-- 1 hduser hduser   54 Jul 31 10:00 meta.properties
+-rw-rw-r-- 1 hduser hduser   48 Jul 31 20:10 recovery-point-offset-checkpoint
+-rw-rw-r-- 1 hduser hduser   48 Jul 31 20:11 replication-offset-checkpoint
+drwxrwxr-x 2 hduser hduser 4096 Jul 31 10:02 tk1-0
+drwxrwxr-x 2 hduser hduser 4096 Jul 31 19:52 tr43-0
+drwxrwxr-x 2 hduser hduser 4096 Jul 31 19:54 tr43-1
+drwxrwxr-x 2 hduser hduser 4096 Jul 31 19:54 tr43-2
+drwxrwxr-x 2 hduser hduser 4096 Jul 31 19:54 tr43-3
+====================================================================================================
+[hduser@Inceptez bin]$ kafka-topics.sh --list --zookeeper localhost:2181
+tk1 - marked for deletion
+tr43
+
+[hduser@Inceptez config]$ ls
+connect-console-sink.properties    connect-file-source.properties  log4j.properties     server.properties
+connect-console-source.properties  connect-log4j.properties        producer.properties  test-log4j.properties
+connect-distributed.properties     connect-standalone.properties   server-1.properties  tools-log4j.properties
+connect-file-sink.properties       consumer.properties             server-2.properties  zookeeper.properties
+[hduser@Inceptez config]$ vi server.properties 
+[hduser@Inceptez config]$ cd ../bin/
+[hduser@Inceptez bin]$ ./kafka-server-stop.sh -daemon ../config/server.properties
+[hduser@Inceptez bin]$ kafka-topics.sh --list --zookeeper localhost:2181
+tk1 - marked for deletion
+tr43
+[hduser@Inceptez bin]$ ./kafka-server-start.sh -daemon ../config/server.properties
+[hduser@Inceptez bin]$ kafka-topics.sh --list --zookeeper localhost:2181
+tr43
+[hduser@Inceptez bin]$ tail -2 ../config/server.properties 
+# Enable delete topic 
+delete.topic.enable=true
+
+[hduser@Inceptez kafka-logs]$ ls -l
+total 32
+-rw-rw-r-- 1 hduser hduser    4 Jul 31 20:22 cleaner-offset-checkpoint
+-rw-rw-r-- 1 hduser hduser   54 Jul 31 10:00 meta.properties
+-rw-rw-r-- 1 hduser hduser   40 Jul 31 20:30 recovery-point-offset-checkpoint
+-rw-rw-r-- 1 hduser hduser   40 Jul 31 20:30 replication-offset-checkpoint
+drwxrwxr-x 2 hduser hduser 4096 Jul 31 19:52 tr43-0
+drwxrwxr-x 2 hduser hduser 4096 Jul 31 19:54 tr43-1
+drwxrwxr-x 2 hduser hduser 4096 Jul 31 19:54 tr43-2
+drwxrwxr-x 2 hduser hduser 4096 Jul 31 19:54 tr43-3
+====================================================================================================

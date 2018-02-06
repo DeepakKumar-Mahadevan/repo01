@@ -1,0 +1,27 @@
+---------------------------------------------------------------
+How to resolve: retrying to connect to server pig error
+---------------------------------------------------------------
+Yes the problem was that the job history server was not running.
+
+All we had to do to fix this problem was enter this command into the command prompt:
+
+mr-jobhistory-daemon.sh start historyserver
+
+This command starts up the job history server. Now if we enter 'jps', we can see that the JobHistoryServer is running and my Pig jobs no longer waste time trying to connect to the server.
+
+[hduser@Inceptez mydata01]$ mr-jobhistory-daemon.sh start historyserver
+starting historyserver, logging to /usr/local/hadoop/logs/mapred-hduser-historyserver-Inceptez.out
+[hduser@Inceptez mydata01]$ jps
+8785 NameNode
+13092 Jps
+10043 RunJar
+10873 RunJar
+9332 NodeManager
+9233 ResourceManager
+8880 DataNode
+10542 RunJar
+13064 JobHistoryServer
+9088 SecondaryNameNode
+---------------------------------------------------------------
+[hduser@Inceptez ~]$ mr-jobhistory-daemon.sh stop historyserver
+stopping historyserver

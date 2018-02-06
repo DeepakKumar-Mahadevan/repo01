@@ -1,0 +1,41 @@
+scala> val mu = sc.textFile("file:/home/hduser/mydata01/ManUtdPlayers2.csv");
+mu: org.apache.spark.rdd.RDD[String] = MapPartitionsRDD[1] at textFile at <console>:21
+
+scala> mu.first();
+res2: String = Peter Abbott,England,Forward,1953-10-01
+
+scala> val mu0 = mu.map(x => x.split(","));
+mu0: org.apache.spark.rdd.RDD[Array[String]] = MapPartitionsRDD[2] at map at <console>:23
+
+scala> mu0.last();
+<console>:26: error: value last is not a member of org.apache.spark.rdd.RDD[Array[String]]
+              mu0.last();
+                  ^
+scala> mu0.first();
+res4: Array[String] = Array(Peter Abbott, England, Forward, 1953-10-01)
+
+scala> val mu1 = mu0.filter(x(2)="England");
+<console>:25: error: not found: value x
+         val mu1 = mu0.filter(x(2)="England");
+                              ^
+
+scala> val mu1 = mu0.filter(x => x(2)="England");
+<console>:25: error: type mismatch;
+ found   : Unit
+ required: Boolean
+         val mu1 = mu0.filter(x => x(2)="England");
+                                       ^
+scala> val mu1 = mu0.filter(x => x(2)=="England");
+mu1: org.apache.spark.rdd.RDD[Array[String]] = MapPartitionsRDD[3] at filter at <console>:25
+
+scala> mu1.take(3);
+res5: Array[Array[String]] = Array()
+
+scala> val mu1 = mu0.filter(x => x(1)=="England");
+mu1: org.apache.spark.rdd.RDD[Array[String]] = MapPartitionsRDD[4] at filter at <console>:25
+
+scala> mu1.take(3);
+res6: Array[Array[String]] = Array(Array(Peter Abbott, England, Forward, 1953-10-01), Array(Ted Adams, England, Goalkeeper, 1906-11-30), Array(Alphonso Ainsworth, England, Forward, 1913-07-31))
+
+scala> mu1.count;
+res7: Long = 279

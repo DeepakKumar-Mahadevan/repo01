@@ -1,0 +1,174 @@
+[root@sandbox oozie]# hdfs dfs -ls /user/oozie/share/lib/sqoop
+Found 4 items
+-rwxr-xr-x   3 oozie hdfs     163151 2013-10-20 15:15 /user/oozie/share/lib/sqoop/commons-io-2.1.jar
+-rwxr-xr-x   3 oozie hdfs     643727 2013-10-20 15:15 /user/oozie/share/lib/sqoop/hsqldb-1.8.0.7.jar
+-rwxr-xr-x   3 oozie hdfs       7850 2013-10-20 15:15 /user/oozie/share/lib/sqoop/oozie-sharelib-sqoop-4.0.0.2.0.6.0-76.jar
+-rwxr-xr-x   3 oozie hdfs     763834 2013-10-20 15:15 /user/oozie/share/lib/sqoop/sqoop-1.4.4.2.0.6.0-76.jar
+
+[root@sandbox oozie]# hdfs dfs -put /usr/lib/sqoop/lib/mysql-connector-java.jar /user/oozie/share/lib/sqoop
+[root@sandbox oozie]# hdfs dfs -ls /user/oozie/share/lib/sqoop
+Found 5 items
+-rwxr-xr-x   3 oozie hdfs     163151 2013-10-20 15:15 /user/oozie/share/lib/sqoop/commons-io-2.1.jar
+-rwxr-xr-x   3 oozie hdfs     643727 2013-10-20 15:15 /user/oozie/share/lib/sqoop/hsqldb-1.8.0.7.jar
+-rw-r--r--   3 root  hdfs     819803 2016-08-21 09:21 /user/oozie/share/lib/sqoop/mysql-connector-java.jar
+-rwxr-xr-x   3 oozie hdfs       7850 2013-10-20 15:15 /user/oozie/share/lib/sqoop/oozie-sharelib-sqoop-4.0.0.2.0.6.0-76.jar
+-rwxr-xr-x   3 oozie hdfs     763834 2013-10-20 15:15 /user/oozie/share/lib/sqoop/sqoop-1.4.4.2.0.6.0-76.jar
+
+[root@sandbox oozie]# sudo -u hdfs hdfs dfs -chown oozie /user/oozie/share/lib/sqoop/mysql-connector-java.jar
+[root@sandbox oozie]# hdfs dfs -ls /user/oozie/share/lib/sqoop
+Found 5 items
+-rwxr-xr-x   3 oozie hdfs     163151 2013-10-20 15:15 /user/oozie/share/lib/sqoop/commons-io-2.1.jar
+-rwxr-xr-x   3 oozie hdfs     643727 2013-10-20 15:15 /user/oozie/share/lib/sqoop/hsqldb-1.8.0.7.jar
+-rw-r--r--   3 oozie hdfs     819803 2016-08-21 09:21 /user/oozie/share/lib/sqoop/mysql-connector-java.jar
+-rwxr-xr-x   3 oozie hdfs       7850 2013-10-20 15:15 /user/oozie/share/lib/sqoop/oozie-sharelib-sqoop-4.0.0.2.0.6.0-76.jar
+-rwxr-xr-x   3 oozie hdfs     763834 2013-10-20 15:15 /user/oozie/share/lib/sqoop/sqoop-1.4.4.2.0.6.0-76.jar
+
+[root@sandbox oozie]# sudo -u hdfs hdfs dfs -chmod 755 /user/oozie/share/lib/sqoop/mysql-connector-java.jar
+[root@sandbox oozie]# hdfs dfs -ls /user/oozie/share/lib/sqoop
+Found 5 items
+-rwxr-xr-x   3 oozie hdfs     163151 2013-10-20 15:15 /user/oozie/share/lib/sqoop/commons-io-2.1.jar
+-rwxr-xr-x   3 oozie hdfs     643727 2013-10-20 15:15 /user/oozie/share/lib/sqoop/hsqldb-1.8.0.7.jar
+-rwxr-xr-x   3 oozie hdfs     819803 2016-08-21 09:21 /user/oozie/share/lib/sqoop/mysql-connector-java.jar
+-rwxr-xr-x   3 oozie hdfs       7850 2013-10-20 15:15 /user/oozie/share/lib/sqoop/oozie-sharelib-sqoop-4.0.0.2.0.6.0-76.jar
+-rwxr-xr-x   3 oozie hdfs     763834 2013-10-20 15:15 /user/oozie/share/lib/sqoop/sqoop-1.4.4.2.0.6.0-76.jar
+
+<workflow-app name="DKM-Sqoop-WF-001" xmlns="uri:oozie:workflow:0.4">
+    <start to="DKM-Sqoop-WF-001a"/>
+    <action name="DKM-Sqoop-WF-001a">
+        <sqoop xmlns="uri:oozie:sqoop-action:0.2">
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <command>import --connect jdbc:mysql://localhost/dkmdb01 --username root --password hadoop --direct --table employee --m 1 --target-dir sqoop_imp01/employee_via_oozie</command>
+        </sqoop>
+        <ok to="end"/>
+        <error to="kill"/>
+    </action>
+    <kill name="kill">
+        <message>Action failed, error message[${wf:errorMessage(wf:lastErrorNode())}]</message>
+    </kill>
+    <end name="end"/>
+</workflow-app>
+
+>>> Incorrect password
+
+<workflow-app name="DKM-Sqoop-WF-001" xmlns="uri:oozie:workflow:0.4">
+    <start to="DKM-Sqoop-WF-001a"/>
+    <action name="DKM-Sqoop-WF-001a">
+        <sqoop xmlns="uri:oozie:sqoop-action:0.2">
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <command>import --connect jdbc:mysql://localhost/dkmdb01 --username root --direct --table employee --m 1 --target-dir sqoop_imp01/employee_via_oozie</command>
+        </sqoop>
+        <ok to="end"/>
+        <error to="kill"/>
+    </action>
+    <kill name="kill">
+        <message>Action failed, error message[${wf:errorMessage(wf:lastErrorNode())}]</message>
+    </kill>
+    <end name="end"/>
+</workflow-app>
+
+>>> Successful but target-dir not created
+
+[root@sandbox myshscripts]# hdfs dfs -ls -R sqoop_imp01/
+drwxr-xr-x   - root hdfs          0 2016-07-25 13:15 sqoop_imp01/employee
+-rw-r--r--   3 root hdfs          0 2016-07-25 13:15 sqoop_imp01/employee/_SUCCESS
+-rw-r--r--   3 root hdfs         63 2016-07-25 13:15 sqoop_imp01/employee/part-m-00000
+
+<workflow-app name="DKM-Sqoop-WF-001" xmlns="uri:oozie:workflow:0.4">
+    <start to="DKM-Sqoop-WF-001a"/>
+    <action name="DKM-Sqoop-WF-001a">
+        <sqoop xmlns="uri:oozie:sqoop-action:0.2">
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <command>import --connect jdbc:mysql://localhost/dkmdb01 --username root --direct --table employee --m 1 --target-dir sqoop_import_employee_via_oozie</command>
+        </sqoop>
+        <ok to="end"/>
+        <error to="kill"/>
+    </action>
+    <kill name="kill">
+        <message>Action failed, error message[${wf:errorMessage(wf:lastErrorNode())}]</message>
+    </kill>
+    <end name="end"/>
+</workflow-app>
+
+>>> Successful, but target-dir still not created
+
+<workflow-app name="DKM-Sqoop-WF-001" xmlns="uri:oozie:workflow:0.4">
+    <start to="DKM-Sqoop-WF-001a"/>
+    <action name="DKM-Sqoop-WF-001a">
+        <sqoop xmlns="uri:oozie:sqoop-action:0.2">
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <command>import --connect jdbc:mysql://localhost/dkmdb01 --username root --direct --table employee --m 1</command>
+        </sqoop>
+        <ok to="end"/>
+        <error to="kill"/>
+    </action>
+    <kill name="kill">
+        <message>Action failed, error message[${wf:errorMessage(wf:lastErrorNode())}]</message>
+    </kill>
+    <end name="end"/>
+</workflow-app>
+
+>>> Files were created in hue's home in hdfs
+
+[root@sandbox ~]# hdfs dfs -ls /user/hue/
+Found 11 items
+drwx------   - hue hue           0 2016-08-20 11:00 /user/hue/.Trash
+drwx------   - hue hue           0 2016-08-21 10:16 /user/hue/.staging
+-rw-r--r--   3 hue hdfs        853 2016-07-24 04:39 /user/hue/000000_0
+drwxr-xr-x   - hue hue           0 2015-12-29 14:50 /user/hue/2
+drwxr-xr-x   - hue hue           0 2016-08-17 13:40 /user/hue/MyWork01
+drwxr-xr-x   - hue hue           0 2016-08-21 10:15 /user/hue/employee
+drwxrwxrwx   - hue hue           0 2013-10-28 08:34 /user/hue/jobsub
+drwxrwxrwx   - hue hue           0 2013-10-28 08:34 /user/hue/oozie
+drwxr-xr-x   - hue hue           0 2016-08-21 10:16 /user/hue/oozie-oozi
+drwxr-xr-x   - hue hue           0 2016-08-21 09:49 /user/hue/sqoop_imp01
+drwxr-xr-x   - hue hue           0 2016-08-21 10:08 /user/hue/sqoop_import_employee_via_oozie
+[root@sandbox ~]# hdfs dfs -ls -R /user/hue/employee
+-rw-r--r--   3 hue hue          0 2016-08-21 10:15 /user/hue/employee/_SUCCESS
+-rw-r--r--   3 hue hue         63 2016-08-21 10:15 /user/hue/employee/part-m-00000
+[root@sandbox ~]# hdfs dfs -ls -R /user/hue/sqoop*
+drwxr-xr-x   - hue hue          0 2016-08-21 09:51 /user/hue/sqoop_imp01/employee_via_oozie
+-rw-r--r--   3 hue hue          0 2016-08-21 09:51 /user/hue/sqoop_imp01/employee_via_oozie/_SUCCESS
+-rw-r--r--   3 hue hue         63 2016-08-21 09:51 /user/hue/sqoop_imp01/employee_via_oozie/part-m-00000
+-rw-r--r--   3 hue hue          0 2016-08-21 10:08 /user/hue/sqoop_import_employee_via_oozie/_SUCCESS
+-rw-r--r--   3 hue hue         63 2016-08-21 10:08 /user/hue/sqoop_import_employee_via_oozie/part-m-00000
+[root@sandbox ~]# hdfs dfs -cat /user/hue/employee/part-m-00000
+1,Deepak,1,82000.00
+2,Farooq,1,75000.00
+3,Karthick,1,100000.00
+
+<workflow-app name="DKM-Sqoop-WF-001" xmlns="uri:oozie:workflow:0.4">
+    <start to="DKM-Sqoop-WF-001a"/>
+    <action name="DKM-Sqoop-WF-001a">
+        <sqoop xmlns="uri:oozie:sqoop-action:0.2">
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <command>import --connect jdbc:mysql://localhost/dkmdb01 --username root --direct --table employee --m 1 --target-dir /user/root/sqoop_imp01/employee_via_oozie</command>
+        </sqoop>
+        <ok to="end"/>
+        <error to="kill"/>
+    </action>
+    <kill name="kill">
+        <message>Action failed, error message[${wf:errorMessage(wf:lastErrorNode())}]</message>
+    </kill>
+    <end name="end"/>
+</workflow-app>
+
+[root@sandbox ~]# hdfs dfs -ls /user/root/sqoop_imp01/
+Found 2 items
+drwxr-xr-x   - root hdfs          0 2016-07-25 13:15 /user/root/sqoop_imp01/employee
+drwxr-xr-x   - hue  hdfs          0 2016-08-21 10:51 /user/root/sqoop_imp01/employee_via_oozie
+[root@sandbox ~]# hdfs dfs -ls -R /user/root/sqoop_imp01/
+drwxr-xr-x   - root hdfs          0 2016-07-25 13:15 /user/root/sqoop_imp01/employee
+-rw-r--r--   3 root hdfs          0 2016-07-25 13:15 /user/root/sqoop_imp01/employee/_SUCCESS
+-rw-r--r--   3 root hdfs         63 2016-07-25 13:15 /user/root/sqoop_imp01/employee/part-m-00000
+drwxr-xr-x   - hue  hdfs          0 2016-08-21 10:51 /user/root/sqoop_imp01/employee_via_oozie
+-rw-r--r--   3 hue  hdfs          0 2016-08-21 10:51 /user/root/sqoop_imp01/employee_via_oozie/_SUCCESS
+-rw-r--r--   3 hue  hdfs         63 2016-08-21 10:51 /user/root/sqoop_imp01/employee_via_oozie/part-m-00000
+[root@sandbox ~]# hdfs dfs -cat /user/root/sqoop_imp01/employee_via_oozie/part-m-00000
+1,Deepak,1,82000.00
+2,Farooq,1,75000.00
+3,Karthick,1,100000.00

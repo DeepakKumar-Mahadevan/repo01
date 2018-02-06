@@ -1,0 +1,265 @@
+scala> val a = sc.textFile ('file:///home/hduser/mydata01/BPL.csv')
+     | ;
+<console>:2: error: identifier expected but ';' found.
+       ;
+       ^
+
+scala> val a = sc.textFile ("file:///home/hduser/mydata01/BPL.csv")
+16/09/01 21:57:59 INFO storage.MemoryStore: Block broadcast_0 stored as values in memory (estimated size 86.5 KB, free 86.5 KB)
+16/09/01 21:57:59 INFO storage.MemoryStore: Block broadcast_0_piece0 stored as bytes in memory (estimated size 19.6 KB, free 106.0 KB)
+16/09/01 21:57:59 INFO storage.BlockManagerInfo: Added broadcast_0_piece0 in memory on localhost:40335 (size: 19.6 KB, free: 517.4 MB)
+16/09/01 21:57:59 INFO spark.SparkContext: Created broadcast 0 from textFile at <console>:27
+a: org.apache.spark.rdd.RDD[String] = MapPartitionsRDD[1] at textFile at <console>:27
+
+scala> val b = a.map(rec => rec.split(",")
+     | )
+b: org.apache.spark.rdd.RDD[Array[String]] = MapPartitionsRDD[2] at map at <console>:29
+
+scala> val c = b.filter(rec => rec.0 != "TEAM")
+<console>:1: error: ')' expected but double literal found.
+       val c = b.filter(rec => rec.0 != "TEAM")
+                                  ^
+
+scala> val c = b.filter(rec => (rec.0 != "TEAM"))
+<console>:1: error: ')' expected but double literal found.
+       val c = b.filter(rec => (rec.0 != "TEAM"))
+                                   ^
+
+scala> val c = b.filter(rec => rec(0) != "TEAM")
+c: org.apache.spark.rdd.RDD[Array[String]] = MapPartitionsRDD[3] at filter at <console>:31
+
+scala> c.collect
+16/09/01 22:04:01 INFO mapred.FileInputFormat: Total input paths to process : 1
+16/09/01 22:04:01 INFO spark.SparkContext: Starting job: collect at <console>:34
+16/09/01 22:04:01 INFO scheduler.DAGScheduler: Got job 0 (collect at <console>:34) with 1 output partitions
+16/09/01 22:04:01 INFO scheduler.DAGScheduler: Final stage: ResultStage 0 (collect at <console>:34)
+16/09/01 22:04:01 INFO scheduler.DAGScheduler: Parents of final stage: List()
+16/09/01 22:04:01 INFO scheduler.DAGScheduler: Missing parents: List()
+16/09/01 22:04:01 INFO scheduler.DAGScheduler: Submitting ResultStage 0 (MapPartitionsRDD[3] at filter at <console>:31), which has no missing parents
+16/09/01 22:04:01 INFO storage.MemoryStore: Block broadcast_1 stored as values in memory (estimated size 3.5 KB, free 109.5 KB)
+16/09/01 22:04:01 INFO storage.MemoryStore: Block broadcast_1_piece0 stored as bytes in memory (estimated size 1977.0 B, free 111.4 KB)
+16/09/01 22:04:01 INFO storage.BlockManagerInfo: Added broadcast_1_piece0 in memory on localhost:40335 (size: 1977.0 B, free: 517.4 MB)
+16/09/01 22:04:01 INFO spark.SparkContext: Created broadcast 1 from broadcast at DAGScheduler.scala:1006
+16/09/01 22:04:01 INFO scheduler.DAGScheduler: Submitting 1 missing tasks from ResultStage 0 (MapPartitionsRDD[3] at filter at <console>:31)
+16/09/01 22:04:01 INFO scheduler.TaskSchedulerImpl: Adding task set 0.0 with 1 tasks
+16/09/01 22:04:02 INFO scheduler.TaskSetManager: Starting task 0.0 in stage 0.0 (TID 0, localhost, partition 0,PROCESS_LOCAL, 2136 bytes)
+16/09/01 22:04:02 INFO executor.Executor: Running task 0.0 in stage 0.0 (TID 0)
+16/09/01 22:04:02 INFO rdd.HadoopRDD: Input split: file:/home/hduser/mydata01/BPL.csv:0+154
+16/09/01 22:04:02 INFO Configuration.deprecation: mapred.tip.id is deprecated. Instead, use mapreduce.task.id
+16/09/01 22:04:02 INFO Configuration.deprecation: mapred.task.id is deprecated. Instead, use mapreduce.task.attempt.id
+16/09/01 22:04:02 INFO Configuration.deprecation: mapred.task.is.map is deprecated. Instead, use mapreduce.task.ismap
+16/09/01 22:04:02 INFO Configuration.deprecation: mapred.task.partition is deprecated. Instead, use mapreduce.task.partition
+16/09/01 22:04:02 INFO Configuration.deprecation: mapred.job.id is deprecated. Instead, use mapreduce.job.id
+16/09/01 22:04:03 INFO executor.Executor: Finished task 0.0 in stage 0.0 (TID 0). 2323 bytes result sent to driver
+16/09/01 22:04:03 INFO scheduler.TaskSetManager: Finished task 0.0 in stage 0.0 (TID 0) in 1649 ms on localhost (1/1)
+16/09/01 22:04:03 INFO scheduler.TaskSchedulerImpl: Removed TaskSet 0.0, whose tasks have all completed, from pool
+16/09/01 22:04:03 INFO scheduler.DAGScheduler: ResultStage 0 (collect at <console>:34) finished in 1.708 s
+16/09/01 22:04:03 INFO scheduler.DAGScheduler: Job 0 finished: collect at <console>:34, took 2.156477 s
+res0: Array[Array[String]] = Array(Array(MANU, 38, 35, 2, 1, 107), Array(CHEL, 38, 25, 5, 8, 80), Array(ARSL, 38, 23, 7, 8, 76), Array(MANC, 38, 20, 8, 10, 68), Array(LIVP, 38, 18, 8, 12, 62), Array(TOTH, 38, 16, 11, 11, 59))
+====================================================================================================
+scala> val a = sc.textFile ("file:///home/hduser/mydata01/BPL.csv")
+a: org.apache.spark.rdd.RDD[String] = MapPartitionsRDD[1] at textFile at <console>:21
+
+scala> val b = a.map(rec => rec.split(","))
+b: org.apache.spark.rdd.RDD[Array[String]] = MapPartitionsRDD[2] at map at <console>:23
+
+scala> val c = b.filter(rec => rec(0) != "TEAM")
+c: org.apache.spark.rdd.RDD[Array[String]] = MapPartitionsRDD[3] at filter at <console>:25
+
+scala> c.top
+<console>:28: error: missing arguments for method top in class RDD;
+follow this method with `_' if you want to treat it as a partially applied function
+              c.top
+                ^
+
+scala> c.top(1)
+<console>:28: error: No implicit Ordering defined for Array[String].
+              c.top(1)
+                   ^
+
+scala> val d = c.map(won => won(2))
+d: org.apache.spark.rdd.RDD[String] = MapPartitionsRDD[5] at map at <console>:27
+
+scala> d.foreach(println)
+16/09/01 22:29:07 INFO spark.SparkContext: Starting job: foreach at <console>:30
+16/09/01 22:29:07 INFO scheduler.DAGScheduler: Got job 1 (foreach at <console>:30) with 1 output partitions
+16/09/01 22:29:07 INFO scheduler.DAGScheduler: Final stage: ResultStage 1 (foreach at <console>:30)
+16/09/01 22:29:07 INFO scheduler.DAGScheduler: Parents of final stage: List()
+16/09/01 22:29:07 INFO scheduler.DAGScheduler: Missing parents: List()
+16/09/01 22:29:07 INFO scheduler.DAGScheduler: Submitting ResultStage 1 (MapPartitionsRDD[5] at map at <console>:27), which has no missing parents
+16/09/01 22:29:07 INFO storage.MemoryStore: Block broadcast_2 stored as values in memory (estimated size 3.5 KB, free 115.0 KB)
+16/09/01 22:29:07 INFO storage.MemoryStore: Block broadcast_2_piece0 stored as bytes in memory (estimated size 1982.0 B, free 117.0 KB)
+16/09/01 22:29:07 INFO storage.BlockManagerInfo: Added broadcast_2_piece0 in memory on localhost:40667 (size: 1982.0 B, free: 517.4 MB)
+16/09/01 22:29:07 INFO spark.SparkContext: Created broadcast 2 from broadcast at DAGScheduler.scala:1006
+16/09/01 22:29:07 INFO scheduler.DAGScheduler: Submitting 1 missing tasks from ResultStage 1 (MapPartitionsRDD[5] at map at <console>:27)
+16/09/01 22:29:07 INFO scheduler.TaskSchedulerImpl: Adding task set 1.0 with 1 tasks
+16/09/01 22:29:07 INFO scheduler.TaskSetManager: Starting task 0.0 in stage 1.0 (TID 1, localhost, partition 0,PROCESS_LOCAL, 2136 bytes)
+16/09/01 22:29:07 INFO executor.Executor: Running task 0.0 in stage 1.0 (TID 1)
+16/09/01 22:29:07 INFO rdd.HadoopRDD: Input split: file:/home/hduser/mydata01/BPL.csv:0+154
+35
+25
+23
+20
+18
+16
+
+scala> d.top(4)
+16/09/01 22:30:45 INFO spark.SparkContext: Starting job: top at <console>:30
+16/09/01 22:30:45 INFO scheduler.DAGScheduler: Got job 2 (top at <console>:30) with 1 output partitions
+16/09/01 22:30:45 INFO scheduler.DAGScheduler: Final stage: ResultStage 2 (top at <console>:30)
+16/09/01 22:30:45 INFO scheduler.DAGScheduler: Parents of final stage: List()
+16/09/01 22:30:45 INFO scheduler.DAGScheduler: Missing parents: List()
+16/09/01 22:30:45 INFO scheduler.DAGScheduler: Submitting ResultStage 2 (MapPartitionsRDD[6] at top at <console>:30), which has no missing parents
+16/09/01 22:30:45 INFO storage.MemoryStore: Block broadcast_3 stored as values in memory (estimated size 4.2 KB, free 121.1 KB)
+16/09/01 22:30:45 INFO storage.MemoryStore: Block broadcast_3_piece0 stored as bytes in memory (estimated size 2.2 KB, free 123.4 KB)
+16/09/01 22:30:45 INFO storage.BlockManagerInfo: Added broadcast_3_piece0 in memory on localhost:40667 (size: 2.2 KB, free: 517.4 MB)
+16/09/01 22:30:45 INFO spark.SparkContext: Created broadcast 3 from broadcast at DAGScheduler.scala:1006
+16/09/01 22:30:45 INFO scheduler.DAGScheduler: Submitting 1 missing tasks from ResultStage 2 (MapPartitionsRDD[6] at top at <console>:30)
+16/09/01 22:30:45 INFO scheduler.TaskSchedulerImpl: Adding task set 2.0 with 1 tasks
+16/09/01 22:30:45 INFO scheduler.TaskSetManager: Starting task 0.0 in stage 2.0 (TID 2, localhost, partition 0,PROCESS_LOCAL, 2136 bytes)
+16/09/01 22:30:45 INFO executor.Executor: Running task 0.0 in stage 2.0 (TID 2)
+16/09/01 22:30:45 INFO rdd.HadoopRDD: Input split: file:/home/hduser/mydata01/BPL.csv:0+154
+16/09/01 22:30:45 INFO executor.Executor: Finished task 0.0 in stage 2.0 (TID 2). 2395 bytes result sent to driver
+16/09/01 22:30:45 INFO scheduler.DAGScheduler: ResultStage 2 (top at <console>:30) finished in 0.047 s
+16/09/01 22:30:45 INFO scheduler.DAGScheduler: Job 2 finished: top at <console>:30, took 0.071883 s
+res4: Array[String] = Array(35, 25, 23, 20)
+====================================================================================================
+scala> a = sc.parallelize(Seq(10,7,23,17,13,70,37))
+<console>:23: error: reassignment to val
+         a = sc.parallelize(Seq(10,7,23,17,13,70,37))
+           ^
+
+scala> unpersist(a)
+<console>:24: error: not found: value unpersist
+              unpersist(a)
+              ^
+
+scala> a.unpersist
+<console>:24: error: missing arguments for method unpersist in class RDD;
+follow this method with `_' if you want to treat it as a partially applied function
+              a.unpersist
+                ^
+
+scala> a.unpersist()
+16/09/01 22:36:37 INFO rdd.MapPartitionsRDD: Removing RDD 1 from persistence list
+16/09/01 22:36:37 INFO storage.BlockManager: Removing RDD 1
+res7: a.type = MapPartitionsRDD[1] at textFile at <console>:21
+
+scala> a = sc.parallelize(Seq(10,7,23,17,13,70,37))
+<console>:23: error: reassignment to val
+         a = sc.parallelize(Seq(10,7,23,17,13,70,37))
+====================================================================================================
+scala> val a = sc.parallelize(Seq(10,7,23,17,13,70,37))
+a: org.apache.spark.rdd.RDD[Int] = ParallelCollectionRDD[12] at parallelize at <console>:21
+
+scala> a.top(5)
+16/09/01 22:45:55 INFO spark.SparkContext: Starting job: top at <console>:24
+16/09/01 22:45:55 INFO scheduler.DAGScheduler: Got job 5 (top at <console>:24) with 1 output partitions
+16/09/01 22:45:55 INFO scheduler.DAGScheduler: Final stage: ResultStage 5 (top at <console>:24)
+16/09/01 22:45:55 INFO scheduler.DAGScheduler: Parents of final stage: List()
+16/09/01 22:45:55 INFO scheduler.DAGScheduler: Missing parents: List()
+16/09/01 22:45:55 INFO scheduler.DAGScheduler: Submitting ResultStage 5 (MapPartitionsRDD[13] at top at <console>:24), which has no missing parents
+16/09/01 22:45:55 INFO storage.MemoryStore: Block broadcast_6 stored as values in memory (estimated size 2.4 KB, free 114.8 KB)
+16/09/01 22:45:55 INFO storage.MemoryStore: Block broadcast_6_piece0 stored as bytes in memory (estimated size 1483.0 B, free 116.2 KB)
+16/09/01 22:45:55 INFO storage.BlockManagerInfo: Added broadcast_6_piece0 in memory on localhost:40667 (size: 1483.0 B, free: 517.4 MB)
+16/09/01 22:45:55 INFO spark.SparkContext: Created broadcast 6 from broadcast at DAGScheduler.scala:1006
+16/09/01 22:45:55 INFO scheduler.DAGScheduler: Submitting 1 missing tasks from ResultStage 5 (MapPartitionsRDD[13] at top at <console>:24)
+16/09/01 22:45:55 INFO scheduler.TaskSchedulerImpl: Adding task set 5.0 with 1 tasks
+16/09/01 22:45:55 INFO scheduler.TaskSetManager: Starting task 0.0 in stage 5.0 (TID 5, localhost, partition 0,PROCESS_LOCAL, 2046 bytes)
+16/09/01 22:45:55 INFO executor.Executor: Running task 0.0 in stage 5.0 (TID 5)
+16/09/01 22:45:55 INFO executor.Executor: Finished task 0.0 in stage 5.0 (TID 5). 1360 bytes result sent to driver
+16/09/01 22:45:55 INFO scheduler.DAGScheduler: ResultStage 5 (top at <console>:24) finished in 0.024 s
+16/09/01 22:45:55 INFO scheduler.DAGScheduler: Job 5 finished: top at <console>:24, took 0.060534 s
+res12: Array[Int] = Array(70, 37, 23, 17, 13)
+
+scala> a.top(3)
+16/09/01 22:49:18 INFO spark.SparkContext: Starting job: top at <console>:24
+16/09/01 22:49:18 INFO scheduler.DAGScheduler: Got job 7 (top at <console>:24) with 1 output partitions
+16/09/01 22:49:18 INFO scheduler.DAGScheduler: Final stage: ResultStage 7 (top at <console>:24)
+16/09/01 22:49:18 INFO scheduler.DAGScheduler: Parents of final stage: List()
+16/09/01 22:49:18 INFO scheduler.DAGScheduler: Missing parents: List()
+16/09/01 22:49:18 INFO scheduler.DAGScheduler: Submitting ResultStage 7 (MapPartitionsRDD[14] at top at <console>:24), which has no missing parents
+16/09/01 22:49:18 INFO storage.MemoryStore: Block broadcast_8 stored as values in memory (estimated size 2.4 KB, free 120.4 KB)
+16/09/01 22:49:18 INFO storage.MemoryStore: Block broadcast_8_piece0 stored as bytes in memory (estimated size 1485.0 B, free 121.9 KB)
+16/09/01 22:49:18 INFO storage.BlockManagerInfo: Added broadcast_8_piece0 in memory on localhost:40667 (size: 1485.0 B, free: 517.4 MB)
+16/09/01 22:49:18 INFO spark.SparkContext: Created broadcast 8 from broadcast at DAGScheduler.scala:1006
+16/09/01 22:49:18 INFO scheduler.DAGScheduler: Submitting 1 missing tasks from ResultStage 7 (MapPartitionsRDD[14] at top at <console>:24)
+16/09/01 22:49:18 INFO scheduler.TaskSchedulerImpl: Adding task set 7.0 with 1 tasks
+16/09/01 22:49:18 INFO scheduler.TaskSetManager: Starting task 0.0 in stage 7.0 (TID 7, localhost, partition 0,PROCESS_LOCAL, 2046 bytes)
+16/09/01 22:49:18 INFO executor.Executor: Running task 0.0 in stage 7.0 (TID 7)
+16/09/01 22:49:18 INFO executor.Executor: Finished task 0.0 in stage 7.0 (TID 7). 1340 bytes result sent to driver
+16/09/01 22:49:18 INFO scheduler.DAGScheduler: ResultStage 7 (top at <console>:24) finished in 0.007 s
+16/09/01 22:49:18 INFO scheduler.DAGScheduler: Job 7 finished: top at <console>:24, took 0.018989 s
+res13: Array[Int] = Array(70, 37, 23)
+
+====================================================================================================
+scala> val count_a = a.count
+16/09/01 22:47:32 INFO spark.SparkContext: Starting job: count at <console>:23
+16/09/01 22:47:32 INFO scheduler.DAGScheduler: Got job 6 (count at <console>:23) with 1 output partitions
+16/09/01 22:47:32 INFO scheduler.DAGScheduler: Final stage: ResultStage 6 (count at <console>:23)
+16/09/01 22:47:32 INFO scheduler.DAGScheduler: Parents of final stage: List()
+16/09/01 22:47:32 INFO scheduler.DAGScheduler: Missing parents: List()
+16/09/01 22:47:32 INFO scheduler.DAGScheduler: Submitting ResultStage 6 (ParallelCollectionRDD[12] at parallelize at <console>:21), which has no missing parents
+16/09/01 22:47:32 INFO storage.MemoryStore: Block broadcast_7 stored as values in memory (estimated size 1096.0 B, free 117.3 KB)
+16/09/01 22:47:32 INFO storage.MemoryStore: Block broadcast_7_piece0 stored as bytes in memory (estimated size 804.0 B, free 118.1 KB)
+16/09/01 22:47:32 INFO storage.BlockManagerInfo: Added broadcast_7_piece0 in memory on localhost:40667 (size: 804.0 B, free: 517.4 MB)
+16/09/01 22:47:32 INFO spark.SparkContext: Created broadcast 7 from broadcast at DAGScheduler.scala:1006
+16/09/01 22:47:32 INFO scheduler.DAGScheduler: Submitting 1 missing tasks from ResultStage 6 (ParallelCollectionRDD[12] at parallelize at <console>:21)
+16/09/01 22:47:32 INFO scheduler.TaskSchedulerImpl: Adding task set 6.0 with 1 tasks
+16/09/01 22:47:32 INFO scheduler.TaskSetManager: Starting task 0.0 in stage 6.0 (TID 6, localhost, partition 0,PROCESS_LOCAL, 2046 bytes)
+16/09/01 22:47:32 INFO executor.Executor: Running task 0.0 in stage 6.0 (TID 6)
+16/09/01 22:47:33 INFO executor.Executor: Finished task 0.0 in stage 6.0 (TID 6). 953 bytes result sent to driver
+16/09/01 22:47:33 INFO scheduler.TaskSetManager: Finished task 0.0 in stage 6.0 (TID 6) in 14 ms on localhost (1/1)
+16/09/01 22:47:33 INFO scheduler.TaskSchedulerImpl: Removed TaskSet 6.0, whose tasks have all completed, from pool
+16/09/01 22:47:33 INFO scheduler.DAGScheduler: ResultStage 6 (count at <console>:23) finished in 0.012 s
+16/09/01 22:47:33 INFO scheduler.DAGScheduler: Job 6 finished: count at <console>:23, took 0.026873 s
+count_a: Long = 7
+
+scala> count_a = c.count
+<console>:29: error: reassignment to val
+         count_a = c.count
+                 ^
+
+scala> var count_a = c.count
+16/09/01 22:50:42 INFO spark.SparkContext: Starting job: count at <console>:27
+16/09/01 22:50:42 INFO scheduler.DAGScheduler: Got job 11 (count at <console>:27) with 1 output partitions
+16/09/01 22:50:42 INFO scheduler.DAGScheduler: Final stage: ResultStage 11 (count at <console>:27)
+16/09/01 22:50:42 INFO scheduler.DAGScheduler: Parents of final stage: List()
+16/09/01 22:50:42 INFO scheduler.DAGScheduler: Missing parents: List()
+16/09/01 22:50:42 INFO scheduler.DAGScheduler: Submitting ResultStage 11 (MapPartitionsRDD[11] at filter at <console>:25), which has no missing parents
+16/09/01 22:50:42 INFO storage.MemoryStore: Block broadcast_12 stored as values in memory (estimated size 3.3 KB, free 137.7 KB)
+16/09/01 22:50:42 INFO storage.MemoryStore: Block broadcast_12_piece0 stored as bytes in memory (estimated size 1945.0 B, free 139.6 KB)
+16/09/01 22:50:42 INFO storage.BlockManagerInfo: Added broadcast_12_piece0 in memory on localhost:40667 (size: 1945.0 B, free: 517.4 MB)
+16/09/01 22:50:42 INFO spark.SparkContext: Created broadcast 12 from broadcast at DAGScheduler.scala:1006
+16/09/01 22:50:42 INFO scheduler.DAGScheduler: Submitting 1 missing tasks from ResultStage 11 (MapPartitionsRDD[11] at filter at <console>:25)
+16/09/01 22:50:42 INFO scheduler.TaskSchedulerImpl: Adding task set 11.0 with 1 tasks
+16/09/01 22:50:42 INFO scheduler.TaskSetManager: Starting task 0.0 in stage 11.0 (TID 11, localhost, partition 0,PROCESS_LOCAL, 2136 bytes)
+16/09/01 22:50:42 INFO executor.Executor: Running task 0.0 in stage 11.0 (TID 11)
+16/09/01 22:50:42 INFO rdd.HadoopRDD: Input split: file:/home/hduser/mydata01/BPL.csv:0+154
+16/09/01 22:50:42 INFO executor.Executor: Finished task 0.0 in stage 11.0 (TID 11). 2137 bytes result sent to driver
+16/09/01 22:50:42 INFO scheduler.DAGScheduler: ResultStage 11 (count at <console>:27) finished in 0.022 s
+16/09/01 22:50:42 INFO scheduler.DAGScheduler: Job 11 finished: count at <console>:27, took 0.052352 s
+count_a: Long = 6
+
+scala> count_a = a.count
+16/09/01 22:51:38 INFO spark.SparkContext: Starting job: count at <console>:32
+16/09/01 22:51:38 INFO scheduler.DAGScheduler: Got job 13 (count at <console>:32) with 1 output partitions
+16/09/01 22:51:38 INFO scheduler.DAGScheduler: Final stage: ResultStage 13 (count at <console>:32)
+16/09/01 22:51:38 INFO scheduler.DAGScheduler: Parents of final stage: List()
+16/09/01 22:51:38 INFO scheduler.DAGScheduler: Missing parents: List()
+16/09/01 22:51:38 INFO scheduler.DAGScheduler: Submitting ResultStage 13 (ParallelCollectionRDD[12] at parallelize at <console>:21), which has no missing parents
+16/09/01 22:51:38 INFO storage.MemoryStore: Block broadcast_14 stored as values in memory (estimated size 1096.0 B, free 146.1 KB)
+16/09/01 22:51:38 INFO storage.MemoryStore: Block broadcast_14_piece0 stored as bytes in memory (estimated size 804.0 B, free 146.8 KB)
+16/09/01 22:51:38 INFO storage.BlockManagerInfo: Added broadcast_14_piece0 in memory on localhost:40667 (size: 804.0 B, free: 517.4 MB)
+16/09/01 22:51:38 INFO spark.SparkContext: Created broadcast 14 from broadcast at DAGScheduler.scala:1006
+16/09/01 22:51:38 INFO scheduler.DAGScheduler: Submitting 1 missing tasks from ResultStage 13 (ParallelCollectionRDD[12] at parallelize at <console>:21)
+16/09/01 22:51:38 INFO scheduler.TaskSchedulerImpl: Adding task set 13.0 with 1 tasks
+16/09/01 22:51:38 INFO scheduler.TaskSetManager: Starting task 0.0 in stage 13.0 (TID 13, localhost, partition 0,PROCESS_LOCAL, 2046 bytes)
+16/09/01 22:51:38 INFO executor.Executor: Running task 0.0 in stage 13.0 (TID 13)
+16/09/01 22:51:38 INFO executor.Executor: Finished task 0.0 in stage 13.0 (TID 13). 953 bytes result sent to driver
+16/09/01 22:51:38 INFO scheduler.TaskSetManager: Finished task 0.0 in stage 13.0 (TID 13) in 6 ms on localhost (1/1)
+16/09/01 22:51:38 INFO scheduler.TaskSchedulerImpl: Removed TaskSet 13.0, whose tasks have all completed, from pool
+16/09/01 22:51:38 INFO scheduler.DAGScheduler: ResultStage 13 (count at <console>:32) finished in 0.002 s
+16/09/01 22:51:38 INFO scheduler.DAGScheduler: Job 13 finished: count at <console>:32, took 0.019240 s
+count_a: Long = 7
+====================================================================================================

@@ -1,0 +1,21 @@
+[hduser@Inceptez ~]$ uname -r
+2.6.32-573.3.1.el6.x86_64
+[hduser@Inceptez ~]$ lsb_release -a
+LSB Version:    :base-4.0-amd64:base-4.0-noarch:core-4.0-amd64:core-4.0-noarch:graphics-4.0-amd64:graphics-4.0-noarch:printing-4.0-amd64:printing-4.0-noarch
+Distributor ID: CentOS
+Description:    CentOS release 6.7 (Final)
+Release:        6.7
+Codename:       Final
+
+
+# For El5 or CentOS 5
+su -c 'rpm -Uvh http://download.fedoraproject.org/pub/epel/5/i386/epel-release-5-4.noarch.rpm'
+sudo yum update
+sudo yum install R
+
+# For El6 or CentOS 6
+su -c 'rpm -Uvh http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm'
+sudo yum update
+sudo yum install R
+
+ 

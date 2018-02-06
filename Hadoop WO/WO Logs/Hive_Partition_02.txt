@@ -1,0 +1,338 @@
+hive> create table dkmdb02.ManUtdPlayers1 (player varchar(30), position varchar(20), dob date)                     
+    > row format delimited fields terminated by ','                                           
+    > partitioned by (country varchar(25));;                                                  
+FAILED: ParseException line 3:0 cannot recognize input near 'partitioned' 'by' '(' in serde properties specification
+
+hive> create table dkmdb02.ManUtdPlayers1 (player varchar(30), position varchar(20), dob date)
+    > partitioned by (country varchar(25)                                                     
+    > row format delimited fields terminated by ',';                                          
+FAILED: ParseException line 3:0 missing ) at 'row' near '<EOF>'
+
+hive> create table dkmdb02.ManUtdPlayers1 (player varchar(30), position varchar(20), dob date)
+    > partitioned by (country varchar(25))                                                    
+    > row format delimited fields terminated by ',';                                          
+OK
+Time taken: 3.811 seconds
+
+hive> show create table dkmdb02.manutdplayers1;
+OK
+CREATE TABLE `dkmdb02.manutdplayers1`(
+  `player` varchar(30), 
+  `position` varchar(20), 
+  `dob` date)
+PARTITIONED BY ( 
+  `country` varchar(25))
+ROW FORMAT DELIMITED 
+  FIELDS TERMINATED BY ',' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.mapred.TextInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION
+  'hdfs://localhost:54310/user/hive/warehouse/dkmdb02.db/manutdplayers1'
+TBLPROPERTIES (
+  'transient_lastDdlTime'='1472115978')
+Time taken: 0.462 seconds, Fetched: 16 row(s)
+
+[hduser@Inceptez Sample_Data]$ hdfs dfs -ls -R /user/hive/warehouse/dkmdb02.db
+drwxr-xr-x   - hduser supergroup          0 2016-08-25 14:36 /user/hive/warehouse/dkmdb02.db/manutdplayers1
+====================================================================================================
+Static Partitioning using Insert
+--------------------------------
+
+hive> insert into table dkmdb02.manutdplayers1 partition(country='Germany') select player, position, dob from default.manutdplayers where country = 'Germany';;
+Query ID = hduser_20160825144646_1473db54-34de-481d-acf1-91ceaac76282
+Total jobs = 3
+Launching Job 1 out of 3
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_1472113754651_0002, Tracking URL = http://Inceptez:8088/proxy/application_1472113754651_0002/
+Kill Command = /usr/local/hadoop/bin/hadoop job  -kill job_1472113754651_0002
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 0
+2016-08-25 14:47:44,439 Stage-1 map = 0%,  reduce = 0%
+2016-08-25 14:48:10,918 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 4.62 sec
+MapReduce Total cumulative CPU time: 4 seconds 620 msec
+Ended Job = job_1472113754651_0002
+Stage-4 is selected by condition resolver.
+Stage-3 is filtered out by condition resolver.
+Stage-5 is filtered out by condition resolver.
+Moving data to: hdfs://localhost:54310/tmp/hive/hduser/de761e10-d0f1-4bc7-9946-8cb52dc08556/hive_2016-08-25_14-46-52_042_6115899871486036047-1/-ext-10000
+Loading data to table dkmdb02.manutdplayers1 partition (country=Germany)
+[Error 30017]: Skipping stats aggregation by error org.apache.hadoop.hive.ql.metadata.HiveException: [Error 30001]: StatsPublisher cannot be initialized. There was a error in the initialization of StatsPublisher, and retrying might help. If you dont want the query to fail because accurate statistics could not be collected, set hive.stats.reliable=false
+Partition dkmdb02.manutdplayers1{country=Germany} stats: [numFiles=1, numRows=-1, totalSize=85, rawDataSize=-1]
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1   Cumulative CPU: 4.62 sec   HDFS Read: 23622 HDFS Write: 85 SUCCESS
+Total MapReduce CPU Time Spent: 4 seconds 620 msec
+OK
+Time taken: 82.25 seconds
+
+[hduser@Inceptez Sample_Data]$ hdfs dfs -ls -R /user/hive/warehouse/dkmdb02.db
+drwxr-xr-x   - hduser supergroup          0 2016-08-25 14:48 /user/hive/warehouse/dkmdb02.db/manutdplayers1
+drwxr-xr-x   - hduser supergroup          0 2016-08-25 14:48 /user/hive/warehouse/dkmdb02.db/manutdplayers1/country=Germany
+-rw-r--r--   1 hduser supergroup         85 2016-08-25 14:48 /user/hive/warehouse/dkmdb02.db/manutdplayers1/country=Germany/000000_0
+
+[hduser@Inceptez Sample_Data]$ hdfs dfs -cat /user/hive/warehouse/dkmdb02.db/manutdplayers1/country=Germany/000000_0
+Bastian Schweinsteiger,Midfielder,1984-08-01
+Ron-Robert Zieler,Goalkeeper,1989-02-12
+
+hive> show partitions dkmdb02.manutdplayers1;
+OK
+country=Germany
+Time taken: 0.287 seconds, Fetched: 1 row(s)
+====================================================================================================
+Static Partitioning using Alter table
+-------------------------------------
+
+hive> alter table dkmdb02.manutdplayers1 add partition (country = 'USA') location '/user/hive/warehouse/dkmdb02.db/manutdplayers1/country=USA';  
+OK
+Time taken: 0.358 seconds
+
+hive> show partitions dkmdb02.manutdplayers1;
+OK
+country=Germany
+country=USA
+Time taken: 0.272 seconds, Fetched: 2 row(s)
+
+hive> select * from dkmdb02.manutdplayers1;
+OK
+Bastian Schweinsteiger	Midfielder	1984-08-01	Germany
+Ron-Robert Zieler	Goalkeeper	1989-02-12	Germany
+Time taken: 0.288 seconds, Fetched: 2 row(s)
+
+[hduser@Inceptez Sample_Data]$ hdfs dfs -ls -R /user/hive/warehouse/dkmdb02.db
+drwxr-xr-x   - hduser supergroup          0 2016-08-25 14:53 /user/hive/warehouse/dkmdb02.db/manutdplayers1
+drwxr-xr-x   - hduser supergroup          0 2016-08-25 14:48 /user/hive/warehouse/dkmdb02.db/manutdplayers1/country=Germany
+-rw-r--r--   1 hduser supergroup         85 2016-08-25 14:48 /user/hive/warehouse/dkmdb02.db/manutdplayers1/country=Germany/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-08-25 14:53 /user/hive/warehouse/dkmdb02.db/manutdplayers1/country=USA
+
+[hduser@Inceptez Sample_Data]$ hdfs dfs -put MU-USA.csv /user/hive/warehouse/dkmdb02.db/manutdplayers1/country=USA
+
+[hduser@Inceptez Sample_Data]$ hdfs dfs -ls -R /user/hive/warehouse/dkmdb02.db
+drwxr-xr-x   - hduser supergroup          0 2016-08-25 14:53 /user/hive/warehouse/dkmdb02.db/manutdplayers1
+drwxr-xr-x   - hduser supergroup          0 2016-08-25 14:48 /user/hive/warehouse/dkmdb02.db/manutdplayers1/country=Germany
+-rw-r--r--   1 hduser supergroup         85 2016-08-25 14:48 /user/hive/warehouse/dkmdb02.db/manutdplayers1/country=Germany/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-08-25 14:55 /user/hive/warehouse/dkmdb02.db/manutdplayers1/country=USA
+-rw-r--r--   1 hduser supergroup        149 2016-08-25 14:55 /user/hive/warehouse/dkmdb02.db/manutdplayers1/country=USA/MU-USA.csv
+
+[hduser@Inceptez Sample_Data]$ hdfs dfs -cat /user/hive/warehouse/dkmdb02.db/manutdplayers1/country=USA/MU-USA.csv
+Jeff Baicher,USA,Forward,1968-11-16
+James Brown,USA,Forward,1908-12-31
+Tim Howard,USA,Goalkeeper,1979-03-06
+Jonathan Spector,USA,Defender,1986-03-01
+
+hive> select * from dkmdb02.manutdplayers1;
+OK
+Bastian Schweinsteiger	Midfielder	1984-08-01	Germany
+Ron-Robert Zieler	Goalkeeper	1989-02-12	Germany
+Jeff Baicher	USA	NULL	USA
+James Brown	USA	NULL	USA
+Tim Howard	USA	NULL	USA
+Jonathan Spector	USA	NULL	USA
+Time taken: 0.221 seconds, Fetched: 6 row(s)
+
+>>> File copied to HDFS is not of the correct format. Patition column (i.e. country) should by removed from the file.
+
+mysql> select player, position, dob from ManUtdPlayers1 where country = 'USA' into outfile '/tmp/MU-USA.csv' fields terminated by ',' lines terminated by '\n';
+Query OK, 4 rows affected (0.03 sec)
+
+[hduser@Inceptez Sample_Data]$ sudo mv /tmp/MU-USA.csv $PWD
+[sudo] password for hduser: 
+[hduser@Inceptez Sample_Data]$ hdfs dfs -put -f MU-USA.csv /user/hive/warehouse/dkmdb02.db/manutdplayers1/country=USA
+
+[hduser@Inceptez Sample_Data]$ hdfs dfs -cat /user/hive/warehouse/dkmdb02.db/manutdplayers1/country=USA/MU-USA.csv
+Jeff Baicher,Forward,1968-11-16
+James Brown,Forward,1908-12-31
+Tim Howard,Goalkeeper,1979-03-06
+Jonathan Spector,Defender,1986-03-01
+
+hive> select * from dkmdb02.manutdplayers1;
+OK
+Bastian Schweinsteiger	Midfielder	1984-08-01	Germany
+Ron-Robert Zieler	Goalkeeper	1989-02-12	Germany
+Jeff Baicher	Forward	1968-11-16	USA
+James Brown	Forward	1908-12-31	USA
+Tim Howard	Goalkeeper	1979-03-06	USA
+Jonathan Spector	Defender	1986-03-01	USA
+Time taken: 0.241 seconds, Fetched: 6 row(s)
+====================================================================================================
+Dynamic Paritioning using Insert
+--------------------------------
+
+hive> insert into table dkmdb02.manutdplayers1 partition(country)                                                   
+    > select player, position, dob from default.manutdplayers where country in ('Argentina','France','Netherlands');
+FAILED: SemanticException [Error 10044]: Line 1:18 Cannot insert into target table because column number/types are different 'country': Table insclause-0 has 4 columns, but query has 3 columns.
+
+hive> insert into table dkmdb02.manutdplayers1 partition(country)
+    > select player, position, dob, country from default.manutdplayers where country in ('Argentina','France','Netherlands');
+Query ID = hduser_20160825150909_777bcfde-1d9e-4c0b-9154-c99bf6f0771e
+Total jobs = 3
+Launching Job 1 out of 3
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_1472113754651_0003, Tracking URL = http://Inceptez:8088/proxy/application_1472113754651_0003/
+Kill Command = /usr/local/hadoop/bin/hadoop job  -kill job_1472113754651_0003
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 0
+2016-08-25 15:09:51,511 Stage-1 map = 0%,  reduce = 0%
+2016-08-25 15:10:13,459 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 4.37 sec
+MapReduce Total cumulative CPU time: 4 seconds 370 msec
+Ended Job = job_1472113754651_0003
+Stage-4 is selected by condition resolver.
+Stage-3 is filtered out by condition resolver.
+Stage-5 is filtered out by condition resolver.
+Moving data to: hdfs://localhost:54310/tmp/hive/hduser/de761e10-d0f1-4bc7-9946-8cb52dc08556/hive_2016-08-25_15-09-07_441_2348231848106717214-1/-ext-10000
+Loading data to table dkmdb02.manutdplayers1 partition (country=null)
+	 Time taken for load dynamic partitions : 824
+	Loading partition {country=Argentina}
+	Loading partition {country=Netherlands}
+	Loading partition {country=France}
+	 Time taken for adding to write entity : 1
+[Error 30017]: Skipping stats aggregation by error org.apache.hadoop.hive.ql.metadata.HiveException: [Error 30001]: StatsPublisher cannot be initialized. There was a error in the initialization of StatsPublisher, and retrying might help. If you dont want the query to fail because accurate statistics could not be collected, set hive.stats.reliable=false
+Partition dkmdb02.manutdplayers1{country=Argentina} stats: [numFiles=1, numRows=-1, totalSize=223, rawDataSize=-1]
+Partition dkmdb02.manutdplayers1{country=France} stats: [numFiles=1, numRows=-1, totalSize=421, rawDataSize=-1]
+Partition dkmdb02.manutdplayers1{country=Netherlands} stats: [numFiles=1, numRows=-1, totalSize=404, rawDataSize=-1]
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1   Cumulative CPU: 4.37 sec   HDFS Read: 23622 HDFS Write: 1048 SUCCESS
+Total MapReduce CPU Time Spent: 4 seconds 370 msec
+OK
+Time taken: 70.006 seconds
+
+hive> show partitions dkmdb02.manutdplayers1;
+OK
+country=Argentina
+country=France
+country=Germany
+country=Netherlands
+country=USA
+Time taken: 0.083 seconds, Fetched: 5 row(s)
+
+[hduser@Inceptez Sample_Data]$ hdfs dfs -ls -R /user/hive/warehouse/dkmdb02.db
+16/08/25 15:11:05 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+drwxr-xr-x   - hduser supergroup          0 2016-08-25 15:10 /user/hive/warehouse/dkmdb02.db/manutdplayers1
+drwxr-xr-x   - hduser supergroup          0 2016-08-25 15:10 /user/hive/warehouse/dkmdb02.db/manutdplayers1/country=Argentina
+-rw-r--r--   1 hduser supergroup        223 2016-08-25 15:10 /user/hive/warehouse/dkmdb02.db/manutdplayers1/country=Argentina/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-08-25 15:10 /user/hive/warehouse/dkmdb02.db/manutdplayers1/country=France
+-rw-r--r--   1 hduser supergroup        421 2016-08-25 15:10 /user/hive/warehouse/dkmdb02.db/manutdplayers1/country=France/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-08-25 14:48 /user/hive/warehouse/dkmdb02.db/manutdplayers1/country=Germany
+-rw-r--r--   1 hduser supergroup         85 2016-08-25 14:48 /user/hive/warehouse/dkmdb02.db/manutdplayers1/country=Germany/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-08-25 15:10 /user/hive/warehouse/dkmdb02.db/manutdplayers1/country=Netherlands
+-rw-r--r--   1 hduser supergroup        404 2016-08-25 15:10 /user/hive/warehouse/dkmdb02.db/manutdplayers1/country=Netherlands/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-08-25 15:00 /user/hive/warehouse/dkmdb02.db/manutdplayers1/country=USA
+-rw-r--r--   1 hduser supergroup        133 2016-08-25 15:00 /user/hive/warehouse/dkmdb02.db/manutdplayers1/country=USA/MU-USA.csv
+
+hive> select * from dkmdb02.manutdplayers1;
+OK
+�ngel Di Mar�	Midfielder	1988-02-14	Argentina
+Gabriel Heinze	Defender	1978-04-19	Argentina
+Marcos Rojo	Defender	1990-03-20	Argentina
+Sergio Romero	Goalkeeper	1987-02-22	Argentina
+Carlos T�vez	Forward	1984-02-05	Argentina
+Juan Sebasti�n Ver�	Midfielder	1975-03-09	Argentina
+Fabien Barthez	Goalkeeper	1971-06-28	France
+David Bellion	Forward	1982-11-27	France
+Laurent Blanc	Defender	1965-11-19	France
+�ric Cantona	Forward	1966-05-24	France
+Patrice Evra	Defender	1981-05-15	France
+Anthony Martial	Forward	1995-12-05	France
+Gabriel Obertan	Forward	1989-02-26	France
+Paul Pogba	Midfielder	1993-03-15	France
+William Prunier	Defender	1967-08-14	France
+Louis Saha	Forward	1978-08-08	France
+Morgan Schneiderlin	Midfielder	1989-11-08	France
+Mika�l Silvestre	Defender	1977-08-09	France
+Bastian Schweinsteiger	Midfielder	1984-08-01	Germany
+Ron-Robert Zieler	Goalkeeper	1989-02-12	Germany
+Daley Blind	Midfielder	1990-03-09	Netherlands
+Alexander B�ttner	Defender	1989-02-11	Netherlands
+Jordi Cruyff	Midfielder	1974-02-09	Netherlands
+Memphis Depay	Forward	1994-02-13	Netherlands
+Timothy Fosu-Mensah	Defender	1998-01-02	Netherlands
+Arnold M�	Midfielder	1951-06-02	Netherlands
+Jaap Stam	Defender	1972-07-17	Netherlands
+Raimond van der Gouw	Goalkeeper	1963-03-24	Netherlands
+Edwin van der Sar	Goalkeeper	1970-10-29	Netherlands
+Ruud van Nistelrooy	Forward	1976-07-01	Netherlands
+Robin van Persie	Forward	1983-08-06	Netherlands
+Jeff Baicher	Forward	1968-11-16	USA
+James Brown	Forward	1908-12-31	USA
+Tim Howard	Goalkeeper	1979-03-06	USA
+Jonathan Spector	Defender	1986-03-01	USA
+Time taken: 0.145 seconds, Fetched: 35 row(s)
+
+>>> Both the properties needed for dynamic partition have already been enabled in the hive-site.xml
+  <property>
+    <name>hive.exec.dynamic.partition</name>
+    <value>true</value>
+    <description>Whether or not to allow dynamic partitions in DML/DDL.</description>
+  </property>
+  <property>
+    <name>hive.exec.dynamic.partition.mode</name>
+    <value>nonstrict</value>
+    <description>
+      In strict mode, the user must specify at least one static partition
+      in case the user accidentally overwrites all partitions.
+      In nonstrict mode all partitions are allowed to be dynamic.
+    </description>
+====================================================================================================
+hive> set hive.exec.dynamic.partition=false;
+hive> insert into table dkmdb02.manutdplayers1 partition(country)
+    > select player, position, dob, country from default.manutdplayers where country = 'Spain';
+FAILED: SemanticException 1:18 Dynamic partition is disabled. Either enable it by setting hive.exec.dynamic.partition=true or specify partition column values. Error encountered near token 'country'
+
+hive> set hive.exec.dynamic.partition=true;
+hive> set hive.exec.dynamic.partition.mode=strict;
+hive> insert into table dkmdb02.manutdplayers1 partition(country)
+    > select player, position, dob, country from default.manutdplayers where country = 'Spain';
+FAILED: SemanticException [Error 10096]: Dynamic partition strict mode requires at least one static partition column. To turn this off set hive.exec.dynamic.partition.mode=nonstrict
+====================================================================================================
+hive> set hive.exec.dynamic.partition.mode=nonstrict;
+hive> insert into table dkmdb02.manutdplayers1 partition(country)
+    > select player, position, dob, country from default.manutdplayers where country = 'Spain';
+Query ID = hduser_20160825200707_3947e342-1f59-4e46-9fe9-dad9aac9075e
+Total jobs = 3
+Launching Job 1 out of 3
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_1472132069327_0001, Tracking URL = http://Inceptez:8088/proxy/application_1472132069327_0001/
+Kill Command = /usr/local/hadoop/bin/hadoop job  -kill job_1472132069327_0001
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 0
+2016-08-25 20:07:49,808 Stage-1 map = 0%,  reduce = 0%
+2016-08-25 20:08:05,032 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.99 sec
+MapReduce Total cumulative CPU time: 1 seconds 990 msec
+Ended Job = job_1472132069327_0001
+Stage-4 is selected by condition resolver.
+Stage-3 is filtered out by condition resolver.
+Stage-5 is filtered out by condition resolver.
+Moving data to: hdfs://localhost:54310/tmp/hive/hduser/70b9991c-b3c8-409d-8a72-b6883f3234aa/hive_2016-08-25_20-07-19_117_3021189120129325566-1/-ext-10000
+Loading data to table dkmdb02.manutdplayers1 partition (country=null)
+         Time taken for load dynamic partitions : 1761
+        Loading partition {country=Spain}
+         Time taken for adding to write entity : 7
+[Error 30017]: Skipping stats aggregation by error org.apache.hadoop.hive.ql.metadata.HiveException: [Error 30001]: StatsPublisher cannot be initialized. There was a error in the initialization of StatsPublisher, and retrying might help. If you dont want the query to fail because accurate statistics could not be collected, set hive.stats.reliable=false
+Partition dkmdb02.manutdplayers1{country=Spain} stats: [numFiles=1, numRows=-1, totalSize=189, rawDataSize=-1]
+MapReduce Jobs Launched:
+Stage-Stage-1: Map: 1   Cumulative CPU: 1.99 sec   HDFS Read: 23622 HDFS Write: 189 SUCCESS
+Total MapReduce CPU Time Spent: 1 seconds 990 msec
+OK
+Time taken: 50.206 seconds
+hive> show partitions dkmdb02.manutdplayers1;
+OK
+country=Argentina
+country=France
+country=Germany
+country=Netherlands
+country=Spain
+country=USA
+Time taken: 0.161 seconds, Fetched: 6 row(s)
+
+[hduser@Inceptez ~]$ hdfs dfs -ls -R /user/hive/warehouse/dkmdb02.db
+drwxr-xr-x   - hduser supergroup          0 2016-08-25 20:08 /user/hive/warehouse/dkmdb02.db/manutdplayers1
+drwxr-xr-x   - hduser supergroup          0 2016-08-25 15:10 /user/hive/warehouse/dkmdb02.db/manutdplayers1/country=Argentina
+-rw-r--r--   1 hduser supergroup        223 2016-08-25 15:10 /user/hive/warehouse/dkmdb02.db/manutdplayers1/country=Argentina/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-08-25 15:10 /user/hive/warehouse/dkmdb02.db/manutdplayers1/country=France
+-rw-r--r--   1 hduser supergroup        421 2016-08-25 15:10 /user/hive/warehouse/dkmdb02.db/manutdplayers1/country=France/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-08-25 14:48 /user/hive/warehouse/dkmdb02.db/manutdplayers1/country=Germany
+-rw-r--r--   1 hduser supergroup         85 2016-08-25 14:48 /user/hive/warehouse/dkmdb02.db/manutdplayers1/country=Germany/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-08-25 15:10 /user/hive/warehouse/dkmdb02.db/manutdplayers1/country=Netherlands
+-rw-r--r--   1 hduser supergroup        404 2016-08-25 15:10 /user/hive/warehouse/dkmdb02.db/manutdplayers1/country=Netherlands/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-08-25 20:08 /user/hive/warehouse/dkmdb02.db/manutdplayers1/country=Spain
+-rw-r--r--   1 hduser supergroup        189 2016-08-25 20:08 /user/hive/warehouse/dkmdb02.db/manutdplayers1/country=Spain/000000_0
+drwxr-xr-x   - hduser supergroup          0 2016-08-25 15:00 /user/hive/warehouse/dkmdb02.db/manutdplayers1/country=USA
+-rw-r--r--   1 hduser supergroup        133 2016-08-25 15:00 /user/hive/warehouse/dkmdb02.db/manutdplayers1/country=USA/MU-USA.csv
+====================================================================================================
