@@ -1,0 +1,197 @@
+PS C:\Users\MRSD> spark-shell --jars E:\Chicago_E_Drive\mysql-connector-java-5.1.45-bin.jar
+Using Spark's default log4j profile: org/apache/spark/log4j-defaults.properties
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+18/03/05 23:31:20 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+18/03/05 23:31:28 WARN General: Plugin (Bundle) "org.datanucleus.store.rdbms" is already registered. Ensure you dont have multiple JAR versions of the same plugin in the classpath. The URL "file:/E:/Spark/spark/bin/../jars/datanucleus-rdbms-3.2.9.jar" is already registered, and you are trying to register an identical plugin located at URL "file:/E:/Spark/spark/jars/datanucleus-rdbms-3.2.9.jar."
+18/03/05 23:31:28 WARN General: Plugin (Bundle) "org.datanucleus" is already registered. Ensure you dont have multiple JAR versions of the same plugin in the classpath. The URL "file:/E:/Spark/spark/jars/datanucleus-core-3.2.10.jar" is already registered, and you are trying to register an identical plugin located at URL "file:/E:/Spark/spark/bin/../jars/datanucleus-core-3.2.10.jar."
+18/03/05 23:31:28 WARN General: Plugin (Bundle) "org.datanucleus.api.jdo" is already registered. Ensure you dont have multiple JAR versions of the same plugin in the classpath. The URL "file:/E:/Spark/spark/jars/datanucleus-api-jdo-3.2.6.jar" is already registered, and you are trying to register an identical plugin located at URL "file:/E:/Spark/spark/bin/../jars/datanucleus-api-jdo-3.2.6.jar."
+18/03/05 23:31:40 WARN ObjectStore: Failed to get database global_temp, returning NoSuchObjectException
+Spark context Web UI available at http://192.168.194.1:4040
+Spark context available as 'sc' (master = local[*], app id = local-1520272883715).
+Spark session available as 'spark'.
+Welcome to
+      ____              __
+     / __/__  ___ _____/ /__
+    _\ \/ _ \/ _ `/ __/  '_/
+   /___/ .__/\_,_/_/ /_/\_\   version 2.2.0
+      /_/
+
+Using Scala version 2.11.8 (Java HotSpot(TM) 64-Bit Server VM, Java 1.8.0_152)
+Type in expressions to have them evaluated.
+Type :help for more information.
+
+scala> val dataframe_mysql = sqlContext.read.format("jdbc").option("url", "jdbc:mysql://127.0.0.1:3306").option("driver", "com.mysql.jdbc.Driver").option("world", "country").option("user", "deepak").option("password", "deepak_pwd").load()
+<console>:23: error: not found: value sqlContext
+       val dataframe_mysql = sqlContext.read.format("jdbc").option("url", "jdbc:mysql://127.0.0.1:3306").option("driver", "com.mysql.jdbc.Driver").option("world", "country").option("user", "deepak").option("password", "deepak_pwd").load()
+                             ^
+
+scala> val sqc = new org.apache.spark.sql.SQLContext(sc)
+warning: there was one deprecation warning; re-run with -deprecation for details
+sqc: org.apache.spark.sql.SQLContext = org.apache.spark.sql.SQLContext@4d3bde85
+
+scala> import sqc.implicits
+import sqc.implicits
+
+scala> import org.apache.spark.sql._
+import org.apache.spark.sql._
+
+scala> val dataframe_mysql = sqc.read.format("jdbc").option("url", "jdbc:mysql://127.0.0.1:3306").option("driver", "com.mysql.jdbc.Driver").option("world", "country").option("user", "deepak").option("password", "deepak_pwd").load()
+java.lang.IllegalArgumentException: requirement failed: Option 'dbtable' is required.
+  at scala.Predef$.require(Predef.scala:224)
+  at org.apache.spark.sql.execution.datasources.jdbc.JDBCOptions.<init>(JDBCOptions.scala:67)
+  at org.apache.spark.sql.execution.datasources.jdbc.JDBCOptions.<init>(JDBCOptions.scala:34)
+  at org.apache.spark.sql.execution.datasources.jdbc.JdbcRelationProvider.createRelation(JdbcRelationProvider.scala:32)
+  at org.apache.spark.sql.execution.datasources.DataSource.resolveRelation(DataSource.scala:306)
+  at org.apache.spark.sql.DataFrameReader.load(DataFrameReader.scala:178)
+  at org.apache.spark.sql.DataFrameReader.load(DataFrameReader.scala:146)
+  ... 50 elided
+
+scala> val dataframe_mysql = sqc.read.format("jdbc").option("url", "jdbc:mysql://127.0.0.1:3306/world").option("driver", "com.mysql.jdbc.Driver").option("dbtable", "country").option("user", "deepak").option("password", "deepak_pwd").load()
+java.lang.ClassNotFoundException: com.mysql.jdbc.Driver
+  at scala.reflect.internal.util.AbstractFileClassLoader.findClass(AbstractFileClassLoader.scala:62)
+  at java.lang.ClassLoader.loadClass(ClassLoader.java:424)
+  at java.lang.ClassLoader.loadClass(ClassLoader.java:357)
+  at org.apache.spark.sql.execution.datasources.jdbc.DriverRegistry$.register(DriverRegistry.scala:38)
+  at org.apache.spark.sql.execution.datasources.jdbc.JDBCOptions$$anonfun$6.apply(JDBCOptions.scala:78)
+  at org.apache.spark.sql.execution.datasources.jdbc.JDBCOptions$$anonfun$6.apply(JDBCOptions.scala:78)
+  at scala.Option.foreach(Option.scala:257)
+  at org.apache.spark.sql.execution.datasources.jdbc.JDBCOptions.<init>(JDBCOptions.scala:78)
+  at org.apache.spark.sql.execution.datasources.jdbc.JDBCOptions.<init>(JDBCOptions.scala:34)
+  at org.apache.spark.sql.execution.datasources.jdbc.JdbcRelationProvider.createRelation(JdbcRelationProvider.scala:32)
+  at org.apache.spark.sql.execution.datasources.DataSource.resolveRelation(DataSource.scala:306)
+  at org.apache.spark.sql.DataFrameReader.load(DataFrameReader.scala:178)
+  at org.apache.spark.sql.DataFrameReader.load(DataFrameReader.scala:146)
+  ... 50 elided
+
+scala> spark.sparkContext.listJars.foreach(println)
+spark://192.168.194.1:55829/jars/mysql-connector-java-5.1.45-bin.jar
+====================================================================================================
+Copied to mysql jdbc jar to E:\Spark\spark\jars
+-----------------------------------------------
+PS C:\Users\MRSD> spark-shell --jars mysql-connector-java-5.1.45-bin.jar
+Warning: Local jar C:\Users\MRSD\mysql-connector-java-5.1.45-bin.jar does not exist, skipping.
+Using Spark's default log4j profile: org/apache/spark/log4j-defaults.properties
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+
+>>> Same result as above
+scala> val dataframe_mysql = sqc.read.format("jdbc").option("url", "jdbc:mysql://127.0.0.1:3306/world").option("driver", "com.mysql.jdbc.Driver").option("dbtable", "country").option("user", "deepak").option("password", "deepak_pwd").load()
+java.lang.ClassNotFoundException: com.mysql.jdbc.Driver
+====================================================================================================
+Invoke Spark from E:\Spark\spark\bin
+------------------------------------
+PS E:\Spark\spark\bin> spark-shell --jars mysql-connector-java-5.1.45-bin.jar
+Warning: Local jar E:\Spark\spark\bin\mysql-connector-java-5.1.45-bin.jar does not exist, skipping.
+====================================================================================================
+Copied to mysql jdbc jar to E:\Spark\spark\bin
+-----------------------------------------------
+PS E:\Spark\spark\bin> spark-shell --jars mysql-connector-java-5.1.45-bin.jar --driver-class-path mysql-connector-java-5.1.45-bin.jar
+Using Spark's default log4j profile: org/apache/spark/log4j-defaults.properties
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+18/03/06 00:26:17 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+18/03/06 00:26:24 WARN General: Plugin (Bundle) "org.datanucleus.store.rdbms" is already registered. Ensure you dont have multiple JAR versions of the same plugin in the classpath. The URL "file:/E:/Spark/spark/bin/../jars/datanucleus-rdbms-3.2.9.jar" is already registered, and you are trying to register an identical plugin located at URL "file:/E:/Spark/spark/jars/datanucleus-rdbms-3.2.9.jar."
+18/03/06 00:26:24 WARN General: Plugin (Bundle) "org.datanucleus" is already registered. Ensure you dont have multiple JAR versions of the same plugin in the classpath. The URL "file:/E:/Spark/spark/jars/datanucleus-core-3.2.10.jar" is already registered, and you are trying to register an identical plugin located at URL "file:/E:/Spark/spark/bin/../jars/datanucleus-core-3.2.10.jar."
+18/03/06 00:26:24 WARN General: Plugin (Bundle) "org.datanucleus.api.jdo" is already registered. Ensure you dont have multiple JAR versions of the same plugin in the classpath. The URL "file:/E:/Spark/spark/jars/datanucleus-api-jdo-3.2.6.jar" is already registered, and you are trying to register an identical plugin located at URL "file:/E:/Spark/spark/bin/../jars/datanucleus-api-jdo-3.2.6.jar."
+18/03/06 00:26:35 WARN ObjectStore: Failed to get database global_temp, returning NoSuchObjectException
+Spark context Web UI available at http://192.168.194.1:4040
+Spark context available as 'sc' (master = local[*], app id = local-1520276179490).
+Spark session available as 'spark'.
+Welcome to
+      ____              __
+     / __/__  ___ _____/ /__
+    _\ \/ _ \/ _ `/ __/  '_/
+   /___/ .__/\_,_/_/ /_/\_\   version 2.2.0
+      /_/
+
+Using Scala version 2.11.8 (Java HotSpot(TM) 64-Bit Server VM, Java 1.8.0_152)
+Type in expressions to have them evaluated.
+Type :help for more information.
+
+scala> spark.sparkContext.listJars.foreach(println)
+spark://192.168.194.1:56652/jars/mysql-connector-java-5.1.45-bin.jar
+
+scala> val sqc = new org.apache.spark.sql.SQLContext(sc)
+warning: there was one deprecation warning; re-run with -deprecation for details
+sqc: org.apache.spark.sql.SQLContext = org.apache.spark.sql.SQLContext@1de398c3
+
+scala> import sqc.implicits
+import sqc.implicits
+
+scala> import org.apache.spark.sql._
+import org.apache.spark.sql._
+
+scala> val dataframe_mysql = sqc.read.format("jdbc").option("url", "jdbc:mysql://localhost/world").option("driver", "com.mysql.jdbc.Driver").option("dbtable", "country").option("user", "deepak").option("password", "deepak_pwd").load()
+Tue Mar 06 00:27:58 IST 2018 WARN: Establishing SSL connection without server's identity verification is not recommended. According to MySQL 5.5.45+, 5.6.26+ and 5.7.6+ requirements SSL connection must be established by default if explicit option isn't set. For compliance with existing applications not using SSL the verifyServerCertificate property is set to 'false'. You need either to explicitly disable SSL by setting useSSL=false, or set useSSL=true and provide truststore for server certificate verification.
+dataframe_mysql: org.apache.spark.sql.DataFrame = [Code: string, Name: string ... 13 more fields]
+
+scala> dataframe_mysql.show(10)
+Tue Mar 06 00:29:00 IST 2018 WARN: Establishing SSL connection without server's identity verification is not recommended. According to MySQL 5.5.45+, 5.6.26+ and 5.7.6+ requirements SSL connection must be established by default if explicit option isn't set. For compliance with existing applications not using SSL the verifyServerCertificate property is set to 'false'. You need either to explicitly disable SSL by setting useSSL=false, or set useSSL=true and provide truststore for server certificate verification.
++----+--------------------+-------------+--------------------+-----------+---------+----------+--------------+--------+--------+--------------------+--------------------+--------------------+-------+-----+
+|Code|                Name|    Continent|              Region|SurfaceArea|IndepYear|Population|LifeExpectancy|     GNP|  GNPOld|           LocalName|      GovernmentForm|         HeadOfState|Capital|Code2|
++----+--------------------+-------------+--------------------+-----------+---------+----------+--------------+--------+--------+--------------------+--------------------+--------------------+-------+-----+
+| ABW|               Aruba|North America|           Caribbean|      193.0|     null|    103000|          78.4|   828.0|   793.0|               Aruba|Nonmetropolitan T...|             Beatrix|    129|   AW|
+| AFG|         Afghanistan|         Asia|Southern and Cent...|   652090.0|     1919|  22720000|          45.9|  5976.0|    null|Afganistan/Afqane...|     Islamic Emirate|       Mohammad Omar|      1|   AF|
+| AGO|              Angola|       Africa|      Central Africa|  1246700.0|     1975|  12878000|          38.3|  6648.0|  7984.0|              Angola|            Republic|José Eduardo dos ...|     56|   AO|
+| AIA|            Anguilla|North America|           Caribbean|       96.0|     null|      8000|          76.1|    63.2|    null|            Anguilla|Dependent Territo...|        Elisabeth II|     62|   AI|
+| ALB|             Albania|       Europe|     Southern Europe|    28748.0|     1912|   3401200|          71.6|  3205.0|  2500.0|           Shqipëria|            Republic|      Rexhep Mejdani|     34|   AL|
+| AND|             Andorra|       Europe|     Southern Europe|      468.0|     1278|     78000|          83.5|  1630.0|    null|             Andorra|Parliamentary Cop...|                    |     55|   AD|
+| ANT|Netherlands Antilles|North America|           Caribbean|      800.0|     null|    217000|          74.7|  1941.0|    null|Nederlandse Antillen|Nonmetropolitan T...|             Beatrix|     33|   AN|
+| ARE|United Arab Emirates|         Asia|         Middle East|    83600.0|     1971|   2441000|          74.1| 37966.0| 36846.0|Al-Imarat al-?Ara...|  Emirate Federation|Zayid bin Sultan ...|     65|   AE|
+| ARG|           Argentina|South America|       South America|  2780400.0|     1816|  37032000|          75.1|340238.0|323310.0|           Argentina|    Federal Republic|  Fernando de la Rúa|     69|   AR|
+| ARM|             Armenia|         Asia|         Middle East|    29800.0|     1991|   3520000|          66.4|  1813.0|  1627.0|            Hajastan|            Republic|    Robert Kot?arjan|    126|   AM|
++----+--------------------+-------------+--------------------+-----------+---------+----------+--------------+--------+--------+--------------------+--------------------+--------------------+-------+-----+
+only showing top 10 rows
+====================================================================================================
+scala> dataframe_mysql.registerTempTable("Countries")
+warning: there was one deprecation warning; re-run with -deprecation for details
+
+scala> dataframe_mysql.sqc("Select * from Countries where Name = 'India'")
+<console>:33: error: value sqc is not a member of org.apache.spark.sql.DataFrame
+       dataframe_mysql.sqc("Select * from Countries where Name = 'India'")
+                       ^
+
+scala> dataframe_mysql.sqc.sql("Select * from Countries where Name = 'India'")
+<console>:33: error: value sqc is not a member of org.apache.spark.sql.DataFrame
+       dataframe_mysql.sqc.sql("Select * from Countries where Name = 'India'")
+                       ^
+
+scala> dataframe_mysql.printSchema
+root
+ |-- Code: string (nullable = false)
+ |-- Name: string (nullable = false)
+ |-- Continent: string (nullable = false)
+ |-- Region: string (nullable = false)
+ |-- SurfaceArea: double (nullable = false)
+ |-- IndepYear: integer (nullable = true)
+ |-- Population: integer (nullable = false)
+ |-- LifeExpectancy: double (nullable = true)
+ |-- GNP: double (nullable = true)
+ |-- GNPOld: double (nullable = true)
+ |-- LocalName: string (nullable = false)
+ |-- GovernmentForm: string (nullable = false)
+ |-- HeadOfState: string (nullable = true)
+ |-- Capital: integer (nullable = true)
+ |-- Code2: string (nullable = false)
+
+
+scala> dataframe_mysql.sqc.sql("Select * from Countries where Name = 'India'").show
+<console>:33: error: value sqc is not a member of org.apache.spark.sql.DataFrame
+       dataframe_mysql.sqc.sql("Select * from Countries where Name = 'India'").show
+                       ^
+
+scala> sqc.sql("Select * from Countries where Name = 'India'").show
+Tue Mar 06 00:40:31 IST 2018 WARN: Establishing SSL connection without server's identity verification is not recommended. According to MySQL 5.5.45+, 5.6.26+ and 5.7.6+ requirements SSL connection must be established by default if explicit option isn't set. For compliance with existing applications not using SSL the verifyServerCertificate property is set to 'false'. You need either to explicitly disable SSL by setting useSSL=false, or set useSSL=true and provide truststore for server certificate verification.
++----+-----+---------+--------------------+-----------+---------+----------+--------------+--------+--------+------------+----------------+--------------------+-------+-----+
+|Code| Name|Continent|              Region|SurfaceArea|IndepYear|Population|LifeExpectancy|     GNP|  GNPOld|   LocalName|  GovernmentForm|         HeadOfState|Capital|Code2|
++----+-----+---------+--------------------+-----------+---------+----------+--------------+--------+--------+------------+----------------+--------------------+-------+-----+
+| IND|India|     Asia|Southern and Cent...|  3287263.0|     1947|1013662000|          62.5|447114.0|430572.0|Bharat/India|Federal Republic|Kocheril Raman Na...|   1109|   IN|
++----+-----+---------+--------------------+-----------+---------+----------+--------------+--------+--------+------------+----------------+--------------------+-------+-----+
+====================================================================================================
+Stop MySQL:
+-----------
+scala> sqc.sql("Select * from Countries where Name = 'India'").show
+18/03/06 00:47:05 ERROR Executor: Exception in task 0.0 in stage 2.0 (TID 2)
+com.mysql.jdbc.exceptions.jdbc4.CommunicationsException: Communications link failure
+====================================================================================================
