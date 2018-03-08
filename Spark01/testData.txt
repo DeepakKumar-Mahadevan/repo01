@@ -1,0 +1,96 @@
+Deepak Kumar Mahadevan
+Email: connectdeepakkumar.m@gmail.com
+Mobile: +91-9003290283________________________________________
+
+Objective:
+A determined engineering professional with substantial knowledge in analysis, design, development and managing of software applications, who is seeking an opportunity that would challenge my abilities and motivate me to perform better.
+
+
+Professional Summary:
+>	5 years and 8 Months of experience in IT and Software development
+>	Around 2 years of experience in Hadoop framework and Ecosystems.
+>	Proficient in working with Sqoop, Hive, Pig and HBase.
+>	Experience with Microfocus-Linux & Mainframe based applications like COBOL, JCL, DB2, CICS.
+>	Good working knowledge on Application development and maintenance life cycle process.
+>	Good Oratorical skills & written skills, combined with a positive attitude.
+>	Versatility and flexibility to adapt to new situations and to learn new technologies.
+
+
+Employment Details:
+>	Working as a Software Designer/Associate at The Royal Bank of Scotland from December, 2015.
+>	Worked as an Associate at Cognizant technology Solutions from April, 2014 to Dec, 2015.
+>	Worked as a Software Engineer at HCL Technologies, Chennai from Dec, 2010 to April, 2014.
+
+
+Academic Profile:
+>	Completed B.E, Electronics & Communication from Anna University (Sakthi Engineering College) in 2010 with 73.5%.
+>	Completed the All India Senior School Certificate Examination (12th) under the CBSE board from Sindhi Model School, Kellys in 2006 with 66.0%.
+>	Completed the All India Secondary School Examination (10th) under the CBSE board from Sindhi Model School, Kellys in 2004 with 67.2%.
+
+Professional Achievements:
+>	Completed the Certificate course on SAP ABAP programming from Embassy Huawei on March 2014.
+>	Joined the O2 league – Rated as an outstanding performer for 2 consecutive years during my tenure in HCL.
+>	Reached the Gold & Silver clubs in the Xtra miles portal in HCL.
+>	Played an active role in RAS Rehosting – Migration from Mainframe to Microfocus-Linux platform with Pearson Royalty team.
+>	Completed the Certificate course on Mainframe Application programming from Maples ESM Technologies on October 2010.
+
+Technical Expertise:
+Big Data Ecosystems	HDFS, Sqoop, Hive, Pig, HCatalog, HBase, Phoenix, Spark, Oozie, Flume, Hue, NiFi, Kafka
+Database	Mysql, Oracle, DB2, VSAM
+Mainframe Skills	Cobol, JCL,CICS
+Tools	Putty, WinScp, Squirrel, SVN, SQL Developer, Microfocus Enterprise Server, Net Express, Autosys, Workbench, File Aid, SPUFI, QMF, Endevor, Xpeditor, CA7, Intertest,
+Other Programming Skills	SAS, SAP ABAP
+
+
+Project Summary:
+#1) Risk solutions (Dec 2015 – Present), RBS India Development Centre, Chennai.
+Project Description:
+The Risk Solutions unit provides services across all verticals within RBS in managing Risks commonly faced in the banking sector. RMP-MI within Risk solutions is a Data warehousing system which interacts with Athena, a hadoop based analytical system which helps in predicting/minimizing the risks involved in the lending process. The system helps in early detection of loans at higher risk of default so the concerned RM can intervene more quickly and talk to the customers to make possible modifications or take other actions. For large lenders that have millions of loans outstanding, the key question is how to identify the particular loans that are beginning to be a problem but are not yet in default. Using high-performance analytical techniques the system produces EWI, DWI and PD reports which are then sent to RMP system from where the RM can track the customers under him.
+Athena gets data from RMP-MI using sqoop and data mining on it is done using Hive, Pig on top of Hbase. POCs are currently underway to implement Spark in Athena.
+Responsibilities:
+>	Importing and exporting data into HDFS using Soop and NiFi.
+>	Involved in devising data migration strategy from heterogeneous databases such as DB2, Teradata and Oracle integrating shell scripts, Sqoop, HBASE and Oozie
+>	Performed Data enrichments such as filtering, pivoting, format modeling, sorting and aggregation using Hive and Pig tools.
+>	Worked on performance optimization of various ecosystems such as pig, hive, sqoop and map reduce.
+>	Developed Oozie workflow to run scheduled batch cycles and present data for reports.
+>	Handling various data sources like RDBMS, Web server logs, XML files and flat files.
+#2) VISION & VzW Customer Churn analytics (Apr 2014 – Dec 2015), Cognizant, Chennai.
+Project Description:
+V5/VISION is a Mainframe DB2 based system that maintains the billing information for Verizon Wireline/Wireless customers. It has both Batch and Online which forms an integral part in the billing process. The database used by vision is said to be the largest in the world and every day Billions of transactions is processed.
+VISION interacts with several front end applications like ACSS, JITR, POS MyVZ etc which feeds in huge volumes of transactions into the system daily. VISON also interacts with several other downstream applications of platforms like Hadoop and Data warehousing for OLAP and reporting purpose.
+In order to analyze the data and voice usage patterns of the customers, VISION interacts with Hadoop which produces consolidated output for BI reporting (Cognos/SAS), Using these reports promotional offers, recommendations on Mobile plans etc are sent out to the customers through SMS, IVRs and personalized emails.
+Customer churn analytics is a separate division in Verizon wireless which focuses on reducing the churn rate of customers. It’s Hadoop based system with receives data from web logs, social media, transactions into HDFS and customer care records are analyzed to generate insights on individual customer preference & behaviour and provide customer tailored offers. Data ingestion and acquisition is done using Sqoop and Flume. Data analysis and processing are done using Hive and Pig.
+Responsibilities:
+>	Creating technical design docs for new enhancements.
+>	Conduct Technical Design and Code walkthroughs with the Onshore/Offshore team.
+>	Importing and exporting data from HDFS using Sqoop.
+>	Used Flume to collect, aggregate, and store the web log data from different sources like web servers, mobile and network devices and pushed to HDFS.
+>	Analyzed the web log data using the HiveQL to extract number of unique visitors per day, page views, visit duration, most purchased product on website, customer reviews etc.
+>	Exported the analyzed data to the relational databases using Sqoop for visualization and to generate reports for our BI team.
+>	Integration from Hive to HBase, Pig to HBase.
+>	Handled heterogeneous data sources such as RDBMS, Streaming data and different file formats.
+
+#3) Pearson Royalty (Jan 2011 to March 2014), HCL, Chennai.
+Client Name and address: Pearson Education, 1 Lake Street, Upper Saddle River, NJ  USA.
+Project Description:
+This is a Mainframe/Microfocus-Linux based maintenance project. Pearson Technologies is supporting IT solution to Pearson group.
+Royalty accounting system (RAS) application deals with calculating royalties for all the titles of authors and providing periodical statements and royalty payments as per authors’ contract. Authors receive royalties for primary rights as well as secondary rights sold to other third parties and permission granted for reusing any of their intellectual properties. The royalties paid and the payment terms are controlled by the contract signed between Pearson and the Proprietors. Royalty Department of Pearson Education takes care of executing and maintaining the contracts, sales capturing, earnings and royalty calculation, royalty statement generation, and royalty payments.  This system handles the contracts capture and processing between authors and Pearson.
+Responsibilities:
+>	Gather new requirements from users, drawing out a plan for releases of the enhancements for the application requested by the users.
+>	Creating technical design docs for new enhancements.
+>	Provide the maintenance support, defects fixing for production and various development environments.
+>	Perform back door fixes in production whenever requested by business users
+>	Interacting with onsite and offshore team in resolving the problems.
+>	Resolving deployment issues and coordinating with Operations for deploying services in production.
+>	Design, code, test, debug and document programs. 
+>	Assist team members in design and analysis activities. 
+
+
+Personal Details: 
+Date of Birth:	13th October, 1988
+Gender:	Male
+Marital Status:	Single
+Nationality:	Indian
+Languages Known:	English, Tamil
+Passport/VISA:	Yes / 5 years Canadian-V1 Visa.
+
