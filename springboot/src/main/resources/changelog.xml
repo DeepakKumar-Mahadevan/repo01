@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
+
+<!--    <changeSet id="1" author="John Doe">-->
+<!--        <createTable tableName="employee">-->
+<!--            <column name="id" type="BIGINT" autoIncrement="true">-->
+<!--                <constraints primaryKey="true" nullable="false"/>-->
+<!--            </column>-->
+<!--            <column name="name" type="VARCHAR(100)"/>-->
+<!--            <column name="email" type="VARCHAR(100)"/>-->
+<!--        </createTable>-->
+<!--    </changeSet>-->
+
+
+    <changeSet id="add_column_age" author="DKM">
+        <addColumn tableName="employee">
+            <column name="age" type="INT"/>
+        </addColumn>
+    </changeSet>
+
+</databaseChangeLog>
